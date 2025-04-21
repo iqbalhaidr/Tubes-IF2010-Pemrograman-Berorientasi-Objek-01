@@ -1,0 +1,44 @@
+#include "../include/item.hpp"
+
+Item::Item(std::string name, std::string type, std::string rarity,
+           double baseStat,
+           const std::vector<std::string>& effects)
+    : name(name), type(type), rarity(rarity),
+     baseStat(baseStat), effects(effects) {}
+
+Item::~Item() {}
+
+std::string Item::getName() {
+    return name;
+}
+
+std::string Item::getItemType() {
+    return type;
+}
+
+std::string Item::getRarity() {
+    return rarity;
+}
+
+
+double Item::getBaseStat() {
+    return baseStat;
+}
+
+std::vector<std::string> Item::getEffects() {
+    return effects;
+}
+
+double Item :: getStatMultiplier() const {
+    if (rarity == "E") return 1.0;
+    if (rarity == "D") return 1.2;
+    if (rarity == "C") return 1.5;
+    if (rarity == "B") return 2.0;
+    if (rarity == "A") return 3.0;
+    if (rarity == "S") return 6.0;
+    return 1.0; 
+}
+
+// double Item :: getFinalStat() const {
+//     return baseStat * getStatMultiplier() * (1 + (level * 0.05)); 
+// }

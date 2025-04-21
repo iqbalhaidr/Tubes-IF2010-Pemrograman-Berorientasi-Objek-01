@@ -1,0 +1,124 @@
+#include "../include/items.hpp"
+#include "../include/exception.hpp"
+#include <sstream>
+#include <fstream>
+#include <iostream>
+#include <filesystem>
+
+namespace fs = std::filesystem;
+
+Items::Items(const std::string& directory) {
+    std::string filename = directory + "item.txt";
+    if (!fs::exists(directory) || !fs::is_directory(directory)) {
+        throw InputOutputException("Directory tidak ditemukan");
+    }
+
+    std::ifstream file(filename);
+    if (file.fail()) {
+        throw InputOutputException("File item.txt tidak ditemukan");
+    }
+
+    std::string line;
+    while (std::getline(file, line)) {
+        if (line.empty() || line[0] == '#') continue;
+
+        std::stringstream ss(line);
+        std::string id, name, type, rarity;
+        int level;
+        double baseStat;
+        std::vector<std::string> effects;
+        
+
+        if (ss >> id >> name >> type >> rarity >> baseStat) {
+            if (!(isValidItemType(type) && isValidItemRarity(rarity))) {
+                throw InputOutputException("Tipe atau rarity tidak valid");
+            }
+
+            std::string effect;
+            while (ss >> effect) {
+                if (effect == "-") break;  
+                effects.push_back(effect);
+            }
+
+            // TODO: VALIDASI EFEK
+
+            Item* newItem = new Item(name, type, rarity, baseStat, effects);
+            addItem(id, newItem);
+        } else {
+            throw InventoryEror("Format baris salah di file item.txt");
+        }
+    }
+}
+
+Items::~Items() {
+    for (auto& pair : itemMap) {
+        delete pair.second;
+    }
+    itemMap.clear();
+}
+
+void Items::addItem(const std::string& id, Item* item) {
+    itemMap[id] = item;
+}
+
+bool Items::lookup(const std::string& id) const {
+    return itemMap.find(id) != itemMap.end();
+}
+
+bool Items::lookUpbyName(const std::string& Name) const {
+    for (const auto& item : itemMap) {
+        if (item.second->getName() == Name) {
+            return true;
+        }
+    }
+    return false;
+}
+
+Item* Items::getItem(const std::string& id) const {
+    auto it = itemMap.find(id);
+    if (it != itemMap.end()) return it->second;
+    return nullptr;
+}
+
+Item* Items::getItembyName(const std::string& Name) {
+    for (const auto& item : itemMap) {
+        if (item.second->getName() == Name) {
+            return item.second;
+        }
+    }
+    return nullptr;
+}
+
+void Items::save(const std::string& directory) const {
+    std::string filename = directory + "item.txt";
+
+    if (!fs::exists(directory) || !fs::is_directory(directory)) {
+        throw InventoryEror("Directory tidak ditemukan");
+    }
+
+    std::ofstream outputFile(filename);
+    for (const auto& item : itemMap) {
+        outputFile << item.first << " "
+                   << item.second->getName() << " "
+                   << item.second->getItemType() << " "
+                   << item.second->getRarity() << " "
+                   << item.second->getBaseStat() << " ";
+        for (const auto& effect : item.second->getEffects()) {
+            outputFile << effect << " ";
+        }
+        outputFile << "\n";
+    }
+
+    outputFile.close();
+    std::cout << "Data saved to " << filename << std::endl;
+}
+
+bool Items::isValidItemType(const std::string& type) {
+    return (type == "Weapon" || type == "Armor" ||
+            type == "Potion" || type == "Pendant");
+}
+
+bool Items::isValidItemRarity(const std::string& rarity) {
+    return (rarity == "A" || rarity == "B" || rarity == "C" ||
+            rarity == "D" || rarity == "E" || rarity == "S");
+}
