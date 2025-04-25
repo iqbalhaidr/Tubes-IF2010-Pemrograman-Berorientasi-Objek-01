@@ -31,8 +31,6 @@ Shop::Shop(const std::string& directory, const Items& itemMap){
 
 }
 
-Shop::~Shop(){}
-
 void Shop::buyItem(const std::string& itemName, int quantity, Inventory& inventory) {
     auto it = availableItems.find(itemName);
     if (it != availableItems.end()) {
