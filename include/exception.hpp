@@ -42,6 +42,31 @@ class CharactersError : public std::exception {
             return errorMessage.c_str();
         }
 };
+
+class ItemNotFound : public std::exception {
+    private:
+        std::string errorMessage;
     
+    public:
+        ItemNotFound() : errorMessage("Item tidak ditemukan"){}
+        ItemNotFound(const std::string& message) : errorMessage(message) {}
+    
+        const char* what() const noexcept override {
+            return errorMessage.c_str();
+        }
+};
+
+class StockError : public std::exception {
+    private:
+        std::string errorMessage;
+    
+    public:
+        StockError() : errorMessage("Stok tidak mencukupi"){}
+        StockError(const std::string& message) : errorMessage(message) {}
+    
+        const char* what() const noexcept override {
+            return errorMessage.c_str();
+        }
+};
 
 #endif

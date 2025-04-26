@@ -68,10 +68,10 @@ void Shop::buyItem(const std::string& itemName, int quantity, Inventory& invento
             setStock(itemName, stock);
             std::cout << "Item " << itemName << " purchased successfully.\n";
         } else {
-            std::cout << "Not enough stock for item " << itemName << ".\n";
+            throw StockError("Not enough stock for item " + itemName);
         }
     } else {
-        std::cout << "Item " << itemName << " not found in shop.\n";
+        throw ItemNotFound("Item " + itemName + " not found in shop");
     }
 }
 
@@ -90,10 +90,10 @@ void Shop::sellItem(const std::string& itemName, int quantity, Inventory& invent
             inventory.reduceItem(itemName,quantity);
             std::cout << "Item " << itemName << " sold successfully.\n";
         }else {
-            std::cout << "Not enough item " << itemName << " in backpack.\n";
+            throw  InventoryEror("Not enough items in backpack to sell " + itemName);
         }
     }else{
-        std::cout << "Item " << itemName << " not found in backpack.\n";
+        throw ItemNotFound("Item " + itemName + " not found in backpack");
     }
 }
 
@@ -121,6 +121,10 @@ void Shop::displayDetails(std::string itemName) const {
         std::cout << "Item: " << itemName << "\n";
         std::cout << "Price: " << it->second.first << "\n";
         std::cout << "Stock: " << it->second.second << "\n";
+        std::cout << "Effects:\n";
+        for (const auto& effect : groupedItems.at(itemName)) {
+            std::cout << "- " << effect.getName() << "\n";
+        }
     } else {
         std::cout << "Item " << itemName << " not found in shop.\n";
     }
@@ -128,10 +132,47 @@ void Shop::displayDetails(std::string itemName) const {
 
 void Shop::displayShop() const {
     std::cout << "Available items in shop:\n";
-    for (const auto& category: groupedItems) {
-        std::cout << "Item: " << category.first << "\n";
-        for (const auto& item : category.second) {
-            std::cout << "  - " << item.getName() << " (Price: " << availableItems.at(item.getName()).first << ", Stock: " << availableItems.at(item.getName()).second << ")\n";
+    
+    for (const auto& category : groupedItems) {
+        std::cout << "\nCategory: " << category.first << "\n";
+        
+        const auto& items = category.second;
+        size_t itemCount = items.size();
+        
+        // Display items in a 5x2 matrix (5 columns, 2 rows per category)
+        for (size_t row = 0; row < 2 && row * 5 < itemCount; ++row) {
+            // Print divider line
+            std::cout << "+";
+            for (size_t col = 0; col < 5 && (row * 5 + col) < itemCount; ++col) {
+                std::cout << "--------------------+";
+            }
+            std::cout << "\n|";
+            
+            // Print item names
+            for (size_t col = 0; col < 5 && (row * 5 + col) < itemCount; ++col) {
+                size_t index = row * 5 + col;
+                std::string name = items[index].getName();
+                std::cout << std::setw(19) << std::left << name << " |";
+            }
+            std::cout << "\n|";
+            
+            // Print price and stock
+            for (size_t col = 0; col < 5 && (row * 5 + col) < itemCount; ++col) {
+                size_t index = row * 5 + col;
+                std::string name = items[index].getName();
+                int price = availableItems.at(name).first;
+                int stock = availableItems.at(name).second;
+                
+                std::string info = "P:" + std::to_string(price) + " S:" + std::to_string(stock);
+                std::cout << std::setw(19) << std::left << info << " |";
+            }
+            std::cout << "\n+";
+            
+            // Print bottom divider
+            for (size_t col = 0; col < 5 && (row * 5 + col) < itemCount; ++col) {
+                std::cout << "--------------------+";
+            }
+            std::cout << "\n";
         }
     }
 }
