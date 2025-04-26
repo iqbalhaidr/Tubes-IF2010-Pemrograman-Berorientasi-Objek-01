@@ -31,10 +31,14 @@ void EffectDamage::setDamage(double damage) {
     this->damage = damage;
 }
 
-void EffectDamage::apply(Unit* unit) {
+double EffectDamage::apply(Unit* unit) {
     int random = rand() % 100 + 1;
-    if (random <= chance){
-        unit->takeDamage(damage);
-    }
     remainingDuration -= 1;
+    if (random <= chance){
+        return damage;
+    }
+
+    else{
+        return 0;    
+    }
 }

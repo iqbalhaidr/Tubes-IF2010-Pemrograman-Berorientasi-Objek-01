@@ -19,8 +19,7 @@ class EffectDamage : public Effect {
         void setChance(double chance);
         void setDamage(double damage);
 
-        void apply(Unit* unit) override;
-        void remove(Unit unit) override;
+        double apply(Unit* unit) override;
+        void remove(Unit* unit) override;
 };
-
 #endif

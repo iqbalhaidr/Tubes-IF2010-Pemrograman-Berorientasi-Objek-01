@@ -1,3 +1,5 @@
+#ifndef EFFECTDAMAGE_HPP
+#define EFFECTDAMAGE_HPP
 #include "effect.hpp"
 
 class EffectHealth : public Effect {
@@ -13,6 +15,8 @@ class EffectHealth : public Effect {
         int getHealAmount() const;
         void setHealAmount(int healAmount);
 
-        void apply(Unit* unit) override;
-        void remove(Unit unit) override;
-}
+        double apply(Unit* unit) override;
+        void remove(Unit* unit) override;
+};
+
+#endif
