@@ -56,3 +56,4 @@ void Skill::setEffectChance(double effectChance) {
 void Skill::setDamage(double damage) {
     this->damage = damage;
 }
+
