@@ -9,14 +9,13 @@ class EffectHealth : public Effect {
         EffectHealth(const std::string& name, const std::string& description, double duration, double remainingDuration, int healAmount);
         ~EffectHealth();
         EffectHealth(EffectHealth& other);
-        EffectHealth& operator=(EffectHealth& other) = default;
+        EffectHealth& operator=(EffectHealth& other);
 
         // Setter Getter
         int getHealAmount() const;
         void setHealAmount(int healAmount);
 
         double apply(Unit* unit) override;
-        void remove(Unit* unit) override;
 };
 
 #endif

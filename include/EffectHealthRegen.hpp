@@ -9,14 +9,13 @@ class EffectHealthRegen : public EffectTurnBasedBased {
         EffectHealthRegen(const std::string& name, const std::string& description, double duration, double remainingDuration, int healAmount);
         ~EffectHealthRegen();
         EffectHealthRegen(EffectHealthRegen& other);
-        EffectHealthRegen& operator=(EffectHealthRegen& other) = default;
+        EffectHealthRegen& operator=(EffectHealthRegen& other) ;
 
         // Setter Getter
         int getHealAmount() const;
         void setHealAmount(int healAmount);
 
         double apply(Unit* unit) override;
-        void remove(Unit* unit) override;
 };
 
 

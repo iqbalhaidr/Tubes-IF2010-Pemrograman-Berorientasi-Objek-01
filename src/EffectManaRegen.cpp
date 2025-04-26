@@ -24,7 +24,3 @@ double EffectManaRegen::apply(Unit* unit) {
     return 0; 
 }
 
-void EffectManaRegen::remove(Unit* unit) {
-    int currentRegen = unit->getManaRegen();
-    unit->setManaRegen(currentRegen - manaAmount);
-}

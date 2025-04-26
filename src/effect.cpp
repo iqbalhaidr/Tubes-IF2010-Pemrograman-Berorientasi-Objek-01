@@ -32,6 +32,7 @@ double Effect::getRemainingDuration() const {
     return remainingDuration;
 }
 
+
 bool Effect::isTurn() {
     return false;
 }

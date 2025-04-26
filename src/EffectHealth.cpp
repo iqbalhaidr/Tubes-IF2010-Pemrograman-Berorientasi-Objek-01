@@ -29,7 +29,3 @@ double EffectHealth::apply(Unit* unit) {
     remainingDuration -= 1;
 }
 
-void EffectHealth::remove(Unit* unit) {
-    int currentRegen = unit->getHealthRegen();
-    unit->setHealthRegen(currentRegen - healAmount);
-}
