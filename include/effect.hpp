@@ -4,7 +4,7 @@
 #include <string>
 #include "unit.hpp"
 class Effect{
-    private:
+    protected:
         std::string name;
         std::string description;
         double duration;
@@ -23,7 +23,7 @@ class Effect{
         double getRemainingDuration() const;
 
 
-        virtual void apply(Unit unit) = 0;
+        virtual void apply(Unit* unit) = 0;
         virtual void remove(Unit unit) = 0;
 };
 
