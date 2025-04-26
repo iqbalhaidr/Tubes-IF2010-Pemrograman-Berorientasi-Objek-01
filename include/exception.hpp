@@ -28,7 +28,20 @@ class InventoryEror : public std::exception {
         const char* what() const noexcept override {
             return errorMessage.c_str();
         }
-    };
+};
+
+class CharactersError : public std::exception {
+    private:
+        std::string errorMessage;
+    
+    public:
+        CharactersError() : errorMessage("Terjadi kesalahan dalam penambahan atau pengurangan character"){}
+        CharactersError(const std::string& message) : errorMessage(message) {}
+    
+        const char* what() const noexcept override {
+            return errorMessage.c_str();
+        }
+};
     
 
 #endif
