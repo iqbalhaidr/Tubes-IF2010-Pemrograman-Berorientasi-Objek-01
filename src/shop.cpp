@@ -2,7 +2,7 @@
 #include "exception.hpp"
 #include <iostream>
 
-Shop::Shop(const std::string& directory, const Items& itemMap){
+Shop::Shop(const std::string& directory, Items& itemMap){
     std:: string filename = directory + "shop.txt";
     if (!fs::exists(directory) || !fs::is_directory(directory)) {
         throw ; //eror folder tidak ada
@@ -21,11 +21,16 @@ Shop::Shop(const std::string& directory, const Items& itemMap){
         std::string rarity;
         int basePrice;
         int stock;
+        std ::string category;
 
         if (ss >> name >> rarity >> basePrice >> stock){ //parsing berhasil
             if(!(itemMap.lookUpbyName(name) && Items::isValidItemRarity(rarity))){
                 throw ; //eror format file tidak sesuai silahkan masukkan file yang valid
             }
+            availableItems[name] = std::make_pair(basePrice, stock);
+            shopConfig[name] = std::make_pair(basePrice, stock);
+            Item* input = itemMap.getItembyName(name);
+            groupedItems[input->getItemType()].push_back(*input);
         }
     }
 }
@@ -94,7 +99,10 @@ void Shop::sellItem(const std::string& itemName, int quantity, Inventory& invent
 
 void Shop::restock() {
     for (auto& item : availableItems) {
-        item.second.second = 10; // Set stock to 10 for all items
+        auto shopItem = shopConfig.find(item.first);
+        if (shopItem != shopConfig.end()) {
+            item.second.second = shopItem->second.second; 
+        }
     }
 }
 
@@ -118,9 +126,12 @@ void Shop::displayDetails(std::string itemName) const {
     }
 }
 
-void Shop::displayShop() const {
+void Shop::displayShop() {
     std::cout << "Available items in shop:\n";
-    for (const auto& item : availableItems) {
-        std::cout << "Item: " << item.first << ", Price: " << item.second.first << ", Stock: " << item.second.second << "\n";
+    for ( auto& category: groupedItems) {
+        std::cout << "Item: " << category.first << "\n";
+        for (auto& item : category.second) {
+            std::cout << "  - " << item.getName() << " (Price: " << availableItems.at(item.getName()).first << ", Stock: " << availableItems.at(item.getName()).second << ")\n";
+        }
     }
 }
