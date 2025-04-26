@@ -3,14 +3,16 @@
 
 #include <iostream>
 #include <string>
+#include "Effect.hpp"
 class Skill{
     private:
         std::string name;
         double manaCost;
         double masterCost;
         double effectChance;
-        std::string effecType;
-    public:
+        double damage;
+        public:
+        vector<Effect*> effects;
         Skill(const std::string& name, double manaCost, double masterCost, double effectChance, const std::string& effectType);
         ~Skill();
         Skill(Skill& other);
@@ -22,6 +24,7 @@ class Skill{
         double getManaCost() const;
         double getMasterCost() const;
         double getEffectChance() const;
+        double getDamage() const;
 
         std::string getEffectType() const;
         void setName(const std::string& name);
@@ -29,6 +32,7 @@ class Skill{
         void setMasterCost(double masterCost);
         void setEffectChance(double effectChance);
         void setEffectType(const std::string& effectType);    
+        void setDamage(double damage);
 };
 
 #endif
