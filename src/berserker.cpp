@@ -16,10 +16,11 @@ void Berserker::attack(Unit& target)  {
     //int damage = attackDamage * rageMultiplier; // belom
 }
 
-// void Berserker::useSkill(Unit& target) {
-    // rageMultiplier += 2;
-// }
-// 
+void Berserker::useSkill(string& skill, Unit& target) {
+    Unit::useSkill(skill, target); // Call the base class method
+    rageMultiplier += 1;
+}
+
 void Berserker::levelUp() {
     masteryCost += 5; 
     stats.setStrength(stats.getStrength() * 2.5);

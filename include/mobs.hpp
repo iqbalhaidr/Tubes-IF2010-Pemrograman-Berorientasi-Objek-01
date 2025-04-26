@@ -19,7 +19,7 @@ class Mobs : public Unit {
         int getExpReward() const;
         double getDropRate() const;
         void setExpReward(int expReward);
-        void useSkill(string& skill) override; // TEMPORARY
+        void useSkill(string skill, Unit& target); // TEMPORARY
         vector<Item*> dropLoot(); 
         void reset();
 

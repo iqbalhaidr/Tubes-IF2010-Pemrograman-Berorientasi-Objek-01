@@ -19,11 +19,11 @@ void Mage::attack(Unit& target) {
     Unit::restoreMana(extraMana);
 }
 
-void Mage::useSkill(Unit& target) {
-    Unit::useSkill(target); 
+void Mage::useSkill(string& skill, Unit& target) {
+    Unit::useSkill(skill, target); 
     currentMana -= stats.getIntelligence();
     // attackDamage fungsi iqbal
-    totalAttackDamage += stats.getIntelligence();
+    // totalAttackDamage += stats.getIntelligence();
     if (currentMana < 0) {
         currentMana = 0;
     }
