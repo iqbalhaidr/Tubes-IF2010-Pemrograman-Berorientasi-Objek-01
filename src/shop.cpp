@@ -28,7 +28,6 @@ Shop::Shop(const std::string& directory, const Items& itemMap){
             }
         }
     }
-
 }
 
 void Shop::buyItem(const std::string& itemName, int quantity, Inventory& inventory) {
@@ -73,3 +72,35 @@ void Shop::sellItem(const std::string& itemName, int quantity, Inventory& invent
     }
 }
 
+void Shop::restock() {
+    for (auto& item : availableItems) {
+        item.second.second = 10; // Set stock to 10 for all items
+    }
+}
+
+void Shop::setStock(const std::string& itemName, int stock) {
+    auto it = availableItems.find(itemName);
+    if (it != availableItems.end()) {
+        it->second.second = stock;
+    } else {
+        std::cout << "Item " << itemName << " not found in shop.\n";
+    }
+}
+
+void Shop::displayDetails(std::string itemName) const {
+    auto it = availableItems.find(itemName);
+    if (it != availableItems.end()) {
+        std::cout << "Item: " << itemName << "\n";
+        std::cout << "Price: " << it->second.first << "\n";
+        std::cout << "Stock: " << it->second.second << "\n";
+    } else {
+        std::cout << "Item " << itemName << " not found in shop.\n";
+    }
+}
+
+void Shop::displayShop() const {
+    std::cout << "Available items in shop:\n";
+    for (const auto& item : availableItems) {
+        std::cout << "Item: " << item.first << ", Price: " << item.second.first << ", Stock: " << item.second.second << "\n";
+    }
+}

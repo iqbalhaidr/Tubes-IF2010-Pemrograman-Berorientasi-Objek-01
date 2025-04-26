@@ -21,9 +21,9 @@ public:
 
     void buyItem(const std::string& itemName, int quantity, Inventory& inventory);
     void sellItem(const std::string& itemName, int quantity, Inventory& inventory);
-    void setPrice(const std::string& itemName, int newPrice);
-    void setStock(const std::string& itemName, int newStock);
-    void displayDetails(std::string category) const;
+    void restock();
+    void setStock(const std::string& itemName, int stock);
+    void displayDetails(std::string itemName) const;
     void displayShop() const;
 };
 
