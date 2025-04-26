@@ -126,11 +126,11 @@ void Shop::displayDetails(std::string itemName) const {
     }
 }
 
-void Shop::displayShop() {
+void Shop::displayShop() const {
     std::cout << "Available items in shop:\n";
-    for ( auto& category: groupedItems) {
+    for (const auto& category: groupedItems) {
         std::cout << "Item: " << category.first << "\n";
-        for (auto& item : category.second) {
+        for (const auto& item : category.second) {
             std::cout << "  - " << item.getName() << " (Price: " << availableItems.at(item.getName()).first << ", Stock: " << availableItems.at(item.getName()).second << ")\n";
         }
     }

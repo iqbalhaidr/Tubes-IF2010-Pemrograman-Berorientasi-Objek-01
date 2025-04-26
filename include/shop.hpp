@@ -25,7 +25,7 @@ public:
     void restock();
     void setStock(const std::string& itemName, int stock);
     void displayDetails(std::string itemName) const;
-    void displayShop();
+    void displayShop() const;
 };
 
 
