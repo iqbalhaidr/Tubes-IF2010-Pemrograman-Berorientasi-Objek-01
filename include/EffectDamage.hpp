@@ -21,5 +21,6 @@ class EffectDamage : public Effect {
 
         double apply(Unit* unit) override;
         void remove(Unit* unit) override;
+        bool isDamage();
 };
 #endif

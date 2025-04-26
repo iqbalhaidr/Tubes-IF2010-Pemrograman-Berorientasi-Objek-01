@@ -42,3 +42,5 @@ double EffectDefensive::apply(Unit* unit) {
         return 0;    
     }
 }
+
+bool isDefensive(){return true;}

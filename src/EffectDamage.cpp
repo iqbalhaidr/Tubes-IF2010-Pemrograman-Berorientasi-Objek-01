@@ -42,3 +42,5 @@ double EffectDamage::apply(Unit* unit) {
         return 0;    
     }
 }
+
+bool EffectDamage::isDamage(){return true;}
