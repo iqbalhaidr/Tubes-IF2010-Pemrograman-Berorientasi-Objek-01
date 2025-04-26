@@ -12,6 +12,7 @@ Unit::Unit(string name, int maxHealth, int healthRegen, int maxMana, int manaReg
     this->currentMana = maxMana;
     this->manaRegen = manaRegen;
     this->attackDamage = attackDamage;
+    this->isStun = false; 
 }
 
 Unit::~Unit() {}

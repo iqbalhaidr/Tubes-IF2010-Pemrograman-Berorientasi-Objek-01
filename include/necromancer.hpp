@@ -23,7 +23,7 @@ class Necromancer : public Character {
 
         // Fungsi
         void attack(Unit& target);
-        // void useSkill(Unit& target);
+        void useSkill(string& skill, Unit& target);
         void levelUp();
 };
 

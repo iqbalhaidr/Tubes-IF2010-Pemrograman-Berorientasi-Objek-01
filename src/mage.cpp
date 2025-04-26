@@ -19,14 +19,15 @@ void Mage::attack(Unit& target) {
     Unit::restoreMana(extraMana);
 }
 
-// void Mage::useSkill(Unit& target) {
-    // currentMana -= stats.getIntelligence();
+void Mage::useSkill(Unit& target) {
+    Unit::useSkill(target); 
+    currentMana -= stats.getIntelligence();
     // attackDamage fungsi iqbal
-    // totalAttackDamage += stats.getIntelligence();
-    // if (currentMana < 0) {
-        // currentMana = 0;
-    // }
-// }
+    totalAttackDamage += stats.getIntelligence();
+    if (currentMana < 0) {
+        currentMana = 0;
+    }
+}
 
 void Mage::levelUp() {
     masteryCost += 5; 

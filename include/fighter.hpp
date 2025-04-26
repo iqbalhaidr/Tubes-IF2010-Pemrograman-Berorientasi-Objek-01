@@ -19,7 +19,7 @@ class Fighter : public Character {
 
         // Fungsi
         void takeDamage(int damage);
-        // void useSkill();
+        void useSkill(string& skill, Unit& target);
         void levelUp();
 };
 

@@ -20,6 +20,7 @@ class Berserker : public Character {
         // Fungsi override
         void attack(Unit& target) ;
         void takeDamage(int damage);
+        void useSkill(string& skill, Unit& target);
         void levelUp();
 };
 

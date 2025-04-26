@@ -19,7 +19,7 @@ class Mage : public Character {
 
         // Fungsi
         void attack(Unit& target);
-        // void useSkill(Unit& target);
+        void useSkill(string& skill);
         void levelUp();
 };
 

@@ -24,12 +24,13 @@ void Fighter::takeDamage(int damage) {
     }
 }
 
-// void Fighter::useSkill() {
-    // currentHealth += stats.getStrength() * 0.5;
-    // if (currentHealth > maxHealth) {
-        // currentHealth = maxHealth;
-    // }
-// }
+void Fighter::useSkill(string& skill, Unit& target) {
+    Unit::useSkill(skill, target);
+    currentHealth += stats.getStrength() * 0.25;
+    if (currentHealth > maxHealth) {
+        currentHealth = maxHealth;
+    }
+}
 
 void Fighter::levelUp() {
     masteryCost += 5; 

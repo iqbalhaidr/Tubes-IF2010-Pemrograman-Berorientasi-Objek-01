@@ -21,6 +21,7 @@ class Unit {
         int manaRegen;
         int attackDamage;
         Stats stats;
+        bool isStun;
         vector<string> skills;
         vector<string> effects;
     public:
@@ -37,6 +38,7 @@ class Unit {
         int getMaxMana() const;
         int getManaRegen() const;
         int getAttackDamage() const;
+        bool getIsStun() const { return isStun; }
         vector<string> getSkills() const; // TEMPORARY
         vector<string> getEffects() const; // TEMPORARY
 
@@ -49,18 +51,21 @@ class Unit {
         void setMaxMana(int maxMana);
         void setManaRegen(int manaRegen);
         void setAttackDamage(int attackDamage);
+        void setIsStun(bool isStun);
         void setStats(int strength, int agility, int intelligence);
+
 
         // Fungsi
         virtual void attack(Unit& target);
         virtual void takeDamage(int damage);
         virtual void heal(int amount);
         virtual void restoreMana(int amount);
-        virtual void useSkill(string skill); // TEMPORARY
+        virtual void useSkill(string skill, Unit& target); // TEMPORARY
         virtual void addSkill(string skill); // TEMPORARY
         virtual void removeSkill(string skill); // TEMPORARY
-        virtual void addEffect(string effect); // TEMPORARY
-        virtual void removeEffect(string effect); // TEMPORARY
+        void addEffect(string effect); // TEMPORARY
+        void removeEffect(string effect); // TEMPORARY
+        void applyEffect();
         virtual void reset() = 0;
 
 

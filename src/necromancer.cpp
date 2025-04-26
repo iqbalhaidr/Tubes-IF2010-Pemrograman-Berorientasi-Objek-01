@@ -29,13 +29,14 @@ void Necromancer::attack(Unit& target) {
     }
 }
 
-// void Necromancer::useSkill(Unit& target) {
-    // target.takeDamage(getStats().getIntelligence());
-    // currentHealth += getStats().getIntelligence();
-    // if (currentHealth > maxHealth) {
-        // currentHealth = maxHealth;
-    // }
-// }
+void Necromancer::useSkill(string& skill, Unit& target) {
+    Unit::useSkill(skill, target); 
+    target.takeDamage(getStats().getIntelligence() * 0.25);
+    currentHealth += getStats().getIntelligence() * 0.25;
+    if (currentHealth > maxHealth) {
+        currentHealth = maxHealth;
+    }
+}
 
 void Necromancer::levelUp() {
     masteryCost += 5; 
