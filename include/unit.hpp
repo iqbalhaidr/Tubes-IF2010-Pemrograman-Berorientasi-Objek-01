@@ -24,6 +24,7 @@ class Unit {
         bool isStun;
         vector<string> skills;
         vector<string> effects;
+        vector<int> additionalEffectDamage;
     public:
         // ctor dtor
         Unit(string name, int maxHealth, int healthRegen, int maxMana, int manaRegen, int attackDamage, int strength, int agility, int intelligence);
@@ -53,7 +54,6 @@ class Unit {
         void setAttackDamage(int attackDamage);
         void setIsStun(bool isStun);
         void setStats(int strength, int agility, int intelligence);
-
 
         // Fungsi
         virtual void attack(Unit& target);
