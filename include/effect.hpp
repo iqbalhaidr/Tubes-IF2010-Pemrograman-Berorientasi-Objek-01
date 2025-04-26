@@ -23,8 +23,8 @@ class Effect{
         double getRemainingDuration() const;
 
 
-        virtual void apply(Unit* unit) = 0;
-        virtual void remove(Unit unit) = 0;
+        virtual double apply(Unit* unit) = 0;
+        virtual void remove(Unit* unit) = 0;
 };
 
 #endif
