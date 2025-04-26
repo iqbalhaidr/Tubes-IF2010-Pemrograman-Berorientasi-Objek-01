@@ -10,7 +10,7 @@ class EffectTurn: public Effect {
         EffectTurn& operator=(EffectTurn& other) = default;
 
         // Setter Getter
-
+        double apply(Unit* unit) override;
         bool isTurn() override;
 };
 

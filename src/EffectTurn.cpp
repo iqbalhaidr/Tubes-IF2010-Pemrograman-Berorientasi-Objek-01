@@ -16,3 +16,9 @@ EffectTurn& EffectTurn::operator=(EffectTurn& other) {
 bool EffectTurn::isTurn() {
     return true;
 }
+
+double EffectTurn::apply(Unit* unit) {
+    // Default implementation does nothing
+    remainingDuration -= 1;
+    return 0;
+}
