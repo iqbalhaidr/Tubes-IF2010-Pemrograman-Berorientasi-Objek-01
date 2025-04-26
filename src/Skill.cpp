@@ -1,19 +1,19 @@
 #include "../include/skill.hpp" 
 
 Skill::Skill(const std::string& name, double manaCost, double masterCost, double effectChance, const std::string& effectType)
-    : name(name), manaCost(manaCost), masterCost(masterCost), effectChance(effectChance), effecType(effectType) {}
+    : name(name), manaCost(manaCost), masterCost(masterCost), effectChance(effectChance) {}
 
 Skill::~Skill() {}
 
 Skill::Skill(Skill& other) 
-    : name(other.name), manaCost(other.manaCost), masterCost(other.masterCost), effectChance(other.effectChance), effecType(std::move(other.effecType)) {}
+    : name(other.name), manaCost(other.manaCost), masterCost(other.masterCost), effectChance(other.effectChance) {}
 
 Skill& Skill::operator=(Skill& other){
     name = other.name;
     manaCost = other.manaCost;
     masterCost = other.masterCost;
     effectChance = other.effectChance;
-    effecType = other.effecType;
+
     return *this;
 }
 
@@ -33,8 +33,8 @@ double Skill::getEffectChance() const {
     return effectChance;
 }
 
-std::string Skill::getEffectType() const {
-    return effecType;
+double Skill::getDamage() const {
+    return damage;
 }
 
 void Skill::setName(const std::string& name) {
@@ -53,6 +53,6 @@ void Skill::setEffectChance(double effectChance) {
     this->effectChance = effectChance;
 }
 
-void Skill::setEffectType(const std::string& effectType) {
-    this->effecType = effectType;
+void Skill::setDamage(double damage) {
+    this->damage = damage;
 }
