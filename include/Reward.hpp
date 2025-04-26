@@ -1,5 +1,5 @@
-#ifndef PRIZE_H
-#define PRIZE_H
+#ifndef REWARD_H
+#define REWARD_H
 
 #include <map>
 
@@ -7,7 +7,7 @@
 #include "item.hpp"
 // #include "char.hpp"
 
-class Prize {
+class Reward {
    private:
     int exp;
     int gold;
@@ -15,15 +15,15 @@ class Prize {
 
    public:
     // ctor default semua atribut 0/kosong
-    Prize();
+    Reward();
     // dtor, mendealokasikan Item*
-    ~Prize();
+    ~Reward();
     // cctor dan assignment dilakukan otomatis oleh compiler
 
     // Getter
-    int getExp();
-    int getGold();
-    std::vector<Item *> getItems();
+    int getExp() const;
+    int getGold() const;
+    std::vector<Item *> getItems() const;
 
     // Manipulasi atribut
     void addExp(int gold);
@@ -32,7 +32,7 @@ class Prize {
 
     /*
      * Format:
-     * Current Prize
+     * Current Reward
      * Exp: <exp>
      * Gold: <Gold>
      * Items:

@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "Chamber.hpp"
-#include "Prize.hpp"
+#include "Reward.hpp"
 #include "inventory.hpp"
 #include "item.hpp"
 // #include "Char.hpp"
@@ -17,7 +17,7 @@ class Dungeon {
     int rewardGold;
     Item *bonusItem;
     bool isDD;  // Double Dungeon
-    Prize prize;
+    Reward prize;
     int difficultyScaling;
     int penaltyExp;
     int penaltyGold;
