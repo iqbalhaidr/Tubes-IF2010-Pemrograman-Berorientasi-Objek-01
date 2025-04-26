@@ -22,6 +22,11 @@ class Effect{
         double getDuration() const;
         double getRemainingDuration() const;
 
+        void setName(const std::string& name);
+        void setDescription(const std::string& description);
+        void setDuration(double duration);
+        void setRemainingDuration(double remainingDuration);
+
 
         virtual double apply(Unit* unit) = 0;
         virtual bool isDamage();

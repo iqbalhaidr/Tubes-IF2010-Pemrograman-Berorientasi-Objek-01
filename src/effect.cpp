@@ -32,6 +32,24 @@ double Effect::getRemainingDuration() const {
     return remainingDuration;
 }
 
+void Effect::setName(const std::string& name) {
+    this->name = name;
+}
+
+void Effect::setDescription(const std::string& description) {
+    this->description = description;
+}
+
+void Effect::setDuration(double duration) {
+    this->duration = duration;
+}
+
+void Effect::setRemainingDuration(double remainingDuration) {
+    this->remainingDuration = remainingDuration;
+}
+
+
+
 
 bool Effect::isTurn() {
     return false;
