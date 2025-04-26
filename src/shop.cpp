@@ -30,6 +30,26 @@ Shop::Shop(const std::string& directory, const Items& itemMap){
     }
 }
 
+void Shop::saveShop(const std::string& directory, Items& itemMap) {
+    std::string filePath = directory + "shop.txt";
+    std::ofstream output(filePath);
+
+    if (!fs::exists(directory) || !fs::is_directory(directory)) {
+        throw InputOutputException("Directory tidak ditemukan");
+    }
+
+    for (const auto& item : availableItems) {
+        if (item.second.second > 0) {
+            output << item.first << " " << itemMap.getItembyName(item.first)->getRarity() << " " << item.second.first << " " << item.second.second << "\n";
+        }
+    }
+
+    output.close();
+    std::cout << "Shop successfully saved\n";
+}
+
+
+
 void Shop::buyItem(const std::string& itemName, int quantity, Inventory& inventory) {
     auto it = availableItems.find(itemName);
     if (it != availableItems.end()) {

@@ -18,7 +18,7 @@ private:
     std::map<std::string, std::vector<Item>> groupedItems;
 public:
     Shop(const std::string& directory, const Items& itemMap);
-
+    void saveShop(const std::string& directory, Items& itemMap) ;
     void buyItem(const std::string& itemName, int quantity, Inventory& inventory);
     void sellItem(const std::string& itemName, int quantity, Inventory& inventory);
     void restock();
