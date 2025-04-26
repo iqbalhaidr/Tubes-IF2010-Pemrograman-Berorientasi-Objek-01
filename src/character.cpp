@@ -26,4 +26,5 @@ void Character::setMasteryCost(int masteryCost) { this->masteryCost = masteryCos
 void Character::reset() {
     currentHealth = maxHealth;
     currentMana = maxMana;
+    effects.clear(); 
 }

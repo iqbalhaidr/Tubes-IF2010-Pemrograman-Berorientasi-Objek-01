@@ -16,6 +16,13 @@ void Mobs::setExpReward(int expReward) {
     this->expReward = expReward;
 }
 
+// void Mobs::useSkill(string skill, Unit& target){
+    // Unit::useSkill(skill, target); // Memanggil fungsi dari Unit
+    // if (rand() % 100 < 50) { // 50% chance to heal
+        // heal(healValue); // Heal the mob
+    // }
+}
+
 vector<Item*> Mobs::dropLoot() {
     vector<Item*> droppedItem;
     for (const auto& loot : LootDrop) {
@@ -26,6 +33,8 @@ vector<Item*> Mobs::dropLoot() {
 
     return droppedItem; 
 }
+
+
 
 void Mobs::reset() {
     currentHealth = maxHealth;

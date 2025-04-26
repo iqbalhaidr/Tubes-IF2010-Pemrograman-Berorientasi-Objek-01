@@ -11,7 +11,7 @@ class EffectDamage : public Effect {
         EffectDamage(const std::string& name, const std::string& description, double duration, double remainingDuration, int chance, double damage);
         ~EffectDamage();
         EffectDamage(EffectDamage& other);
-        EffectDamage& operator=(EffectDamage& other) = default;
+        EffectDamage& operator=(EffectDamage& other);
 
         // Setter Getter
         double getChance() const;
@@ -19,8 +19,7 @@ class EffectDamage : public Effect {
         void setChance(double chance);
         void setDamage(double damage);
 
-        void apply(Unit* unit) override;
-        void remove(Unit unit) override;
+        double apply(Unit* unit) override;
+        bool isDamage();
 };
-
 #endif

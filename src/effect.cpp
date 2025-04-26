@@ -31,3 +31,19 @@ double Effect::getDuration() const {
 double Effect::getRemainingDuration() const {
     return remainingDuration;
 }
+
+
+bool Effect::isTurn() {
+    return false;
+}
+
+bool Effect::isDamage() {
+    return false;
+}
+bool Effect::isDefensive() {
+    return false;
+}
+
+bool Effect::isTurnBased() {
+    return false;
+}

@@ -25,6 +25,7 @@ int Unit::getCurrentMana() const { return currentMana;}
 int Unit::getMaxMana() const { return maxMana;}
 int Unit::getManaRegen() const { return manaRegen;}
 int Unit::getAttackDamage() const { return attackDamage;}
+bool Unit::getIsStun() const { return isStun;}
 Stats Unit::getStats() const { return stats;}
 vector<string> Unit::getSkills() const { return skills;} // TEMPORARY
 vector<string> Unit::getEffects() const { return effects;} // TEMPORARY
@@ -37,6 +38,7 @@ void Unit::setCurrentMana(int currentMana) { this->currentMana = currentMana;}
 void Unit::setMaxMana(int maxMana) { this->maxMana = maxMana;}
 void Unit::setManaRegen(int manaRegen) { this->manaRegen = manaRegen;}
 void Unit::setAttackDamage(int attackDamage) { this->attackDamage = attackDamage;}
+void Unit::setIsStun(bool isStun) { this->isStun = isStun;}
 void Unit::setStats(int strength, int agility, int intelligence) {
     stats.setStrength(strength);
     stats.setAgility(agility);
@@ -44,6 +46,7 @@ void Unit::setStats(int strength, int agility, int intelligence) {
 }
 
 void Unit::attack(Unit& target) {
+    
     //ambil attackdamage dari class damage
     target.takeDamage(attackDamage);
 }
@@ -56,6 +59,9 @@ void Unit::takeDamage(int damage) {
 }
 
 void Unit::heal(int amount) {
+    if (amount < 0) {
+        amount = 0;
+    }
     currentHealth += amount;
     if (currentHealth > maxHealth) {
         currentHealth = maxHealth;
@@ -69,7 +75,7 @@ void Unit::restoreMana(int amount) {
     }
 }
 
-void Unit::useSkill(string skill) {
+void Unit::useSkill(string skill, Unit& target) {
     // logika penggunaan skill
     // 1. cek mana cukup untuk useskill
     // 2. kurangi mana
@@ -96,4 +102,11 @@ void Unit::removeEffect(string effect) {
     if (it != effects.end()) {
         effects.erase(it); // TEMPORARY
     }
+}
+
+
+void Unit::applyEffect() {
+    // for (effect : effects) {
+        // effect->apply(this); // apply efek ke unit
+    // }
 }
