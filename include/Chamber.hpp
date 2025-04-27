@@ -10,34 +10,31 @@
 
 #include <vector>
 
-// #include "Char.hpp"
-// #include "Mobs.hpp"
-#include "Reward.hpp"
+#include "IncludeAll.hpp"
 
 class Chamber {
-   private:
+  private:
     int rewardExp;
     int rewardGold;
     int enemyCount;
-    // std::vector<Mobs *> enemies;
+    std::vector<Mobs *> enemies;
     bool isLastChamber;
 
    public:
     // 4 Sekawan
     // <enemyCount> di randomize sesuai bound macro
-    Chamber(int rewardExp, int rewardGold, bool isLast,
-            float difficultyScaling);
+    Chamber(int rewardExp, int rewardGold, bool isLast, float difficultyScaling);
     Chamber(const Chamber&);
     // Delete Mobs *
     ~Chamber();
     Chamber& operator=(const Chamber&);
 
     // Getter
-    int getRewardExp();
-    int getRewardGold();
-    int getEnemyCount();
-    // std::vector<Mobs *> getEnemies();
-    int isLast();
+    int getRewardExp() const;
+    int getRewardGold() const;
+    int getEnemyCount() const;
+    // std::vector<Mobs *> getEnemies() const;
+    int isLast() const;
 
     // Setter
     void setRewardExp(int);
