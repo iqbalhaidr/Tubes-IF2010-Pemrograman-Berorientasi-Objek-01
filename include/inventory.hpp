@@ -21,7 +21,7 @@ public:
     void addItem(std::pair<const std::string, int>& value);
     void reduceItem(const std::string& itemName, int amount);
     void setEquippedItem(const std::string& slot, const std::string& item);
-    std::string getEquippedItem(const std::string& slot) const;
+    Item* getEquippedItem(const std::string& slot) const;
 
     Matrix<std::pair<std::string, int>> getBackpack();
 };

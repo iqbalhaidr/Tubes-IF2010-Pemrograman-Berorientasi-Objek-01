@@ -24,36 +24,34 @@ Characters::Characters(const string& directory) {
         if (line.empty() || line[0] == '#') continue;
 
         stringstream ss(line);
-        string name, type, mastery;
-        int maxHealth, healthRegen, maxMana, manaRegen, attackDamage, strength, agility, intelligence, level, exp, gold;
+        string name, type;
+        int strength, agility, intelligence, level, exp, gold, masteryCost;
         double summonChance; // Untuk Necromancer
         double extraMana; // Untuk Mage
-        double blockChance; // Untuk Fighter
         int rageMultiplier; // Untuk Berserker
         double criticalChance; // Untuk Assassin
-        int criticalMultiplier; // Untuk Assassin
 
-        if (ss >> name >> type >> maxHealth >> healthRegen >> maxMana >> manaRegen >> attackDamage >> strength >> agility >> intelligence >> level >> exp >> gold) {
+        if (ss >> name >> type >> strength >> agility >> intelligence >> level >> exp >> gold >> masteryCost) {
             if (type == "Mage") {
                 ss >> extraMana;
                 if (ss.fail()) throw InputOutputException("Format baris salah di file characters.txt untuk Mage");
-                addCharacters(new Mage(name, maxHealth, healthRegen, maxMana, manaRegen, attackDamage, strength, agility, intelligence, level, exp, gold, extraStat));
+                addCharacters(new Mage(name, strength, agility, intelligence, level, exp, gold, masteryCost, extraMana));
             } else if (type == "Assassin") {
-                ss >> criticalChance >> criticalMultiplier;
+                ss >> criticalChance;
                 if (ss.fail()) throw InputOutputException("Format baris salah di file characters.txt untuk Assassin");
-                addCharacters(new Assassin(name, maxHealth, healthRegen, maxMana, manaRegen, attackDamage, strength, agility, intelligence, level, exp, gold, criticalChance / 100.0f * 100.0f , criticalMultiplier));
+                addCharacters(new Assassin(name, strength, agility, intelligence, level, exp, gold, masteryCost, criticalChance));
             } else if (type == "Fighter") {
                 ss >> blockChance;
                 if (ss.fail()) throw InputOutputException("Format baris salah di file characters.txt untuk Fighter");
-                addCharacters(new Fighter(name,maxHealth ,healthRegen ,maxMana ,manaRegen ,attackDamage ,strength ,agility ,intelligence ,level ,exp ,gold ,mastery));
+                addCharacters(new Fighter(name, strength ,agility ,intelligence ,level ,exp ,gold ,masteryCost));
             } else if (type == "Berserker") {
                 ss >> rageMultiplier;
                 if (ss.fail()) throw InputOutputException("Format baris salah di file characters.txt untuk Berserker");
-                addCharacters(new Berserker(name, maxHealth, healthRegen, maxMana, manaRegen, attackDamage, strength, agility, intelligence, level, exp, gold, rageMultiplier));
+                addCharacters(new Berserker(name, strength, agility, intelligence, level, exp, gold, masteryCost, rageMultiplier));
             } else if (type == "Necromancer") {
                 ss >> summonChance;
                 if (ss.fail()) throw InputOutputException("Format baris salah di file characters.txt untuk Necromancer");
-                addCharacters(new Necromancer(name, maxHealth, healthRegen, maxMana, manaRegen, attackDamage, strength, agility, intelligence, level, exp, mastery, gold, extraStat));
+                addCharacters(new Necromancer(name, strength, agility, intelligence, level, exp, gold, masteryCost, summonChance));
             } else {
                 throw InputOutputException("Tipe karakter tidak valid");
             }
@@ -98,33 +96,26 @@ void Characters::save(const string& directory) const {
         throw InventoryEror("Directory tidak ditemukan");
     }
 
-    file << "#<name><type> <maxHealth> <healthRegen> <maxMana> <manaRegen> [<atk> <str> <agi> <int>] <level> <exp> <gold> [type_specific_data]\n";
+    file << "#<name><type>[<str> <agi> <int>] <level> <exp> <gold> <masteryCost> [type_specific_data]\n";
     
     for (const auto& character : characterMap) {
         Character* c = character.second;
         file << c->getName() << " "
             c->getType() << " "
-            c->getMaxHealth() << " "
-            c->getHealthRegen() << " "
-            c->getMaxMana() << " "
-            c->getManaRegen() << " "
-            c->getAttackDamage() << " "
             c->getStats().getStrength() << " "
             c->getStats().getAgility() << " " 
             c->getStats().getIntelligence() << " "
             c->getLevel() << " "              
             c->getExp() << " "
             c->getGold() << " ";
+            c->getMasteryCost();
         //BELUM SELESAI
         if (c->getType() == "Mage") {
             Mage* mage = dynamic_cast<Mage*>(c);
             if (mage) file << " " << m->getExtraMana();
         } else if (c->getType() == "Assassin") {
             Assassin* assassin = dynamic_cast<Assassin*>(c);
-            if (assassin) file << " " << assassin->getCriticalChance() * 100.0f << " " << assassin->getCriticalMultiplier();
-        } else if (c->getType() == "Fighter") {
-            Fighter* fighter = dynamic_cast<Fighter*>(c);
-            if (fighter) file << " " << fighter->getBlockChance();
+            if (assassin) file << " " << assassin->getCriticalMultiplier();
         } else if (c->getType() == "Berserker") {
             Berserker* berserker = dynamic_cast<Berserker*>(c);
             if (berserker) file << " " << berserker->getRageMultiplier();

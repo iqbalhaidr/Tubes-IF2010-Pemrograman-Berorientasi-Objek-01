@@ -2,9 +2,10 @@
 #include <iostream>
 using namespace std;
 
-Mage::Mage(string name, int maxHealth, int healthRegen, int maxMana, int manaRegen, int attackDamage, int strength, int agility, int intelligence, int level, int exp, int gold, int extraMana)
- : Character(name, maxHealth, healthRegen, maxMana, manaRegen, attackDamage, strength, agility, intelligence, level, exp, gold, "Mage") {
-    this->extraMana = extraMana;
+Mage::Mage(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, string type, int extraMana)
+ : Character(name, strength, agility, intelligence, level, exp, gold, masteryCost, "Mage") {
+    updateBasicAttributes();
+    setExtraMana(extraMana);
 
 }
 
@@ -13,27 +14,33 @@ Mage::~Mage() {}
 int Mage::getExtraMana() const { return extraMana;}
 void Mage::setExtraMana(int extraMana) { this->extraMana = extraMana;}
 
-void Mage::attack(Unit& target) {
-    // attackDamage fungsi iqbal
-    // target.takeDamage(totalAttackDamage);
+void Mage::attack(Unit& target, Inventory& inventory) {
+    Unit::attack(target, inventory);
     Unit::restoreMana(extraMana);
 }
 
-void Mage::useSkill(string& skill, Unit& target) {
+void Mage::useSkill(Skill* skill, Unit& target) {
+    skill->setDamage(skill->getDamage() + stats.getIntelligence() * 0.5);
     Unit::useSkill(skill, target); 
     currentMana -= stats.getIntelligence();
-    // attackDamage fungsi iqbal
-    // totalAttackDamage += stats.getIntelligence();
     if (currentMana < 0) {
         currentMana = 0;
     }
 }
 
+void Mage::updateBasicAttributes() {
+    setAttackDamage(8 + 10*getStats().getIntelligence()); 
+}
+
 void Mage::levelUp() {
-    masteryCost += 5; 
+    setMasteryCost(getMasteryCost() + 5);
+    setExp(0);
     stats.setStrength(stats.getStrength() * 1.2);
     stats.setAgility(stats.getAgility() * 1.5);
     stats.setIntelligence(stats.getIntelligence() * 2);
+    Unit::updateBasicAttributes(); 
+    updateBasicAttributes();
+    Character::reset();
 }
 
 

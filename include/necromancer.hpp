@@ -12,18 +12,20 @@ class Necromancer : public Character {
         bool summons; 
         double summonChance; 
         int summonTurns;
+        void updateBasicAttributes() override;
     public:
         // ctor dtor
-        Necromancer(string name, int maxHealth, int healthRegen, int maxMana, int manaRegen, int attackDamage,  int strength, int agility, int intelligence,  int level, int exp, string mastery, int gold, double summonChance);
+        Necromancer(string name, int strength = 13, int agility = 16, int intelligence = 28,  int level, int exp, int gold, int masteryCost, string type, double summonChance);
         ~Necromancer();
 
         // setter getter
         double getSummonChance() const;
+
         void setSummonChance(double criticalChance);
 
         // Fungsi
-        void attack(Unit& target);
-        void useSkill(string& skill, Unit& target);
+        void attack(Unit& target, Inventory& inventory) ;
+        void useSkill(Skill* skill, Unit& target);
         void levelUp();
 };
 
