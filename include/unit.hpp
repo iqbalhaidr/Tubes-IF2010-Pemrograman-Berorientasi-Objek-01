@@ -25,10 +25,11 @@ class Unit {
         int manaRegen;
         int attackDamage;
         Stats stats;
-        map<string, bool> turnEffectstatus; 
+        map<string, bool> turnActiveEffectstatus; 
         vector<Skill*> skills;
-        vector<Effect*> effects;
-        int calculateDamage(int baseDamage, Inventory& inventory); // TEMPORARY
+        vector<Effect*> activeEffects;
+        vector<Effect*> itemEffects;
+        int calculateDamage(Unit& target, int baseDamage, Inventory& inventory); // TEMPORARY
         virtual void updateBasicAttributes();
     public:
         // ctor dtor
@@ -44,9 +45,9 @@ class Unit {
         int getMaxMana() const;
         int getManaRegen() const;
         int getAttackDamage() const;
-        map<string, bool> getTurnEffectStatus() const;
+        map<string, bool> getTurnActiveEffectStatus() const;
         vector<Skill*> getSkills() const; 
-        vector<Effect*> getEffects() const; 
+        vector<Effect*> getActiveEffects() const; 
 
         Stats getStats() const;
         void setName(string name);
@@ -57,7 +58,7 @@ class Unit {
         void setMaxMana(int maxMana);
         void setManaRegen(int manaRegen);
         void setAttackDamage(int attackDamage);
-        void setTurnEffectStatus(string turnEffect);
+        void setTurnActiveEffectStatus(string turnEffect);
         void setStats(int strength, int agility, int intelligence);
 
         // Fungsi
@@ -68,9 +69,11 @@ class Unit {
         virtual void useSkill(Skill* skill, Unit& target); // TEMPORARY
         virtual void addSkill(Skill* skill); // TEMPORARY
         virtual void removeSkill(Skill* skill); // TEMPORARY
-        void addEffect(Effect* effect); // TEMPORARY
-        void removeEffect(Effect* effect); // TEMPORARY
-        void applyEffect();
+        void addActiveEffect(Effect* effect); // TEMPORARY
+        void removeActiveEffect(Effect* effect); // TEMPORARY
+        void addItemEffect(Effect* effect);
+        void removeItemEffect(Effect* effect);
+        void applyActiveEffect();
         virtual void reset() = 0;
 
 
