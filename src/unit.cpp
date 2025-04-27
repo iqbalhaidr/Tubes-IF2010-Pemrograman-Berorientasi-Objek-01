@@ -6,7 +6,7 @@ using namespace std;
 Unit::Unit(string name, int strength, int agility, int intelligence) : stats(strength, agility, intelligence) {
     setName(name);
     updateBasicAttributes();     
-    this->turnEffectstatus = {
+    this->turnActiveEffectstatus = {
         {"stun", false},
         {"disable", false}
     };
@@ -22,10 +22,10 @@ int Unit::getCurrentMana() const { return currentMana;}
 int Unit::getMaxMana() const { return maxMana;}
 int Unit::getManaRegen() const { return manaRegen;}
 int Unit::getAttackDamage() const { return attackDamage;}
-map<string, bool> Unit::getTurnEffectStatus() const { return turnEffectstatus;}
+map<string, bool> Unit::getTurnActiveEffectStatus() const { return turnActiveEffectstatus;}
 Stats Unit::getStats() const { return stats;}
 vector<Skill*> Unit::getSkills() const { return skills;} // TEMPORARY
-vector<Effect*> Unit::getEffects() const { return effects;} // TEMPORARY
+vector<Effect*> Unit::getActiveEffects() const { return activeEffects;} // TEMPORARY
 
 void Unit::setName(string name) { this->name = name;}
 void Unit::setCurrentHealth(int currentHealth) { this->currentHealth = currentHealth;}
@@ -35,9 +35,9 @@ void Unit::setCurrentMana(int currentMana) { this->currentMana = currentMana;}
 void Unit::setMaxMana(int maxMana) { this->maxMana = maxMana;}
 void Unit::setManaRegen(int manaRegen) { this->manaRegen = manaRegen;}
 void Unit::setAttackDamage(int attackDamage) { this->attackDamage = attackDamage;}
-void Unit::setTurnEffectStatus(string turnEffect) {
-    if (turnEffectstatus.find(turnEffect) != turnEffectstatus.end()) {
-        turnEffectstatus[turnEffect] = true; 
+void Unit::setTurnActiveEffectStatus(string turnActiveEffect) {
+    if (turnActiveEffectstatus.find(turnActiveEffect) != turnActiveEffectstatus.end()) {
+        turnActiveEffectstatus[turnActiveEffect] = true; 
     } 
       
 }
@@ -46,16 +46,13 @@ void Unit::setStats(int strength, int agility, int intelligence) {
     stats.setAgility(agility);
     stats.setIntelligence(intelligence);
 }
-int Unit::calculateDamage(int baseDamage, Inventory& inventory) {
+int Unit::calculateDamage(Unit& target, int baseDamage, Inventory& inventory) {
     int totalDamage = 1;
-    for (const auto& effect : effects) {
-        if (effect->isTurn() && effect->getName() == "stun") {
-            return;
-        } 
-        else if (effect->isDamage()) {
-            totalDamage += effect->apply(this);
-            if (effect->getRemainingDuration() <= 0) {
-                removeEffect(effect); 
+    for (const auto& ActiveEffect : activeEffects) {
+        if (ActiveEffect->isDamage()) {
+            totalDamage += ActiveEffect->apply(this);
+            if (ActiveEffect->getRemainingDuration() <= 0) {
+                removeActiveEffect(ActiveEffect); 
             } 
         }
     }
@@ -65,13 +62,13 @@ int Unit::calculateDamage(int baseDamage, Inventory& inventory) {
     return totalDamage;
 }
 void Unit::attack(Unit& target, Inventory& inventory) {
-    target.takeDamage(calculateDamage(attackDamage, inventory)); 
+    target.takeDamage(calculateDamage(target, attackDamage, inventory)); 
 }
 
 void Unit::takeDamage(int damage) {
-    for (const auto& effect : effects) {
-        if (effect->isDamage()) {
-            damage -= effect->apply(this);
+    for (const auto& activeEffect : activeEffects) {
+        if (activeEffect->isDefensive()) {
+            damage -= activeEffect->apply(this);
         }
     }
     currentHealth -= damage;
@@ -103,10 +100,12 @@ void Unit::useSkill(Skill* skill, Unit& target) {
         return;
     }
     currentMana -= skill->getManaCost(); 
-    // target.takeDamage(skill->getDamage()); // TEMPORARY
-    // for (const auto& skill->effect : effects) {
-        // target.addEffect(skill->effect); 
-    // }
+
+    target.takeDamage(skill->getDamage()); 
+    for (const auto& effect : skill->effects) {
+        if (rand() % 100 < skill->getEffectChance())
+        target.addActiveEffect(effect); 
+    }
     // logika penggunaan skill
     // 1. cek mana cukup untuk useskill
     // 2. kurangi mana
@@ -125,26 +124,33 @@ void Unit::removeSkill(Skill* skill) {
     }
 }
 
-void Unit::addEffect(Effect* effect) {
-    effects.push_back(effect); 
+void Unit::addActiveEffect(Effect* effect) {
+    activeEffects.push_back(effect); 
 }
 
-void Unit::removeEffect(Effect* effect) {
-    auto it = find(effects.begin(), effects.end(), effect);
-    if (it != effects.end()) {
-        effects.erase(it); 
+void Unit::removeActiveEffect(Effect* activeEffect) {
+    auto it = find(activeEffects.begin(), activeEffects.end(), activeEffect);
+    if (it != activeEffects.end()) {
+        activeEffects.erase(it); 
     }
 }
 
+void Unit::addItemEffect(Effect* effect) {
+    itemEffects.push_back(effect);
+}
 
-void Unit::applyEffect() {
-    for (const auto& effect : effects) {
-        if (effect->isTurnBased()) {
-            effect->apply(this); 
+void Unit::removeItemEffect(Effect* itemEffect) {
+    auto it = find(itemEffects.begin(), itemEffects.end(), itemEffect);
+    if (it != itemEffects.end()) {
+        itemEffects.erase(it); 
+    }
+}
+
+void Unit::applyActiveEffect() {
+    for (const auto& activeEffect : activeEffects) {
+        if (activeEffect->isTurnBased()) {
+            currentHealth -= activeEffect->apply(this); 
         }
-        if (effect->getRemainingDuration() <= 0) {
-            removeEffect(effect);
-        } 
     }
 }
 
