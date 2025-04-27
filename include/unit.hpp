@@ -5,7 +5,11 @@
 #define MAX_MANA 2000
 #define MAX_ATTACK_DAMAGE 1000
 #include "stats.hpp"
+#include "skill.hpp"
+#include "effect.hpp"
+#include "inventory.hpp"
 #include <string>
+#include <map>
 #include <vector>
 #include <algorithm>
 using namespace std;
@@ -21,13 +25,14 @@ class Unit {
         int manaRegen;
         int attackDamage;
         Stats stats;
-        bool isStun;
-        vector<string> skills;
-        vector<string> effects;
-        vector<int> additionalEffectDamage;
+        map<string, bool> turnEffectstatus; 
+        vector<Skill*> skills;
+        vector<Effect*> effects;
+        int calculateDamage(int baseDamage, Inventory& inventory); // TEMPORARY
+        virtual void updateBasicAttributes();
     public:
         // ctor dtor
-        Unit(string name, int maxHealth, int healthRegen, int maxMana, int manaRegen, int attackDamage, int strength, int agility, int intelligence);
+        Unit::Unit(string name, int strength, int agility, int intelligence);
         ~Unit();
 
         // setter getter
@@ -39,9 +44,9 @@ class Unit {
         int getMaxMana() const;
         int getManaRegen() const;
         int getAttackDamage() const;
-        bool getIsStun() const { return isStun; }
-        vector<string> getSkills() const; // TEMPORARY
-        vector<string> getEffects() const; // TEMPORARY
+        map<string, bool> getTurnEffectStatus() const;
+        vector<Skill*> getSkills() const; 
+        vector<Effect*> getEffects() const; 
 
         Stats getStats() const;
         void setName(string name);
@@ -52,19 +57,19 @@ class Unit {
         void setMaxMana(int maxMana);
         void setManaRegen(int manaRegen);
         void setAttackDamage(int attackDamage);
-        void setIsStun(bool isStun);
+        void setTurnEffectStatus(string turnEffect);
         void setStats(int strength, int agility, int intelligence);
 
         // Fungsi
-        virtual void attack(Unit& target);
+        virtual void attack(Unit& target, Inventory& inventory); // TEMPORARY
         virtual void takeDamage(int damage);
         virtual void heal(int amount);
         virtual void restoreMana(int amount);
-        virtual void useSkill(string skill, Unit& target); // TEMPORARY
-        virtual void addSkill(string skill); // TEMPORARY
-        virtual void removeSkill(string skill); // TEMPORARY
-        void addEffect(string effect); // TEMPORARY
-        void removeEffect(string effect); // TEMPORARY
+        virtual void useSkill(Skill* skill, Unit& target); // TEMPORARY
+        virtual void addSkill(Skill* skill); // TEMPORARY
+        virtual void removeSkill(Skill* skill); // TEMPORARY
+        void addEffect(Effect* effect); // TEMPORARY
+        void removeEffect(Effect* effect); // TEMPORARY
         void applyEffect();
         virtual void reset() = 0;
 
