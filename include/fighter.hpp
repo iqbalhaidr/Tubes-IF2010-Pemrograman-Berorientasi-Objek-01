@@ -8,9 +8,10 @@ using namespace std;
 class Fighter : public Character {
     private:
         float blockChance;
+        void updateBasicAttributes() override;
     public:
         // ctor dtor
-        Fighter(string name, int maxHealth, int healthRegen, int maxMana, int manaRegen, int attackDamage,  int strength, int agility, int intelligence, int level, int exp, int gold, float blockChance);
+        Fighter(string name, int strength = 26, int agility = 17, int intelligence = 13, int level, int exp, int gold, int masteryCost, string type, float blockChance);
         ~Fighter();
 
         // setter getter
@@ -19,7 +20,7 @@ class Fighter : public Character {
 
         // Fungsi
         void takeDamage(int damage);
-        void useSkill(string& skill, Unit& target);
+        void useSkill(Skill* skill, Unit& target);
         void levelUp();
 };
 

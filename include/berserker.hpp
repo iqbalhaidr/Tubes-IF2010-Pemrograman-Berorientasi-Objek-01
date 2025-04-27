@@ -8,9 +8,10 @@ using namespace std;
 class Berserker : public Character {
     private:
         int rageMultiplier;
+        void updateBasicAttributes() override;
     public:
         // ctor dtor
-        Berserker(string name, int maxHealth, int healthRegen, int maxMana, int manaRegen, int attackDamage,  int strength, int agility, int intelligence, int level, int exp, int gold, int rageMultiplier);
+        Berserker(string name,int strength = 28, int agility = 17, int intelligence = 12, int level, int exp, int gold, int masteryCost, string type, int rageMultiplier);
         ~Berserker();
 
         // setter getter
@@ -18,9 +19,9 @@ class Berserker : public Character {
         void setRageMultiplier(int rageMultiplier);
 
         // Fungsi override
-        void attack(Unit& target) ;
+        void attack(Unit& target, Inventory& inventory);
         void takeDamage(int damage);
-        void useSkill(string& skill, Unit& target);
+        void useSkill(Skill* skill, Unit& target);
         void levelUp();
 };
 
