@@ -14,7 +14,7 @@ int Berserker::getRageMultiplier() const { return rageMultiplier;}
 void Berserker::setRageMultiplier(int rageMultiplier) { this->rageMultiplier = rageMultiplier;}
 
 void Berserker::attack(Unit& target, Inventory& inventory)  {
-    int totalDamage = calculateDamage(attackDamage, inventory); 
+    int totalDamage = calculateDamage(target, attackDamage, inventory); 
     totalDamage *= rageMultiplier; 
     target.takeDamage(totalDamage); 
 }

@@ -127,7 +127,7 @@ void Unit::useSkill(Skill* skill, Unit& target) {
 }
 
 void Unit::addSkill(Skill* skill) {
-    skills.push_back(skill); // TEMPORARY
+    skills.push_back(skill); 
 }
 void Unit::removeSkill(Skill* skill) {
     auto it = find(skills.begin(), skills.end(), skill);
@@ -149,13 +149,18 @@ void Unit::removeActiveEffect(Effect* activeEffect) {
 
 void Unit::applyActiveEffect() {
     for (auto& activeEffect : activeEffects) {
-        if (auto* regenEffect = dynamic_cast<EffectHealthRegen*>(activeEffect)) {
-            setHealthRegen(getHealthRegen() + regenEffect->apply(this));
+        if (activeEffect->isHealthRegen() || activeEffect->isManaRegen()) {
+            if (activeEffect->isHealthRegen()) {
+                setHealthRegen(getHealthRegen() + activeEffect->apply(this));
+            }
+            else if (activeEffect->isManaRegen()) {
+                setManaRegen(getManaRegen() + activeEffect->apply(this));
+            }
+            if (activeEffect->getRemainingDuration() == 0) {
+                activeEffect->remove(this);
+            }
         }
-        else if (auto* manaEffect = dynamic_cast<EffectManaRegen*>(activeEffect)) {
-            setManaRegen(getManaRegen() + manaEffect->apply(this));
-        }
-        else if (activeEffect->isTurnBased()) {
+        else if (activeEffect->isPoison()) {
             currentHealth -= activeEffect->apply(this);
         }
 
@@ -168,10 +173,9 @@ void Unit::updateBasicAttributes() {
     setHealthRegen(10 * getStats().getStrength());
     setMaxMana(60 + 12 * getStats().getIntelligence());
     setManaRegen(5 * getStats().getIntelligence());
-    // this->attackDamage = 10 + 5 * getStats().getAgility();
 }
 
-vector<Effect*> getCombinedEffect(const vector<Effect*>& activeEffects) {
+vector<Effect*> Unit::getCombinedEffect(const vector<Effect*>& activeEffects) const {
     vector<Effect*> combinedEffects;
     vector<bool> processed(activeEffects.size(), false);
 

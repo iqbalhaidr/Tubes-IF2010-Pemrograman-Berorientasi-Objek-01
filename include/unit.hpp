@@ -33,7 +33,7 @@ class Unit {
         map<string, bool> turnActiveEffectstatus; 
         vector<Skill*> skills;
         vector<Effect*> activeEffects;
-        int getLevelFactor(Unit& target);
+        // int getLevelFactor(Unit& target);
         int calculateDamage(Unit& target, int baseDamage, Inventory& inventory); // TEMPORARY
         virtual void updateBasicAttributes();
     public:
@@ -53,7 +53,7 @@ class Unit {
         map<string, bool> getTurnActiveEffectStatus() const;
         vector<Skill*> getSkills() const; 
         vector<Effect*> getActiveEffects() const; 
-        vector<Effect*> getCombinedEffect((const vector<Effect*>& activeEffects) const;
+        vector<Effect*> getCombinedEffect(const vector<Effect*>& activeEffects) const;
 
         Stats getStats() const;
         void setName(string name);
