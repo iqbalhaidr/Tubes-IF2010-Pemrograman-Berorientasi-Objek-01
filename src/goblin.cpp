@@ -9,6 +9,5 @@ Goblin::Goblin(int level, int expReward, Mobloot& mobLoots)
 Goblin::~Goblin() {}
 
 void Goblin::updateBasicAttributes() {
-    Unit::updateBasicAttributes();
     setAttackDamage(4 * getStats().getAgility());
 }

@@ -9,7 +9,6 @@ Ogre::Ogre(int level, int expReward, Mobloot& mobLoots)
 Ogre::~Ogre() {}
 
 void Ogre::updateBasicAttributes() {
-    Unit::updateBasicAttributes();
     setAttackDamage(4 * getStats().getStrength());
 }
 

@@ -9,6 +9,5 @@ DarkKnight::DarkKnight(int level, int expReward, Mobloot& mobLoots)
 DarkKnight::~DarkKnight() {}
 
 void DarkKnight::updateBasicAttributes() {
-    Unit::updateBasicAttributes();
     setAttackDamage(3 * getStats().getStrength() + 3* getStats().getAgility());
 }

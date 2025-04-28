@@ -9,6 +9,5 @@ Lich::Lich(int level, int expReward, Mobloot& mobLoots)
 Lich::~Lich() {}
 
 void Lich::updateBasicAttributes() {
-    Unit::updateBasicAttributes();
     setAttackDamage(4 * getStats().getIntelligence());
 }

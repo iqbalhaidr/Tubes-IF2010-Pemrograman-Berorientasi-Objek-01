@@ -9,6 +9,5 @@ Orc::Orc(int level,  int expReward, Mobloot& mobLoots)
 Orc::~Orc() {}
 
 void Orc::updateBasicAttributes() {
-    Unit::updateBasicAttributes();
     setAttackDamage(4 * getStats().getStrength());
 }

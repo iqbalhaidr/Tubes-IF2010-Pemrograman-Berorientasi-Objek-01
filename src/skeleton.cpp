@@ -9,6 +9,5 @@ Skeleton::Skeleton(int level, int expReward, Mobloot& mobLoots)
 Skeleton::~Skeleton() {}
 
 void Skeleton::updateBasicAttributes() {
-    Unit::updateBasicAttributes();
     setAttackDamage(3 * getStats().getStrength() + 3 * getStats().getAgility());
 }

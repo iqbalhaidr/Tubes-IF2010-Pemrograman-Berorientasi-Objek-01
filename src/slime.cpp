@@ -10,6 +10,5 @@ Slime::Slime(int level, int expReward, Mobloot& mobLoots)
 Slime::~Slime() {}
 
 void Slime::updateBasicAttributes() {
-    Unit::updateBasicAttributes();
     setAttackDamage(4 * getStats().getIntelligence());
 }
