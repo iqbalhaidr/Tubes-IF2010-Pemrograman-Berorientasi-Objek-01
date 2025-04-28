@@ -5,7 +5,7 @@ Effect::Effect(const std::string& name, const std::string& description, double d
 
 Effect::~Effect() {}
 
-Effect::Effect(Effect& other) 
+Effect::Effect(const Effect& other) 
     : name(other.name), description(other.description), duration(other.duration), remainingDuration(other.remainingDuration) {}
 
 Effect& Effect::operator=(Effect& other) {
@@ -32,6 +32,24 @@ double Effect::getRemainingDuration() const {
     return remainingDuration;
 }
 
+void Effect::setName(const std::string& name) {
+    this->name = name;
+}
+
+void Effect::setDescription(const std::string& description) {
+    this->description = description;
+}
+
+void Effect::setDuration(double duration) {
+    this->duration = duration;
+}
+
+void Effect::setRemainingDuration(double remainingDuration) {
+    this->remainingDuration = remainingDuration;
+}
+
+
+
 
 bool Effect::isTurn() {
     return false;
@@ -45,5 +63,20 @@ bool Effect::isDefensive() {
 }
 
 bool Effect::isTurnBased() {
+    return false;
+}
+
+bool Effect::isHealthRegen() {
+    return false;
+}
+
+bool Effect::isManaRegen() {
+    return false;
+}
+bool Effect::isThrowable() {
+    return false;
+}
+
+bool Effect::isPoison() {
     return false;
 }

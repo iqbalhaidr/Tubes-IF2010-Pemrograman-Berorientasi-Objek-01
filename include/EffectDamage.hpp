@@ -10,7 +10,7 @@ class EffectDamage : public Effect {
     public:
         EffectDamage(const std::string& name, const std::string& description, double duration, double remainingDuration, int chance, double damage);
         ~EffectDamage();
-        EffectDamage(EffectDamage& other);
+        EffectDamage(const EffectDamage& other);
         EffectDamage& operator=(EffectDamage& other);
 
         // Setter Getter
@@ -20,6 +20,9 @@ class EffectDamage : public Effect {
         void setDamage(double damage);
 
         double apply(Unit* unit) override;
+        void remove(Unit* unit) override;
+
+        Effect* clone() const override;
         bool isDamage();
 };
 #endif

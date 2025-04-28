@@ -18,7 +18,7 @@ void Assassin::setCriticalMultiplier(int criticalMultiplier) { this->criticalMul
 
 void Assassin::attack(Unit& target, Inventory& inventory) {
     if (rand() % 100 < criticalChance) { 
-        int totalDamage = calculateDamage(attackDamage, inventory); 
+        int totalDamage = calculateDamage(target, attackDamage, inventory); 
         totalDamage *= criticalMultiplier; 
         cout << "Critical hit!" << endl;
         target.takeDamage(totalDamage);

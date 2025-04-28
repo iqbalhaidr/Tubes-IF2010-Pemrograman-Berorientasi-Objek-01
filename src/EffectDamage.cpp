@@ -5,7 +5,7 @@ EffectDamage::EffectDamage(const std::string& name, const std::string& descripti
 
 EffectDamage::~EffectDamage() {}
 
-EffectDamage::EffectDamage(EffectDamage& other) 
+EffectDamage::EffectDamage(const EffectDamage& other) 
     : Effect(other), chance(other.chance), damage(other.damage) {}
 
 EffectDamage& EffectDamage::operator=(EffectDamage& other) {
@@ -44,3 +44,9 @@ double EffectDamage::apply(Unit* unit) {
 }
 
 bool EffectDamage::isDamage(){return true;}
+
+Effect* EffectDamage::clone() const {
+    return new EffectDamage(*this);
+}
+
+void EffectDamage::remove(Unit* unit) {}

@@ -8,7 +8,7 @@ class EffectManaRegen : public EffectTurnBasedBased {
     public:
         EffectManaRegen(const std::string& name, const std::string& description, double duration, double remainingDuration, int manaAmount);
         ~EffectManaRegen();
-        EffectManaRegen(EffectManaRegen& other);
+        EffectManaRegen(const EffectManaRegen& other);
         EffectManaRegen& operator=(EffectManaRegen& other) = default;
 
         // Setter Getter
@@ -16,7 +16,10 @@ class EffectManaRegen : public EffectTurnBasedBased {
         void setManaAmount(int manaAmount);
 
         double apply(Unit* unit) override;
+        Effect* clone() const override;
         void remove(Unit* unit) override;
+        bool isManaRegen() override;
+
 };
 
 

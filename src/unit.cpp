@@ -48,12 +48,11 @@ void Unit::setStats(int strength, int agility, int intelligence) {
 }
 int Unit::calculateDamage(Unit& target, int baseDamage, Inventory& inventory) {
     int totalDamage = 1;
-    for (const auto& ActiveEffect : activeEffects) {
-        if (ActiveEffect->isDamage()) {
-            totalDamage += ActiveEffect->apply(this);
-            if (ActiveEffect->getRemainingDuration() <= 0) {
-                removeActiveEffect(ActiveEffect); 
-            } 
+    for (const auto& ActiveEffect : getCombinedEffect(activeEffects)) {
+        if (auto* damageEffect = dynamic_cast<EffectDamage*>(ActiveEffect)) {
+            if (rand() % 100 < damageEffect->getChance()) {
+                totalDamage += ActiveEffect->apply(this);
+            }
         }
     }
     int weaponDamage = inventory.getEquippedItem("weapon")->getBaseStat();
@@ -66,9 +65,11 @@ void Unit::attack(Unit& target, Inventory& inventory) {
 }
 
 void Unit::takeDamage(int damage) {
-    for (const auto& activeEffect : activeEffects) {
-        if (activeEffect->isDefensive()) {
-            damage -= activeEffect->apply(this);
+    for (const auto& activeEffect : getCombinedEffect(activeEffects)) {
+        if (auto* defensiveEffect = dynamic_cast<EffectDamage*>(activeEffect)) {
+            if (rand() % 100 < defensiveEffect->getChance()) {
+                damage *= 1 - activeEffect->apply(this);
+            }
         }
     }
     currentHealth -= damage;
@@ -100,18 +101,29 @@ void Unit::useSkill(Skill* skill, Unit& target) {
         return;
     }
     currentMana -= skill->getManaCost(); 
+    int totalDamage = skill->getDamage();
 
-    target.takeDamage(skill->getDamage()); 
     for (const auto& effect : skill->effects) {
-        if (rand() % 100 < skill->getEffectChance())
-        target.addActiveEffect(effect); 
+        if (effect->isTurn() || effect->isTurnBased()) { // kasus crit masukin efek crit dari skill ke vector dulu
+            target.addActiveEffect(effect); 
+        } else if (effect->isDefensive() || effect->isDamage()) {
+            this->addActiveEffect(effect);
+        } else if(effect->isHealth()) {
+            setHealthRegen(effect->apply(this));
+        }
+        
     }
-    // logika penggunaan skill
-    // 1. cek mana cukup untuk useskill
-    // 2. kurangi mana
-    // 3. attack proses damage
 
-    // 4. apply efek
+    for (const auto& ActiveEffect : getCombinedEffect(activeEffects)) {
+        if (auto* damageEffect = dynamic_cast<EffectDamage*>(ActiveEffect)) {
+            if (rand() % 100 < damageEffect->getChance()) { // mungkin effect crit dari skill yg baru dimasukin + crit dari yg dah ada
+                totalDamage += ActiveEffect->apply(this);
+            }
+        }
+    }
+
+    target.takeDamage(totalDamage); 
+
 }
 
 void Unit::addSkill(Skill* skill) {
@@ -135,24 +147,21 @@ void Unit::removeActiveEffect(Effect* activeEffect) {
     }
 }
 
-void Unit::addItemEffect(Effect* effect) {
-    itemEffects.push_back(effect);
-}
-
-void Unit::removeItemEffect(Effect* itemEffect) {
-    auto it = find(itemEffects.begin(), itemEffects.end(), itemEffect);
-    if (it != itemEffects.end()) {
-        itemEffects.erase(it); 
-    }
-}
-
 void Unit::applyActiveEffect() {
-    for (const auto& activeEffect : activeEffects) {
-        if (activeEffect->isTurnBased()) {
-            currentHealth -= activeEffect->apply(this); 
+    for (auto& activeEffect : activeEffects) {
+        if (auto* regenEffect = dynamic_cast<EffectHealthRegen*>(activeEffect)) {
+            setHealthRegen(getHealthRegen() + regenEffect->apply(this));
         }
+        else if (auto* manaEffect = dynamic_cast<EffectManaRegen*>(activeEffect)) {
+            setManaRegen(getManaRegen() + manaEffect->apply(this));
+        }
+        else if (activeEffect->isTurnBased()) {
+            currentHealth -= activeEffect->apply(this);
+        }
+
     }
 }
+
 
 void Unit::updateBasicAttributes() {
     setMaxHealth(100 + 22 * getStats().getStrength());
@@ -160,4 +169,54 @@ void Unit::updateBasicAttributes() {
     setMaxMana(60 + 12 * getStats().getIntelligence());
     setManaRegen(5 * getStats().getIntelligence());
     // this->attackDamage = 10 + 5 * getStats().getAgility();
+}
+
+vector<Effect*> getCombinedEffect(const vector<Effect*>& activeEffects) {
+    vector<Effect*> combinedEffects;
+    vector<bool> processed(activeEffects.size(), false);
+
+    for (size_t i = 0; i < activeEffects.size(); i++) {
+        if (processed[i]) {
+            continue;
+        }
+
+        Effect* baseEffect = activeEffects[i]->clone();
+        processed[i] = true;
+
+        for (size_t j = i + 1; j < activeEffects.size(); j++) {
+            if (!processed[j] && baseEffect->getName() == activeEffects[j]->getName()) {
+                if (auto regenBase = dynamic_cast<EffectHealthRegen*>(baseEffect)) {
+                    if (auto regenOther = dynamic_cast<EffectHealthRegen*>(activeEffects[j])) {
+                        regenBase->setHealAmount(regenBase->getHealAmount() + regenOther->getHealAmount());
+                        processed[j] = true;
+                    }
+                } else if (auto manaBase = dynamic_cast<EffectManaRegen*>(baseEffect)) {
+                    if (auto manaOther = dynamic_cast<EffectManaRegen*>(activeEffects[j])) {
+                        manaBase->setManaAmount(manaBase->getManaAmount() + manaOther->getManaAmount());
+                        processed[j] = true;
+                    }
+                } else if (auto turnBasedBase = dynamic_cast<EffectTurnBasedBased*>(baseEffect)) {
+                    if (auto turnBasedOther = dynamic_cast<EffectTurnBasedBased*>(activeEffects[j])) {
+
+                        turnBasedBase->setDuration(max(turnBasedBase->getDuration(), turnBasedOther->getDuration()));
+                        processed[j] = true;
+                    }
+                } else if (auto damageBase = dynamic_cast<EffectDamage*>(baseEffect)) {
+                    if (auto damageOther = dynamic_cast<EffectDamage*>(activeEffects[j])) {
+                        damageBase->setChance(damageBase->getChance() + damageOther->getChance());
+                        damageBase->setDamage(damageBase->getDamage() + damageOther->getDamage());
+                        processed[j] = true;
+                    }
+                } else if (auto defensiveBase = dynamic_cast<EffectDefensive*>(baseEffect)) {
+                    if (auto defensiveOther = dynamic_cast<EffectDefensive*>(activeEffects[j])) {
+                        defensiveBase->setChance(defensiveBase->getChance() + defensiveOther->getChance());
+                        defensiveBase->setDefense(defensiveBase->getDefense() + defensiveOther->getDefense());
+                        processed[j] = true;
+                    }
+                }
+            }
+        }
+        combinedEffects.push_back(baseEffect);
+    }
+    return combinedEffects;
 }

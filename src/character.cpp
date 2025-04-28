@@ -9,7 +9,6 @@ Character::Character(string name, int strength, int agility, int intelligence, i
     setGold(gold);
     setMasteryCost(masteryCost);
     setType(type);
-    Unit::updateUnitAttributes();
 }
 
 Character::~Character() {}
@@ -26,8 +25,11 @@ void Character::setGold(int gold) { this->gold = gold;}
 void Character::setMasteryCost(int masteryCost) { this->masteryCost = masteryCost;}
 void Character::setType(string type) { this->type = type;}
 
+int getLevelFactor(Unit& target) {
+    return 1 + (leve)
+}
 void Character::reset() {
     currentHealth = maxHealth;
     currentMana = maxMana;
-    effects.clear(); 
+    activeEffects.clear(); 
 }
