@@ -48,3 +48,5 @@ bool EffectDefensive::isDefensive(){return true;}
 Effect* EffectDefensive::clone() const {
     return new EffectDefensive(*this);
 }
+
+void EffectDefensive::remove(Unit* unit) {}

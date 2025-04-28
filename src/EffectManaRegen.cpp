@@ -28,3 +28,8 @@ double EffectManaRegen::apply(Unit* unit) {
 Effect* EffectManaRegen::clone() const{
     return new EffectManaRegen(*this);
 }
+
+void EffectManaRegen::remove(Unit* unit) {
+    int currentRegen = unit->getManaRegen();
+    unit->setManaRegen(currentRegen - manaAmount);
+}

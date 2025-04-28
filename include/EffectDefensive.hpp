@@ -17,6 +17,7 @@ class EffectDefensive : public Effect {
         void setDefense(double defense);
 
         double apply(Unit* unit) override;
+        void remove(Unit* unit) override;
         Effect* clone() const override;
         bool isDefensive();
 };

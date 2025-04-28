@@ -33,3 +33,5 @@ double EffectPoison::apply(Unit* unit) {
 Effect* EffectPoison::clone() const{
     return new EffectPoison(*this);
 }
+
+void EffectPoison::remove(Unit* unit) {}

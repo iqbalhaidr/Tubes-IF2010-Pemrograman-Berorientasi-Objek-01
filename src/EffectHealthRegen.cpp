@@ -27,3 +27,8 @@ double EffectHealthRegen::apply(Unit* unit) {
 Effect* EffectHealthRegen::clone() const{
     return new EffectHealthRegen(*this);
 }
+
+void EffectHealthRegen::remove(Unit* unit) {
+    int currentRegen = unit->getHealthRegen();
+    unit->setHealthRegen(currentRegen - healAmount);
+}

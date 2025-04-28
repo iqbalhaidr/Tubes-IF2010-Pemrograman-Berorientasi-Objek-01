@@ -48,3 +48,5 @@ bool EffectDamage::isDamage(){return true;}
 Effect* EffectDamage::clone() const {
     return new EffectDamage(*this);
 }
+
+void EffectDamage::remove(Unit* unit) {}
