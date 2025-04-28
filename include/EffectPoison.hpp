@@ -23,6 +23,7 @@ class EffectPoison : public EffectTurnBasedBased {
         Effect* clone() const override;
         void remove(Unit* unit) override;
         bool isThrowable() override;
+        bool isPoison() override;
 };
 
 
