@@ -1,0 +1,35 @@
+#include "character.hpp"
+#include <iostream>
+using namespace std;
+
+Character::Character(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, string type)
+: Unit(name, strength, agility, intelligence) {
+    setLevel(level);
+    setExp(exp);
+    setGold(gold);
+    setMasteryCost(masteryCost);
+    setType(type);
+}
+
+Character::~Character() {}
+
+int Character::getLevel() const { return level;}
+int Character::getExp() const { return exp;}
+int Character::getGold() const { return gold;}
+int Character::getMasteryCost() const { return masteryCost;}
+string Character::getType() const { return type;}
+
+void Character::setLevel(int level) { this->level = level;}
+void Character::setExp(int exp) { this->exp = exp;}
+void Character::setGold(int gold) { this->gold = gold;}
+void Character::setMasteryCost(int masteryCost) { this->masteryCost = masteryCost;}
+void Character::setType(string type) { this->type = type;}
+
+int getLevelFactor(Unit& target) {
+    return 1 + (leve)
+}
+void Character::reset() {
+    currentHealth = maxHealth;
+    currentMana = maxMana;
+    activeEffects.clear(); 
+}

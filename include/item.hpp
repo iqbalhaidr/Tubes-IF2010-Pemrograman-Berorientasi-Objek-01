@@ -19,11 +19,11 @@ public:
 
     ~Item();
 
-    std::string getName();
-    std::string getItemType();
-    std::string getRarity();
+    std::string getName() const;
+    std::string getItemType() const;
+    std::string getRarity() const;
     int getLevel();
-    double getBaseStat();
+    double getBaseStat() const;
     std::vector<std::string> getEffects();
     double getStatMultiplier() const;
     double getFinalStat() const;

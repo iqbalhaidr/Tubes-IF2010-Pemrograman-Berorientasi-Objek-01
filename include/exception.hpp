@@ -37,6 +37,19 @@ class InventoryFull : public std::exception {
     public:
         InventoryFull() : errorMessage("Inventory sudah penuh"){}
         InventoryFull(const std::string& message) : errorMessage(message) {}
+
+        const char* what() const noexcept override {
+            return errorMessage.c_str();
+        }
+};
+
+class CharactersError : public std::exception {
+    private:
+        std::string errorMessage;
+    
+    public:
+        CharactersError() : errorMessage("Terjadi kesalahan dalam penambahan atau pengurangan character"){}
+        CharactersError(const std::string& message) : errorMessage(message) {}
     
         const char* what() const noexcept override {
             return errorMessage.c_str();
@@ -59,10 +72,22 @@ class ItemNotFound : public std::exception {
 class InvalidCommand : public std::exception {
     private:
         std::string errorMessage;
-    
+
     public:
         InvalidCommand() : errorMessage("Perintah tidak valid"){}
         InvalidCommand(const std::string& message) : errorMessage(message) {}
+        const char* what() const noexcept override {
+            return errorMessage.c_str();
+        }
+
+};
+class StockError : public std::exception {
+    private:
+        std::string errorMessage;
+    
+    public:
+        StockError() : errorMessage("Stok tidak mencukupi"){}
+        StockError(const std::string& message) : errorMessage(message) {}
     
         const char* what() const noexcept override {
             return errorMessage.c_str();

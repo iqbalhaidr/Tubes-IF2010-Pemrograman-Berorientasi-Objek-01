@@ -8,20 +8,20 @@ Item::Item(std::string name, std::string type, std::string rarity,
 
 Item::~Item() {}
 
-std::string Item::getName() {
+std::string Item::getName() const{
     return name;
 }
 
-std::string Item::getItemType() {
+std::string Item::getItemType() const{
     return type;
 }
 
-std::string Item::getRarity() {
+std::string Item::getRarity() const{
     return rarity;
 }
 
 
-double Item::getBaseStat() {
+double Item::getBaseStat() const{
     return baseStat;
 }
 
