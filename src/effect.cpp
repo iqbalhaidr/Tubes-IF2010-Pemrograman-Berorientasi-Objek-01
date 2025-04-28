@@ -76,3 +76,7 @@ bool Effect::isManaRegen() {
 bool Effect::isThrowable() {
     return false;
 }
+
+bool Effect::isPoison() {
+    return false;
+}

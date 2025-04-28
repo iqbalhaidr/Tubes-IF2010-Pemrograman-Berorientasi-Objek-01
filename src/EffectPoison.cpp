@@ -39,3 +39,7 @@ void EffectPoison::remove(Unit* unit) {}
 bool EffectPoison::isThrowable() {
     return true;
 }
+
+bool EffectPoison::isPoison() {
+    return true;
+}
