@@ -44,3 +44,7 @@ double EffectDamage::apply(Unit* unit) {
 }
 
 bool EffectDamage::isDamage(){return true;}
+
+Effect* EffectDamage::clone() const {
+    return new EffectDamage(*this);
+}

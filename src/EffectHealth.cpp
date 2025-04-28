@@ -30,3 +30,8 @@ double EffectHealth::apply(Unit* unit) {
     return 0;
 }
 
+
+
+Effect* EffectHealth::clone() const {
+    return new EffectHealth(*this);
+}

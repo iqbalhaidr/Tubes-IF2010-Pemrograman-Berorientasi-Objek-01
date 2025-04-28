@@ -16,6 +16,8 @@ class EffectHealthRegen : public EffectTurnBasedBased {
         void setHealAmount(int healAmount);
 
         double apply(Unit* unit) override;
+        void remove(Unit* unit) override;
+        Effect* clone() const override;
 };
 
 

@@ -44,3 +44,7 @@ double EffectDefensive::apply(Unit* unit) {
 }
 
 bool EffectDefensive::isDefensive(){return true;}
+
+Effect* EffectDefensive::clone() const {
+    return new EffectDefensive(*this);
+}

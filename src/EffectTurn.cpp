@@ -22,3 +22,7 @@ double EffectTurn::apply(Unit* unit) {
     remainingDuration -= 1;
     return 0;
 }
+
+Effect* EffectTurn::clone() const {
+    return new EffectTurn(*this);
+}

@@ -16,6 +16,7 @@ class EffectManaRegen : public EffectTurnBasedBased {
         void setManaAmount(int manaAmount);
 
         double apply(Unit* unit) override;
+        Effect* clone() const override;
         void remove(Unit* unit) override;
 };
 

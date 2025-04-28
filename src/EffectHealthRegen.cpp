@@ -24,3 +24,6 @@ double EffectHealthRegen::apply(Unit* unit) {
     return 0; 
 }
 
+Effect* EffectHealthRegen::clone() const{
+    return new EffectHealthRegen(*this);
+}

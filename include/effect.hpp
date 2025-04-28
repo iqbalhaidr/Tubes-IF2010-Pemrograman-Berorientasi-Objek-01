@@ -30,6 +30,9 @@ class Effect{
 
         virtual double apply(Unit* unit) = 0;
         virtual void remove(Unit* unit);
+
+        virtual Effect* clone() const = 0;
+
         virtual bool isDamage();
         virtual bool isDefensive();
         virtual bool isTurnBased();

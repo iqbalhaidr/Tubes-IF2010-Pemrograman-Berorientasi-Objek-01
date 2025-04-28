@@ -16,6 +16,7 @@ class EffectHealth : public Effect {
         void setHealAmount(int healAmount);
 
         double apply(Unit* unit) override;
+        Effect* clone() const override;
 };
 
 #endif

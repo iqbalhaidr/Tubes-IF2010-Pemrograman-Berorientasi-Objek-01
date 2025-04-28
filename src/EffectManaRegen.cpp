@@ -24,3 +24,7 @@ double EffectManaRegen::apply(Unit* unit) {
     return 0; 
 }
 
+
+Effect* EffectManaRegen::clone() const{
+    return new EffectManaRegen(*this);
+}

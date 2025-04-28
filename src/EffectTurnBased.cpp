@@ -17,3 +17,13 @@ bool EffectTurnBasedBased::isTurnBased() {
     return true;
 }
 
+Effect* EffectTurnBasedBased::clone() const {
+    return new EffectTurnBasedBased(*this);
+}
+
+double EffectTurnBasedBased::apply(Unit* unit) {
+    remainingDuration -= 1;
+}
+
+void EffectTurnBasedBased::remove(Unit* unit) {
+}

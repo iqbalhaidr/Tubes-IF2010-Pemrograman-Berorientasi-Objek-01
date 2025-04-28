@@ -20,6 +20,8 @@ class EffectDamage : public Effect {
         void setDamage(double damage);
 
         double apply(Unit* unit) override;
+
+        Effect* clone() const override;
         bool isDamage();
 };
 #endif

@@ -11,6 +11,7 @@ class EffectTurn: public Effect {
 
         // Setter Getter
         double apply(Unit* unit) override;
+        Effect* clone() const override;
         bool isTurn() override;
 };
 

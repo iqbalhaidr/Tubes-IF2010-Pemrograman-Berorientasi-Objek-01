@@ -65,3 +65,4 @@ bool Effect::isDefensive() {
 bool Effect::isTurnBased() {
     return false;
 }
+
