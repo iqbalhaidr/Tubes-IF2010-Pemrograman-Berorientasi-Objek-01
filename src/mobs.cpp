@@ -1,7 +1,7 @@
 #include "mobs.hpp"
 
-Mobs::Mobs(string name, int maxHealth, int healthRegen, int maxMana, int manaRegen, int attackDamage,  int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots)
- : Unit(name, maxHealth, healthRegen, maxMana, manaRegen, attackDamage, strength, agility, intelligence) {
+Mobs::Mobs(string name, int level, int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots)
+ : Unit(name, strength, agility, intelligence) {
     this->expReward = expReward; 
     this->LootDrop = mobLoots.getLootforMob(name);
 }
@@ -21,7 +21,7 @@ void Mobs::setExpReward(int expReward) {
     // if (rand() % 100 < 50) { // 50% chance to heal
         // heal(healValue); // Heal the mob
     // }
-}
+// }
 
 vector<Item*> Mobs::dropLoot() {
     vector<Item*> droppedItem;

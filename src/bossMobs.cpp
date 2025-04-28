@@ -1,7 +1,7 @@
 #include "bossMobs.hpp"
 
-BossMobs::BossMobs(string name, int maxHealth, int healthRegen, int maxMana, int manaRegen, int attackDamage,  int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots)
- : Mobs(name, maxHealth, healthRegen, maxMana, manaRegen, attackDamage, strength, agility, intelligence, expReward, mobLoots) {
+BossMobs::BossMobs(string name, int level, int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots)
+ : Mobs(name, level, strength, agility, intelligence, expReward, mobLoots) {
     this->rageUsed = false;
 }
 

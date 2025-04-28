@@ -1,7 +1,12 @@
 #include "darkKnight.hpp"
 
-DarkKnight::DarkKnight(string name, int maxHealth, int healthRegen, int maxMana, int manaRegen, int attackDamage,  int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots)
- : BossMobs(name, maxHealth, healthRegen, maxMana, manaRegen, attackDamage, strength, agility, intelligence, expReward, mobLoots) {
+DarkKnight::DarkKnight(int level, int expReward, Mobloot& mobLoots)
+ : BossMobs("Dark Knight", level, 20, 20, 16, expReward, mobLoots) {
 }
 
 DarkKnight::~DarkKnight() {}
+
+void DarkKnight::updateBasicAttributes() {
+    Unit::updateBasicAttributes();
+    setAttackDamage(4 * getStats().getStrength() + 4* getStats().getAgility());
+}

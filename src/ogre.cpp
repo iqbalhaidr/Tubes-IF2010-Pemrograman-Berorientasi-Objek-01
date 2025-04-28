@@ -1,7 +1,15 @@
 #include "ogre.hpp"
 
-Ogre::Ogre(string name, int maxHealth, int healthRegen, int maxMana, int manaRegen, int attackDamage,  int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots)
- : BossMobs(name, maxHealth, healthRegen, maxMana, manaRegen, attackDamage, strength, agility, intelligence, expReward, mobLoots) {
+Ogre::Ogre(int level, int expReward, Mobloot& mobLoots)
+ : BossMobs("Ogre", level, 32, 16, 12, expReward, mobLoots) {
 }
 
 Ogre::~Ogre() {}
+
+void Ogre::updateBasicAttributes() {
+    Unit::updateBasicAttributes();
+    setAttackDamage(4 * getStats().getStrength());
+}
+
+// void Ogre::useSkill(string skill, Unit& target) {}
+
