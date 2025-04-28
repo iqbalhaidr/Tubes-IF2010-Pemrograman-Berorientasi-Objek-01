@@ -32,3 +32,7 @@ void EffectHealthRegen::remove(Unit* unit) {
     int currentRegen = unit->getHealthRegen();
     unit->setHealthRegen(currentRegen - healAmount);
 }
+
+bool EffectHealthRegen::isHealthRegen() {
+    return true;
+}

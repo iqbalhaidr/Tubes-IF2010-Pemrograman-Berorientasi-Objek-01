@@ -18,6 +18,7 @@ class EffectHealthRegen : public EffectTurnBasedBased {
         double apply(Unit* unit) override;
         void remove(Unit* unit) override;
         Effect* clone() const override;
+        bool isHealthRegen() override;
 };
 
 

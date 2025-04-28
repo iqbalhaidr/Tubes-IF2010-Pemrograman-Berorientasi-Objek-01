@@ -33,3 +33,7 @@ void EffectManaRegen::remove(Unit* unit) {
     int currentRegen = unit->getManaRegen();
     unit->setManaRegen(currentRegen - manaAmount);
 }
+
+bool EffectManaRegen::isManaRegen() {
+    return true;
+}

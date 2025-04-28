@@ -35,3 +35,7 @@ Effect* EffectPoison::clone() const{
 }
 
 void EffectPoison::remove(Unit* unit) {}
+
+bool EffectPoison::isThrowable() {
+    return true;
+}

@@ -37,6 +37,9 @@ class Effect{
         virtual bool isDefensive();
         virtual bool isTurnBased();
         virtual bool isTurn();
+        virtual bool isHealthRegen();
+        virtual bool isManaRegen();
+        virtual bool isThrowable();
 };
 
 #endif

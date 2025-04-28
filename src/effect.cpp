@@ -66,3 +66,13 @@ bool Effect::isTurnBased() {
     return false;
 }
 
+bool Effect::isHealthRegen() {
+    return false;
+}
+
+bool Effect::isManaRegen() {
+    return false;
+}
+bool Effect::isThrowable() {
+    return false;
+}
