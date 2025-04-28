@@ -3,9 +3,8 @@
 
 #include <map>
 
-#include "inventory.hpp"
+// #include "inventory.hpp"
 #include "item.hpp"
-// #include "char.hpp"
 
 class Reward {
    private:
@@ -16,19 +15,20 @@ class Reward {
    public:
     // ctor default semua atribut 0/kosong
     Reward();
-    // dtor, mendealokasikan Item*
+    // dtor, jangan mendealokasikan Item * karena itu diambil langsung dari mobloot
+    // takut saat membuat monster baru gaada lootnya??
     ~Reward();
     // cctor dan assignment dilakukan otomatis oleh compiler
 
     // Getter
     int getExp() const;
     int getGold() const;
-    std::vector<Item *> getItems() const;
+    std::map<Item *, int> getItems() const;
 
     // Manipulasi atribut
-    void addExp(int gold);
-    void addGold(int exp);
-    void addItem(Item *);
+    void addExp(int);
+    void addGold(int);
+    void addItem(Item *, int);
 
     /*
      * Format:
@@ -43,7 +43,10 @@ class Reward {
     void displayInfo();
 
     // Memberikan prize kepada char dan player
-    // void giveTo(Char &, Inventory &);
+    // void giveTo(Char*, Inventory*);
+
+    // Memberikan prize HANYA ITEM kepada player (kasus special dungeon)
+    // void giveTo(Inventory*)
 };
 
 #endif

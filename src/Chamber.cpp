@@ -1,8 +1,11 @@
-#include <iostream>
-
 #include "../include/Chamber.hpp"
 
-Chamber::Chamber(bool isLast, int minMobLevel, int maxMobLevel) : isLastChamber(isLast), minMobLevel(minMobLevel), maxMobLevel(maxMobLevel) {
+#include <iostream>
+
+Chamber::Chamber(bool isLast, int minMobLevel, int maxMobLevel)
+    : isLastChamber(isLast),
+      minMobLevel(minMobLevel),
+      maxMobLevel(maxMobLevel) {
     rewardExp = generateRewardExp();
     rewardGold = generateRewardGold();
     generateEnemies();
@@ -39,15 +42,16 @@ Chamber& Chamber::operator=(const Chamber& c) {
 int Chamber::getRewardExp() const { return rewardExp; }
 int Chamber::getRewardGold() const { return rewardGold; }
 int Chamber::getEnemyCount() const { return enemyCount; }
-std::vector<Mobs *> Chamber::getEnemies() const { return enemies; }
+std::vector<Mobs*> Chamber::getEnemies() const { return enemies; }
 int Chamber::isLast() const { return isLastChamber; }
 int Chamber::getMinMobLevel() const { return rewardExp; }
 int Chamber::getMaxMobLevel() const { return rewardGold; }
 
-// void Chamber::setRewardExp(int rewardExp) { this->rewardExp = rewardExp; } 
-// void Chamber::setRewardGold(int rewardGold) { this->rewardGold = rewardGold; }
-// void Chamber::setEnemyCount(int enemyCount) { this->enemyCount = enemyCount; }
-// void Chamber::setLast(bool isLast) { this->isLastChamber = isLast; }
+// void Chamber::setRewardExp(int rewardExp) { this->rewardExp = rewardExp; }
+// void Chamber::setRewardGold(int rewardGold) { this->rewardGold = rewardGold;
+// } void Chamber::setEnemyCount(int enemyCount) { this->enemyCount =
+// enemyCount; } void Chamber::setLast(bool isLast) { this->isLastChamber =
+// isLast; }
 
 int Chamber::generateRewardGold() {
     int a = 2;
@@ -65,7 +69,8 @@ int Chamber::generateRewardExp() {
 
 int Chamber::generateEnemyCount() {
     if (isLastChamber) {
-        return Randomizer::random(MIN_ENEMIES_LAST_CHAMBER, MAX_ENEMIES_LAST_CHAMBER);
+        return Randomizer::random(MIN_ENEMIES_LAST_CHAMBER,
+                                  MAX_ENEMIES_LAST_CHAMBER);
     } else {
         return Randomizer::random(MIN_ENEMIES_CHAMBER, MAX_ENEMIES_CHAMBER);
     }
@@ -115,7 +120,9 @@ void Chamber::generateEnemies() {
             enemies.push_back(generateBossMobs(level));
         } else {
             if (!isBossSpawnedInBasicChamber) {
-                if (Randomizer::random(1, 5) == 3) { // Asumsi chance boss spawn 20% pada chamber bukan terakhir
+                if (Randomizer::random(1, 10) ==
+                    3) {  // Asumsi chance boss spawn 10% pada chamber bukan
+                          // terakhir
                     int level = Randomizer::random(minMobLevel, maxMobLevel);
                     enemies.push_back(generateBossMobs(level));
                     isBossSpawnedInBasicChamber = true;
@@ -131,7 +138,7 @@ void Chamber::generateEnemies() {
     }
 }
 
-/* 
+/*
 bool battle(Char&, Reward&) {
     for (int i = 0; i < enemyCount; i++) {
         bool isCharTurn = true;
@@ -171,11 +178,11 @@ bool battle(Char&, Reward&) {
             }
             isCharTurn = !isCharTurn;
         }
-        
+
         if (Char.getCurrentHealth() <= 0) {
             return false;
         }
-        
+
         if (enemies[i]->getCurrentHealth() <= 0) {
             Reward.addExp(enemies[i]->getExpReward())
             Reward.addItem(enemies[i]->getLootItem())

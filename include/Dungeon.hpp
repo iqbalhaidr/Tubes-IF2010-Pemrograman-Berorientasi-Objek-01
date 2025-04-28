@@ -5,9 +5,8 @@
 
 #include "Chamber.hpp"
 #include "Reward.hpp"
-#include "inventory.hpp"
-#include "item.hpp"
 // #include "Char.hpp"
+#include "Randomizer.hpp"
 
 class Dungeon {
    private:
@@ -15,24 +14,36 @@ class Dungeon {
     std::vector<Chamber *> chambers;
     int rewardExp;
     int rewardGold;
-    Item *bonusItem;
-    bool isDD;  // Double Dungeon
+    Item *bonusItem;  // KALO DOUBLE DUNGEON TIDAK 3x KAH?
+    bool isDD;        // Double Dungeon
     Reward prize;
-    int difficultyScaling;
     int penaltyExp;
     int penaltyGold;
+    string rank;
+    int minLevel;
+    int entryCost;
 
    public:
-    Dungeon(int totalChambers, int rewardExp, int rewardGold, bool isDD);
-    Dungeon(const Dungeon &);
+    Dungeon(string rank);
     ~Dungeon();
-    Dungeon &operator=(const Dungeon &);
+    // Dungeon(const Dungeon &);
+    // Dungeon &operator=(const Dungeon &);
+    // cctor dan = jangan dipake, selalu buat baru
 
     // Getter
 
     // Setter
 
-    // void start(Char&, Inventory&) = 0;
+    // void start(Char&, Inventory&);
+
+    /* Randomize, set isDD, update reward */
+    void randomizeDoubleDungeon();
+
+    /* Setter attribute based on rank */
+    void helperSet();
+
+    /* Generate chambers berdasarkan rank, set totalChambers */
+    void generateChambers();
 };
 
 #endif
