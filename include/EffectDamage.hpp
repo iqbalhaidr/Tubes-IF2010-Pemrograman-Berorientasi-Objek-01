@@ -10,7 +10,7 @@ class EffectDamage : public Effect {
     public:
         EffectDamage(const std::string& name, const std::string& description, double duration, double remainingDuration, int chance, double damage);
         ~EffectDamage();
-        EffectDamage(EffectDamage& other);
+        EffectDamage(const EffectDamage& other);
         EffectDamage& operator=(EffectDamage& other);
 
         // Setter Getter

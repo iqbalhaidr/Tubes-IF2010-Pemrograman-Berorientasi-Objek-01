@@ -5,7 +5,7 @@ EffectTurn::EffectTurn(const std::string& name, const std::string& description, 
 
 EffectTurn::~EffectTurn() {}
 
-EffectTurn::EffectTurn(EffectTurn& other) 
+EffectTurn::EffectTurn(const EffectTurn& other) 
     : Effect(other) {}
 
 EffectTurn& EffectTurn::operator=(EffectTurn& other) {

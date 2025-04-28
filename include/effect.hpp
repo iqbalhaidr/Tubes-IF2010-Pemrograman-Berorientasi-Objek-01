@@ -13,7 +13,7 @@ class Effect{
     public:
         Effect(const std::string& name, const std::string& description, double duration, double remainingDuration);
         ~Effect();
-        Effect(Effect& other);
+        Effect(const Effect& other);
         Effect& operator=(Effect& other);
 
         //Setter Getter
@@ -29,6 +29,7 @@ class Effect{
 
 
         virtual double apply(Unit* unit) = 0;
+        virtual void remove(Unit* unit);
         virtual bool isDamage();
         virtual bool isDefensive();
         virtual bool isTurnBased();

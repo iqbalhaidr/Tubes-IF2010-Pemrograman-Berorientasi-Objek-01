@@ -5,7 +5,7 @@ EffectTurnBasedBased::EffectTurnBasedBased(const std::string& name, const std::s
 
 EffectTurnBasedBased::~EffectTurnBasedBased() {}
 
-EffectTurnBasedBased::EffectTurnBasedBased(EffectTurnBasedBased& other) 
+EffectTurnBasedBased::EffectTurnBasedBased(const EffectTurnBasedBased& other) 
     : Effect(other) {}
 
 EffectTurnBasedBased& EffectTurnBasedBased::operator=(EffectTurnBasedBased& other) {

@@ -8,7 +8,7 @@ class EffectHealthRegen : public EffectTurnBasedBased {
     public:
         EffectHealthRegen(const std::string& name, const std::string& description, double duration, double remainingDuration, int healAmount);
         ~EffectHealthRegen();
-        EffectHealthRegen(EffectHealthRegen& other);
+        EffectHealthRegen(const EffectHealthRegen& other);
         EffectHealthRegen& operator=(EffectHealthRegen& other) ;
 
         // Setter Getter

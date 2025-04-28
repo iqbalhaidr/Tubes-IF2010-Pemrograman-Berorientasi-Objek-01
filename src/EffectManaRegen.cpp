@@ -3,7 +3,7 @@
 EffectManaRegen::EffectManaRegen(const std::string& name, const std::string& description, double duration, double remainingDuration, int manaAmount)
     : EffectTurnBasedBased(name, description, duration, remainingDuration), manaAmount(manaAmount) {}
 EffectManaRegen::~EffectManaRegen() {}
-EffectManaRegen::EffectManaRegen(EffectManaRegen& other) 
+EffectManaRegen::EffectManaRegen(const EffectManaRegen& other) 
     : EffectTurnBasedBased(other), manaAmount(other.manaAmount) {}
 EffectManaRegen& EffectManaRegen::operator=(EffectManaRegen& other) {
     EffectTurnBasedBased::operator=(other);

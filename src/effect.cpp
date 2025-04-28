@@ -5,7 +5,7 @@ Effect::Effect(const std::string& name, const std::string& description, double d
 
 Effect::~Effect() {}
 
-Effect::Effect(Effect& other) 
+Effect::Effect(const Effect& other) 
     : name(other.name), description(other.description), duration(other.duration), remainingDuration(other.remainingDuration) {}
 
 Effect& Effect::operator=(Effect& other) {

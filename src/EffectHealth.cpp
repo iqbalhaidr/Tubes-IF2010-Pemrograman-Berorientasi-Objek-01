@@ -6,7 +6,7 @@ EffectHealth::EffectHealth(const std::string& name, const std::string& descripti
 
 EffectHealth::~EffectHealth() {}
 
-EffectHealth::EffectHealth(EffectHealth& other) 
+EffectHealth::EffectHealth(const EffectHealth& other) 
     : Effect(other), healAmount(other.healAmount) {}
 
 EffectHealth& EffectHealth::operator=(EffectHealth& other) {

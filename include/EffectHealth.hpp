@@ -8,7 +8,7 @@ class EffectHealth : public Effect {
     public:
         EffectHealth(const std::string& name, const std::string& description, double duration, double remainingDuration, int healAmount);
         ~EffectHealth();
-        EffectHealth(EffectHealth& other);
+        EffectHealth(const EffectHealth& other);
         EffectHealth& operator=(EffectHealth& other);
 
         // Setter Getter

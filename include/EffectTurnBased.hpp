@@ -6,7 +6,7 @@ class EffectTurnBasedBased : public Effect {
     public:
         EffectTurnBasedBased(const std::string& name, const std::string& description, double duration, double remainingDuration);
         ~EffectTurnBasedBased();
-        EffectTurnBasedBased(EffectTurnBasedBased& other);
+        EffectTurnBasedBased(const EffectTurnBasedBased& other);
         EffectTurnBasedBased& operator=(EffectTurnBasedBased& other) = default;
 
         // Setter Getter
