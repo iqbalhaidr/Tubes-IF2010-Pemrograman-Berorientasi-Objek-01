@@ -11,7 +11,7 @@ class Skill{
         double masterCost;
         double effectChance;
         double damage;
-        public:
+    public:
         vector<Effect*> effects;
         Skill(const std::string& name, double manaCost, double masterCost, double effectChance, const std::string& effectType);
         ~Skill();

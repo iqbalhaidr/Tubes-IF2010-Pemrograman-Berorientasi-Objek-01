@@ -2,6 +2,8 @@
 
 Ogre::Ogre(int level, int expReward, Mobloot& mobLoots)
  : BossMobs("Ogre", level, 32, 16, 12, expReward, mobLoots) {
+    Skill *skill = new Skill("Pulverize", 0, 0, 0.3, "Pulverize");
+    addSkill(skill);
 }
 
 Ogre::~Ogre() {}
