@@ -25,7 +25,7 @@ void Necromancer::attack(Unit& target, Inventory& inventory) {
         if (summonTurns == 0) {
             summons = false;
         }
-        int totalDamage = calculateDamage(attackDamage, inventory); 
+        int totalDamage = calculateDamage(target, attackDamage, inventory); 
         totalDamage += stats.getIntelligence() * 0.25; 
         target.takeDamage(totalDamage); // damage dari minion
     }

@@ -7,6 +7,11 @@
 #include "stats.hpp"
 #include "skill.hpp"
 #include "effect.hpp"
+#include "EffectHealthRegen.hpp" // diperlukan di CPP!
+#include "EffectManaRegen.hpp"
+#include "EffectDamage.hpp"
+#include "EffectDefensive.hpp"
+
 #include "inventory.hpp"
 #include <string>
 #include <map>
@@ -28,7 +33,7 @@ class Unit {
         map<string, bool> turnActiveEffectstatus; 
         vector<Skill*> skills;
         vector<Effect*> activeEffects;
-        vector<Effect*> itemEffects;
+        int getLevelFactor(Unit& target);
         int calculateDamage(Unit& target, int baseDamage, Inventory& inventory); // TEMPORARY
         virtual void updateBasicAttributes();
     public:
@@ -48,6 +53,7 @@ class Unit {
         map<string, bool> getTurnActiveEffectStatus() const;
         vector<Skill*> getSkills() const; 
         vector<Effect*> getActiveEffects() const; 
+        vector<Effect*> getCombinedEffect((const vector<Effect*>& activeEffects) const;
 
         Stats getStats() const;
         void setName(string name);
@@ -71,8 +77,6 @@ class Unit {
         virtual void removeSkill(Skill* skill); // TEMPORARY
         void addActiveEffect(Effect* effect); // TEMPORARY
         void removeActiveEffect(Effect* effect); // TEMPORARY
-        void addItemEffect(Effect* effect);
-        void removeItemEffect(Effect* effect);
         void applyActiveEffect();
         virtual void reset() = 0;
 
