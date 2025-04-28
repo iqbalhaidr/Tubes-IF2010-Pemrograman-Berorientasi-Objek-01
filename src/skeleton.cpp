@@ -1,7 +1,14 @@
 #include "skeleton.hpp"
 
-Skeleton::Skeleton(string name, int maxHealth, int healthRegen, int maxMana, int manaRegen, int attackDamage,  int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots)
- : BasicMobs(name, maxHealth, healthRegen, maxMana, manaRegen, attackDamage, strength, agility, intelligence, expReward, mobLoots) {
+Skeleton::Skeleton(int level, int expReward, Mobloot& mobLoots)
+ : BasicMobs("Skeleton", level, 7, 8, 7, expReward, mobLoots) {
+    Skill *skill = new Skill("Bone Shard", 0, 0, 0.25, "Bone Shard");
+    addSkill(skill);
 }
 
 Skeleton::~Skeleton() {}
+
+void Skeleton::updateBasicAttributes() {
+    Unit::updateBasicAttributes();
+    setAttackDamage(4 * getStats().getStrength() + 4 * getStats().getAgility());
+}

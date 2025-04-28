@@ -2,9 +2,10 @@
 #include <iostream>
 using namespace std;
 
-Berserker::Berserker(string name, int maxHealth, int healthRegen, int maxMana, int manaRegen, int attackDamage, int strength, int agility, int intelligence, int level, int exp, int gold, int rageMultiplier) 
-: Character(name, maxHealth, healthRegen, maxMana, manaRegen, attackDamage, strength, agility, intelligence, level, exp, gold, "Berserker") {
-    this->rageMultiplier = rageMultiplier; // Set default rage multiplier
+Berserker::Berserker(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, string type, int rageMultiplier)
+: Character(name ,strength, agility, intelligence, level, exp, gold, masteryCost, "Berserker") {
+    updateBasicAttributes();
+    setRageMultiplier(rageMultiplier);
 }
 
 Berserker::~Berserker() {}
@@ -12,19 +13,29 @@ Berserker::~Berserker() {}
 int Berserker::getRageMultiplier() const { return rageMultiplier;}
 void Berserker::setRageMultiplier(int rageMultiplier) { this->rageMultiplier = rageMultiplier;}
 
-void Berserker::attack(Unit& target)  {
-    //int damage = attackDamage * rageMultiplier; // belom
+void Berserker::attack(Unit& target, Inventory& inventory)  {
+    int totalDamage = calculateDamage(attackDamage, inventory); 
+    totalDamage *= rageMultiplier; 
+    target.takeDamage(totalDamage); 
 }
 
-void Berserker::useSkill(string& skill, Unit& target) {
-    Unit::useSkill(skill, target); // Call the base class method
-    rageMultiplier += 1;
+void Berserker::useSkill(Skill* skill, Unit& target) {
+    Unit::useSkill(skill, target); 
+    rageMultiplier += 3;
+}
+
+void Berserker::updateBasicAttributes() {
+    setAttackDamage(20 + 8 * getStats().getStrength());
 }
 
 void Berserker::levelUp() {
-    masteryCost += 5; 
+    setMasteryCost(getMasteryCost() + 5);
+    setExp(0);
     stats.setStrength(stats.getStrength() * 2.5);
     stats.setAgility(stats.getAgility() * 1.2);
     stats.setIntelligence(stats.getIntelligence() * 1.2);
+    Unit::updateBasicAttributes(); 
+    updateBasicAttributes();
+    Character::reset();
 }
 

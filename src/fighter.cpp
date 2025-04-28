@@ -2,9 +2,9 @@
 #include <iostream>
 using namespace std;
 
-Fighter::Fighter(string name, int maxHealth, int healthRegen, int maxMana, int manaRegen, int attackDamage, int strength, int agility, int intelligence, int level, int exp, int gold, float blockChance) 
-: Character(name, maxHealth, healthRegen, maxMana, manaRegen, attackDamage, strength, agility, intelligence, level, exp, gold, "Fighter") {
-    this->blockChance = blockChance;
+Fighter::Fighter(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, string type, float blockChance)
+: Character(name, strength, agility, intelligence, level, exp, gold, masteryCost, "Fighter") {
+    updateBasicAttributes();
 }
 
 Fighter::~Fighter() {}
@@ -17,14 +17,10 @@ void Fighter::takeDamage(int damage) {
         cout << "Serangan musuh berhasil diblok" << endl;
         return;
     } 
-
-    currentHealth -= damage;
-    if (currentHealth < 0) {
-        currentHealth = 0;
-    }
+    Unit::takeDamage(damage); 
 }
 
-void Fighter::useSkill(string& skill, Unit& target) {
+void Fighter::useSkill(Skill* skill, Unit& target) {
     Unit::useSkill(skill, target);
     currentHealth += stats.getStrength() * 0.25;
     if (currentHealth > maxHealth) {
@@ -32,12 +28,22 @@ void Fighter::useSkill(string& skill, Unit& target) {
     }
 }
 
+void Fighter::updateBasicAttributes() {
+    setAttackDamage(15 + 4 * getStats().getStrength() + 2 *getStats().getAgility());
+    setBlockChance(getStats().getAgility() * 2 / 100); 
+}
+
 void Fighter::levelUp() {
-    masteryCost += 5; 
+    setMasteryCost(getMasteryCost() + 5);
+    setExp(0);
     stats.setStrength(stats.getStrength() * 2);
     stats.setAgility(stats.getAgility() * 1.5);
     stats.setIntelligence(stats.getIntelligence() * 1.2);
+    Unit::updateBasicAttributes(); 
+    updateBasicAttributes();
+    Character::reset();
 }
+
 
 
 

@@ -9,9 +9,10 @@ class Assassin : public Character {
     private:
         float criticalChance;
         int criticalMultiplier;
+        void updateBasicAttributes() override;
     public:
         // ctor dtor
-        Assassin(string name, int maxHealth, int healthRegen, int maxMana, int manaRegen, int attackDamage, int strength, int agility, int intelligence, int level, int exp, int gold, float criticalChance, int criticalMultiplier);
+        Assassin(string name, int strength = 16, int agility = 20, int intelligence = 28, int level, int exp, int gold, int masteryCost, string type, float criticalChance, int criticalMultiplier);
         ~Assassin();
 
         // setter getter
@@ -21,7 +22,7 @@ class Assassin : public Character {
         void setCriticalMultiplier(int criticalMultiplier);
 
         // Fungsi override
-        void attack(Unit& target) override;
+        void attack(Unit& target, Inventory& inventory) override;
         void takeDamage(int damage) override;
         void levelUp() override;
 };

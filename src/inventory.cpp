@@ -145,7 +145,7 @@ void Inventory::setEquippedItem(const std::string& slot, const std::string& item
     equipped[slot] = item;
 }
 
-std::string Inventory::getEquippedItem(const std::string& slot) const {
+Item* Inventory::getEquippedItem(const std::string& slot) const {
     auto it = equipped.find(slot);
     if (it != equipped.end()) {
         return it->second;

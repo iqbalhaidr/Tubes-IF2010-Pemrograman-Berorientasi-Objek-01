@@ -2,10 +2,10 @@
 #include <iostream>
 using namespace std;
 
-Assassin::Assassin(string name, int maxHealth, int healthRegen, int maxMana, int manaRegen, int attackDamage, int strength, int agility, int intelligence, int level, int exp, int gold, float criticalChance, int criticalMultiplier)
- : Character(name, maxHealth, healthRegen, maxMana, manaRegen, attackDamage, strength, agility, intelligence, level, exp, gold, "Assassin") {
-    this->criticalChance = criticalChance;
-    this->criticalMultiplier = criticalMultiplier; 
+Assassin::Assassin(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, string type, float criticalChance, int criticalMultiplier)
+ : Character(name, 25, 16, 13, level, exp, gold, masteryCost, "Assassin") {
+    updateBasicAttributes(); // kecuali critmultiplier
+    setCriticalMultiplier(criticalMultiplier);
 }
 
 Assassin::~Assassin() {}
@@ -16,13 +16,16 @@ int Assassin::getCriticalMultiplier() const { return criticalMultiplier;}
 void Assassin::setCriticalChance(float criticalChance) { this->criticalChance = criticalChance;}
 void Assassin::setCriticalMultiplier(int criticalMultiplier) { this->criticalMultiplier = criticalMultiplier;}
 
-void Assassin::attack(Unit& target) {
+void Assassin::attack(Unit& target, Inventory& inventory) {
     if (rand() % 100 < criticalChance) { 
-        // panggil fungsi damage dengan paramter criticalmultiplier
+        int totalDamage = calculateDamage(target, attackDamage, inventory); 
+        totalDamage *= criticalMultiplier; 
+        cout << "Critical hit!" << endl;
+        target.takeDamage(totalDamage);
     } else {
-        // panggil fungsi damage biasa
+        Unit::attack(target, inventory); 
     }
-    // target.takeDamage(damage);
+
 }
 
 void Assassin::takeDamage(int damage) {
@@ -30,15 +33,21 @@ void Assassin::takeDamage(int damage) {
         cout << "Serangan terhindar" << endl;
         return; // No damage taken
     }
+    Unit::takeDamage(damage);
+}
 
-    currentHealth -= damage;
-    if (currentHealth < 0) {
-        currentHealth = 0;
-    }
+void Assassin::updateBasicAttributes() {
+    setAttackDamage(12 + 7 * getStats().getAgility() + getStats().getStrength());
+    setCriticalChance(getStats().getAgility() * 4 / 100);
 }
 void Assassin::levelUp() {
-    masteryCost += 5; 
+    setMasteryCost(getMasteryCost() + 5);
+    setExp(0);
     stats.setStrength(stats.getStrength() * 1.2);
     stats.setAgility(stats.getAgility() * 2);
     stats.setIntelligence(stats.getIntelligence() * 1.5);
+    Unit::updateBasicAttributes(); 
+    updateBasicAttributes();
+    Character::reset();
 }
+

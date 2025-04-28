@@ -8,8 +8,9 @@ using namespace std;
 class Skeleton : public BasicMobs {
     public:
         // ctor dtor
-        Skeleton(string name, int maxHealth, int healthRegen, int maxMana, int manaRegen, int attackDamage,  int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots);
+        Skeleton(int level, int expReward, Mobloot& mobLoots);
         ~Skeleton();
+        void updateBasicAttributes() override ;
 
 
 

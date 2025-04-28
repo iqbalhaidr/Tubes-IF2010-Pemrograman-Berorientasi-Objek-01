@@ -13,7 +13,7 @@ class Mobs : public Unit {
 
     public:
         // ctor dtor
-        Mobs(string name, int maxHealth, int healthRegen, int maxMana, int manaRegen, int attackDamage,  int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots);
+        Mobs(string name, int level, int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots);
         ~Mobs();
 
         int getExpReward() const;

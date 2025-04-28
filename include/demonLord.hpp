@@ -8,9 +8,9 @@ using namespace std;
 class DemonLord : public BossMobs {
     public:
         // ctor dtor
-        DemonLord(string name, int maxHealth, int healthRegen, int maxMana, int manaRegen, int attackDamage,  int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots);
+        DemonLord(int level, int expReward, Mobloot& mobLoots);
         ~DemonLord();
-
+        void updateBasicAttributes() override ;
 
 
 };
