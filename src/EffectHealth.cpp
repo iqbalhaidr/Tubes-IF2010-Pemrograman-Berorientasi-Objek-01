@@ -1,4 +1,6 @@
 #include "../include/EffectHealth.hpp"
+#include "../include/Unit.hpp"
+
 
 
 EffectHealth::EffectHealth(const std::string& name, const std::string& description, double duration, double remainingDuration, int healAmount)

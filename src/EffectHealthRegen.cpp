@@ -1,4 +1,5 @@
 #include "../include/EffectHealthRegen.hpp"
+#include "../include/Unit.hpp"
 
 EffectHealthRegen::EffectHealthRegen(const std::string& name, const std::string& description, double duration, double remainingDuration, int healAmount)
     : EffectTurnBasedBased(name, description, duration, remainingDuration), healAmount(healAmount) {}

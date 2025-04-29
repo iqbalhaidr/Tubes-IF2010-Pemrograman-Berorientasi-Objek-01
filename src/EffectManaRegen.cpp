@@ -1,4 +1,6 @@
 #include "../include/EffectManaRegen.hpp"
+#include "../include/Unit.hpp"
+
 
 EffectManaRegen::EffectManaRegen(const std::string& name, const std::string& description, double duration, double remainingDuration, int manaAmount)
     : EffectTurnBasedBased(name, description, duration, remainingDuration), manaAmount(manaAmount) {}
