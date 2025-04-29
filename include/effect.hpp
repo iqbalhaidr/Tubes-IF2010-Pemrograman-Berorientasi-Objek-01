@@ -2,7 +2,9 @@
 #define EFFECT_HPP
 
 #include <string>
-#include "unit.hpp"
+
+class Unit; // Forward declaration
+
 class Effect{
     protected:
         std::string name;
@@ -15,7 +17,8 @@ class Effect{
         ~Effect();
         Effect(const Effect& other);
         Effect& operator=(Effect& other);
-
+        static Effect* createEffect(std::string type, const std::string& name);
+        
         //Setter Getter
         std::string getName() const;   
         std::string getDescription() const;
@@ -41,6 +44,7 @@ class Effect{
         virtual bool isManaRegen();
         virtual bool isThrowable();
         virtual bool isPoison();
+        virtual bool isHealth();
 };
 
 #endif

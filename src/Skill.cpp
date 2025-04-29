@@ -1,18 +1,18 @@
 #include "../include/skill.hpp" 
 
-Skill::Skill(const std::string& name, double manaCost, double masterCost, double effectChance, vector<Effect*> effects)
-    : name(name), manaCost(manaCost), masterCost(masterCost), effectChance(effectChance), effects(effects) {}
+Skill::Skill(const std::string& name, double manaCost, double masterCost, double skillChance, double damage, vector<Effect*> effects)
+    : name(name), manaCost(manaCost), masterCost(masterCost), skillChance(skillChance), effects(effects), damage(damage) {}
 
 Skill::~Skill() {}
 
 Skill::Skill(Skill& other) 
-    : name(other.name), manaCost(other.manaCost), masterCost(other.masterCost), effectChance(other.effectChance), effects(effects) {}
+    : name(other.name), manaCost(other.manaCost), masterCost(other.masterCost), skillChance(other.skillChance), effects(effects) {}
 
 Skill& Skill::operator=(Skill& other){
     name = other.name;
     manaCost = other.manaCost;
     masterCost = other.masterCost;
-    effectChance = other.effectChance;
+    skillChance = other.skillChance;
     effects = other.effects;
 
     return *this;
@@ -30,8 +30,8 @@ double Skill::getMasterCost() const {
     return masterCost;
 }
 
-double Skill::getEffectChance() const {
-    return effectChance;
+double Skill::getskillChance() const {
+    return skillChance;
 }
 
 double Skill::getDamage() const {
@@ -50,14 +50,18 @@ void Skill::setMasterCost(double masterCost) {
     this->masterCost = masterCost;
 }
 
-void Skill::setEffectChance(double effectChance) {
-    this->effectChance = effectChance;
+void Skill::setskillChance(double skillChance) {
+    this->skillChance = skillChance;
 }
 
 void Skill::setDamage(double damage) {
     this->damage = damage;
 }
 
-vector<Effect*> Skill::getEffects() const {
+std::vector<Effect*> Skill::getEffects() const {
     return effects;
+}
+
+void Skill::setEffects(std::vector<Effect*> effects) {
+    this->effects = effects;
 }

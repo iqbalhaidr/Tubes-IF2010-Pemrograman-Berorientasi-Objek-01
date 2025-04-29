@@ -1,6 +1,6 @@
 #include "../include/EffectDefensive.hpp"
 
-EffectDefensive::EffectDefensive(const std::string& name, const std::string& description, double duration, double remainingDuration, int armorAmount, int magicResistAmount)
+EffectDefensive::EffectDefensive(const std::string& name, const std::string& description, double duration, double remainingDuration, int chance, int armorAmount, int magicResistAmount)
     : Effect(name, description, duration, remainingDuration), chance(chance), defense(defense) {}
 
 EffectDefensive::~EffectDefensive() {}
