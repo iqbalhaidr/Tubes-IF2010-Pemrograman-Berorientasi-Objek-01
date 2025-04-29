@@ -5,7 +5,7 @@ class EffectDefensive : public Effect {
         int chance;
         double defense;
     public:
-        EffectDefensive(const std::string& name, const std::string& description, double duration, double remainingDuration, int armorAmount, int magicResistAmount);
+        EffectDefensive(const std::string& name, const std::string& description, double duration, double remainingDuration, int chance, int armorAmount, int magicResistAmount);
         ~EffectDefensive();
         EffectDefensive(const EffectDefensive& other);
         EffectDefensive& operator=(EffectDefensive& other);
