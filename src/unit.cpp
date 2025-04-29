@@ -3,9 +3,10 @@
 #include <string>
 using namespace std;
 
-Unit::Unit(string name, int strength, int agility, int intelligence) : stats(strength, agility, intelligence) {
-    setName(name);
-    updateBasicAttributes();     
+Unit::Unit(string name, int strength, int agility, int intelligence, int level) : stats(strength, agility, intelligence) {
+    this->name = name;
+    updateBasicAttributes();   
+    this->level = level;  
     this->turnActiveEffectstatus = {
         {"stun", false},
         {"disable", false}
@@ -22,6 +23,10 @@ int Unit::getCurrentMana() const { return currentMana;}
 int Unit::getMaxMana() const { return maxMana;}
 int Unit::getManaRegen() const { return manaRegen;}
 int Unit::getAttackDamage() const { return attackDamage;}
+int Unit::getLevel() const { return level;}
+int Unit::getLevelFactor(Unit& target) const {
+    return 1 + (this->level - target.level) * 0.05;
+}
 map<string, bool> Unit::getTurnActiveEffectStatus() const { return turnActiveEffectstatus;}
 Stats Unit::getStats() const { return stats;}
 vector<Skill*> Unit::getSkills() const { return skills;} // TEMPORARY
@@ -57,6 +62,7 @@ int Unit::calculateDamage(Unit& target, int baseDamage, Inventory& inventory) {
     }
     int weaponDamage = inventory.getEquippedItem("weapon")->getBaseStat();
     totalDamage *= (baseDamage + weaponDamage);
+    totalDamage *= getLevelFactor(target);
 
     return totalDamage;
 }
