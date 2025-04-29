@@ -3,8 +3,10 @@
 #include "effect.hpp"
 
 class EffectTurn: public Effect {
+    private:
+        int chance;
     public:
-        EffectTurn(const std::string& name, const std::string& description, double duration, double remainingDuration);
+        EffectTurn(const std::string& name, const std::string& description, double duration, double remainingDuration, int chance);
         ~EffectTurn();
         EffectTurn(const EffectTurn& other);
         EffectTurn& operator=(EffectTurn& other) = default;
