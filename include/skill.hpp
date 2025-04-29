@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 #include "Effect.hpp"   
+#include <vector>
+using namespace std;
 class Skill{
     private:
         std::string name;
@@ -25,15 +27,16 @@ class Skill{
         double getMasterCost() const;
         double getEffectChance() const;
         double getDamage() const;
-
-        std::string getEffectType() const;
+        vector<Effect*> getEffects() const;
+        
+        // std::string getEffectType() const;
         void setName(const std::string& name);
         void setManaCost(double manaCost);
         void setMasterCost(double masterCost);
         void setEffectChance(double effectChance);
-        void setEffectType(const std::string& effectType);    
+        // void setEffectType(const std::string& effectType);    
         void setDamage(double damage);
-        vector<Effect*> getEffects() const;
+        void setEffects(vector<Effect*> effects);
 };
 
 #endif

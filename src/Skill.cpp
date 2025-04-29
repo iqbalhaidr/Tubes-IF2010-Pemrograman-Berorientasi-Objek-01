@@ -58,6 +58,10 @@ void Skill::setDamage(double damage) {
     this->damage = damage;
 }
 
-vector<Effect*> Skill::getEffects() const {
+std::vector<Effect*> Skill::getEffects() const {
     return effects;
+}
+
+void Skill::setEffects(std::vector<Effect*> effects) {
+    this->effects = effects;
 }
