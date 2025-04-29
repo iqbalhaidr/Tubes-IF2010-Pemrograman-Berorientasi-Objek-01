@@ -1,12 +1,21 @@
 #include "../include/item.hpp"
 
-Item::Item(std::string name, std::string type, std::string rarity,
-           double baseStat,
-           const std::vector<std::string>& effects)
-    : name(name), type(type), rarity(rarity),
-     baseStat(baseStat), effects(effects) {}
+Item::Item(std::string Name, std::string type, std::string rarity, double baseStat, const std::vector<Effect*>& Effects){
+    this->name = name;
+    this->type = type;
+    this->rarity = rarity;
+    this->baseStat = baseStat;
+    for(size_t i =0; i< Effects.size(); i++){
+        effects.push_back(Effects[i]->clone());
+    }
 
-Item::~Item() {}
+}
+
+Item::~Item() {
+    for(size_t i =0; i< effects.size(); i++){
+        delete effects[i];
+    }
+}
 
 std::string Item::getName() const{
     return name;
@@ -25,7 +34,7 @@ double Item::getBaseStat() const{
     return baseStat;
 }
 
-std::vector<std::string> Item::getEffects() {
+std::vector<Effect*> Item::getEffects() const {
     return effects;
 }
 
@@ -39,6 +48,8 @@ double Item :: getStatMultiplier() const {
     return 1.0; 
 }
 
-// double Item :: getFinalStat() const {
-//     return baseStat * getStatMultiplier() * (1 + (level * 0.05)); 
-// }
+double Item :: getFinalStat() const {
+    return baseStat * getStatMultiplier(); 
+}
+
+

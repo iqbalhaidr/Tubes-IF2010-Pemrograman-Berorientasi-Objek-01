@@ -7,7 +7,9 @@
 
 namespace fs = std::filesystem;
 
-Items::Items(const std::string& directory) {
+Items createFromDirectory(const std::string& directory) {
+    std::map<std::string, Item*> itemMap;
+    
     std::string filename = directory + "item.txt";
     if (!fs::exists(directory) || !fs::is_directory(directory)) {
         throw InputOutputException("Directory tidak ditemukan");
@@ -28,9 +30,8 @@ Items::Items(const std::string& directory) {
         double baseStat;
         std::vector<std::string> effects;
         
-
         if (ss >> id >> name >> type >> rarity >> baseStat) {
-            if (!(isValidItemType(type) && isValidItemRarity(rarity))) {
+            if (!(Items::isValidItemType(type) && Items::isValidItemRarity(rarity))) {
                 throw InputOutputException("Tipe atau rarity tidak valid");
             }
 
@@ -43,11 +44,20 @@ Items::Items(const std::string& directory) {
             // TODO: VALIDASI EFEK
 
             Item* newItem = new Item(name, type, rarity, baseStat, effects);
-            addItem(id, newItem);
+            itemMap.insert(std::make_pair(id, newItem));
         } else {
             throw InventoryEror("Format baris salah di file item.txt");
         }
     }
+    Items listItem (itemMap);
+    
+    return listItem;
+}
+
+// ... rest of the class implementation
+
+Items :: Items(std::map<std::string, Item*> itemMap){
+    this->itemMap = itemMap;
 }
 
 Items::~Items() {
