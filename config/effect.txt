@@ -1,0 +1,2 @@
+#<EffectDamage/EffectDefense/EffectHealthRegen/EffectManaRegen/EffectPoision/EffectTurn> <name> <description> <duration> <amount(%)> <chance(%)>
+EffectDamage Critical <Menambahkan damage anda> 5 7 20
