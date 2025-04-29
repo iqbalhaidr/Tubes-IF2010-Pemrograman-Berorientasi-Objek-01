@@ -49,7 +49,8 @@ void Effect::setRemainingDuration(double remainingDuration) {
 }
 
 
-
+void Effect::remove(Unit* unit) {
+}
 
 bool Effect::isTurn() {
     return false;
