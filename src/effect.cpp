@@ -81,3 +81,7 @@ bool Effect::isThrowable() {
 bool Effect::isPoison() {
     return false;
 }
+
+bool Effect::isHealth() {
+    return false;
+}

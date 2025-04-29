@@ -17,6 +17,7 @@ class EffectHealth : public Effect {
 
         double apply(Unit* unit) override;
         Effect* clone() const override;
+        bool isHealth() override;
 };
 
 #endif

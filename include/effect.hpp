@@ -43,6 +43,7 @@ class Effect{
         virtual bool isManaRegen();
         virtual bool isThrowable();
         virtual bool isPoison();
+        virtual bool isHealth();
 };
 
 #endif
