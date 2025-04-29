@@ -23,6 +23,7 @@ Effect* EffectTurnBasedBased::clone() const {
 
 double EffectTurnBasedBased::apply(Unit* unit) {
     remainingDuration -= 1;
+    return 0;
 }
 
 void EffectTurnBasedBased::remove(Unit* unit) {
