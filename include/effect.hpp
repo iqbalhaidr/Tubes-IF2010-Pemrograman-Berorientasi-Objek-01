@@ -2,7 +2,9 @@
 #define EFFECT_HPP
 
 #include <string>
-#include "unit.hpp"
+
+class Unit; // Forward declaration
+
 class Effect{
     protected:
         std::string name;
