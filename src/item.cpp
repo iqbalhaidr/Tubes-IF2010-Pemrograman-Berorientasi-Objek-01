@@ -8,8 +8,17 @@ Item::Item(std::string Name, std::string type, std::string rarity, double baseSt
     for(size_t i =0; i< Effects.size(); i++){
         effects.push_back(Effects[i]->clone());
     }
+}
 
-    
+Item::Item(const Item& other){
+    this->name = other.name;
+    this->type = other.type;
+    this->rarity = other.rarity;
+    this->baseStat = other.baseStat;
+    const auto& otherEffects = other.getEffects();
+    for (const auto* effect : otherEffects) {
+        effects.push_back(effect->clone());
+    }
 }
 
 Item::~Item() {
@@ -63,10 +72,14 @@ void Item::scaleItemEffect(){
         else if(auto regen = dynamic_cast<EffectHealthRegen*>(e)){
             double healAmount  = multiplier * regen->getHealAmount();
             regen ->setHealAmount(healAmount + regen->getHealAmount());
+            double time = multiplier*regen->getDuration();
+            regen->setDuration(time + regen->getDuration());
         }
         else if (auto mana = dynamic_cast<EffectManaRegen*>(e)){
             double manaAmount  = multiplier * mana->getManaAmount();
             mana->setManaAmount(manaAmount + mana->getManaAmount());
+            double time = multiplier*mana->getDuration();
+            mana->setDuration(time + mana->getDuration());
         }
         else if (auto turnBased = dynamic_cast<EffectPoison*>(e)){
             double time = multiplier*turnBased->getDuration();

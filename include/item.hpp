@@ -17,7 +17,7 @@ class Item {
         Item(std::string name, std::string type, std::string rarity,
              double baseStat,
              const std::vector<Effect*>& effects);
-    
+        Item(const Item& other);
         ~Item();
     
         std::string getName() const;
@@ -30,6 +30,8 @@ class Item {
         void scaleItemEffect() ;
         virtual bool isConsumable() const {return false;};
         virtual bool isStackable() const {return true;};
+        virtual Item* cloneItem();
+
     };
 
 
