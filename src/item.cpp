@@ -9,6 +9,7 @@ Item::Item(std::string Name, std::string type, std::string rarity, double baseSt
         effects.push_back(Effects[i]->clone());
     }
 
+    
 }
 
 Item::~Item() {
@@ -50,6 +51,43 @@ double Item :: getStatMultiplier() const {
 
 double Item :: getFinalStat() const {
     return baseStat * getStatMultiplier(); 
+}
+
+void Item::scaleItemEffect(){
+    double multiplier = Item::getStatMultiplier();
+    for(Effect* e : effects){
+        if (dynamic_cast<EffectTurn*>(e)){
+            double time = multiplier * e->getDuration();
+            e->setDuration(time + e->getDuration());
+        }
+        else if(auto regen = dynamic_cast<EffectHealthRegen*>(e)){
+            double healAmount  = multiplier * regen->getHealAmount();
+            regen ->setHealAmount(healAmount + regen->getHealAmount());
+        }
+        else if (auto mana = dynamic_cast<EffectManaRegen*>(e)){
+            double manaAmount  = multiplier * mana->getManaAmount();
+            mana->setManaAmount(manaAmount + mana->getManaAmount());
+        }
+        else if (auto turnBased = dynamic_cast<EffectPoison*>(e)){
+            double time = multiplier*turnBased->getDuration();
+            double dmg = multiplier * turnBased->getDamage();
+            turnBased->setDuration(time + turnBased->getDuration());
+            turnBased->setDamage(dmg + turnBased->getDamage());
+        }
+        else if (auto damageEfect = dynamic_cast<EffectDamage*>(e)){
+            double damage = multiplier * damageEfect->getDamage();
+            double c = multiplier * damageEfect->getChance();
+            damageEfect->setChance(c + damageEfect->getChance());
+            damageEfect->setDamage(damage + damageEfect->getDamage());
+        }
+        else if (auto defensiveEffect = dynamic_cast<EffectDefensive*>(e)){
+            double def = multiplier * defensiveEffect->getDefense();
+            double c = multiplier * defensiveEffect->getChance();
+            defensiveEffect->setChance(c + defensiveEffect->getChance());
+            defensiveEffect->setDefense(def + defensiveEffect->getDefense());
+        }
+        
+    }
 }
 
 

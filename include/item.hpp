@@ -27,7 +27,9 @@ class Item {
         std::vector<Effect*> getEffects() const;
         double getStatMultiplier() const;
         double getFinalStat() const;
+        void scaleItemEffect() ;
         virtual bool isConsumable() const {return false;};
+        virtual bool isStackable() const {return true;};
     };
 
 
