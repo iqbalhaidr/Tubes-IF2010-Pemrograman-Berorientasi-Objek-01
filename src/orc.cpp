@@ -5,11 +5,9 @@ Orc::Orc(int level,  int expReward, Mobloot& mobLoots)
     updateBasicAttributes();
     vector<Effect*> effects;
     string stunEffectDescription = "berpeluang 0.5 untuk memberikan stun selama 1 turn";
-    EffectTurn* stunEffect = new EffectTurn("Brutal Strike Stun", stunEffectDescription, 1, 1);
-    // kurang chance buat stun
-    // param skill damage dimana?
+    EffectTurn* stunEffect = new EffectTurn("Brutal Strike", stunEffectDescription, 1, 1, 0.5);
     effects.push_back(stunEffect);
-    Skill *skill = new Skill("Brutal Strike", 0, 0, 0.15, effects);
+    Skill *skill = new Skill("Brutal Strike", 0, 0, 0.15, attackDamage * 1.5, effects);
     addSkill(skill);
 }
 
