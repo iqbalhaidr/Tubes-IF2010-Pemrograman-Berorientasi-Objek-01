@@ -12,3 +12,7 @@ bool Pendant::isConsumable() const{
 bool Pendant ::isStackAble() const{
     return true;
 }
+
+Item* Pendant::cloneItem(){
+    return new Pendant(*this);
+}

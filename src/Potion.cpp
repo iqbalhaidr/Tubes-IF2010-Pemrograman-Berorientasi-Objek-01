@@ -12,3 +12,7 @@ bool Potion::isConsumable() const{
 bool Potion ::isStackAble() const{
     return true;
 }
+
+Item* Potion::cloneItem(){
+    return new Potion(*this);
+}

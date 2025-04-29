@@ -1,4 +1,4 @@
-#include "Weapon.hpp"
+#include "../include/Weapon.hpp"
 
 Weapon::Weapon(std::string Name, std::string type, std::string rarity, double baseStat, const std::vector<Effect*>& Effects)
         : Item(Name, type, rarity, baseStat, Effects){}
@@ -11,4 +11,8 @@ bool Weapon::isConsumable() const{
 
 bool Weapon ::isStackAble() const{
     return false;
+}
+
+Item* Weapon::cloneItem(){
+    return new Weapon(*this);
 }

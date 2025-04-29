@@ -12,3 +12,7 @@ bool Armor::isConsumable() const{
 bool Armor ::isStackAble() const{
     return false;
 }
+
+Item* Armor::cloneItem(){
+    return new Armor(*this);
+}
