@@ -19,10 +19,7 @@ void EffectHealthRegen::setHealAmount(int healAmount) {
     this->healAmount = healAmount;
 }
 double EffectHealthRegen::apply(Unit* unit) {
-    int currentRegen = unit->getHealthRegen();
-    unit->setHealthRegen(currentRegen + healAmount);
-    remainingDuration -= 1;
-    return 0; 
+    return healAmount; 
 }
 
 Effect* EffectHealthRegen::clone() const{
@@ -30,8 +27,6 @@ Effect* EffectHealthRegen::clone() const{
 }
 
 void EffectHealthRegen::remove(Unit* unit) {
-    int currentRegen = unit->getHealthRegen();
-    unit->setHealthRegen(currentRegen - healAmount);
 }
 
 bool EffectHealthRegen::isHealthRegen() {

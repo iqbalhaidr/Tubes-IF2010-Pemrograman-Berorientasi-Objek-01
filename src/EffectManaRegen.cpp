@@ -20,10 +20,7 @@ void EffectManaRegen::setManaAmount(int manaAmount) {
 }
 
 double EffectManaRegen::apply(Unit* unit) {
-    int currentRegen = unit->getManaRegen();
-    unit->setManaRegen(currentRegen + manaAmount);
-    remainingDuration -= 1;
-    return 0; 
+    return manaAmount;
 }
 
 
@@ -32,8 +29,6 @@ Effect* EffectManaRegen::clone() const{
 }
 
 void EffectManaRegen::remove(Unit* unit) {
-    int currentRegen = unit->getManaRegen();
-    unit->setManaRegen(currentRegen - manaAmount);
 }
 
 bool EffectManaRegen::isManaRegen() {
