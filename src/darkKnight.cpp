@@ -5,12 +5,12 @@ DarkKnight::DarkKnight(int level, int expReward, Mobloot& mobLoots)
     //efek lifesteal 
     updateBasicAttributes();
     vector<Effect*> effects;
-    string stunEffectDescription = "berpeluang 0.5 untuk memberikan stun selama 1 turn";
-    EffectTurn* stunEffect = new EffectTurn("Brutal Strike Stun", stunEffectDescription, 1, 1);
-    // kurang chance buat stun
+    string lifeStealEffectDescription = "berpeluang 0.35 untuk melakukan lifesteal pada turn selanjutnya";
+    EffectHealth* lifeStealEffect = new EffectHealth("Brutal Strike Life Steal", lifeStealEffectDescription, 1, 1);
+    // kurang chance buat lifesteal
     // param skill damage dimana?
-    effects.push_back(stunEffect);
-    Skill *skill = new Skill("Soul Siphon", 0, 0, 35, effects);
+    effects.push_back(lifeStealEffect);
+    Skill *skill = new Skill("Soul Siphon", 0, 0, 35, 2*getStats().getIntelligence(),effects);
     addSkill(skill);
 }
 

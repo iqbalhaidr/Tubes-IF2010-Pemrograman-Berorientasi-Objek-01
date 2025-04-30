@@ -13,6 +13,10 @@
 #include "EffectDefensive.hpp"
 #include "EffectPoison.hpp"
 #include "EffectTurn.hpp"
+#include "EffectHealth.hpp" 
+#include "EffectManaReduc.hpp"
+#include "EffectReducePower.hpp"
+#include "EffectTurnBased.hpp"
 
 #include "inventory.hpp"
 #include <string>

@@ -2,13 +2,17 @@
 
 DemonLord::DemonLord(int level, int expReward, Mobloot& mobLoots)
  : BossMobs("Demon Lord", level, 16, 32, 16, expReward, mobLoots) {
+    //
     updateBasicAttributes();
     vector<Effect*> effects;
-    string stunEffectDescription = "berpeluang 0.5 untuk memberikan stun selama 1 turn";
-    EffectTurn* stunEffect = new EffectTurn("Brutal Strike Stun", stunEffectDescription, 1, 1);
+    string debuffEffectDescription = "berpeluang 0.15 untuk memberikan kutukan yang mengurangi attack power dan defense power selama 5 turn";
+    EffectReducePower* attackReducEffect = new EffectReducePower("Infernal Curse", debuffEffectDescription, 5, 5, 1, 10);
+    EffectManaReduc* manaReducEffect = new EffectManaReduc("Infernal Curse", debuffEffectDescription, 5, 5, 10);
     // kurang chance buat stun
     // param skill damage dimana?
-    Skill *skill = new Skill("Infernal Curse", 0, 0, 15, "Infernal Curse");
+    effects.push_back(attackReducEffect);
+    effects.push_back(manaReducEffect);
+    Skill *skill = new Skill("Infernal Curse", 0, 0, 15, 0, effects);
     addSkill(skill);
 }
 
