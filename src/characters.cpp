@@ -88,7 +88,7 @@ void Characters::save(const string& directory) const {
         throw InventoryEror("Directory tidak ditemukan");
     }
 
-    file << "#<name>[<str> <agi> <int>] <level> <exp> <gold> <masteryCost><type>\n";
+    file << "#<name> [<str> <agi> <int>] <level> <exp> <gold> <masteryCost> <type>\n";
     
     for (const auto& character : characterMap) {
         Character* c = character.second;
