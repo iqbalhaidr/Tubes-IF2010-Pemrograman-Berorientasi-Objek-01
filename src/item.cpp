@@ -2,7 +2,7 @@
 
 Item::Item(std::string ItemId, std::string Name, std::string type, std::string rarity, double baseStat, const std::vector<Effect*>& Effects){
     this->itemId = itemId;
-    this->name = name;
+    this->name = Name;
     this->type = type;
     this->rarity = rarity;
     this->baseStat = baseStat;
