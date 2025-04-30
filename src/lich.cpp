@@ -11,7 +11,7 @@ Lich::Lich(int level, int expReward, Mobloot& mobLoots)
     // param skill damage dimana?
     effects.push_back(poisonEffect);
     effects.push_back(manaReducEffect);
-    Skill *skill = new Skill("Withering Touch", 0, 0, 15, effects);
+    Skill *skill = new Skill("Withering Touch", 0, 0, 15, 2*getStats().getIntelligence(), effects);
     addSkill(skill);
 }
 
