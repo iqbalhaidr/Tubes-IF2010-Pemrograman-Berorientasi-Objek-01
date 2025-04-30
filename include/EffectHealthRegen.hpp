@@ -8,7 +8,7 @@ class EffectHealthRegen : public EffectTurnBasedBased {
     public:
         EffectHealthRegen(const std::string& name, const std::string& description, double duration, double remainingDuration, int healAmount);
         ~EffectHealthRegen();
-        EffectHealthRegen(EffectHealthRegen& other);
+        EffectHealthRegen(const EffectHealthRegen& other);
         EffectHealthRegen& operator=(EffectHealthRegen& other) ;
 
         // Setter Getter
@@ -16,6 +16,9 @@ class EffectHealthRegen : public EffectTurnBasedBased {
         void setHealAmount(int healAmount);
 
         double apply(Unit* unit) override;
+        void remove(Unit* unit) override;
+        Effect* clone() const override;
+        bool isHealthRegen() override;
 };
 
 

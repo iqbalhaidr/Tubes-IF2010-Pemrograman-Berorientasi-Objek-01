@@ -8,9 +8,9 @@ using namespace std;
 class Goblin : public BasicMobs {
     public:
         // ctor dtor
-        Goblin(string name, int maxHealth, int healthRegen, int maxMana, int manaRegen, int attackDamage,  int strength, int agility, int intelligence, int healValue);
+        Goblin(int level, int expReward, Mobloot& mobLoots);
         ~Goblin();
-
+        void updateBasicAttributes() override ;
 
 
 };

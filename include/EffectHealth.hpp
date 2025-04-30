@@ -8,7 +8,7 @@ class EffectHealth : public Effect {
     public:
         EffectHealth(const std::string& name, const std::string& description, double duration, double remainingDuration, int healAmount);
         ~EffectHealth();
-        EffectHealth(EffectHealth& other);
+        EffectHealth(const EffectHealth& other);
         EffectHealth& operator=(EffectHealth& other);
 
         // Setter Getter
@@ -16,6 +16,8 @@ class EffectHealth : public Effect {
         void setHealAmount(int healAmount);
 
         double apply(Unit* unit) override;
+        Effect* clone() const override;
+        bool isHealth() override;
 };
 
 #endif

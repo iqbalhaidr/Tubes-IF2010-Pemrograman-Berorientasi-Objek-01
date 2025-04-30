@@ -5,8 +5,9 @@
 
 #include "Chamber.hpp"
 #include "Reward.hpp"
-// #include "Char.hpp"
+#include "character.hpp"
 #include "Randomizer.hpp"
+#include "items.hpp"
 
 class Dungeon {
    private:
@@ -24,7 +25,7 @@ class Dungeon {
     int entryCost;
 
    public:
-    Dungeon(string rank);
+    Dungeon(string rank, Mobloot &mobLoots, Items &items);
     ~Dungeon();
     // Dungeon(const Dungeon &);
     // Dungeon &operator=(const Dungeon &);
@@ -34,16 +35,23 @@ class Dungeon {
 
     // Setter
 
-    // void start(Char&, Inventory&);
+    void start(Character&, Inventory&);
 
     /* Randomize, set isDD, update reward */
     void randomizeDoubleDungeon();
 
     /* Setter attribute based on rank */
-    void helperSet();
+    void helperSet(Items&);
 
     /* Generate chambers berdasarkan rank, set totalChambers */
-    void generateChambers();
+    void generateChambers(Mobloot&);
+
+    void displayInfo();
+
+    /* Helper pemberi penalty */
+    void substractExp(Character*, int);
+
+    void substractGold(Character*, int);
 };
 
 #endif

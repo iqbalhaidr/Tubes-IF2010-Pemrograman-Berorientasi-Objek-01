@@ -7,6 +7,13 @@
 #include "stats.hpp"
 #include "skill.hpp"
 #include "effect.hpp"
+#include "EffectHealthRegen.hpp" // diperlukan di CPP!
+#include "EffectManaRegen.hpp"
+#include "EffectDamage.hpp"
+#include "EffectDefensive.hpp"
+#include "EffectPoison.hpp"
+#include "EffectTurn.hpp"
+
 #include "inventory.hpp"
 #include <string>
 #include <map>
@@ -24,15 +31,17 @@ class Unit {
         int maxMana;
         int manaRegen;
         int attackDamage;
+        int level;
         Stats stats;
-        map<string, bool> turnEffectstatus; 
+        map<string, bool> turnActiveEffectstatus; 
         vector<Skill*> skills;
-        vector<Effect*> effects;
-        int calculateDamage(int baseDamage, Inventory& inventory); // TEMPORARY
+        vector<Effect*> activeEffects;
+        int getLevelFactor(Unit& target) const;
+        int calculateDamage(Unit& target, int baseDamage, Inventory& inventory); // TEMPORARY
         virtual void updateBasicAttributes();
     public:
         // ctor dtor
-        Unit::Unit(string name, int strength, int agility, int intelligence);
+        Unit::Unit(string name, int strength, int agility, int intelligence, int level);
         ~Unit();
 
         // setter getter
@@ -44,9 +53,11 @@ class Unit {
         int getMaxMana() const;
         int getManaRegen() const;
         int getAttackDamage() const;
-        map<string, bool> getTurnEffectStatus() const;
+        int getLevel() const;
+        map<string, bool> getTurnActiveEffectStatus() const;
         vector<Skill*> getSkills() const; 
-        vector<Effect*> getEffects() const; 
+        vector<Effect*> getActiveEffects() const; 
+        vector<Effect*> getCombinedEffect(const vector<Effect*>& activeEffects) const;
 
         Stats getStats() const;
         void setName(string name);
@@ -57,7 +68,8 @@ class Unit {
         void setMaxMana(int maxMana);
         void setManaRegen(int manaRegen);
         void setAttackDamage(int attackDamage);
-        void setTurnEffectStatus(string turnEffect);
+        void setLevel(int level);
+        void setTurnActiveEffectStatus(string turnEffect);
         void setStats(int strength, int agility, int intelligence);
 
         // Fungsi
@@ -68,9 +80,9 @@ class Unit {
         virtual void useSkill(Skill* skill, Unit& target); // TEMPORARY
         virtual void addSkill(Skill* skill); // TEMPORARY
         virtual void removeSkill(Skill* skill); // TEMPORARY
-        void addEffect(Effect* effect); // TEMPORARY
-        void removeEffect(Effect* effect); // TEMPORARY
-        void applyEffect();
+        void addActiveEffect(Effect* effect); // TEMPORARY
+        void removeActiveEffect(Effect* effect); // TEMPORARY
+        void applyActiveEffect();
         virtual void reset() = 0;
 
 

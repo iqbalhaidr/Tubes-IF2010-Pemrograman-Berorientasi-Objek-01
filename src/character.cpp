@@ -3,18 +3,15 @@
 using namespace std;
 
 Character::Character(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, string type)
-: Unit(name, strength, agility, intelligence) {
-    setLevel(level);
+: Unit(name, strength, agility, intelligence, level) {
     setExp(exp);
     setGold(gold);
     setMasteryCost(masteryCost);
     setType(type);
-    Unit::updateUnitAttributes();
 }
 
 Character::~Character() {}
 
-int Character::getLevel() const { return level;}
 int Character::getExp() const { return exp;}
 int Character::getGold() const { return gold;}
 int Character::getMasteryCost() const { return masteryCost;}
@@ -29,5 +26,5 @@ void Character::setType(string type) { this->type = type;}
 void Character::reset() {
     currentHealth = maxHealth;
     currentMana = maxMana;
-    effects.clear(); 
+    activeEffects.clear(); 
 }

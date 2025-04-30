@@ -5,7 +5,7 @@ EffectDefensive::EffectDefensive(const std::string& name, const std::string& des
 
 EffectDefensive::~EffectDefensive() {}
 
-EffectDefensive::EffectDefensive(EffectDefensive& other) 
+EffectDefensive::EffectDefensive(const EffectDefensive& other) 
     : Effect(other), chance(other.chance), defense(other.defense) {}
 
 EffectDefensive& EffectDefensive::operator=(EffectDefensive& other) {
@@ -44,3 +44,9 @@ double EffectDefensive::apply(Unit* unit) {
 }
 
 bool EffectDefensive::isDefensive(){return true;}
+
+Effect* EffectDefensive::clone() const {
+    return new EffectDefensive(*this);
+}
+
+void EffectDefensive::remove(Unit* unit) {}

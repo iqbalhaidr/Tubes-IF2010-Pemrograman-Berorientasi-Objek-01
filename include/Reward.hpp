@@ -3,7 +3,8 @@
 
 #include <map>
 
-// #include "inventory.hpp"
+#include "character.hpp"
+#include "inventory.hpp"
 #include "item.hpp"
 
 class Reward {
@@ -43,10 +44,16 @@ class Reward {
     void displayInfo();
 
     // Memberikan prize kepada char dan player
-    // void giveTo(Char*, Inventory*);
+    void giveTo(Character*, Inventory*);
 
     // Memberikan prize HANYA ITEM kepada player (kasus special dungeon)
-    // void giveTo(Inventory*)
+    void giveTo(Inventory*);
+
+    // Helper menambahkan exp ke character
+    void addExpToCharacter(Character* c, int exp);
+
+    // Helper menambahkan gold ke character
+    void addGoldToCharacter(Character* c, int gold);
 };
 
 #endif

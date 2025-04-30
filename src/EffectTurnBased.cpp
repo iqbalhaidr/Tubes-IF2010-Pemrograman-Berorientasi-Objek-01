@@ -5,7 +5,7 @@ EffectTurnBasedBased::EffectTurnBasedBased(const std::string& name, const std::s
 
 EffectTurnBasedBased::~EffectTurnBasedBased() {}
 
-EffectTurnBasedBased::EffectTurnBasedBased(EffectTurnBasedBased& other) 
+EffectTurnBasedBased::EffectTurnBasedBased(const EffectTurnBasedBased& other) 
     : Effect(other) {}
 
 EffectTurnBasedBased& EffectTurnBasedBased::operator=(EffectTurnBasedBased& other) {
@@ -17,3 +17,13 @@ bool EffectTurnBasedBased::isTurnBased() {
     return true;
 }
 
+Effect* EffectTurnBasedBased::clone() const {
+    return new EffectTurnBasedBased(*this);
+}
+
+double EffectTurnBasedBased::apply(Unit* unit) {
+    remainingDuration -= 1;
+}
+
+void EffectTurnBasedBased::remove(Unit* unit) {
+}

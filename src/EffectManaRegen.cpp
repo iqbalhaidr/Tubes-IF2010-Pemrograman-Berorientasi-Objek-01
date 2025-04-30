@@ -1,9 +1,11 @@
 #include "../include/EffectManaRegen.hpp"
+#include "../include/Unit.hpp"
+
 
 EffectManaRegen::EffectManaRegen(const std::string& name, const std::string& description, double duration, double remainingDuration, int manaAmount)
     : EffectTurnBasedBased(name, description, duration, remainingDuration), manaAmount(manaAmount) {}
 EffectManaRegen::~EffectManaRegen() {}
-EffectManaRegen::EffectManaRegen(EffectManaRegen& other) 
+EffectManaRegen::EffectManaRegen(const EffectManaRegen& other) 
     : EffectTurnBasedBased(other), manaAmount(other.manaAmount) {}
 EffectManaRegen& EffectManaRegen::operator=(EffectManaRegen& other) {
     EffectTurnBasedBased::operator=(other);
@@ -24,3 +26,16 @@ double EffectManaRegen::apply(Unit* unit) {
     return 0; 
 }
 
+
+Effect* EffectManaRegen::clone() const{
+    return new EffectManaRegen(*this);
+}
+
+void EffectManaRegen::remove(Unit* unit) {
+    int currentRegen = unit->getManaRegen();
+    unit->setManaRegen(currentRegen - manaAmount);
+}
+
+bool EffectManaRegen::isManaRegen() {
+    return true;
+}

@@ -34,34 +34,58 @@ void Reward::addItem(Item *item, int count) {
     items[item] = count;
 }
 
-void Reward::displayInfo() {
-    std::cout << "Current Reward" << std::endl;
-    std::cout << "Exp: " << exp << std::endl;
-    std::cout << "Gold: " << gold << std::endl;
-    std::cout << "Items: " << std::endl;
+// TODO: addItem(const Item*, int), expLevelUp pada character
 
-    std::map<Item *, int>::const_iterator i = items.begin();
-    int ctr = 1;
-    for (; i != items.end(); i++) {
-        std::cout << "    " << ctr << ". " << i->second << " " << i->first->getName() << std::endl;
-        ctr++;
-    }
-}
-
-// void Reward::giveTo(Char* c, Inventory *inv) {
-//     c.addExp(exp);
-//     c.addGold(exp);
-//     std::map<Item *, int>::const_iterator i = items.begin();
-//     for (; i != items.end(); i++) {
+// void Reward::giveTo(Character* c, Inventory *inv) {
+//     addExpToCharacter(c, exp);
+//     addGoldToCharacter(c, gold);
+//     for (auto it = items.cbegin(); i != items.cend(); ++i) {
 //         std::pair<const Item*, int> eachItem (i->first, i->second);
 //         inv->addItem(eachItem);
 //     }
 // }
 
 // void Reward::giveTo(Inventory *inv) {
-//     std::map<Item *, int>::const_iterator i = items.begin();
-//     for (; i != items.end(); i++) {
+//     for (auto it = items.cbegin(); i != items.cend(); ++i) {
 //         std::pair<const Item*, int> eachItem (i->first, i->second);
 //         inv->addItem(eachItem);
-//     }
+//     } 
 // }
+
+void Reward::displayInfo() {
+    std::cout << "Current Reward" << std::endl;
+    std::cout << "Exp: " << exp << std::endl;
+    std::cout << "Gold: " << gold << std::endl;
+    std::cout << "Items: " << std::endl;
+    
+    if (items.empty()) {
+        std::cout << "    No items" << std::endl;
+        return;
+    }
+
+    int ctr = 1;
+    for (auto it = items.cbegin(); it != items.cend(); ++it) {
+        std::cout << "    " << ctr << ". " << it->second << " " << it->first->getName() << std::endl;
+    }
+}
+
+// Helper menambahkan exp ke character
+void addExpToCharacter(Character* c, int exp) {
+    if (exp < 0) {
+        std::cout << "Exp reward cannot be negative" << std::endl;
+        return;
+    }
+    c->setExp(c->getExp() + exp);
+    if (c->getExp() >= c->getLevel() * 100) { // INI MASIH MANUAL
+        c->levelUp();
+    }
+}
+
+// Helper menambahkan gold ke character
+void addGoldToCharacter(Character* c, int gold) {
+    if (gold < 0) {
+        std::cout << "Gold reward cannot be negative" << std::endl;
+        return;
+    }
+    c->setGold(c->getGold() + gold);
+}

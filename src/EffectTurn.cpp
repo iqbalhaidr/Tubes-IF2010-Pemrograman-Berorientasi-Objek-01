@@ -5,7 +5,7 @@ EffectTurn::EffectTurn(const std::string& name, const std::string& description, 
 
 EffectTurn::~EffectTurn() {}
 
-EffectTurn::EffectTurn(EffectTurn& other) 
+EffectTurn::EffectTurn(const EffectTurn& other) 
     : Effect(other) {}
 
 EffectTurn& EffectTurn::operator=(EffectTurn& other) {
@@ -21,4 +21,8 @@ double EffectTurn::apply(Unit* unit) {
     // Default implementation does nothing
     remainingDuration -= 1;
     return 0;
+}
+
+Effect* EffectTurn::clone() const {
+    return new EffectTurn(*this);
 }

@@ -1,18 +1,19 @@
 #include "../include/skill.hpp" 
 
-Skill::Skill(const std::string& name, double manaCost, double masterCost, double effectChance, const std::string& effectType)
-    : name(name), manaCost(manaCost), masterCost(masterCost), effectChance(effectChance) {}
+Skill::Skill(const std::string& name, double manaCost, double masterCost, double effectChance, vector<Effect*> effects)
+    : name(name), manaCost(manaCost), masterCost(masterCost), effectChance(effectChance), effects(effects) {}
 
 Skill::~Skill() {}
 
 Skill::Skill(Skill& other) 
-    : name(other.name), manaCost(other.manaCost), masterCost(other.masterCost), effectChance(other.effectChance) {}
+    : name(other.name), manaCost(other.manaCost), masterCost(other.masterCost), effectChance(other.effectChance), effects(effects) {}
 
 Skill& Skill::operator=(Skill& other){
     name = other.name;
     manaCost = other.manaCost;
     masterCost = other.masterCost;
     effectChance = other.effectChance;
+    effects = other.effects;
 
     return *this;
 }
@@ -57,3 +58,10 @@ void Skill::setDamage(double damage) {
     this->damage = damage;
 }
 
+std::vector<Effect*> Skill::getEffects() const {
+    return effects;
+}
+
+void Skill::setEffects(std::vector<Effect*> effects) {
+    this->effects = effects;
+}

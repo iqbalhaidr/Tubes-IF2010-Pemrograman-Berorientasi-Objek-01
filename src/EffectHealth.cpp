@@ -1,4 +1,6 @@
 #include "../include/EffectHealth.hpp"
+#include "../include/Unit.hpp"
+
 
 
 EffectHealth::EffectHealth(const std::string& name, const std::string& description, double duration, double remainingDuration, int healAmount)
@@ -6,7 +8,7 @@ EffectHealth::EffectHealth(const std::string& name, const std::string& descripti
 
 EffectHealth::~EffectHealth() {}
 
-EffectHealth::EffectHealth(EffectHealth& other) 
+EffectHealth::EffectHealth(const EffectHealth& other) 
     : Effect(other), healAmount(other.healAmount) {}
 
 EffectHealth& EffectHealth::operator=(EffectHealth& other) {
@@ -30,3 +32,12 @@ double EffectHealth::apply(Unit* unit) {
     return 0;
 }
 
+
+
+Effect* EffectHealth::clone() const {
+    return new EffectHealth(*this);
+}
+
+bool EffectHealth::isHealth() {
+    return true;
+}
