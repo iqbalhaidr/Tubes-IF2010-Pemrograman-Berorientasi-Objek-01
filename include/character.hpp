@@ -22,7 +22,7 @@ class Character : public Unit {
     public:
         // ctor dtor
         Character(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, string type);
-        ~Character();
+        virtual ~Character();
 
         // setter getter
         int getExp() const;

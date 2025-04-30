@@ -1,13 +1,11 @@
 #ifndef UNIT_HPP
 #define UNIT_HPP
 
-#define MAX_HEALTH 10000
-#define MAX_MANA 2000
-#define MAX_ATTACK_DAMAGE 1000
+
 #include "stats.hpp"
 #include "skill.hpp"
 #include "effect.hpp"
-#include "EffectHealthRegen.hpp" // diperlukan di CPP!
+#include "EffectHealthRegen.hpp" 
 #include "EffectManaRegen.hpp"
 #include "EffectDamage.hpp"
 #include "EffectDefensive.hpp"
@@ -15,7 +13,6 @@
 #include "EffectTurn.hpp"
 #include "EffectHealth.hpp" 
 #include "EffectManaReduc.hpp"
-#include "EffectReducePower.hpp"
 #include "EffectTurnBased.hpp"
 
 #include "inventory.hpp"
@@ -45,7 +42,7 @@ class Unit {
     public:
         // ctor dtor
         Unit(string name, int strength, int agility, int intelligence, int level);
-        ~Unit();
+        virtual ~Unit();
 
         // setter getter
         string getName() const;
