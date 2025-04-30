@@ -12,7 +12,7 @@ class Assassin : public Character {
         void updateBasicAttributes() override;
     public:
         // ctor dtor
-        Assassin(string name, int strength = 16, int agility = 20, int intelligence = 28, int level, int exp, int gold, int masteryCost, string type, float criticalChance, int criticalMultiplier);
+        Assassin(string name);
         ~Assassin();
 
         // setter getter

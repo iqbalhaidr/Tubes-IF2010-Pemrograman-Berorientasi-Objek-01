@@ -11,7 +11,7 @@ class Berserker : public Character {
         void updateBasicAttributes() override;
     public:
         // ctor dtor
-        Berserker(string name,int strength = 28, int agility = 17, int intelligence = 12, int level, int exp, int gold, int masteryCost, string type, int rageMultiplier);
+        Berserker(string name);
         ~Berserker();
 
         // setter getter

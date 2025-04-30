@@ -2,8 +2,8 @@
 #include <iostream>
 using namespace std;
 
-Fighter::Fighter(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, string type, float blockChance)
-: Character(name, strength, agility, intelligence, level, exp, gold, masteryCost, "Fighter") {
+Fighter::Fighter(string name)
+: Character(name, 26, 17, 13, 1, 0, 0, 5, "Fighter") {
     updateBasicAttributes();
 }
 

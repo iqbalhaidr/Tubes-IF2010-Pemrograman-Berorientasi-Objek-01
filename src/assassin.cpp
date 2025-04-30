@@ -2,10 +2,9 @@
 #include <iostream>
 using namespace std;
 
-Assassin::Assassin(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, string type, float criticalChance, int criticalMultiplier)
- : Character(name, 25, 16, 13, level, exp, gold, masteryCost, "Assassin") {
+Assassin::Assassin(string name)
+ : Character(name, 16, 20, 28, 1, 0, 0, 5, "Assassin") {
     updateBasicAttributes(); // kecuali critmultiplier
-    setCriticalMultiplier(criticalMultiplier);
 }
 
 Assassin::~Assassin() {}
@@ -17,7 +16,7 @@ void Assassin::setCriticalChance(float criticalChance) { this->criticalChance = 
 void Assassin::setCriticalMultiplier(int criticalMultiplier) { this->criticalMultiplier = criticalMultiplier;}
 
 void Assassin::attack(Unit& target, Inventory& inventory) {
-    if (rand() % 100 < criticalChance) { 
+    if ((rand() % 100 + 1)< criticalChance) { 
         int totalDamage = calculateDamage(target, attackDamage, inventory); 
         totalDamage *= criticalMultiplier; 
         cout << "Critical hit!" << endl;
@@ -29,7 +28,7 @@ void Assassin::attack(Unit& target, Inventory& inventory) {
 }
 
 void Assassin::takeDamage(int damage) {
-    if (rand() % 100 < stats.getAgility() / 100) { 
+    if ((rand() % 100 + 1) < stats.getAgility()) { 
         cout << "Serangan terhindar" << endl;
         return; // No damage taken
     }
@@ -38,6 +37,7 @@ void Assassin::takeDamage(int damage) {
 
 void Assassin::updateBasicAttributes() {
     setAttackDamage(12 + 7 * getStats().getAgility() + getStats().getStrength());
+    setCriticalMultiplier(getStats().getAgility() / 5);
     setCriticalChance(getStats().getAgility() * 4 / 100);
 }
 void Assassin::levelUp() {

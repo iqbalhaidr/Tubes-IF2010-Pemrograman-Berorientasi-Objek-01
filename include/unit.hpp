@@ -13,6 +13,10 @@
 #include "EffectDefensive.hpp"
 #include "EffectPoison.hpp"
 #include "EffectTurn.hpp"
+#include "EffectHealth.hpp" 
+#include "EffectManaReduc.hpp"
+#include "EffectReducePower.hpp"
+#include "EffectTurnBased.hpp"
 
 #include "inventory.hpp"
 #include <string>
@@ -40,7 +44,7 @@ class Unit {
         virtual void updateBasicAttributes();
     public:
         // ctor dtor
-        Unit::Unit(string name, int strength, int agility, int intelligence, int level);
+        Unit(string name, int strength, int agility, int intelligence, int level);
         ~Unit();
 
         // setter getter

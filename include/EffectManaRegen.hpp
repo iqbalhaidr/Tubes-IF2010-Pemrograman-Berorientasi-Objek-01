@@ -9,7 +9,7 @@ class EffectManaRegen : public EffectTurnBasedBased {
         EffectManaRegen(const std::string& name, const std::string& description, double duration, double remainingDuration, int manaAmount);
         ~EffectManaRegen();
         EffectManaRegen(const EffectManaRegen& other);
-        EffectManaRegen& operator=(EffectManaRegen& other) = default;
+        EffectManaRegen& operator=(EffectManaRegen& other) ;
 
         // Setter Getter
         int getManaAmount() const;

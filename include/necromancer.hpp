@@ -15,7 +15,7 @@ class Necromancer : public Character {
         void updateBasicAttributes() override;
     public:
         // ctor dtor
-        Necromancer(string name, int strength = 13, int agility = 16, int intelligence = 28,  int level, int exp, int gold, int masteryCost, string type, double summonChance);
+        Necromancer(string name);
         ~Necromancer();
 
         // setter getter

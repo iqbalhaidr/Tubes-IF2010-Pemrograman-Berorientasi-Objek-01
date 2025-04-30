@@ -53,10 +53,14 @@ void Unit::setStats(int strength, int agility, int intelligence) {
     stats.setIntelligence(intelligence);
 }
 int Unit::calculateDamage(Unit& target, int baseDamage, Inventory& inventory) {
-    int totalDamage = 1;
+    int totalDamage = 0;
     for (const auto& ActiveEffect : getCombinedEffect(activeEffects)) {
-        if (auto* damageEffect = dynamic_cast<EffectDamage*>(ActiveEffect)) {
-            totalDamage += ActiveEffect->apply(this);
+        if (ActiveEffect->isDamage()) {
+            if (ActiveEffect->getName() == "Infernal Curse") {
+                totalDamage -= ActiveEffect->apply(this);
+            } else {
+                totalDamage += ActiveEffect->apply(this);
+            }
         }
     }
     int weaponDamage = inventory.getEquippedItem("weapon")->getBaseStat();
@@ -70,11 +74,17 @@ void Unit::attack(Unit& target, Inventory& inventory) {
 }
 
 void Unit::takeDamage(int damage) {
+    int defence  = 0;
     for (const auto& activeEffect : getCombinedEffect(activeEffects)) {
-        if (auto* defensiveEffect = dynamic_cast<EffectDamage*>(activeEffect)) {
-            damage *= 1 - activeEffect->apply(this);
+        if (activeEffect->isDefensive()) {
+            if (activeEffect->getName() == "Infernal Curse") {
+                defence -= activeEffect->apply(this);
+            } else {
+                defence += activeEffect->apply(this);
+            }
         }
     }
+    damage *= 1 - defence;
     currentHealth -= damage;
     if (currentHealth < 0) {
         currentHealth = 0;
@@ -110,12 +120,15 @@ void Unit::useSkill(Skill* skill, Unit& target) {
     int totalDamage = skill->getDamage();
 
     for (const auto& effect : skill->effects) {
-        if (effect->isTurn() || effect->isTurnBased()) { // kasus crit masukin efek crit dari skill ke vector dulu
+        if ((effect->isTurn() || effect->isTurnBased()) 
+        || (effect->isDamage() && effect->getName() == "Infernal Curse")
+        || (effect->isDefensive() && effect->getName() == "Infernal Curse")
+    ) { // kasus crit masukin efek crit dari skill ke vector dulu
             target.addActiveEffect(effect); 
         } else if (effect->isDefensive() || effect->isDamage()) {
             this->addActiveEffect(effect);
         } else if(effect->isHealth()) {
-            setHealthRegen(effect->apply(this));
+            heal(effect->apply(this));
         }
         
     }
@@ -214,14 +227,22 @@ vector<Effect*> Unit::getCombinedEffect(const vector<Effect*>& activeEffects) co
                     }
                 } else if (auto damageBase = dynamic_cast<EffectDamage*>(baseEffect)) {
                     if (auto damageOther = dynamic_cast<EffectDamage*>(activeEffects[j])) {
-                        damageBase->setChance(damageBase->getChance() + damageOther->getChance());
-                        damageBase->setDamage(damageBase->getDamage() + damageOther->getDamage());
+                        if (damageBase->getName() == "Infernal Curse") {
+                            damageBase->setRemainingDuration(damageBase->getDuration());
+                        } else {
+                            damageBase->setChance(damageBase->getChance() + damageOther->getChance());
+                            damageBase->setDamage(damageBase->getDamage() + damageOther->getDamage());
+                        }
                         processed[j] = true;
                     }
                 } else if (auto defensiveBase = dynamic_cast<EffectDefensive*>(baseEffect)) {
                     if (auto defensiveOther = dynamic_cast<EffectDefensive*>(activeEffects[j])) {
-                        defensiveBase->setChance(defensiveBase->getChance() + defensiveOther->getChance());
-                        defensiveBase->setDefense(defensiveBase->getDefense() + defensiveOther->getDefense());
+                        if (defensiveBase->getName() == "Infernal Curse") {
+                            defensiveBase->setRemainingDuration(defensiveBase->getDuration());
+                        } else {
+                            defensiveBase->setChance(defensiveBase->getChance() + defensiveOther->getChance());
+                            defensiveBase->setDefense(defensiveBase->getDefense() + defensiveOther->getDefense());
+                        }
                         processed[j] = true;
                     }
                 }
