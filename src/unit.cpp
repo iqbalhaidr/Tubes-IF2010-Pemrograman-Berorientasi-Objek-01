@@ -7,7 +7,7 @@ Unit::Unit(string name, int strength, int agility, int intelligence, int level) 
     this->name = name;
     updateBasicAttributes();   
     this->level = level;  
-    this->turnActiveEffectstatus = {
+    this->turnEffectstatus = {
         {"stun", false},
         {"disable", false}
     };
@@ -27,9 +27,11 @@ int Unit::getLevel() const { return level;}
 int Unit::getLevelFactor(Unit& target) const {
     return 1 + (this->level - target.level) * 0.05;
 }
-map<string, bool> Unit::getTurnActiveEffectStatus() const { return turnActiveEffectstatus;}
+map<string, bool> Unit::getTurnActiveEffectStatus() const { return turnEffectstatus;}
 Stats Unit::getStats() const { return stats;}
-vector<Skill*> Unit::getSkills() const { return skills;} // TEMPORARY
+vector<Skill*> Unit::getSkills() const { 
+    if (getTurnActiveEffectStatus()["stun"])
+    return skills;} // TEMPORARY
 vector<Effect*> Unit::getActiveEffects() const { return activeEffects;} // TEMPORARY
 
 void Unit::setName(string name) { this->name = name;}
@@ -40,9 +42,9 @@ void Unit::setCurrentMana(int currentMana) { this->currentMana = currentMana;}
 void Unit::setMaxMana(int maxMana) { this->maxMana = maxMana;}
 void Unit::setManaRegen(int manaRegen) { this->manaRegen = manaRegen;}
 void Unit::setAttackDamage(int attackDamage) { this->attackDamage = attackDamage;}
-void Unit::setTurnActiveEffectStatus(string turnActiveEffect) {
-    if (turnActiveEffectstatus.find(turnActiveEffect) != turnActiveEffectstatus.end()) {
-        turnActiveEffectstatus[turnActiveEffect] = true; 
+void Unit::setTurnEffectStatus(string turnActiveEffect) {
+    if (turnEffectstatus.find(turnActiveEffect) != turnEffectstatus.end()) {
+        turnEffectstatus[turnActiveEffect] = true; 
     } 
       
 }
@@ -144,6 +146,11 @@ void Unit::removeSkill(Skill* skill) {
 
 void Unit::addActiveEffect(Effect* effect) {
     activeEffects.push_back(effect); 
+    if (effect->getName() == "stun") {
+        turnEffectstatus["stun"] = true;
+    } else if (effect->getName() == "disable") {
+        turnEffectstatus["disable"] = true;
+    } 
 }
 
 void Unit::removeActiveEffect(Effect* activeEffect) {
@@ -157,13 +164,16 @@ void Unit::applyActiveEffect() {
     for (auto& activeEffect : activeEffects) {
         if (activeEffect->isHealthRegen() || activeEffect->isManaRegen()) {
             if (activeEffect->isHealthRegen()) {
+                // heal(activeEffect->apply(this));
                 setHealthRegen(getHealthRegen() + activeEffect->apply(this));
             }
             else if (activeEffect->isManaRegen()) {
+                // restoreMana(activeEffect->apply(this));
                 setManaRegen(getManaRegen() + activeEffect->apply(this));
             }
             if (activeEffect->getRemainingDuration() == 0) {
                 activeEffect->remove(this);
+                
             }
         }
         else if (activeEffect->isPoison()) {

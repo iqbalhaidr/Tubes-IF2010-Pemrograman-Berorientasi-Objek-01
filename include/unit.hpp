@@ -33,7 +33,7 @@ class Unit {
         int attackDamage;
         int level;
         Stats stats;
-        map<string, bool> turnActiveEffectstatus; 
+        map<string, bool> TurnEffectstatus; 
         vector<Skill*> skills;
         vector<Effect*> activeEffects;
         int getLevelFactor(Unit& target) const;
