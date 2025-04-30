@@ -180,3 +180,7 @@ Effect* Effect::createEffect(std::string tipe, const std::string& nama) {
     return nullptr;
 
 }
+
+bool Effect::operator==(const Effect& other) const {
+    return name == other.name && description == other.description && duration == other.duration && remainingDuration == other.remainingDuration;
+}
