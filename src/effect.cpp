@@ -4,9 +4,9 @@
 #include <sstream>
 #include "../include/EffectDamage.hpp"
 #include "../include/EffectDefensive.hpp"
-// #include "../include/EffectHealthRegen.hpp"
-// #include "../include/EffectManaRegen.hpp"
-// #include "../include/EffectHealth.hpp"
+#include "../include/EffectHealthRegen.hpp"
+#include "../include/EffectManaRegen.hpp"
+#include "../include/EffectHealth.hpp"
 #include "../include/EffectPoison.hpp"
 
 Effect::Effect(const std::string& name, const std::string& description, double duration, double remainingDuration)
@@ -103,7 +103,7 @@ bool Effect::isReducePower() {
     return false;
 }
 
-Effect* Effect::createEffect(std::string tipe, const std::string& nama) {
+Effect* Effect::createEffect(const std::string& nama) {
     std::ifstream EffectFile("../config/effect.txt");
     std::string line = "";
     
@@ -172,15 +172,16 @@ Effect* Effect::createEffect(std::string tipe, const std::string& nama) {
     else if (type == "EffectDefensive"){
         return new EffectDefensive(name, description, duration, duration, chance, amount, amount);
    }
-//    else if (type == "EffectHealthRegen"){
-//         return new EffectHealthRegen(name, description, duration, duration, (int)amount);
-//    }
-//    else if (type == "EffectManaRegen"){
-//         return new EffectManaRegen(name, description, duration, duration, amount);
-//    }
-//    else if (type == "EffectHealth"){
-//         return new EffectHealth(name, description, duration, duration, amount);
-//    }
+   else if (type == "EffectHealthRegen"){
+        int temp = (int)amount;
+        return new EffectHealthRegen(name, description, duration, duration, temp);
+   }
+   else if (type == "EffectManaRegen"){
+        return new EffectManaRegen(name, description, duration, duration, amount);
+   }
+   else if (type == "EffectHealth"){
+        return new EffectHealth(name, description, duration, duration, chance, amount);
+   }
    else if (type == "EffectPoison"){
         return new EffectPoison(name, description, duration, duration, chance, amount);
    }

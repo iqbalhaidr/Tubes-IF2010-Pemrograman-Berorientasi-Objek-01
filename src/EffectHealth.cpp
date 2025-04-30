@@ -35,16 +35,22 @@ void EffectHealth::setChance(double chance) {
 }
 
 double EffectHealth::apply(Unit* unit) {
-    int randomValue = rand() % 100 + 1;
-    if (randomValue > chance) {
-        return 0; 
-    }
-    int currentRegen = unit->getHealthRegen();
-    unit->setHealthRegen(currentRegen + healAmount);
     remainingDuration -= 1;
-    return 0;
+    int randomValue = rand() % 100 + 1;
+    int currentRegen = unit->getHealthRegen();
+    baseHealAmount = currentRegen;
+    if (randomValue > chance) {
+        return currentRegen; 
+    }
+    return currentRegen + healAmount * currentRegen / 100;;
+    // unit->setHealthRegen(currentRegen + healAmount);
+    // return 0;
 }
 
+void EffectHealth::remove(Unit* unit) {
+    // int currentRegen = unit->getHealthRegen();
+    // return currentRegen - (baseHealAmount * currentRegen / 100);
+}
 
 
 
