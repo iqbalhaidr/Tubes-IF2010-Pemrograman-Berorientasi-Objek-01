@@ -17,6 +17,7 @@ private:
     std::map<std::string, Item*> equipped;
 
 public:
+    static std::string centerText(const std::string &text, int width);
     static Inventory loadInventory(const std::string& directory, const Items& itemMap);
     Inventory(const Matrix<std::pair<Item*, int>>& backp, const std::map<std::string, Item*>& equippedItem);
     
@@ -31,6 +32,7 @@ public:
 
     Item* getEquippedItem(const std::string& slot){return equipped[slot];};
     std::string getEquippedItemId(const std::string& slot) const;
+    void displayBackpack();
 };
 
 #endif

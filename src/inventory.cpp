@@ -9,6 +9,17 @@
 
 namespace fs = std::filesystem;
 
+std::string Inventory :: centerText(const std::string &text, int width) {
+    int padding = width - text.length();
+    if (padding <= 0) return text;  // Jika teks lebih panjang, return as-is
+    
+    int left = padding / 2;
+    int right = padding - left;
+    
+    return std::string(left, ' ') + text + std::string(right, ' ');
+}
+    
+
 Inventory Inventory :: loadInventory(const std::string& directory, const Items& itemMap){ 
     Matrix<std::pair<Item*, int>> backp(8, 4);
     std::map<std::string, Item*> equippedItem;
@@ -277,4 +288,20 @@ std::string Inventory::getEquippedItemId(const std::string& slot) const {
         return it->second->getId();
     }
     return "";
+}
+
+void Inventory :: displayBackpack(){
+    auto txtGenerator = [](std::pair<Item*, int> p){return p.first->getId() +" ("+ std::to_string(p.second) +") " ;};
+    std::string item = "";
+    for(int i=0; i<8; i++){
+        for(int j = 0; j<4; j++){
+            if(backpack.isEmptyCell(i,j)){
+                item="";
+            }
+            else{
+                item=txtGenerator(backpack.get(i,j));
+            }
+            std::cout<<"|"<<Inventory::centerText(item, 30)<<"|";
+        }   
+    }
 }

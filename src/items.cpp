@@ -9,11 +9,12 @@ namespace fs = std::filesystem;
 
 Items Items :: createFromDirectory(const std::string& directory) {
     std::map<std::string, Item*> itemMap;
-    
+    std::cout<<"test";
     std::string filename = directory + "item.txt";
     if (!fs::exists(directory) || !fs::is_directory(directory)) {
         throw InputOutputException("Directory tidak ditemukan");
     }
+    std::cout<<"test";
 
     std::ifstream file(filename);
     if (file.fail()) {
@@ -55,7 +56,6 @@ Items Items :: createFromDirectory(const std::string& directory) {
     return listItem;
 }
 
-// ... rest of the class implementation
 
 Items :: Items(std::map<std::string, Item*> itemMap){
     this->itemMap = itemMap;

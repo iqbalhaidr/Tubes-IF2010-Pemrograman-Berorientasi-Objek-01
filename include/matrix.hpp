@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <functional> 
 
 template<class T>
 class Matrix {
