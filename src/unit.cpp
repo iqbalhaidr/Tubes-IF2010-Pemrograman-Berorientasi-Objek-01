@@ -122,7 +122,7 @@ void Unit::useSkill(Skill* skill, Unit& target) {
     for (const auto& effect : skill->effects) {
         if ((effect->isTurn() || effect->isTurnBased()) 
         || (effect->isDamage() && effect->getName() == "Infernal Curse")
-        || (effect->isDamage() && effect->getName() == "Infernal Curse")
+        || (effect->isDefensive() && effect->getName() == "Infernal Curse")
     ) { // kasus crit masukin efek crit dari skill ke vector dulu
             target.addActiveEffect(effect); 
         } else if (effect->isDefensive() || effect->isDamage()) {
@@ -227,14 +227,22 @@ vector<Effect*> Unit::getCombinedEffect(const vector<Effect*>& activeEffects) co
                     }
                 } else if (auto damageBase = dynamic_cast<EffectDamage*>(baseEffect)) {
                     if (auto damageOther = dynamic_cast<EffectDamage*>(activeEffects[j])) {
-                        damageBase->setChance(damageBase->getChance() + damageOther->getChance());
-                        damageBase->setDamage(damageBase->getDamage() + damageOther->getDamage());
+                        if (damageBase->getName() == "Infernal Curse") {
+                            damageBase->setRemainingDuration(damageBase->getDuration());
+                        } else {
+                            damageBase->setChance(damageBase->getChance() + damageOther->getChance());
+                            damageBase->setDamage(damageBase->getDamage() + damageOther->getDamage());
+                        }
                         processed[j] = true;
                     }
                 } else if (auto defensiveBase = dynamic_cast<EffectDefensive*>(baseEffect)) {
                     if (auto defensiveOther = dynamic_cast<EffectDefensive*>(activeEffects[j])) {
-                        defensiveBase->setChance(defensiveBase->getChance() + defensiveOther->getChance());
-                        defensiveBase->setDefense(defensiveBase->getDefense() + defensiveOther->getDefense());
+                        if (defensiveBase->getName() == "Infernal Curse") {
+                            defensiveBase->setRemainingDuration(defensiveBase->getDuration());
+                        } else {
+                            defensiveBase->setChance(defensiveBase->getChance() + defensiveOther->getChance());
+                            defensiveBase->setDefense(defensiveBase->getDefense() + defensiveOther->getDefense());
+                        }
                         processed[j] = true;
                     }
                 }
