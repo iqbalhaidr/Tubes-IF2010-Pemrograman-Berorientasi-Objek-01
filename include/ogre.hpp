@@ -10,7 +10,7 @@ class Ogre : public BossMobs {
         // ctor dtor
         Ogre(int level, int expReward, Mobloot& mobLoots);
         ~Ogre();
-        void updateBasicAttributes() override {};
+        void updateBasicAttributes() override;
         // void useSkill(string skill, Unit& target) override{}
 
 
