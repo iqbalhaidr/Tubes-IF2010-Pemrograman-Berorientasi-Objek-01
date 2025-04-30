@@ -17,7 +17,7 @@ class Effect{
         ~Effect();
         Effect(const Effect& other);
         Effect& operator=(Effect& other);
-        static Effect* createEffect(std::string type, const std::string& name);
+        static Effect* createEffect(const std::string& name);
         bool operator==(const Effect& other) const;
         //Setter Getter
         std::string getName() const;   
@@ -46,6 +46,7 @@ class Effect{
         virtual bool isPoison();
         virtual bool isHealth();
         virtual bool isManaReduc();
+        virtual bool isReducePower();
 };
 
 #endif
