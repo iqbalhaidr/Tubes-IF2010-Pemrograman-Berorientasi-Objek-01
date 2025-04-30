@@ -1,4 +1,4 @@
-#include "goblin.hpp"
+#include "../include/goblin.hpp"
 
 Goblin::Goblin(int level, int expReward, Mobloot& mobLoots)
  : BasicMobs("Goblin", level, 7, 15, 6, expReward, mobLoots) {

@@ -1,4 +1,4 @@
-#include "stats.hpp"
+#include "../include/stats.hpp"
 
 Stats::Stats(int strength, int agility, int intelligence) {
     this->strength = strength;

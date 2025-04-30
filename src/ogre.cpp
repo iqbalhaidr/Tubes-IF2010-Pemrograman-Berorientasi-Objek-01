@@ -1,4 +1,4 @@
-#include "ogre.hpp"
+#include "../include/ogre.hpp"
 
 Ogre::Ogre(int level, int expReward, Mobloot& mobLoots)
  : BossMobs("Ogre", level, 32, 16, 12, expReward, mobLoots) {

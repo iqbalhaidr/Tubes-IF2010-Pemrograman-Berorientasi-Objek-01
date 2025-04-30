@@ -1,4 +1,4 @@
-#include "fighter.hpp"
+#include "../include/fighter.hpp"
 #include <iostream>
 using namespace std;
 

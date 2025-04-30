@@ -1,5 +1,5 @@
-#include "characters.hpp"
-#include "exception.hpp"
+#include "../include/characters.hpp"
+#include "../include/exception.hpp"
 #include <sstream>
 #include <fstream>
 #include <iostream>
