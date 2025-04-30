@@ -11,7 +11,7 @@ class BossMobs : public Mobs {
     public:
         // ctor dtor
         BossMobs(string name, int level, int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots);
-        virtual~BossMobs();
+        virtual ~BossMobs();
         bool isRageUsed() const;
         void rage();
         void reset();
