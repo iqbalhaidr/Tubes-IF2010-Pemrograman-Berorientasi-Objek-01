@@ -15,7 +15,7 @@ double EffectPoison::getDamage() const {
     return damage;
 }
 
-double EffectPoison::setDamage(int damage) {
+void EffectPoison::setDamage(int damage) {
     this->damage = damage;
 }
 
@@ -23,6 +23,9 @@ double EffectPoison::getChance() const {
     return chance;
 }
 
+void EffectPoison::setChance(int chance) {
+    this->chance = chance;
+}
 
 double EffectPoison::apply(Unit* unit) {
     remainingDuration -= 1;

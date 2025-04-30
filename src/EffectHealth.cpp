@@ -1,4 +1,6 @@
 #include "../include/EffectHealth.hpp"
+#include "../include/Unit.hpp"
+
 
 
 EffectHealth::EffectHealth(const std::string& name, const std::string& description, double duration, double remainingDuration, int healAmount)
@@ -34,4 +36,8 @@ double EffectHealth::apply(Unit* unit) {
 
 Effect* EffectHealth::clone() const {
     return new EffectHealth(*this);
+}
+
+bool EffectHealth::isHealth() {
+    return true;
 }

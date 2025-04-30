@@ -14,7 +14,6 @@ using namespace std;
 
 class Character : public Unit {
     protected:
-        int level;
         int exp;
         int gold;
         int masteryCost;
@@ -25,7 +24,6 @@ class Character : public Unit {
         ~Character();
 
         // setter getter
-        int getLevel() const;
         int getExp() const;
         int getGold() const;
         int getMasteryCost() const;

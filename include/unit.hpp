@@ -11,6 +11,8 @@
 #include "EffectManaRegen.hpp"
 #include "EffectDamage.hpp"
 #include "EffectDefensive.hpp"
+#include "EffectPoison.hpp"
+#include "EffectTurn.hpp"
 
 #include "inventory.hpp"
 #include <string>
@@ -29,16 +31,16 @@ class Unit {
         int maxMana;
         int manaRegen;
         int attackDamage;
+        int level;
         Stats stats;
-        map<string, bool> turnActiveEffectstatus; 
         vector<Skill*> skills;
         vector<Effect*> activeEffects;
-        int getLevelFactor(Unit& target);
+        int getLevelFactor(Unit& target) const;
         int calculateDamage(Unit& target, int baseDamage, Inventory& inventory); // TEMPORARY
         virtual void updateBasicAttributes();
     public:
         // ctor dtor
-        Unit::Unit(string name, int strength, int agility, int intelligence);
+        Unit::Unit(string name, int strength, int agility, int intelligence, int level);
         ~Unit();
 
         // setter getter
@@ -50,10 +52,11 @@ class Unit {
         int getMaxMana() const;
         int getManaRegen() const;
         int getAttackDamage() const;
-        map<string, bool> getTurnActiveEffectStatus() const;
+        int getLevel() const;
+        bool getTurnEffectStatus(string turnEffectName) const;
         vector<Skill*> getSkills() const; 
         vector<Effect*> getActiveEffects() const; 
-        vector<Effect*> getCombinedEffect((const vector<Effect*>& activeEffects) const;
+        vector<Effect*> getCombinedEffect(const vector<Effect*>& activeEffects) const;
 
         Stats getStats() const;
         void setName(string name);
@@ -64,7 +67,7 @@ class Unit {
         void setMaxMana(int maxMana);
         void setManaRegen(int manaRegen);
         void setAttackDamage(int attackDamage);
-        void setTurnActiveEffectStatus(string turnEffect);
+        void setLevel(int level);
         void setStats(int strength, int agility, int intelligence);
 
         // Fungsi

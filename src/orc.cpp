@@ -1,8 +1,13 @@
 #include "orc.hpp"
 
 Orc::Orc(int level,  int expReward, Mobloot& mobLoots)
- : BasicMobs("Orc", level, 15 + (level-1) * 2, 8 + (level-1) * 1.5, 6 + (level-1) * 1.2, expReward, mobLoots) {
-    Skill *skill = new Skill("Brutal Strike", 0, 0, 0.15, "Brutal Strike");
+ : BasicMobs("Orc", level, 15, 8, 6, expReward, mobLoots) {
+    updateBasicAttributes();
+    vector<Effect*> effects;
+    string stunEffectDescription = "berpeluang 0.5 untuk memberikan stun selama 1 turn";
+    EffectTurn* stunEffect = new EffectTurn("Brutal Strike", stunEffectDescription, 1, 1, 0.5);
+    effects.push_back(stunEffect);
+    Skill *skill = new Skill("Brutal Strike", 0, 0, 0.15, attackDamage * 1.5, effects);
     addSkill(skill);
 }
 

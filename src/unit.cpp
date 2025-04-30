@@ -3,13 +3,10 @@
 #include <string>
 using namespace std;
 
-Unit::Unit(string name, int strength, int agility, int intelligence) : stats(strength, agility, intelligence) {
-    setName(name);
-    updateBasicAttributes();     
-    this->turnActiveEffectstatus = {
-        {"stun", false},
-        {"disable", false}
-    };
+Unit::Unit(string name, int strength, int agility, int intelligence, int level) : stats(strength, agility, intelligence) {
+    this->name = name;
+    updateBasicAttributes();   
+    this->level = level;  
 }
 
 Unit::~Unit() {}
@@ -22,7 +19,19 @@ int Unit::getCurrentMana() const { return currentMana;}
 int Unit::getMaxMana() const { return maxMana;}
 int Unit::getManaRegen() const { return manaRegen;}
 int Unit::getAttackDamage() const { return attackDamage;}
-map<string, bool> Unit::getTurnActiveEffectStatus() const { return turnActiveEffectstatus;}
+int Unit::getLevel() const { return level;}
+int Unit::getLevelFactor(Unit& target) const {
+    return 1 + (this->level - target.level) * 0.05;
+}
+bool Unit::getTurnEffectStatus(string turnEffectName) const { 
+    for (const auto& effect : activeEffects) {
+        if (effect->getName().find(turnEffectName) != std::string::npos) { //contains name
+            return true;
+        }
+    }
+    return false;
+}
+
 Stats Unit::getStats() const { return stats;}
 vector<Skill*> Unit::getSkills() const { return skills;} // TEMPORARY
 vector<Effect*> Unit::getActiveEffects() const { return activeEffects;} // TEMPORARY
@@ -35,12 +44,9 @@ void Unit::setCurrentMana(int currentMana) { this->currentMana = currentMana;}
 void Unit::setMaxMana(int maxMana) { this->maxMana = maxMana;}
 void Unit::setManaRegen(int manaRegen) { this->manaRegen = manaRegen;}
 void Unit::setAttackDamage(int attackDamage) { this->attackDamage = attackDamage;}
-void Unit::setTurnActiveEffectStatus(string turnActiveEffect) {
-    if (turnActiveEffectstatus.find(turnActiveEffect) != turnActiveEffectstatus.end()) {
-        turnActiveEffectstatus[turnActiveEffect] = true; 
-    } 
-      
-}
+
+
+
 void Unit::setStats(int strength, int agility, int intelligence) {
     stats.setStrength(strength);
     stats.setAgility(agility);
@@ -50,13 +56,12 @@ int Unit::calculateDamage(Unit& target, int baseDamage, Inventory& inventory) {
     int totalDamage = 1;
     for (const auto& ActiveEffect : getCombinedEffect(activeEffects)) {
         if (auto* damageEffect = dynamic_cast<EffectDamage*>(ActiveEffect)) {
-            if (rand() % 100 < damageEffect->getChance()) {
-                totalDamage += ActiveEffect->apply(this);
-            }
+            totalDamage += ActiveEffect->apply(this);
         }
     }
     int weaponDamage = inventory.getEquippedItem("weapon")->getBaseStat();
     totalDamage *= (baseDamage + weaponDamage);
+    totalDamage *= getLevelFactor(target);
 
     return totalDamage;
 }
@@ -67,9 +72,7 @@ void Unit::attack(Unit& target, Inventory& inventory) {
 void Unit::takeDamage(int damage) {
     for (const auto& activeEffect : getCombinedEffect(activeEffects)) {
         if (auto* defensiveEffect = dynamic_cast<EffectDamage*>(activeEffect)) {
-            if (rand() % 100 < defensiveEffect->getChance()) {
-                damage *= 1 - activeEffect->apply(this);
-            }
+            damage *= 1 - activeEffect->apply(this);
         }
     }
     currentHealth -= damage;
@@ -100,6 +103,9 @@ void Unit::useSkill(Skill* skill, Unit& target) {
         cout << "Not enough mana to use " << skill->getName() << endl;
         return;
     }
+    if ((rand() % 100 + 1) > skill->getskillChance()) {
+        return;
+    }
     currentMana -= skill->getManaCost(); 
     int totalDamage = skill->getDamage();
 
@@ -116,9 +122,10 @@ void Unit::useSkill(Skill* skill, Unit& target) {
 
     for (const auto& ActiveEffect : getCombinedEffect(activeEffects)) {
         if (auto* damageEffect = dynamic_cast<EffectDamage*>(ActiveEffect)) {
-            if (rand() % 100 < damageEffect->getChance()) { // mungkin effect crit dari skill yg baru dimasukin + crit dari yg dah ada
-                totalDamage += ActiveEffect->apply(this);
-            }
+            if (damageEffect->getName() == "Brittle" && (damageEffect->getDuration() == damageEffect->getRemainingDuration())) {
+                continue;
+            } 
+            totalDamage += ActiveEffect->apply(this);
         }
     }
 
@@ -127,7 +134,7 @@ void Unit::useSkill(Skill* skill, Unit& target) {
 }
 
 void Unit::addSkill(Skill* skill) {
-    skills.push_back(skill); // TEMPORARY
+    skills.push_back(skill); 
 }
 void Unit::removeSkill(Skill* skill) {
     auto it = find(skills.begin(), skills.end(), skill);
@@ -143,20 +150,25 @@ void Unit::addActiveEffect(Effect* effect) {
 void Unit::removeActiveEffect(Effect* activeEffect) {
     auto it = find(activeEffects.begin(), activeEffects.end(), activeEffect);
     if (it != activeEffects.end()) {
+        activeEffect->remove(this);
         activeEffects.erase(it); 
     }
 }
 
 void Unit::applyActiveEffect() {
     for (auto& activeEffect : activeEffects) {
-        if (auto* regenEffect = dynamic_cast<EffectHealthRegen*>(activeEffect)) {
-            setHealthRegen(getHealthRegen() + regenEffect->apply(this));
+        if (activeEffect->isHealthRegen() || activeEffect->isManaRegen()) {
+            if (activeEffect->isHealthRegen()) {
+                heal(activeEffect->apply(this));
+            }
+            else if (activeEffect->isManaRegen()) {
+                restoreMana(activeEffect->apply(this));
+            }
         }
-        else if (auto* manaEffect = dynamic_cast<EffectManaRegen*>(activeEffect)) {
-            setManaRegen(getManaRegen() + manaEffect->apply(this));
-        }
-        else if (activeEffect->isTurnBased()) {
+        else if (activeEffect->isPoison()) {
             currentHealth -= activeEffect->apply(this);
+        } else if(activeEffect->isManaReduc()) {
+            currentMana -= activeEffect->apply(this);
         }
 
     }
@@ -168,10 +180,9 @@ void Unit::updateBasicAttributes() {
     setHealthRegen(10 * getStats().getStrength());
     setMaxMana(60 + 12 * getStats().getIntelligence());
     setManaRegen(5 * getStats().getIntelligence());
-    // this->attackDamage = 10 + 5 * getStats().getAgility();
 }
 
-vector<Effect*> getCombinedEffect(const vector<Effect*>& activeEffects) {
+vector<Effect*> Unit::getCombinedEffect(const vector<Effect*>& activeEffects) const {
     vector<Effect*> combinedEffects;
     vector<bool> processed(activeEffects.size(), false);
 

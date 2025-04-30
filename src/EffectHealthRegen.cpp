@@ -1,4 +1,5 @@
 #include "../include/EffectHealthRegen.hpp"
+#include "../include/Unit.hpp"
 
 EffectHealthRegen::EffectHealthRegen(const std::string& name, const std::string& description, double duration, double remainingDuration, int healAmount)
     : EffectTurnBasedBased(name, description, duration, remainingDuration), healAmount(healAmount) {}
@@ -18,10 +19,8 @@ void EffectHealthRegen::setHealAmount(int healAmount) {
     this->healAmount = healAmount;
 }
 double EffectHealthRegen::apply(Unit* unit) {
-    int currentRegen = unit->getHealthRegen();
-    unit->setHealthRegen(currentRegen + healAmount);
-    remainingDuration -= 1;
-    return 0; 
+    remainingDuration = remainingDuration - 1;
+    return healAmount; 
 }
 
 Effect* EffectHealthRegen::clone() const{
@@ -29,8 +28,6 @@ Effect* EffectHealthRegen::clone() const{
 }
 
 void EffectHealthRegen::remove(Unit* unit) {
-    int currentRegen = unit->getHealthRegen();
-    unit->setHealthRegen(currentRegen - healAmount);
 }
 
 bool EffectHealthRegen::isHealthRegen() {
