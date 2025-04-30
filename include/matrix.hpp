@@ -30,10 +30,10 @@ public:
         return matriks[i][j];
     }
 
-    std:: pair<int,int> isInMatrix(std::function<bool(T)> predicate){
+    std:: pair<int,int> isInMatrix(std::function<bool(T)> predicate) const{
         for (int i =0; i< rows; i++){
             for(int j = 0; j<cols; j++){
-                if (matriks[i][j] == value){
+                if (predicate(matriks.at(i).at(j))){
                     return std::pair(i,j);
                 }
             }
