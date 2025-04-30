@@ -6,6 +6,7 @@ class EffectHealth : public Effect {
     private:
         int  healAmount;
         double chance;
+        int baseHealAmount;
     public:
         EffectHealth(const std::string& name, const std::string& description, double duration, double remainingDuration, double chance, int healAmount);
         ~EffectHealth();
@@ -19,6 +20,7 @@ class EffectHealth : public Effect {
         void setChance(double chance);
 
         double apply(Unit* unit) override;
+        void remove(Unit* unit) override;
         Effect* clone() const override;
         bool isHealth() override;
 };
