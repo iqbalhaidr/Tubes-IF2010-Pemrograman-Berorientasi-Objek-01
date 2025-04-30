@@ -99,6 +99,10 @@ bool Effect::isManaReduc() {
     return false;
 }
 
+bool Effect::isReducePower() {
+    return false;
+}
+
 Effect* Effect::createEffect(std::string tipe, const std::string& nama) {
     std::ifstream EffectFile("../config/effect.txt");
     std::string line = "";
