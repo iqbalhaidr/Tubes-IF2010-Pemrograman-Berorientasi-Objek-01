@@ -44,7 +44,7 @@ class Unit {
         virtual void updateBasicAttributes();
     public:
         // ctor dtor
-        Unit::Unit(string name, int strength, int agility, int intelligence, int level);
+        Unit(string name, int strength, int agility, int intelligence, int level);
         ~Unit();
 
         // setter getter

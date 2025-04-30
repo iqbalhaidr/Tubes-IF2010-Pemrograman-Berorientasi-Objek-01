@@ -16,7 +16,7 @@ class Character : public Unit {
         string type;
     public:
         // ctor dtor
-        Character(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost = BASE_MASTERY_COST, string type);
+        Character(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, string type);
         ~Character();
 
         // setter getter
