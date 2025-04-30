@@ -33,7 +33,7 @@ Mobloot::Mobloot(const string& directory, const Items& itemMap) {
                 throw InputOutputException("Item ID tidak valid: " + itemID);
             }
             if (itemDropRate < 0.0 || itemDropRate > 1.0) {
-                throw InputOutputException("Drop rate tidak valid: " + itemDropRate);
+                throw InputOutputException("Drop rate tidak valid: " + to_string(itemDropRate));
             }
 
             this->MobLoots[mobName].emplace_back(itemMap.getItem(itemID), itemDropRate);
