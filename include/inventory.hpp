@@ -31,6 +31,7 @@ public:
     void generalEquip(std::string slot, Character& orang, Item* item);
     std:: pair<int,int>  getIdxItembyId(const std::string& itemId) const;
 
+    Matrix<std::pair<Item*, int>> getBackpack(){return backpack;};
     Item* getEquippedItem(const std::string& slot){return equipped[slot];};
     std::string getEquippedItemId(const std::string& slot) const;
     void displayBackpack();
