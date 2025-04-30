@@ -1,4 +1,9 @@
 #include "../include/items.hpp"
+#include "../include/item.hpp"
+#include "../include/Weapon.hpp"
+#include "../include/Armor.hpp"
+#include "../include/Potion.hpp"
+#include "../include/Pendant.hpp"
 #include "../include/exception.hpp"
 #include <sstream>
 #include <fstream>
@@ -7,11 +12,14 @@
 
 namespace fs = std::filesystem;
 
-Items::Items(const std::string& directory) {
+Items Items :: createFromDirectory(const std::string& directory) {
+    std::map<std::string, Item*> itemMap;
+    std::cout<<"test";
     std::string filename = directory + "item.txt";
     if (!fs::exists(directory) || !fs::is_directory(directory)) {
         throw InputOutputException("Directory tidak ditemukan");
     }
+    std::cout<<"test";
 
     std::ifstream file(filename);
     if (file.fail()) {
@@ -26,28 +34,39 @@ Items::Items(const std::string& directory) {
         std::string id, name, type, rarity;
         int level;
         double baseStat;
-        std::vector<std::string> effects;
+        std::vector<Effect*> effects;
+        std::string temp;
         
-
         if (ss >> id >> name >> type >> rarity >> baseStat) {
-            if (!(isValidItemType(type) && isValidItemRarity(rarity))) {
+            if (!(Items::isValidItemType(type) && Items::isValidItemRarity(rarity))) {
                 throw InputOutputException("Tipe atau rarity tidak valid");
             }
 
-            std::string effect;
-            while (ss >> effect) {
-                if (effect == "-") break;  
-                effects.push_back(effect);
+            Effect* effect;
+            while (ss >> temp) {
+                if (temp == "-") break;  
+                effects.push_back(Effect::createEffect(temp));
             }
 
             // TODO: VALIDASI EFEK
-
-            Item* newItem = new Item(name, type, rarity, baseStat, effects);
-            addItem(id, newItem);
+            Item * newItem;
+            if(type == "Weapon"){
+                Item* newItem = new Weapon(id, name, type, rarity, baseStat, effects);  
+            }
+      
+            itemMap.insert(std::make_pair(id, newItem));
         } else {
             throw InventoryEror("Format baris salah di file item.txt");
         }
     }
+    Items listItem (itemMap);
+    
+    return listItem;
+}
+
+
+Items :: Items(std::map<std::string, Item*> itemMap){
+    this->itemMap = itemMap;
 }
 
 Items::~Items() {
@@ -76,7 +95,7 @@ bool Items::lookUpbyName(const std::string& Name) const {
 
 Item* Items::getItem(const std::string& id) const {
     auto it = itemMap.find(id);
-    if (it != itemMap.end()) return it->second;
+    if (it != itemMap.end()) return it->second->cloneItem();
     return nullptr;
 }
 
