@@ -5,6 +5,8 @@ Weapon::Weapon(std::string itemId, std::string Name, std::string type, std::stri
 
 Weapon::Weapon(const Weapon& other) : Item(other) {}
 
+Weapon::~Weapon(){};
+
 bool Weapon::isConsumable() const{
     return false;
 }

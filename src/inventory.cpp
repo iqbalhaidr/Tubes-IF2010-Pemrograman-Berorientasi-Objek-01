@@ -292,6 +292,8 @@ std::string Inventory::getEquippedItemId(const std::string& slot) const {
     return "";
 }
 
+
+
 void Inventory :: displayBackpack(){
     auto txtGenerator = [](std::pair<Item*, int> p){return p.first->getId() +" ("+ std::to_string(p.second) +") " ;};
     std::string item = "";

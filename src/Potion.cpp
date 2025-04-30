@@ -4,6 +4,7 @@ Potion::Potion(std::string itemId, std::string Name, std::string type, std::stri
         : Item(itemId, Name, type, rarity, baseStat, Effects){}
 
 Potion::Potion(const Potion& other) : Item(other) {}
+Potion::~Potion(){};
 
 bool Potion::isConsumable() const{
     return true;

@@ -4,6 +4,7 @@ Armor::Armor(std::string itemId, std::string Name, std::string type, std::string
         : Item(itemId, Name, type, rarity, baseStat, Effects){}
 
 Armor::Armor(const Armor& other) : Item(other) {}
+Armor::~Armor(){};
 
 bool Armor::isConsumable() const{
     return false;
