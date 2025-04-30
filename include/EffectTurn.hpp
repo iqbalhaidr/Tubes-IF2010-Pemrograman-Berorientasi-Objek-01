@@ -12,6 +12,8 @@ class EffectTurn: public Effect {
         EffectTurn& operator=(EffectTurn& other);
 
         // Setter Getter
+        int getChance() const;
+        void setChance(int chance);
         double apply(Unit* unit) override;
         Effect* clone() const override;
         bool isTurn() override;
