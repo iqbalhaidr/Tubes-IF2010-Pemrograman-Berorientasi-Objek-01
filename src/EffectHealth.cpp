@@ -3,17 +3,18 @@
 
 
 
-EffectHealth::EffectHealth(const std::string& name, const std::string& description, double duration, double remainingDuration, int healAmount)
-    : Effect(name, description, duration, remainingDuration), healAmount(healAmount) {}
+EffectHealth::EffectHealth(const std::string& name, const std::string& description, double duration, double remainingDuration, double chance, int healAmount)
+    : Effect(name, description, duration, remainingDuration), healAmount(healAmount), chance(chance) {}
 
 EffectHealth::~EffectHealth() {}
 
 EffectHealth::EffectHealth(const EffectHealth& other) 
-    : Effect(other), healAmount(other.healAmount) {}
+    : Effect(other), healAmount(other.healAmount), chance(other.chance) {}
 
 EffectHealth& EffectHealth::operator=(EffectHealth& other) {
     Effect::operator=(other);
     healAmount = other.healAmount;
+    chance = other.chance;
     return *this;
 }
 
@@ -25,12 +26,25 @@ void EffectHealth::setHealAmount(int healAmount) {
     this->healAmount = healAmount;
 }
 
+double EffectHealth::getChance() const {
+    return chance;
+}
+
+void EffectHealth::setChance(double chance) {
+    this->chance = chance;
+}
+
 double EffectHealth::apply(Unit* unit) {
+    int randomValue = rand() % 100 + 1;
+    if (randomValue > chance) {
+        return 0; 
+    }
     int currentRegen = unit->getHealthRegen();
     unit->setHealthRegen(currentRegen + healAmount);
     remainingDuration -= 1;
     return 0;
 }
+
 
 
 
