@@ -18,7 +18,7 @@ class Skill{
         Skill(const std::string& name, double manaCost, double masterCost, double skillChance, double damage, vector<Effect*> effects);
         ~Skill();
         Skill(Skill& other);
-        Skill& operator=(Skill& other) = default;
+        Skill& operator=(Skill& other);
 
 
     //Setter Getter

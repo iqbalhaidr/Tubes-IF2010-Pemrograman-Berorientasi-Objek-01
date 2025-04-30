@@ -63,6 +63,10 @@ double Item :: getStatMultiplier() const {
     return 1.0; 
 }
 
+Item* Item::cloneItem(){
+    return new Item(*this);
+}
+
 double Item :: getFinalStat() const {
     return baseStat * getStatMultiplier(); 
 }
