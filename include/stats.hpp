@@ -2,6 +2,7 @@
 #define STATS_HPP
 
 #include <string>
+
 using namespace std;
 
 class Stats {
@@ -10,7 +11,6 @@ class Stats {
         int agility;
         int intelligence;
     public:
-        // ctor dtor
         Stats(int strength, int agility, int intelligence);
         ~Stats();
 

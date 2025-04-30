@@ -9,7 +9,7 @@ class BasicMobs : public Mobs {
     public:
         // ctor dtor
         BasicMobs(string name, int level, int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots);
-        ~BasicMobs();
+        virtual ~BasicMobs();
 
         void reset();
 
