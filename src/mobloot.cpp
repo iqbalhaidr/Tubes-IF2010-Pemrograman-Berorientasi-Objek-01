@@ -32,7 +32,7 @@ Mobloot::Mobloot(const string& directory, const Items& itemMap) {
             if (!itemMap.lookup(itemID)) {
                 throw InputOutputException("Item ID tidak valid: " + itemID);
             }
-            if (dropRate < 0.0 || dropRate > 1.0) {
+            if (itemDropRate < 0.0 || itemDropRate > 1.0) {
                 throw InputOutputException("Drop rate tidak valid: " + itemDropRate);
             }
 
