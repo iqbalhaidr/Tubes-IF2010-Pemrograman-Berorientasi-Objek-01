@@ -1,5 +1,6 @@
 #ifndef EFFECTDEFENSIVE_HPP
 #define EFFECTDEFENSIVE_HPP
+
 #include "effect.hpp"
 
 class EffectDefensive : public Effect {

@@ -1,4 +1,4 @@
-#include "orc.hpp"
+#include "../include/orc.hpp"
 
 Orc::Orc(int level,  int expReward, Mobloot& mobLoots)
  : BasicMobs("Orc", level, 15, 8, 6, expReward, mobLoots) {

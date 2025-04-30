@@ -1,4 +1,4 @@
-#include "lich.hpp"
+#include "../include/lich.hpp"
 
 Lich::Lich(int level, int expReward, Mobloot& mobLoots)
  : BossMobs("Lich", level, 14, 12, 36, expReward, mobLoots) {

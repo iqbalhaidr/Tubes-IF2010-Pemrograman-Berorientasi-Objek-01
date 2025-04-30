@@ -7,6 +7,7 @@
 #define BASE_MASTERY_COST 5
 
 #include "unit.hpp"
+
 #include <algorithm>
 #include <string>
 

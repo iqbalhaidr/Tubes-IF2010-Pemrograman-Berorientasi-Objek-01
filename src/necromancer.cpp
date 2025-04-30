@@ -1,4 +1,4 @@
-#include "necromancer.hpp"
+#include "../include/necromancer.hpp"
 
 Necromancer::Necromancer(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost)
 : Character(name, strength, agility, intelligence, level, exp, gold, masteryCost, "Necromancer") {
