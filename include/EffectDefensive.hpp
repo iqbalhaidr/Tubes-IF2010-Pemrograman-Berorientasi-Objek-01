@@ -1,3 +1,5 @@
+#ifndef EFFECTDEFENSIVE_HPP
+#define EFFECTDEFENSIVE_HPP
 #include "effect.hpp"
 
 class EffectDefensive : public Effect {
@@ -21,3 +23,5 @@ class EffectDefensive : public Effect {
         Effect* clone() const override;
         bool isDefensive();
 };
+
+#endif

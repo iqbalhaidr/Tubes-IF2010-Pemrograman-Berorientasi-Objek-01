@@ -32,7 +32,7 @@ class Item {
         void scaleItemEffect() ;
         virtual bool isConsumable() const {return false;};
         virtual bool isStackable() const {return true;};
-        virtual Item* cloneItem();
+        virtual Item* cloneItem() = 0;
 
     };
 
