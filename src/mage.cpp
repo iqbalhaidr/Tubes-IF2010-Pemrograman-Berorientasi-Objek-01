@@ -1,4 +1,4 @@
-#include "mage.hpp"
+#include "../include/mage.hpp"
 #include <iostream>
 using namespace std;
 

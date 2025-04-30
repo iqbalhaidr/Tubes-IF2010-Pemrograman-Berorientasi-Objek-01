@@ -1,4 +1,4 @@
-#include "slime.hpp"
+#include "../include/slime.hpp"
 
 Slime::Slime(int level, int expReward, Mobloot& mobLoots)
  : BasicMobs("Slime", level, 6, 6, 16, expReward, mobLoots) {

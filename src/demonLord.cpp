@@ -1,4 +1,4 @@
-#include "demonLord.hpp"
+#include "../include/demonLord.hpp"
 
 DemonLord::DemonLord(int level, int expReward, Mobloot& mobLoots)
  : BossMobs("Demon Lord", level, 16, 32, 16, expReward, mobLoots) {

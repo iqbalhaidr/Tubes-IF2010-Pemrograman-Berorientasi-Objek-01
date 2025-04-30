@@ -1,4 +1,4 @@
-#include "skeleton.hpp"
+#include "../include/skeleton.hpp"
 
 Skeleton::Skeleton(int level, int expReward, Mobloot& mobLoots)
  : BasicMobs("Skeleton", level, 7, 8, 7, expReward, mobLoots) {
