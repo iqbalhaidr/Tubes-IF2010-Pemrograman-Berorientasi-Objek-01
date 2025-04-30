@@ -7,7 +7,7 @@ Goblin::Goblin(int level, int expReward, Mobloot& mobLoots)
     string effectDescription = "menghilang sesaat dalam kepulan asap atau bayangan, lalu muncul tiba-tiba di belakang target untuk memberikan serangan kejutan dengan bonus critical damage, memberikan damage 2x dari attack biasa";
     EffectDamage* surpriseCritDamage = new EffectDamage("Sneaky Stab", effectDescription, 1, 1, 1, attackDamage * 2);
     effects.push_back(surpriseCritDamage);
-    Skill *skill = new Skill("Sneaky Stab", 0, 0, 0.2, effects);
+    Skill *skill = new Skill("Sneaky Stab", 0, 0, 0.2, attackDamage, effects);
     addSkill(skill);
 }
 

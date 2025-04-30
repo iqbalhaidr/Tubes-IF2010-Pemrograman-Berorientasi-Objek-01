@@ -7,10 +7,6 @@ Unit::Unit(string name, int strength, int agility, int intelligence, int level) 
     this->name = name;
     updateBasicAttributes();   
     this->level = level;  
-    this->turnActiveEffectstatus = {
-        {"stun", false},
-        {"disable", false}
-    };
 }
 
 Unit::~Unit() {}
@@ -27,7 +23,15 @@ int Unit::getLevel() const { return level;}
 int Unit::getLevelFactor(Unit& target) const {
     return 1 + (this->level - target.level) * 0.05;
 }
-map<string, bool> Unit::getTurnActiveEffectStatus() const { return turnActiveEffectstatus;}
+bool Unit::getTurnEffectStatus(string turnEffectName) const { 
+    for (const auto& effect : activeEffects) {
+        if (effect->getName().find(turnEffectName) != std::string::npos) { //contains name
+            return true;
+        }
+    }
+    return false;
+}
+
 Stats Unit::getStats() const { return stats;}
 vector<Skill*> Unit::getSkills() const { return skills;} // TEMPORARY
 vector<Effect*> Unit::getActiveEffects() const { return activeEffects;} // TEMPORARY
@@ -40,12 +44,9 @@ void Unit::setCurrentMana(int currentMana) { this->currentMana = currentMana;}
 void Unit::setMaxMana(int maxMana) { this->maxMana = maxMana;}
 void Unit::setManaRegen(int manaRegen) { this->manaRegen = manaRegen;}
 void Unit::setAttackDamage(int attackDamage) { this->attackDamage = attackDamage;}
-void Unit::setTurnActiveEffectStatus(string turnActiveEffect) {
-    if (turnActiveEffectstatus.find(turnActiveEffect) != turnActiveEffectstatus.end()) {
-        turnActiveEffectstatus[turnActiveEffect] = true; 
-    } 
-      
-}
+
+
+
 void Unit::setStats(int strength, int agility, int intelligence) {
     stats.setStrength(strength);
     stats.setAgility(agility);
@@ -157,13 +158,17 @@ void Unit::applyActiveEffect() {
     for (auto& activeEffect : activeEffects) {
         if (activeEffect->isHealthRegen() || activeEffect->isManaRegen()) {
             if (activeEffect->isHealthRegen()) {
+                // activeEffect->applyt(this)
+                // heal(activeEffect->apply(this));
                 setHealthRegen(getHealthRegen() + activeEffect->apply(this));
             }
             else if (activeEffect->isManaRegen()) {
+                // restoreMana(activeEffect->apply(this));
                 setManaRegen(getManaRegen() + activeEffect->apply(this));
             }
             if (activeEffect->getRemainingDuration() == 0) {
                 activeEffect->remove(this);
+                
             }
         }
         else if (activeEffect->isPoison()) {

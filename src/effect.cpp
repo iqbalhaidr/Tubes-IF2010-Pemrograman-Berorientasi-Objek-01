@@ -95,6 +95,10 @@ bool Effect::isHealth() {
     return false;
 }
 
+bool Effect::isManaReduc() {
+    return false;
+}
+
 Effect* Effect::createEffect(std::string tipe, const std::string& nama) {
     std::ifstream EffectFile("../config/effect.txt");
     std::string line = "";
@@ -179,4 +183,8 @@ Effect* Effect::createEffect(std::string tipe, const std::string& nama) {
 
     return nullptr;
 
+}
+
+bool Effect::operator==(const Effect& other) const {
+    return name == other.name && description == other.description && duration == other.duration && remainingDuration == other.remainingDuration;
 }
