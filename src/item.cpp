@@ -1,6 +1,7 @@
 #include "../include/item.hpp"
 
-Item::Item(std::string Name, std::string type, std::string rarity, double baseStat, const std::vector<Effect*>& Effects){
+Item::Item(std::string ItemId, std::string Name, std::string type, std::string rarity, double baseStat, const std::vector<Effect*>& Effects){
+    this->itemId = itemId;
     this->name = name;
     this->type = type;
     this->rarity = rarity;
@@ -25,6 +26,10 @@ Item::~Item() {
     for(size_t i =0; i< effects.size(); i++){
         delete effects[i];
     }
+}
+
+bool Item::operator==(const Item& other){
+    return other.itemId == this->itemId && other.name == this->name;
 }
 
 std::string Item::getName() const{

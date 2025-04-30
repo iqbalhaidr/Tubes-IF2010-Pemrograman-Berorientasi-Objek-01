@@ -7,7 +7,7 @@
 
 namespace fs = std::filesystem;
 
-Items createFromDirectory(const std::string& directory) {
+Items Items :: createFromDirectory(const std::string& directory) {
     std::map<std::string, Item*> itemMap;
     
     std::string filename = directory + "item.txt";
@@ -43,7 +43,7 @@ Items createFromDirectory(const std::string& directory) {
 
             // TODO: VALIDASI EFEK
 
-            Item* newItem = new Item(name, type, rarity, baseStat, effects);
+            Item* newItem = new Item(id, name, type, rarity, baseStat, effects);  //eror diff type in effect
             itemMap.insert(std::make_pair(id, newItem));
         } else {
             throw InventoryEror("Format baris salah di file item.txt");
@@ -86,7 +86,7 @@ bool Items::lookUpbyName(const std::string& Name) const {
 
 Item* Items::getItem(const std::string& id) const {
     auto it = itemMap.find(id);
-    if (it != itemMap.end()) return it->second;
+    if (it != itemMap.end()) return it->second->cloneItem();
     return nullptr;
 }
 

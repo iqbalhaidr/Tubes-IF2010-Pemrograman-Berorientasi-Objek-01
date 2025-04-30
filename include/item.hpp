@@ -7,6 +7,7 @@
 
 class Item {
     private:
+        std::string itemId;
         std::string name;
         std::string type;
         std::string rarity;
@@ -14,12 +15,15 @@ class Item {
         std::vector<Effect*> effects;
     
     public:
-        Item(std::string name, std::string type, std::string rarity,
+        Item(std::string itemId, std::string name, std::string type, std::string rarity,
              double baseStat,
              const std::vector<Effect*>& effects);
         Item(const Item& other);
         ~Item();
+
+        bool operator==(const Item& other);
     
+        std::string getId(){return itemId;};
         std::string getName() const;
         std::string getItemType() const;
         std::string getRarity() const;
