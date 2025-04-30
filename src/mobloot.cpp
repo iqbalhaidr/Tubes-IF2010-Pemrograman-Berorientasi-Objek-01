@@ -26,7 +26,7 @@ Mobloot::Mobloot(const string& directory, const Items& itemMap) {
         std::stringstream ss(line);
         std::string mobName;
         std::string itemID;
-        std::string itemDropRate;
+        double itemDropRate;
 
         if (ss >> mobName >> itemID >> itemDropRate) {
             if (!itemMap.lookup(itemID)) {

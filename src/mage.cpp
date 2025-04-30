@@ -2,11 +2,9 @@
 #include <iostream>
 using namespace std;
 
-Mage::Mage(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, string type, int extraMana)
- : Character(name, strength, agility, intelligence, level, exp, gold, masteryCost, "Mage") {
+Mage::Mage(string name)
+ : Character(name, 16, 20, 25, 1, 0, 0, 5, "Mage") {
     updateBasicAttributes();
-    setExtraMana(extraMana);
-
 }
 
 Mage::~Mage() {}
@@ -30,6 +28,7 @@ void Mage::useSkill(Skill* skill, Unit& target) {
 
 void Mage::updateBasicAttributes() {
     setAttackDamage(8 + 10*getStats().getIntelligence()); 
+    setExtraMana(getStats().getIntelligence() / 3);
 }
 
 void Mage::levelUp() {

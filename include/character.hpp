@@ -6,10 +6,6 @@
 #include <algorithm>
 #include <string>
 
-#define BASE_LEVEL 1
-#define BASE_EXP 0
-#define BASE_GOLD 0
-#define BASE_MASTERY_COST 0
 using namespace std;
 
 class Character : public Unit {
@@ -20,7 +16,7 @@ class Character : public Unit {
         string type;
     public:
         // ctor dtor
-        Character(string name, int strength, int agility, int intelligence, int level = BASE_LEVEL, int exp = BASE_EXP, int gold = BASE_GOLD, int masteryCost = BASE_MASTERY_COST, string type);
+        Character(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost = BASE_MASTERY_COST, string type);
         ~Character();
 
         // setter getter
@@ -38,7 +34,7 @@ class Character : public Unit {
         virtual void levelUp() = 0;
 
         // Fungsi override Unit
-        void reset() override;
+        void reset();
 
 
 

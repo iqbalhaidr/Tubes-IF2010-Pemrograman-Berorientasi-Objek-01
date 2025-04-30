@@ -11,7 +11,7 @@ class Mage : public Character {
         void updateBasicAttributes() override;
     public:
         // ctor dtor
-        Mage(string name, int strength = 16, int agility = 20, int intelligence = 25, int level, int exp, int gold, int masteryCost, string type, int extraMana);
+        Mage(string name);
         ~Mage();
 
         // setter getter
