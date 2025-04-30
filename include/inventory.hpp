@@ -2,7 +2,9 @@
 #define INVENTORY_HPP
 
 #include "matrix.hpp"
+#include "item.hpp"
 #include "items.hpp"
+#include "character.hpp"
 #include <map>
 #include <string>
 #include <utility>
@@ -11,19 +13,20 @@
 
 class Inventory {
 private:
-    Matrix<std::pair<std::string, int>> backpack;
+    Matrix<std::pair<Item*, int>> backpack;
     std::map<std::string, std::string> equipped;
 
 public:
-    Inventory(const std::string& directory, const Items& itemMap);
+    static Inventory loadInventory(const std::string& directory, const Items& itemMap);
+    Inventory(const Matrix<std::pair<Item*, int>>& backp, const std::map<std::string, std::string>& equippedItem);
     
     void saveInventory(const std::string& directory);
-    void addItem(std::pair<const std::string, int>& value);
-    void reduceItem(const std::string& itemName, int amount);
-    void setEquippedItem(const std::string& slot, const std::string& item);
+    void addItem(std::pair<Item*, int>& value);
+    void reduceItem(const Item* item, int amount);
+    void setEquippedItem(const std::string& slot, const std::string& item, const Character& orang);
     Item* getEquippedItem(const std::string& slot) const;
 
-    Matrix<std::pair<std::string, int>> getBackpack();
+    std::string getEquippedItemId(const std::string& slot) const;
 };
 
 #endif
