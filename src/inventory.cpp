@@ -266,7 +266,8 @@ void Inventory :: unequipItem(Character& orang, const std::string& slot){
 }
 
 void Inventory :: generalUnequip(std::string slot, Character& orang){
-    addItem({equipped[slot],1});
+    std::pair<Item*, int> item = {equipped[slot],1};
+    addItem(item);
     std::vector<Effect*> effectItem = equipped[slot]->getEffects();
     for (Effect* e : effectItem){
         orang.removeActiveEffect(e);

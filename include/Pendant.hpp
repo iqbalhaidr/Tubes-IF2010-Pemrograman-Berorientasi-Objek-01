@@ -3,12 +3,12 @@
 
 #include "item.hpp"
 
-class Pendant : Item
+class Pendant : public Item
 {
 private:
     double durability;
 public:
-    Pendant(std::string name, std::string type, std::string rarity,
+    Pendant(std::string itemId, std::string name, std::string type, std::string rarity,
         double baseStat,
         const std::vector<Effect*>& effects);
     Pendant(const Pendant& other);

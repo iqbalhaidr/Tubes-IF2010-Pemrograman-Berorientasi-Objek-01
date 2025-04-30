@@ -3,12 +3,12 @@
 
 #include "item.hpp"
 
-class Armor : Item
+class Armor : public Item
 {
 private:
     double durability;
 public:
-    Armor(std::string name, std::string type, std::string rarity,
+    Armor(std::string itemID, std::string name, std::string type, std::string rarity,
         double baseStat,
         const std::vector<Effect*>& effects);
     Armor(const Armor& other);

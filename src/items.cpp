@@ -1,4 +1,9 @@
 #include "../include/items.hpp"
+#include "../include/item.hpp"
+#include "../include/Weapon.hpp"
+#include "../include/Armor.hpp"
+#include "../include/Potion.hpp"
+#include "../include/Pendant.hpp"
 #include "../include/exception.hpp"
 #include <sstream>
 #include <fstream>
@@ -40,12 +45,15 @@ Items Items :: createFromDirectory(const std::string& directory) {
             Effect* effect;
             while (ss >> temp) {
                 if (temp == "-") break;  
-                effects.push_back(Effect::createEffect("Item", temp));
+                effects.push_back(Effect::createEffect(temp));
             }
 
             // TODO: VALIDASI EFEK
-
-            Item* newItem = new Item(id, name, type, rarity, baseStat, effects);  //eror diff type in effect
+            Item * newItem;
+            if(type == "Weapon"){
+                Item* newItem = new Weapon(id, name, type, rarity, baseStat, effects);  
+            }
+      
             itemMap.insert(std::make_pair(id, newItem));
         } else {
             throw InventoryEror("Format baris salah di file item.txt");
