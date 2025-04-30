@@ -95,6 +95,10 @@ bool Effect::isHealth() {
     return false;
 }
 
+bool Effect::isManaReduc() {
+    return false;
+}
+
 Effect* Effect::createEffect(std::string tipe, const std::string& nama) {
     std::ifstream EffectFile("../config/effect.txt");
     std::string line = "";

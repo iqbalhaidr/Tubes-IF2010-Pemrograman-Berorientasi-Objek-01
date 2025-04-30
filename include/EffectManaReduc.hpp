@@ -18,6 +18,7 @@ class EffectManaReduc : public EffectTurnBasedBased{
 
         double apply(Unit* unit) override;
         void remove(Unit* unit) override;
+        bool isManaReduc() override;
 
         
 };

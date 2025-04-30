@@ -29,3 +29,7 @@ double EffectManaReduc::apply(Unit* unit) {
 
 void EffectManaReduc::remove(Unit* unit) {
 }
+
+bool EffectManaReduc::isManaReduc(){
+    return true;
+}
