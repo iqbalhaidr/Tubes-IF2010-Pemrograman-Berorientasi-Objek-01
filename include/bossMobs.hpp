@@ -12,7 +12,7 @@ class BossMobs : public Mobs {
         // ctor dtor
         BossMobs(string name, int level, int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots);
         ~BossMobs();
-        bool isRageUsed() const { return rageUsed; }
+        bool isRageUsed() const;
         void rage();
         void reset();
 

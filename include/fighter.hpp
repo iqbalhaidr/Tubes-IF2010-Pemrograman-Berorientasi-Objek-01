@@ -11,7 +11,7 @@ class Fighter : public Character {
         void updateBasicAttributes() override;
     public:
         // ctor dtor
-        Fighter(string name, int strength = 26, int agility = 17, int intelligence = 13, int level, int exp, int gold, int masteryCost, string type, float blockChance);
+        Fighter(string name);
         ~Fighter();
 
         // setter getter

@@ -115,7 +115,7 @@ void Unit::useSkill(Skill* skill, Unit& target) {
         } else if (effect->isDefensive() || effect->isDamage()) {
             this->addActiveEffect(effect);
         } else if(effect->isHealth()) {
-            setHealthRegen(effect->apply(this));
+            heal(effect->apply(this));
         }
         
     }
