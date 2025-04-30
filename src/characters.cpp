@@ -25,33 +25,25 @@ Characters::Characters(const string& directory) {
 
         stringstream ss(line);
         string name, type;
-        int strength, agility, intelligence, level, exp, gold, masteryCost;
-        double summonChance; // Untuk Necromancer
-        double extraMana; // Untuk Mage
-        int rageMultiplier; // Untuk Berserker
-        double criticalChance; // Untuk Assassin
+        int strength, agility, intelligence;
+        int level, exp, gold, masteryCost;
 
-        if (ss >> name >> type >> strength >> agility >> intelligence >> level >> exp >> gold >> masteryCost) {
+        if (ss >> name >> strength >> agility >> intelligence >> level >> exp >> gold >> masteryCost >> type) {
             if (type == "Mage") {
-                ss >> extraMana;
                 if (ss.fail()) throw InputOutputException("Format baris salah di file characters.txt untuk Mage");
-                addCharacters(new Mage(name, strength, agility, intelligence, level, exp, gold, masteryCost, extraMana));
+                addCharacters(new Mage(name, strength, agility, intelligence, level, exp, gold, masteryCost));
             } else if (type == "Assassin") {
-                ss >> criticalChance;
                 if (ss.fail()) throw InputOutputException("Format baris salah di file characters.txt untuk Assassin");
-                addCharacters(new Assassin(name, strength, agility, intelligence, level, exp, gold, masteryCost, criticalChance));
+                addCharacters(new Assassin(name, strength, agility, intelligence, level, exp, gold, masteryCost));
             } else if (type == "Fighter") {
-                ss >> blockChance;
                 if (ss.fail()) throw InputOutputException("Format baris salah di file characters.txt untuk Fighter");
                 addCharacters(new Fighter(name, strength ,agility ,intelligence ,level ,exp ,gold ,masteryCost));
             } else if (type == "Berserker") {
-                ss >> rageMultiplier;
                 if (ss.fail()) throw InputOutputException("Format baris salah di file characters.txt untuk Berserker");
-                addCharacters(new Berserker(name, strength, agility, intelligence, level, exp, gold, masteryCost, rageMultiplier));
+                addCharacters(new Berserker(name, strength, agility, intelligence, level, exp, gold, masteryCost));
             } else if (type == "Necromancer") {
-                ss >> summonChance;
                 if (ss.fail()) throw InputOutputException("Format baris salah di file characters.txt untuk Necromancer");
-                addCharacters(new Necromancer(name, strength, agility, intelligence, level, exp, gold, masteryCost, summonChance));
+                addCharacters(new Necromancer(name, strength, agility, intelligence, level, exp, gold, masteryCost));
             } else {
                 throw InputOutputException("Tipe karakter tidak valid");
             }
@@ -96,35 +88,19 @@ void Characters::save(const string& directory) const {
         throw InventoryEror("Directory tidak ditemukan");
     }
 
-    file << "#<name><type>[<str> <agi> <int>] <level> <exp> <gold> <masteryCost> [type_specific_data]\n";
+    file << "#<name> [<str> <agi> <int>] <level> <exp> <gold> <masteryCost> <type>\n";
     
     for (const auto& character : characterMap) {
         Character* c = character.second;
         file << c->getName() << " "
-            c->getType() << " "
-            c->getStats().getStrength() << " "
-            c->getStats().getAgility() << " " 
-            c->getStats().getIntelligence() << " "
-            c->getLevel() << " "              
-            c->getExp() << " "
-            c->getGold() << " ";
-            c->getMasteryCost();
-        //BELUM SELESAI
-        if (c->getType() == "Mage") {
-            Mage* mage = dynamic_cast<Mage*>(c);
-            if (mage) file << " " << m->getExtraMana();
-        } else if (c->getType() == "Assassin") {
-            Assassin* assassin = dynamic_cast<Assassin*>(c);
-            if (assassin) file << " " << assassin->getCriticalMultiplier();
-        } else if (c->getType() == "Berserker") {
-            Berserker* berserker = dynamic_cast<Berserker*>(c);
-            if (berserker) file << " " << berserker->getRageMultiplier();
-        } else if (c->getType() == "Necromancer") {
-            Necromancer* necromancer = dynamic_cast<Necromancer*>(c);
-            if (necromancer) file << " " << necromancer->getSummonChance();
-        } else {
-            throw InputOutputException("ada Tipe character tidak valid");
-        }
+            << c->getStats().getStrength() << " "
+            << c->getStats().getAgility() << " " 
+            << c->getStats().getIntelligence() << " "
+            << c->getLevel() << " "              
+            << c->getExp() << " "
+            << c->getGold() << " "
+            << c->getMasteryCost() << " "
+            << c->getType();
         file << endl;
     
     }

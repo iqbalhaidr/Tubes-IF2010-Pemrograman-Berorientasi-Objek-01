@@ -51,16 +51,16 @@ Items Items :: createFromDirectory(const std::string& directory) {
             // TODO: VALIDASI EFEK
             Item * newItem;
             if(type == "Weapon"){
-                Item* newItem = new Weapon(id, name, type, rarity, baseStat, effects);  
+                newItem = new Weapon(id, name, type, rarity, baseStat, effects);  
             }
             else if(type == "Armor"){
-                Item* newItem = new Armor(id, name, type, rarity, baseStat, effects);  
+                newItem = new Armor(id, name, type, rarity, baseStat, effects);  
             }
             else if(type == "Pendant"){
-                Item* newItem = new Pendant(id, name, type, rarity, baseStat, effects);  
+                newItem = new Pendant(id, name, type, rarity, baseStat, effects);  
             }
             else if(type == "Potion"){
-                Item* newItem = new Potion(id, name, type, rarity, baseStat, effects);  
+                newItem = new Potion(id, name, type, rarity, baseStat, effects);  
             }
       
             itemMap.insert(std::make_pair(id, newItem));

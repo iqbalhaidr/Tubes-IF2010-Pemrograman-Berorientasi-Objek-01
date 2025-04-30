@@ -2,8 +2,8 @@
 #include <iostream>
 using namespace std;
 
-Mage::Mage(string name)
- : Character(name, 16, 20, 25, 1, 0, 0, 5, "Mage") {
+Mage::Mage(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost)
+ : Character(name, strength, agility, intelligence, level, exp, gold, masteryCost, "Mage") {
     updateBasicAttributes();
 }
 

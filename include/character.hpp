@@ -1,8 +1,13 @@
 #ifndef CHARACTER_HPP
 #define CHARACTER_HPP
 
+#define BASE_LEVEL 1
+#define BASE_EXP 0
+#define BASE_GOLD 0
+#define BASE_MASTERY_COST 5
 
 #include "unit.hpp"
+
 #include <algorithm>
 #include <string>
 

@@ -2,6 +2,11 @@
 #define CHARACTERS_HPP
 
 #include "character.hpp"
+#include "mage.hpp"
+#include "assassin.hpp"
+#include "fighter.hpp"
+#include "berserker.hpp"
+#include "necromancer.hpp"
 #include <map>
 #include <string>
 #include <vector>
