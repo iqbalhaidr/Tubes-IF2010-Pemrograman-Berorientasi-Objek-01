@@ -124,7 +124,7 @@ class Chamber {
      * Sistem turn based dengan musuh sequential
      * Mereset effect, health, mana setelah keluar battle
      */
-    bool battle(Character &, Inventory &, Reward &);
+    bool battle(Character &, Inventory &, Reward &, Items &);
 
     /*
      * Format:
@@ -149,6 +149,11 @@ class Chamber {
 
     /* Fungsi memilih skill yang digunakan */
     int inputSkillOption(Unit *);
+
+    /* Fungsi memilih item yang digunakan */
+    string inputItemOption(Inventory &);
+
+
 };
 
 #endif

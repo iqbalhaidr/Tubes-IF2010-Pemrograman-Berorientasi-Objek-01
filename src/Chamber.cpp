@@ -157,7 +157,7 @@ void Chamber::generateEnemies() {
     }
 }
 
-bool Chamber::battle(Character& c, Inventory& inv, Reward& prize) {
+bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) {
     for (int i = 0; i < enemyCount; i++) {
         bool isCharTurn = true;
         while (enemies[i]->getCurrentHealth() > 0 && c.getCurrentHealth() > 0) {
@@ -165,7 +165,7 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize) {
                 c.applyActiveEffect();
                 c.heal(c.getHealthRegen());
                 c.restoreMana(c.getManaRegen());
-                if (c.getTurnActiveEffectStatus()["stun"]) {
+                if (c.getTurnEffectStatus("Stun")) { // Cek apakah ada activeEffect stun
                     isCharTurn = !isCharTurn;
                     continue;
                 }
@@ -180,14 +180,15 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize) {
                     int skillOpt = inputSkillOption(&c);
                     c.useSkill(c.getSkills()[skillOpt - 1], *enemies[i]);
                 } else if (opt == 3) {
-                    // c.useItem(*enemies[i]);
+                    string optItem = inputItemOption(inv);
+                    inv.useItem(optItem, c, items);
                 } else if (opt == 4) { // KABUR
                     return false;
                 }
                 removeExpiredEffects(&c);
             } else {
                 enemies[i]->applyActiveEffect();
-                if (enemies[i]->getTurnActiveEffectStatus()["stun"]) {
+                if (enemies[i]->getTurnEffectStatus("Stun")) {
                     isCharTurn = !isCharTurn;
                     continue;
                 }
@@ -256,7 +257,7 @@ void Chamber::displayInfo() {
             std::cout << "    Name: " << skill->getName() << std::endl;
             std::cout << "    Mana Cost: " << skill->getManaCost() << std::endl;
             std::cout << "    Master Cost: " << skill->getMasterCost() << std::endl;
-            std::cout << "    Effect Chance: " << skill->getEffectChance() << std::endl;
+            std::cout << "    Skill Chance: " << skill->getskillChance() << std::endl;
             std::cout << "    Damage: " << skill->getDamage() << std::endl;
             ctr++;
             int ctr2 = 1;
@@ -278,7 +279,7 @@ void Chamber::displayInfo() {
             std::cout << "    Effect RemainingDur: " << effect->getRemainingDuration() << std::endl;
             ctr3++;
         }
-        std::cout << "Loot Drop: " << std::endl;
+        std::cout << "Loot Drop: BELOM ADA GETTERNYA!" << std::endl;
         std::cout << "============================" << std::endl;
     }
 }
@@ -344,4 +345,12 @@ int Chamber::inputSkillOption(Unit* u) {
     }
 
     return opt;
+}
+
+string Chamber::inputItemOption(Inventory& inv) {
+    string opt;
+    std::cout << "Choose your item: " << std::endl;
+    inv.displayBackpack();
+    std::cout << "Enter item id: ";
+    std::cin >> opt;
 }

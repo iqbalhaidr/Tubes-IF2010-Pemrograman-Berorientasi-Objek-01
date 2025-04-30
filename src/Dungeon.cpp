@@ -36,7 +36,7 @@ void Dungeon::helperSet(Items &items) {
         entryCost = 1000;
         rewardExp = 600;
         rewardGold = 600;
-        bonusItem = items.getItem("ItemS");
+        // bonusItem = items.getItem("ItemS");
     } else if (rank == "A") {
         minLevel = 35;
         entryCost = 500;
@@ -141,12 +141,12 @@ void Dungeon::generateChambers(Mobloot &mobLoots) {
     }
 }
 
-void Dungeon::start(Character &c, Inventory &inv) {
+void Dungeon::start(Character &c, Inventory &inv, Items &items) {
     bool neverLose = true;
     int ctr = 0;
 
     while (neverLose && ctr < totalChambers) {
-        bool result = chambers[ctr]->battle(c, inv, this->prize);
+        bool result = chambers[ctr]->battle(c, inv, this->prize, items);
         neverLose = result;
         ctr++;
     }

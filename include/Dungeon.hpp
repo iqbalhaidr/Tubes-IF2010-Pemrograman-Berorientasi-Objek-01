@@ -35,7 +35,7 @@ class Dungeon {
 
     // Setter
 
-    void start(Character&, Inventory&);
+    void start(Character&, Inventory&, Items&);
 
     /* Randomize, set isDD, update reward */
     void randomizeDoubleDungeon();

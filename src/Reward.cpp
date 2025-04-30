@@ -31,26 +31,24 @@ void Reward::addExp(int exp) {
 }
 
 void Reward::addItem(Item *item, int count) {
-    items[item] = count;
+    items[item] += count;
 }
 
-// TODO: addItem(const Item*, int), expLevelUp pada character
+void Reward::giveTo(Character* c, Inventory *inv) {
+    addExpToCharacter(c, exp);
+    addGoldToCharacter(c, gold);
+    for (auto it = items.cbegin(); it != items.cend(); ++it) {
+        std::pair<Item*, int> eachItem (it->first, it->second);
+        inv->addItem(eachItem);
+    }
+}
 
-// void Reward::giveTo(Character* c, Inventory *inv) {
-//     addExpToCharacter(c, exp);
-//     addGoldToCharacter(c, gold);
-//     for (auto it = items.cbegin(); i != items.cend(); ++i) {
-//         std::pair<const Item*, int> eachItem (i->first, i->second);
-//         inv->addItem(eachItem);
-//     }
-// }
-
-// void Reward::giveTo(Inventory *inv) {
-//     for (auto it = items.cbegin(); i != items.cend(); ++i) {
-//         std::pair<const Item*, int> eachItem (i->first, i->second);
-//         inv->addItem(eachItem);
-//     } 
-// }
+void Reward::giveTo(Inventory *inv) {
+    for (auto it = items.cbegin(); it != items.cend(); ++it) {
+        std::pair<Item*, int> eachItem (it->first, it->second);
+        inv->addItem(eachItem);
+    } 
+}
 
 void Reward::displayInfo() {
     std::cout << "Current Reward" << std::endl;
@@ -69,7 +67,6 @@ void Reward::displayInfo() {
     }
 }
 
-// Helper menambahkan exp ke character
 void addExpToCharacter(Character* c, int exp) {
     if (exp < 0) {
         std::cout << "Exp reward cannot be negative" << std::endl;
