@@ -284,7 +284,7 @@ void Chamber::displayInfo() {
     }
 }
 
-int inputOption() {
+int Chamber::inputOption() {
     int opt;
     bool isValid = false;
     while (!isValid) {
@@ -353,4 +353,5 @@ string Chamber::inputItemOption(Inventory& inv) {
     inv.displayBackpack();
     std::cout << "Enter item id: ";
     std::cin >> opt;
+    return opt;
 }

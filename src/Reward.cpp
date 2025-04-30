@@ -67,7 +67,7 @@ void Reward::displayInfo() {
     }
 }
 
-void addExpToCharacter(Character* c, int exp) {
+void Reward::addExpToCharacter(Character* c, int exp) {
     if (exp < 0) {
         std::cout << "Exp reward cannot be negative" << std::endl;
         return;
@@ -79,7 +79,7 @@ void addExpToCharacter(Character* c, int exp) {
 }
 
 // Helper menambahkan gold ke character
-void addGoldToCharacter(Character* c, int gold) {
+void Reward::addGoldToCharacter(Character* c, int gold) {
     if (gold < 0) {
         std::cout << "Gold reward cannot be negative" << std::endl;
         return;
