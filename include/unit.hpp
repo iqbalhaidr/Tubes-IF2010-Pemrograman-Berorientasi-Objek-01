@@ -33,7 +33,6 @@ class Unit {
         int attackDamage;
         int level;
         Stats stats;
-        map<string, bool> TurnEffectstatus; 
         vector<Skill*> skills;
         vector<Effect*> activeEffects;
         int getLevelFactor(Unit& target) const;
@@ -54,7 +53,7 @@ class Unit {
         int getManaRegen() const;
         int getAttackDamage() const;
         int getLevel() const;
-        map<string, bool> getTurnActiveEffectStatus() const;
+        bool getTurnEffectStatus(string turnEffectName) const;
         vector<Skill*> getSkills() const; 
         vector<Effect*> getActiveEffects() const; 
         vector<Effect*> getCombinedEffect(const vector<Effect*>& activeEffects) const;
@@ -69,7 +68,6 @@ class Unit {
         void setManaRegen(int manaRegen);
         void setAttackDamage(int attackDamage);
         void setLevel(int level);
-        void setTurnActiveEffectStatus(string turnEffect);
         void setStats(int strength, int agility, int intelligence);
 
         // Fungsi
