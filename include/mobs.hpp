@@ -14,7 +14,7 @@ class Mobs : public Unit {
     public:
         // ctor dtor
         Mobs(string name, int strength, int agility, int intelligence, int level, int expReward, Mobloot& mobLoots);
-        virtual~Mobs();
+        virtual ~Mobs();
 
         int getExpReward() const;
         void setExpReward(int expReward);
