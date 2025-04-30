@@ -8,7 +8,7 @@ Lich::Lich(int level, int expReward, Mobloot& mobLoots)
     EffectTurn* stunEffect = new EffectTurn("Brutal Strike Stun", stunEffectDescription, 1, 1);
     // kurang chance buat stun
     // param skill damage dimana?
-    Skill *skill = new Skill("Withering Touch", 0, 0, 0.15, effects);
+    Skill *skill = new Skill("Withering Touch", 0, 0, 15, effects);
     addSkill(skill);
 }
 

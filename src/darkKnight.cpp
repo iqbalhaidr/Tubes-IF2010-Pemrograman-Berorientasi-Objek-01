@@ -10,7 +10,7 @@ DarkKnight::DarkKnight(int level, int expReward, Mobloot& mobLoots)
     // kurang chance buat stun
     // param skill damage dimana?
     effects.push_back(stunEffect);
-    Skill *skill = new Skill("Soul Siphon", 0, 0, 0.35, effects);
+    Skill *skill = new Skill("Soul Siphon", 0, 0, 35, effects);
     addSkill(skill);
 }
 

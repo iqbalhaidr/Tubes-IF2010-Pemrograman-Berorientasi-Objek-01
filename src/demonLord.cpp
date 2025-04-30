@@ -8,7 +8,7 @@ DemonLord::DemonLord(int level, int expReward, Mobloot& mobLoots)
     EffectTurn* stunEffect = new EffectTurn("Brutal Strike Stun", stunEffectDescription, 1, 1);
     // kurang chance buat stun
     // param skill damage dimana?
-    Skill *skill = new Skill("Infernal Curse", 0, 0, 0.15, "Infernal Curse");
+    Skill *skill = new Skill("Infernal Curse", 0, 0, 15, "Infernal Curse");
     addSkill(skill);
 }
 

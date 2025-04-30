@@ -8,7 +8,7 @@ Skeleton::Skeleton(int level, int expReward, Mobloot& mobLoots)
     EffectTurn* stunEffect = new EffectTurn("Brutal Strike Stun", stunEffectDescription, 1, 1);
     // kurang chance buat stun
     // param skill damage dimana?
-    Skill *skill = new Skill("Bone Shard", 0, 0, 0.25, effects);
+    Skill *skill = new Skill("Bone Shard", 0, 0, 25, effects);
     addSkill(skill);
 }
 
