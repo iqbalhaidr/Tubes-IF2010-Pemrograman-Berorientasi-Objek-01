@@ -25,12 +25,25 @@ void EffectHealth::setHealAmount(int healAmount) {
     this->healAmount = healAmount;
 }
 
+double EffectHealth::getChance() const {
+    return chance;
+}
+
+void EffectHealth::setChance(double chance) {
+    this->chance = chance;
+}
+
 double EffectHealth::apply(Unit* unit) {
+    int randomValue = rand() % 100 + 1;
+    if (randomValue > chance) {
+        return 0; 
+    }
     int currentRegen = unit->getHealthRegen();
     unit->setHealthRegen(currentRegen + healAmount);
     remainingDuration -= 1;
     return 0;
 }
+
 
 
 
