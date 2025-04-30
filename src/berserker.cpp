@@ -2,10 +2,9 @@
 #include <iostream>
 using namespace std;
 
-Berserker::Berserker(string name)
-: Character(name ,28, 17, 12, 1, 0, 0, 5, "Berserker") {
+Berserker::Berserker(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost)
+: Character(name , strength, agility, intelligence, level, exp, gold, masteryCost, "Berserker") {
     updateBasicAttributes();
-    setRageMultiplier(rageMultiplier);
 }
 
 Berserker::~Berserker() {}

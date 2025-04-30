@@ -1,7 +1,7 @@
 #include "necromancer.hpp"
 
-Necromancer::Necromancer(string name)
-: Character(name, 13, 16, 28, 1, 0, 0, 5, "Necromancer") {
+Necromancer::Necromancer(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost)
+: Character(name, strength, agility, intelligence, level, exp, gold, masteryCost, "Necromancer") {
     updateBasicAttributes();
     this->summonTurns = 0; 
     this->summons = false;
