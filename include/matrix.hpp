@@ -1,5 +1,5 @@
 #ifndef MATRIKS_HPP
-#define MATIRIKS_HPP
+#define MATRIKS_HPP
 
 #include <iostream>
 #include <vector>
@@ -12,6 +12,7 @@ private:
     T defaultVal = T();
 
 public:
+    Matrix() : rows(8), cols(8) {} 
     Matrix(int r, int c) : rows(r), cols(c), matriks(r, std::vector<T>(c, T())) {}
     ~Matrix() {}
 
@@ -29,7 +30,7 @@ public:
         return matriks[i][j];
     }
 
-    std:: pair<int,int> isInMatrix(T value){
+    std:: pair<int,int> isInMatrix(std::function<bool(T)> predicate){
         for (int i =0; i< rows; i++){
             for(int j = 0; j<cols; j++){
                 if (matriks[i][j] == value){
@@ -38,6 +39,10 @@ public:
             }
         }
         return std::pair(-1,-1);
+    }
+
+    bool isEmptyCell(int Rows, int Cols){
+        return matriks[Rows][Cols] = defaultVal;
     }
 
     int getRows(){
