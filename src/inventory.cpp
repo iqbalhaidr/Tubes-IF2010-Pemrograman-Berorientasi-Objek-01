@@ -1,6 +1,7 @@
 #include "../include/inventory.hpp"
 #include "../include/matrix.hpp"
 #include "../include/exception.hpp"
+#include "../include/character.hpp"
 #include <fstream>
 #include <sstream>
 #include <iostream>

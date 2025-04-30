@@ -4,12 +4,13 @@
 #include "matrix.hpp"
 #include "item.hpp"
 #include "items.hpp"
-#include "character.hpp"
 #include <map>
 #include <string>
 #include <utility>
 
 #define MAX_ITEM 64
+
+class Character;
 
 class Inventory {
 private:
