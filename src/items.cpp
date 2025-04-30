@@ -7,7 +7,9 @@
 
 namespace fs = std::filesystem;
 
-Items::Items(const std::string& directory) {
+Items Items :: createFromDirectory(const std::string& directory) {
+    std::map<std::string, Item*> itemMap;
+    
     std::string filename = directory + "item.txt";
     if (!fs::exists(directory) || !fs::is_directory(directory)) {
         throw InputOutputException("Directory tidak ditemukan");
@@ -26,28 +28,37 @@ Items::Items(const std::string& directory) {
         std::string id, name, type, rarity;
         int level;
         double baseStat;
-        std::vector<std::string> effects;
+        std::vector<Effect*> effects;
+        std::string temp;
         
-
         if (ss >> id >> name >> type >> rarity >> baseStat) {
-            if (!(isValidItemType(type) && isValidItemRarity(rarity))) {
+            if (!(Items::isValidItemType(type) && Items::isValidItemRarity(rarity))) {
                 throw InputOutputException("Tipe atau rarity tidak valid");
             }
 
-            std::string effect;
-            while (ss >> effect) {
-                if (effect == "-") break;  
-                effects.push_back(effect);
+            Effect* effect;
+            while (ss >> temp) {
+                if (temp == "-") break;  
+                effects.push_back(Effect::createEffect("Item", temp));
             }
 
             // TODO: VALIDASI EFEK
 
-            Item* newItem = new Item(name, type, rarity, baseStat, effects);
-            addItem(id, newItem);
+            Item* newItem = new Item(id, name, type, rarity, baseStat, effects);  //eror diff type in effect
+            itemMap.insert(std::make_pair(id, newItem));
         } else {
             throw InventoryEror("Format baris salah di file item.txt");
         }
     }
+    Items listItem (itemMap);
+    
+    return listItem;
+}
+
+// ... rest of the class implementation
+
+Items :: Items(std::map<std::string, Item*> itemMap){
+    this->itemMap = itemMap;
 }
 
 Items::~Items() {
@@ -76,7 +87,7 @@ bool Items::lookUpbyName(const std::string& Name) const {
 
 Item* Items::getItem(const std::string& id) const {
     auto it = itemMap.find(id);
-    if (it != itemMap.end()) return it->second;
+    if (it != itemMap.end()) return it->second->cloneItem();
     return nullptr;
 }
 

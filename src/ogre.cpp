@@ -4,14 +4,10 @@ Ogre::Ogre(int level, int expReward, Mobloot& mobLoots)
  : BossMobs("Ogre", level, 32, 16, 12, expReward, mobLoots) {
     updateBasicAttributes();
     vector<Effect*> effects;
-    string critEffectDescription = "memberikan damage fisik yang sangat besar (2.5x attack biasa)";
-    EffectDamage* critDamage = new EffectDamage("Pulverize Critical", critEffectDescription, 1, 1, 1, attackDamage * 2.5);
-    string stunEffectDescription = "memiliki peluang tinggi (0.9 effect chance) untuk menyebabkan efek stun selama 1 turn";
-    EffectTurn* stunEffect = new EffectTurn("Pulverize Stun", stunEffectDescription, 1, 1);
-    // kurang chance buat stun
-    effects.push_back(critDamage);
+    string stunEffectDescription = "berpeluang 0.5 untuk memberikan stun selama 1 turn";
+    EffectTurn* stunEffect = new EffectTurn("Pulverize", stunEffectDescription, 1, 1, 0.9);
     effects.push_back(stunEffect);
-    Skill *skill = new Skill("Pulverize", 0, 0, 0.3, effects);
+    Skill *skill = new Skill("Pulverize", 0, 0, 0.3, attackDamage * 2.5, effects);
     addSkill(skill);
 }
 

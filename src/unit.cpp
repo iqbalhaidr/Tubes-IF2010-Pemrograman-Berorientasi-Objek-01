@@ -7,10 +7,6 @@ Unit::Unit(string name, int strength, int agility, int intelligence, int level) 
     this->name = name;
     updateBasicAttributes();   
     this->level = level;  
-    this->turnActiveEffectstatus = {
-        {"stun", false},
-        {"disable", false}
-    };
 }
 
 Unit::~Unit() {}
@@ -27,7 +23,15 @@ int Unit::getLevel() const { return level;}
 int Unit::getLevelFactor(Unit& target) const {
     return 1 + (this->level - target.level) * 0.05;
 }
-map<string, bool> Unit::getTurnActiveEffectStatus() const { return turnActiveEffectstatus;}
+bool Unit::getTurnEffectStatus(string turnEffectName) const { 
+    for (const auto& effect : activeEffects) {
+        if (effect->getName().find(turnEffectName) != std::string::npos) { //contains name
+            return true;
+        }
+    }
+    return false;
+}
+
 Stats Unit::getStats() const { return stats;}
 vector<Skill*> Unit::getSkills() const { return skills;} // TEMPORARY
 vector<Effect*> Unit::getActiveEffects() const { return activeEffects;} // TEMPORARY
@@ -40,12 +44,9 @@ void Unit::setCurrentMana(int currentMana) { this->currentMana = currentMana;}
 void Unit::setMaxMana(int maxMana) { this->maxMana = maxMana;}
 void Unit::setManaRegen(int manaRegen) { this->manaRegen = manaRegen;}
 void Unit::setAttackDamage(int attackDamage) { this->attackDamage = attackDamage;}
-void Unit::setTurnActiveEffectStatus(string turnActiveEffect) {
-    if (turnActiveEffectstatus.find(turnActiveEffect) != turnActiveEffectstatus.end()) {
-        turnActiveEffectstatus[turnActiveEffect] = true; 
-    } 
-      
-}
+
+
+
 void Unit::setStats(int strength, int agility, int intelligence) {
     stats.setStrength(strength);
     stats.setAgility(agility);
@@ -55,9 +56,7 @@ int Unit::calculateDamage(Unit& target, int baseDamage, Inventory& inventory) {
     int totalDamage = 1;
     for (const auto& ActiveEffect : getCombinedEffect(activeEffects)) {
         if (auto* damageEffect = dynamic_cast<EffectDamage*>(ActiveEffect)) {
-            if (rand() % 100 < damageEffect->getChance()) {
-                totalDamage += ActiveEffect->apply(this);
-            }
+            totalDamage += ActiveEffect->apply(this);
         }
     }
     int weaponDamage = inventory.getEquippedItem("weapon")->getBaseStat();
@@ -73,9 +72,7 @@ void Unit::attack(Unit& target, Inventory& inventory) {
 void Unit::takeDamage(int damage) {
     for (const auto& activeEffect : getCombinedEffect(activeEffects)) {
         if (auto* defensiveEffect = dynamic_cast<EffectDamage*>(activeEffect)) {
-            if (rand() % 100 < defensiveEffect->getChance()) {
-                damage *= 1 - activeEffect->apply(this);
-            }
+            damage *= 1 - activeEffect->apply(this);
         }
     }
     currentHealth -= damage;
@@ -106,6 +103,9 @@ void Unit::useSkill(Skill* skill, Unit& target) {
         cout << "Not enough mana to use " << skill->getName() << endl;
         return;
     }
+    if ((rand() % 100 + 1) > skill->getskillChance()) {
+        return;
+    }
     currentMana -= skill->getManaCost(); 
     int totalDamage = skill->getDamage();
 
@@ -122,9 +122,10 @@ void Unit::useSkill(Skill* skill, Unit& target) {
 
     for (const auto& ActiveEffect : getCombinedEffect(activeEffects)) {
         if (auto* damageEffect = dynamic_cast<EffectDamage*>(ActiveEffect)) {
-            if (rand() % 100 < damageEffect->getChance()) { // mungkin effect crit dari skill yg baru dimasukin + crit dari yg dah ada
-                totalDamage += ActiveEffect->apply(this);
-            }
+            if (damageEffect->getName() == "Brittle" && (damageEffect->getDuration() == damageEffect->getRemainingDuration())) {
+                continue;
+            } 
+            totalDamage += ActiveEffect->apply(this);
         }
     }
 
@@ -149,6 +150,7 @@ void Unit::addActiveEffect(Effect* effect) {
 void Unit::removeActiveEffect(Effect* activeEffect) {
     auto it = find(activeEffects.begin(), activeEffects.end(), activeEffect);
     if (it != activeEffects.end()) {
+        activeEffect->remove(this);
         activeEffects.erase(it); 
     }
 }
@@ -157,17 +159,16 @@ void Unit::applyActiveEffect() {
     for (auto& activeEffect : activeEffects) {
         if (activeEffect->isHealthRegen() || activeEffect->isManaRegen()) {
             if (activeEffect->isHealthRegen()) {
-                setHealthRegen(getHealthRegen() + activeEffect->apply(this));
+                heal(activeEffect->apply(this));
             }
             else if (activeEffect->isManaRegen()) {
-                setManaRegen(getManaRegen() + activeEffect->apply(this));
-            }
-            if (activeEffect->getRemainingDuration() == 0) {
-                activeEffect->remove(this);
+                restoreMana(activeEffect->apply(this));
             }
         }
         else if (activeEffect->isPoison()) {
             currentHealth -= activeEffect->apply(this);
+        } else if(activeEffect->isManaReduc()) {
+            currentMana -= activeEffect->apply(this);
         }
 
     }

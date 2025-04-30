@@ -14,9 +14,9 @@ class EffectPoison : public EffectTurnBasedBased {
 
         // Setter Getter
         double getDamage() const;
-        double setDamage(int damage);
+        void setDamage(int damage);
         double getChance() const;
-        double setChance(int chance);
+        void setChance(int chance);
 
         
         double apply(Unit* unit) override;
