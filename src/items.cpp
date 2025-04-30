@@ -28,17 +28,18 @@ Items Items :: createFromDirectory(const std::string& directory) {
         std::string id, name, type, rarity;
         int level;
         double baseStat;
-        std::vector<std::string> effects;
+        std::vector<Effect*> effects;
+        std::string temp;
         
         if (ss >> id >> name >> type >> rarity >> baseStat) {
             if (!(Items::isValidItemType(type) && Items::isValidItemRarity(rarity))) {
                 throw InputOutputException("Tipe atau rarity tidak valid");
             }
 
-            std::string effect;
-            while (ss >> effect) {
-                if (effect == "-") break;  
-                effects.push_back(effect);
+            Effect* effect;
+            while (ss >> temp) {
+                if (temp == "-") break;  
+                effects.push_back(Effect::createEffect("Item", temp));
             }
 
             // TODO: VALIDASI EFEK
