@@ -43,7 +43,7 @@ public:
     }
 
     bool isEmptyCell(int Rows, int Cols){
-        return matriks[Rows][Cols] = defaultVal;
+        return matriks[Rows][Cols] == defaultVal;
     }
 
     int getRows(){
