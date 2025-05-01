@@ -5,7 +5,9 @@ using namespace std;
 
 Unit::Unit(string name, int strength, int agility, int intelligence, int level) : stats(strength, agility, intelligence) {
     this->name = name;
-    updateBasicAttributes();   
+    updateBasicAttributes(); 
+    this->currentHealth = maxHealth;
+    this->currentMana = maxMana;  
     this->level = level;  
 }
 
@@ -193,8 +195,6 @@ void Unit::updateBasicAttributes() {
     setHealthRegen(10 * getStats().getStrength());
     setMaxMana(60 + 12 * getStats().getIntelligence());
     setManaRegen(5 * getStats().getIntelligence());
-    setCurrentHealth(getMaxHealth());
-    setCurrentMana(getMaxMana());
 }
 
 vector<Effect*> Unit::getCombinedEffect(const vector<Effect*>& activeEffects) const {
