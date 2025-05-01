@@ -1,7 +1,7 @@
 #include <iostream>
-#include <limits>
-#include <map>
 #include <vector>
+#include <map>
+#include <limits>
 
 #include "../include/Randomizer.hpp"
 #include "../include/items.hpp"
@@ -27,17 +27,16 @@ void switchTest(int i) {
     }
 }
 
-void chanceTest() {
-    int ctr = 0;
-    int n = 10000;
-    for (int i = 0; i < n; i++) {
-        if (Randomizer::chance(0.01f)) {
-            ctr++;
-        }
-    }
-    cout << "ini chance true " << ((float)ctr / (float)n) * 100.00f << "%"
-         << endl;
-}
+// void chanceTest() {
+//     int ctr = 0;
+//     int n = 10000;
+//     for (int i = 0; i < n; i++) {
+//         if (Randomizer::chance(0.01f)) {
+//             ctr++;
+//         }
+//     }
+//     cout << "ini chance true " << ((float) ctr/ (float) n) * 100.00f << "%" << endl;
+// }
 
 /*
 void mapTest() {
@@ -64,37 +63,32 @@ map<string, int> mapReturnTest() {
     return m;
 }
 
-// int inputOption() {
-//     int opt;
-//     bool isValid = false;
-//     while (!isValid) {
-//         std::cout << "Choose your action: " << std::endl;
-//         std::cout << "1. Attack" << std::endl;
-//         std::cout << "2. Use Skill" << std::endl;
-//         std::cout << "3. Use Item" << std::endl;
-//         std::cout << "4. Run Away" << std::endl;
-//         std::cin >> opt;
+int inputOption() {
+    int opt;
+    bool isValid = false;
+    while (!isValid) {
+        std::cout << "Choose your action: " << std::endl;
+        std::cout << "1. Attack" << std::endl;
+        std::cout << "2. Use Skill" << std::endl;
+        std::cout << "3. Use Item" << std::endl;
+        std::cout << "4. Run Away" << std::endl;
+        std::cin >> opt;
 
-//         if (std::cin.fail()) {
-//             std::cin.clear();  // reset fail state
-//             std::cin.ignore(std::numeric_limits<std::streamsize>::max(),
-//                             '\n');  // buang sisa input
-//             std::cout << "Invalid input. Please enter a number between 1 and 4."
-//                       << std::endl;
-//         } else if (opt >= 1 && opt <= 4) {
-//             isValid = true;
-//         } else {
-//             std::cout << "Invalid option. Please try again." << std::endl;
-//         }
-//     }
+        if (std::cin.fail()) {
+            std::cin.clear(); // reset fail state
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // buang sisa input
+            std::cout << "Invalid input. Please enter a number between 1 and 4." << std::endl;
+        } else if (opt >= 1 && opt <= 4) {
+            isValid = true;
+        } else {
+            std::cout << "Invalid option. Please try again." << std::endl;
+        }
+    }
 
-//     return opt;
-// }
+    return opt;
+}
 
-// test.cpp Randomizer.cpp items.cpp item.cpp effect.cpp EffectDamage.cpp
-// EffectDefensive.cpp EffectHealthRegen.cpp EffectManaRegen.cpp
-// EffectPoison.cpp EffectTurnBased.cpp  EffectHealth.cpp EffectTurn.cpp
-// Weapon.cpp Armor.cpp Pendant.cpp Potion.cpp unit.cpp stats.cpp Skill.cpp
+// g++ test.cpp Randomizer.cpp items.cpp item.cpp effect.cpp EffectDamage.cpp EffectDefensive.cpp EffectHealthRegen.cpp EffectManaRegen.cpp EffectPoison.cpp
 void itemsParserTest() {
     Items items = Items::createFromDirectory("../data/");
     std::map<std::string, Item*> itemMap = items.getItemMap();
@@ -114,24 +108,14 @@ void itemsParserTest() {
     }
 }
 
-/*
-g++ -o test test.cpp items.cpp item.cpp effect.cpp EffectDamage.cpp 
-EffectDefensive.cpp EffectHealthRegen.cpp EffectManaRegen.cpp EffectPoison.cpp 
-EffectTurnBased.cpp  EffectHealth.cpp EffectTurn.cpp Weapon.cpp Pendant.cpp 
-Armor.cpp Potion.cpp unit.cpp stats.cpp Skill.cpp Randomizer.cpp mobloot.cpp 
-Dungeon.cpp Chamber.cpp Reward.cpp fighter.cpp character.cpp darkKnight.cpp 
-demonLord.cpp goblin.cpp lich.cpp mobs.cpp necromancer.cpp ogre.cpp orc.cpp 
-skeleton.cpp slime.cpp bossMobs.cpp basicMobs.cpp inventory.cpp EffectManaReduc.cpp
-*/
-
 void dungeonTest() {
     Items items = Items::createFromDirectory("../data/");
     Mobloot mobLoot = Mobloot("../data/", items);
     Dungeon ds ("E", mobLoot, items);
     Fighter f ("player1", 100, 100, 100, 100, 100, 100, 100);
-    // Inventory inv = Inventory::loadInventory("../data/inventory.txt", items);
-    ds.displayInfo();
-    // ds.start(f, inv, items);
+    Inventory inv = Inventory::loadInventory("C:/Users/IQBAL-LAPTOP/IF/if2010-2425-tubes-1-lah/data/", items);
+    // ds.displayInfo();
+    ds.start(f, inv, items);
 }
 
 int main() {

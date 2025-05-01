@@ -9,6 +9,7 @@
 
 #include <string>
 #include <vector>
+#include <stdlib.h>
 
 #include "Randomizer.hpp"
 #include "Reward.hpp"
