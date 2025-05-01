@@ -19,7 +19,8 @@ class SkillTree{
         void destroy(SkillNode*);
         vector<SkillNode*> getAvailableUpgrade(vector<SkillNode*>& res) const;  
         void upgradeSkill(SkillNode* skill_awal, SkillNode* skill_baru);      
-        
+         SkillNode* getParent(Skill child);
+
 };
 
 #endif
