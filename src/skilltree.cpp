@@ -44,7 +44,7 @@ SkillTree::SkillTree(string char_type){
         EffectManaRegen* manaRegenPlus = dynamic_cast<EffectManaRegen*>(Effect::createEffect("Kukubima"));
         manaRegenPlus->setManaAmount(manaRegenPlus->getManaAmount() * 1.5);
 
-        EffectTurn* StunChancePlus = dynamic_cast<EffectTurn*>(Effect::createEffect("Stun chance"));
+        EffectTurn* StunChancePlus = dynamic_cast<EffectTurn*>(Effect::createEffect("Stun"));
         StunChancePlus->setChance(StunChancePlus->getChance() * 1.5);
 
         // Skill3
