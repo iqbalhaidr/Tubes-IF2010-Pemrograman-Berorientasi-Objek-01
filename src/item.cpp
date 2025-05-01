@@ -1,7 +1,7 @@
 #include "../include/item.hpp"
 
 Item::Item(std::string ItemId, std::string Name, std::string type, std::string rarity, double baseStat, const std::vector<Effect*>& Effects){
-    this->itemId = itemId;
+    this->itemId = ItemId;
     this->name = Name;
     this->type = type;
     this->rarity = rarity;
@@ -12,6 +12,7 @@ Item::Item(std::string ItemId, std::string Name, std::string type, std::string r
 }
 
 Item::Item(const Item& other){
+    this->itemId = other.itemId;
     this->name = other.name;
     this->type = other.type;
     this->rarity = other.rarity;

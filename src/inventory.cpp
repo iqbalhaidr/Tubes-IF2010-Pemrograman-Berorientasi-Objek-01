@@ -50,7 +50,9 @@ Inventory Inventory :: loadInventory(const std::string& directory, const Items& 
 
         if (ss >> row >> col >> itemId >> total) {
             if (backp.isEmptyCell(row,col)) { // jika kosong
-                backp.set(row, col, {itemMap.getItem(itemId) , total}); //add
+                
+                Item* cloned =itemMap.getItem(itemId);
+                backp.set(row, col, {cloned , total}); //add
             } else {
                 throw InputOutputException("Slot backpack bertumpuk"); //untuk config ga boleh bertumpuk
             }
@@ -115,65 +117,51 @@ void Inventory::saveInventory(const std::string& directory) {
 
 
 
+
 void Inventory::addItem(std::pair<Item*, int>& value) {
-    auto isExist = getIdxItembyId(value.first->getId());
-    if(isExist.first== -1){ // not exist
-        for (int i = 0; i < 8; ++i) {
-            for (int j = 0; j < 4; ++j) {
-                if(backpack.isEmptyCell(i,j) && value.second > 0){
-                    if(value.second > MAX_ITEM){
-                        backpack.set(i, j, std::pair<Item*, int>(value.first, value.second - 64));
-                        value.second-=64;
-                        continue;
+    Item* item = value.first;
+    int& quantity = value.second;
+    bool isStackable = item->isStackable();
+    
+    if (isStackable) {
+        auto existingItem = getIdxItembyId(item->getId());
+        if (existingItem.first != -1) {
+            for (int i = 0; i < 8 && quantity > 0; ++i) {
+                for (int j = 0; j < 4 && quantity > 0; ++j) {
+                    std::pair<Item*, int> current = backpack.get(i, j);
+                    
+                    if (current.first == item && current.second < MAX_ITEM) {
+                        int spaceAvailable = MAX_ITEM - current.second;
+                        int amountToAdd = std::min(spaceAvailable, quantity);
+                        
+                        backpack.set(i, j, {current.first, current.second + amountToAdd});
+                        quantity -= amountToAdd;
                     }
-                    backpack.set(i, j, std::pair<Item*, int>(value.first, value.second));
-                    value.second-=0;
-
-                }
-                if(value.second==0){
-                    return;
                 }
             }
         }
     }
-    bool isItemStackable = value.first->isStackable();
-    int excessAmount = 0;
-    bool foundEmptyCell = false;
-    std::pair<int, int> emptyIndex;
-
-    for (int i = 0; i < 8; ++i) {
-        for (int j = 0; j < 4; ++j) {
-            std::pair<Item*, int> current = backpack.get(i, j);
-
-            if (current.first == value.first && isItemStackable &&current.second < MAX_ITEM) {
-                int total = current.second + value.second;
-
-                if (total <= MAX_ITEM) {
-                    backpack.set(i, j, std::pair<Item*, int>(current.first, total));
-                    return;
-                } else {
-                    backpack.set(i, j, {current.first, MAX_ITEM});
-                    excessAmount = total - MAX_ITEM;
-                    value.second = excessAmount;
+    
+    //tambahkan sisa
+    for (int i = 0; i < 8 && quantity > 0; ++i) {
+        for (int j = 0; j < 4 && quantity > 0; ++j) {
+            if (backpack.isEmptyCell(i, j)) {
+                if (isStackable && quantity>0) {
+                    int amountToAdd = std::min(MAX_ITEM, quantity);
+                    backpack.set(i, j, {item, amountToAdd});
+                    quantity -= amountToAdd;
+                } 
+                else if(quantity>0){
+                    backpack.set(i, j, {item, 1});
+                    quantity -= 1;
                 }
-            }
-
-            else if(!isItemStackable && backpack.isEmptyCell(i,j) &&value.second>0){
-                value.second-=1;
-                backpack.set(i, j, {value.first, 1});
-            }
-
-            if (!foundEmptyCell && backpack.isEmptyCell(i,j) && isItemStackable) {
-                foundEmptyCell = true;
-                emptyIndex = {i, j};
             }
         }
     }
-
-    if (foundEmptyCell && excessAmount > 0) {
-        backpack.set(emptyIndex.first, emptyIndex.second, {value.first, excessAmount});
-    } else if (excessAmount > 0) {
-        throw InputOutputException("Backpack penuh, tidak bisa menambahkan sisa item");  // dont forget to handle try and catch
+    
+    // Jika masih ada sisa yang tidak bisa dimasukkan, lempar exception
+    if (quantity > 0) {
+        throw InputOutputException("Backpack penuh, tidak bisa menambahkan sisa item");
     }
 }
 
@@ -328,9 +316,14 @@ void Inventory :: displayBackpack(){
                 item="";
             }
             else{
+                cout<<backpack.get(i,j).first->getId() <<"INI HARUSNYA ADA ID TAPI KEMANA BGST \n";
                 item=txtGenerator(backpack.get(i,j));
+                cout<<item<<"INI TXT HASIL GENERATE";
+                break;
             }
-            std::cout<<"|"<<Inventory::centerText(item, 30)<<"|";
+            break;
+            std::cout<<"|"<<Inventory::centerText(item, 10)<<"|";
         }   
+        cout<<"\n";
     }
 }
