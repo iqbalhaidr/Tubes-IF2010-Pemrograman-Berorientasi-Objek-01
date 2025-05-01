@@ -5,6 +5,7 @@
 
 // #include "../include/Randomizer.hpp"
 #include "../include/items.hpp"
+#include "../include/inventory.hpp"
 
 using namespace std;
 
@@ -106,6 +107,12 @@ void itemsParserTest() {
     }
 }
 
+void itemInventoryParserTest(){
+    Items items = Items::createFromDirectory("../data/");
+    Inventory inv = Inventory::loadInventory("../data/", items);
+    inv.displayBackpack();
+}
+
 int main() {
     // int i = 5;
     // for (; i < 10; i++) {
@@ -121,4 +128,5 @@ int main() {
     // cout << mapReturnTest()["a"] << endl;
     // cout << inputOption() << endl;
     itemsParserTest();
+    itemInventoryParserTest();
 }
