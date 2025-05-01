@@ -22,6 +22,7 @@ class SkillNode{
         SkillNode(const SkillNode& other);
         SkillNode& operator=(const SkillNode& other);
 
+        Skill* getSkill() const;
         SkillNode* getLeftNode() const;
         SkillNode* getRightNode() const;
         Skill* getLeftSkill() const;

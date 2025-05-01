@@ -69,6 +69,10 @@ SkillNode* SkillNode::getRightNode() const {
     return right;
 }
 
+
+Skill* SkillNode::getSkill() const {
+    return skill;
+}
 void SkillNode::setLeftNode(SkillNode* left) {
     this->left = left;
 }
