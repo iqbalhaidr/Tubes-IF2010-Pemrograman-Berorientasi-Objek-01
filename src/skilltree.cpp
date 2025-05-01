@@ -215,6 +215,10 @@ SkillTree::SkillTree(string char_type){
 
         root3 = new SkillNode(b3_1);
     }
+
+    currentSkills.push_back(root1);
+    currentSkills.push_back(root2);
+    currentSkills.push_back(root3);
 }
 
 SkillTree::~SkillTree() {
@@ -230,114 +234,23 @@ void SkillTree::destroy(SkillNode* node) {
     delete node;
 }
 
-std::vector<Skill*> SkillTree::getAvailableUpgrade() const{
-    std::vector<Skill*> aval_skill;
+std::vector<SkillNode*> SkillTree::getAvailableUpgrade(vector<SkillNode*>& result) const{
+    for (int i = 0; i < currentSkills.size(); i++){
 
-    if (root1 != nullptr) {
-        aval_skill.push_back(root1->getLeftSkill());
-        aval_skill.push_back(root1->getRightSkill());
-    }
-
-    if (root2 != nullptr) {
-        aval_skill.push_back(root2->getLeftSkill());
-        aval_skill.push_back(root2->getRightSkill());
-    }
-
-    if (root3 != nullptr) {
-        aval_skill.push_back(root3->getLeftSkill());
-        aval_skill.push_back(root3->getRightSkill());
-    }
-    return aval_skill;
+            if (currentSkills[i]->getLeftNode() != nullptr){
+                if (currentSkills[i]->getLeftNode()->unlocked == false){
+                    result.push_back(currentSkills[i]->getLeftNode());
+                }
+                if (currentSkills[i]->getRightNode()->unlocked == false){
+                    result.push_back(currentSkills[i]->getRightNode());
+                }
+            }
+        }
+        return result;
 }
 
-void SkillTree::upgradeSkill(int skill_awal, bool isLeft) {
-    if (skill_awal == 1){
-        if (isLeft){
-            root1 = root1->getLeftNode();
-        }
-        else{
-            root1 = root1->getRightNode();
-        }
-    }
-
-    else if (skill_awal == 2){
-        if (isLeft){
-            root2 = root2->getLeftNode();
-        }
-        else{
-            root2 = root2->getRightNode();
-        }
-    }
-    else if (skill_awal == 3){
-        if (isLeft){
-            root3 = root3->getLeftNode();
-        }
-        else{
-            root3 = root3->getRightNode();
-        }
-    }
+void SkillTree::upgradeSkill(SkillNode* skill_awal, SkillNode* skill_baru){
+    skill_baru->unlocked = true;
+    currentSkills.push_back(skill_baru);
 }
 
-void SkillTree::upgradeSkill(Skill skill_awal, Skill skill_baru){
-    if (*(root1->getSkill()) == skill_awal){
-        if (*(root1->getLeftSkill()) == skill_baru){
-            root1->setLeftNode(root1->getLeftNode());
-        }
-        else{
-            root1->setRightNode(root1->getRightNode());
-        }
-        return;
-    }
-
-    if (*(root2->getSkill()) == skill_awal){
-        if (*(root2->getLeftSkill()) == skill_baru){
-            root2->setLeftNode(root2->getLeftNode());
-        }
-        else{
-            root2->setRightNode(root2->getRightNode());
-        }
-        return;
-    }
-
-    if (*(root3->getSkill()) == skill_awal){
-        if (*(root3->getLeftSkill()) == skill_baru){
-            root3->setLeftNode(root3->getLeftNode());
-        }
-        else{
-            root3->setRightNode(root3->getRightNode());
-        }
-        return;
-    }
-}
-
-void SkillTree::upgradeSkill(Skill* skill_awal, Skill* skill_baru){
-    if (*(root1->getSkill()) == *skill_awal){
-        if (*(root1->getLeftSkill()) == *skill_baru){
-            root1->setLeftNode(root1->getLeftNode());
-        }
-        else{
-            root1->setRightNode(root1->getRightNode());
-        }
-        return;
-    }
-
-    if (*(root2->getSkill()) == *skill_awal){
-        if (*(root2->getLeftSkill()) == *skill_baru){
-            root2->setLeftNode(root2->getLeftNode());
-        }
-        else{
-            root2->setRightNode(root2->getRightNode());
-        }
-        return;
-    }
-
-    if (*(root3->getSkill()) == *skill_awal){
-        if (*(root3->getLeftSkill()) == *skill_baru){
-            root3->setLeftNode(root3->getLeftNode());
-        }
-        else{
-            root3->setRightNode(root3->getRightNode());
-        }
-        return;
-    }
-}
