@@ -3,8 +3,11 @@
 #include <map>
 #include <limits>
 
-// #include "../include/Randomizer.hpp"
+#include "../include/Randomizer.hpp"
 #include "../include/items.hpp"
+#include "../include/inventory.hpp"
+#include "../include/Dungeon.hpp"
+#include "../include/fighter.hpp"
 
 using namespace std;
 
@@ -106,6 +109,35 @@ void itemsParserTest() {
     }
 }
 
+void itemInventoryParserTest(){
+    Items items = Items::createFromDirectory("../data/");
+    Inventory inv = Inventory::loadInventory("../data/", items);
+    inv.displayBackpack();
+}
+
+/*
+g++ -o test test.cpp items.cpp item.cpp effect.cpp EffectDamage.cpp
+EffectDefensive.cpp EffectHealthRegen.cpp EffectManaRegen.cpp EffectPoison.cpp
+EffectTurnBased.cpp  EffectHealth.cpp EffectTurn.cpp Weapon.cpp Pendant.cpp
+Armor.cpp Potion.cpp unit.cpp stats.cpp Skill.cpp Randomizer.cpp mobloot.cpp
+Dungeon.cpp Chamber.cpp Reward.cpp fighter.cpp character.cpp darkKnight.cpp
+demonLord.cpp goblin.cpp lich.cpp mobs.cpp necromancer.cpp ogre.cpp orc.cpp
+skeleton.cpp slime.cpp bossMobs.cpp basicMobs.cpp inventory.cpp
+EffectManaReduc.cpp
+*/
+
+void dungeonTest() {
+    Items items = Items::createFromDirectory("../data/");
+    Mobloot mobLoot = Mobloot("../data/", items);
+    Dungeon ds("E", mobLoot, items);
+    std::cout << "Dungeon created" << std::endl;
+    // ds.displayInfo();
+    Fighter f ("Fighter1");
+    std::cout << "Fighter created" << std::endl;
+    // Inventory inv = Inventory::loadInventory("../data/", items);
+    // ds.start(f, inv, items);
+}
+
 int main() {
     // int i = 5;
     // for (; i < 10; i++) {
@@ -120,5 +152,7 @@ int main() {
     // mapTest();
     // cout << mapReturnTest()["a"] << endl;
     // cout << inputOption() << endl;
-    itemsParserTest();
+    // itemsParserTest();
+    // itemInventoryParserTest();
+    dungeonTest();
 }
