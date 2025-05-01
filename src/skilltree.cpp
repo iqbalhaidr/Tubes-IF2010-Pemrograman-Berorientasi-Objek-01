@@ -36,9 +36,9 @@ SkillTree::SkillTree(string char_type){
         Skill* f2_3 = new Skill("Crimson Onslaught", 10, 0, 0.5, 0, {BleedPlusPlus});
 
         // Damage and support effects
-        EffectDamage* CriticalChance = dynamic_cast<EffectDamage*>(Effect::createEffect("Critical chance"));
+        EffectDamage* CriticalChance = dynamic_cast<EffectDamage*>(Effect::createEffect("Critical"));
 
-        EffectDamage* CriticalChancePlus = dynamic_cast<EffectDamage*>(Effect::createEffect("Critical chance"));
+        EffectDamage* CriticalChancePlus = dynamic_cast<EffectDamage*>(Effect::createEffect("Critical"));
         CriticalChancePlus->setDamage(CriticalChancePlus->getDamage() * 1.5);
 
         EffectManaRegen* manaRegenPlus = dynamic_cast<EffectManaRegen*>(Effect::createEffect("Kukubima"));
@@ -182,7 +182,7 @@ SkillTree::SkillTree(string char_type){
         root3 = new SkillNode(n3_1);
     }
 
-    else if (char_type == "Berserk") {
+    else if (char_type == "Berserker") {
         // Berserk skill1
         EffectDamage* Critical = dynamic_cast<EffectDamage*>(Effect::createEffect("Critical"));
         EffectDamage* CriticalPlusPlus = dynamic_cast<EffectDamage*>(Effect::createEffect("Critical"));
