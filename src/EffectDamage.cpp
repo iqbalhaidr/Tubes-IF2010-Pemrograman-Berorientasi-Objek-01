@@ -1,4 +1,4 @@
-#include "../include/effectDamage.hpp"
+#include "../include/EffectDamage.hpp"
 
 EffectDamage::EffectDamage(const std::string& name, const std::string& description, double duration, double remainingDuration, int chance, double damage)
     : Effect(name, description, duration, remainingDuration), chance(chance), damage(damage) {}

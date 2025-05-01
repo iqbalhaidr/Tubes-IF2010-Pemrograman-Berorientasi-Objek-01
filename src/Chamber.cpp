@@ -4,11 +4,9 @@
 
 Chamber::Chamber(bool isLast, int minMobLevel, int maxMobLevel, Mobloot& mobLoots)
     : isLastChamber(isLast), minMobLevel(minMobLevel), maxMobLevel(maxMobLevel), mobLoots(&mobLoots) {
-    // std::cout << "Check1 Chamber.cpp\n";
     rewardExp = generateRewardExp();
     rewardGold = generateRewardGold();
     generateEnemies();
-    // std::cout << "Check2 Chamber.cpp\n";
 }
 
 Chamber::Chamber(const Chamber& c) {

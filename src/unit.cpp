@@ -8,7 +8,7 @@ Unit::Unit(string name, int strength, int agility, int intelligence, int level) 
     updateBasicAttributes(); 
     this->currentHealth = maxHealth;
     this->currentMana = maxMana;  
-    this->level = level;  
+    this->level = level;
 }
 
 Unit::~Unit() {}
