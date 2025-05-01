@@ -13,15 +13,13 @@ class Mobs : public Unit {
 
     public:
         // ctor dtor
-        Mobs(string name, int strength, int agility, int intelligence, int level, int expReward, Mobloot& mobLoots);
+        Mobs(string name, int level, int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots);
         virtual~Mobs();
 
         int getExpReward() const;
         void setExpReward(int expReward);
         vector<Item*> dropLoot(); 
         void reset();
-
-
 };
 
 #endif
