@@ -4,6 +4,7 @@ Pendant::Pendant(std::string itemId, std::string Name, std::string type, std::st
         : Item(itemId,Name, type, rarity, baseStat, Effects){}
 
 Pendant::Pendant(const Pendant& other) : Item(other) {}
+Pendant::~Pendant(){};
 
 bool Pendant::isConsumable() const{
     return false;
