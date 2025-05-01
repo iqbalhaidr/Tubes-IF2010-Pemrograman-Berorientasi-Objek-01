@@ -49,9 +49,9 @@ SkillNode& SkillNode::operator=(const SkillNode& other) {
     return *this;
 }
 
-SkillNode::~SkillNode(){
-    delete skill;
-}
+// SkillNode::~SkillNode(){
+//     delete skill;
+// }
 
 Skill* SkillNode::getLeftSkill() const {
     return left->skill;
