@@ -15,7 +15,10 @@ class SkillTree{
         SkillTree(string char_type);
         ~SkillTree();
         void destroy(SkillNode*);
-        vector<Skill*> getSkillTree() const;
+        vector<Skill*> getAvailableUpgrade() const;  
+        void upgradeSkill(int skill_awal, bool isLeft);      
+        void upgradeSkill(Skill skill_awal, Skill skill_baru);      
+        void upgradeSkill(Skill* skill_awal, Skill* skill_baru);      
         
 };
 
