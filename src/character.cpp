@@ -8,7 +8,6 @@ Character::Character(string name, int strength, int agility, int intelligence, i
     setGold(gold);
     setMasteryCost(masteryCost);
     setType(type);
-    cout << "contol1\n";
 }
 
 Character::~Character() {}
@@ -51,7 +50,7 @@ void Character::UpgradeSkill(string& skilltoLearn) {
 
         skillTree.upgradeSkill(parentNode, availableSkillNodes[idx]);
         addSkill(availableSkillNodes[idx]->getSkill());
-        
+
         bool canRemove = parentNode->canRemove();
         if (canRemove) {
             removeSkill(parentNode->getSkill());

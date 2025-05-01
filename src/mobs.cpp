@@ -2,7 +2,6 @@
 
 Mobs::Mobs(string name, int level, int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots)
  : Unit(name, strength, agility, intelligence, level) {
-    cout << "contolmobs\n";
     this->expReward = expReward; 
     this->LootDrop = mobLoots.getLootforMob(name);
     vector<Effect*> effects;
@@ -11,7 +10,6 @@ Mobs::Mobs(string name, int level, int strength, int agility, int intelligence, 
     effects.push_back(heal);
     Skill *skill = new Skill("Heal", 3, 0, 5, attackDamage, effects);
     addSkill(skill);
-    cout << "contolmobs\n";
 }
 
 Mobs::~Mobs() {}
