@@ -62,6 +62,7 @@ Items Items :: createFromDirectory(const std::string& directory) {
             else if(type == "Potion"){
                 newItem = new Potion(id, name, type, rarity, baseStat, effects);  
             }
+            
       
             itemMap.insert(std::make_pair(id, newItem));
         } else {
