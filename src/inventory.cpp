@@ -316,9 +316,7 @@ void Inventory :: displayBackpack(){
                 item="";
             }
             else{
-                cout<<backpack.get(i,j).first->getId() <<"INI HARUSNYA ADA ID TAPI KEMANA BGST \n";
                 item=txtGenerator(backpack.get(i,j));
-                cout<<item<<"INI TXT HASIL GENERATE";
                 break;
             }
             break;
