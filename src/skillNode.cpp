@@ -49,9 +49,6 @@ SkillNode& SkillNode::operator=(const SkillNode& other) {
     return *this;
 }
 
-SkillNode::~SkillNode(){
-    delete skill;
-}
 
 Skill* SkillNode::getLeftSkill() const {
     return left->skill;
@@ -83,4 +80,4 @@ void SkillNode::setRightNode(SkillNode* right) {
 
 bool SkillNode::canRemove() const {
     return left->unlocked && right->unlocked;
-}
+}   
