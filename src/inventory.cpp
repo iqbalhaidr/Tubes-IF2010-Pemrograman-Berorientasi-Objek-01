@@ -118,7 +118,23 @@ void Inventory::saveInventory(const std::string& directory) {
 void Inventory::addItem(std::pair<Item*, int>& value) {
     auto isExist = getIdxItembyId(value.first->getId());
     if(isExist.first== -1){ // not exist
-        
+        for (int i = 0; i < 8; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                if(backpack.isEmptyCell(i,j) && value.second > 0){
+                    if(value.second > MAX_ITEM){
+                        backpack.set(i, j, std::pair<Item*, int>(value.first, value.second - 64));
+                        value.second-=64;
+                        continue;
+                    }
+                    backpack.set(i, j, std::pair<Item*, int>(value.first, value.second));
+                    value.second-=0;
+
+                }
+                if(value.second==0){
+                    return;
+                }
+            }
+        }
     }
     bool isItemStackable = value.first->isStackable();
     int excessAmount = 0;
