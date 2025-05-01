@@ -23,7 +23,8 @@ void Character::setExp(int exp) { this->exp = exp;}
 void Character::setGold(int gold) { this->gold = gold;}
 void Character::setMasteryCost(int masteryCost) { this->masteryCost = masteryCost;}
 void Character::setType(string type) { this->type = type;}
-
+void Character::displayAvailableSkillUpgrades() {}
+void Character::UpgradeSkill(vector<string> skills) {}
 
 void Character::reset() {
     currentHealth = maxHealth;

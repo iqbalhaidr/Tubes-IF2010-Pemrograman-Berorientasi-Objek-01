@@ -38,6 +38,8 @@ class Character : public Unit {
         void setMasteryCost(int masteryCost);
         void setType(string type);
         void setSkillTree(SkillTree skillTree);
+        void displayAvailableSkillUpgrades();
+        void UpgradeSkill(vector<string> skills);
 
         // Fungsi
         virtual void levelUp() = 0;
