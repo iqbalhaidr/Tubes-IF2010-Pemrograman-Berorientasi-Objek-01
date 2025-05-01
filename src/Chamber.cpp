@@ -1,0 +1,404 @@
+#include "../include/Chamber.hpp"
+
+#include <iostream>
+
+Chamber::Chamber(bool isLast, int minMobLevel, int maxMobLevel,
+                 Mobloot& mobLoots)
+    : isLastChamber(isLast),
+      minMobLevel(minMobLevel),
+      maxMobLevel(maxMobLevel),
+      mobLoots(&mobLoots) {
+    std::cout << "Check1 Chamber.cpp\n";
+    rewardExp = generateRewardExp();
+    rewardGold = generateRewardGold();
+    generateEnemies();
+    std::cout << "Check2 Chamber.cpp\n";
+}
+
+Chamber::Chamber(const Chamber& c) {
+    this->rewardExp = c.rewardExp;
+    this->rewardGold = c.rewardGold;
+    this->enemyCount = c.enemyCount;
+    this->isLastChamber = c.isLastChamber;
+    this->minMobLevel = c.minMobLevel;
+    this->maxMobLevel = c.maxMobLevel;
+    this->mobLoots = c.mobLoots;
+
+    this->enemies = c.enemies;
+    // TODO: buat clone(). ntah virtual atau pure virtual
+    // for (int i = 0; i < enemies.size(); i++) {
+    //     this->enemies.push_back(c.enemies[i]->clone());
+    // }
+}
+
+Chamber::~Chamber() {
+    for (int i = 0; i < enemyCount; i++) {
+        delete enemies[i];
+    }
+    enemies.clear();
+}
+
+Chamber& Chamber::operator=(const Chamber& c) {
+    this->rewardExp = c.rewardExp;
+    this->rewardGold = c.rewardGold;
+    this->enemyCount = c.enemyCount;
+    this->isLastChamber = c.isLastChamber;
+    this->minMobLevel = c.minMobLevel;
+    this->maxMobLevel = c.maxMobLevel;
+    this->mobLoots = c.mobLoots;
+
+    this->enemies = c.enemies;
+    // TODO: buat clone(). ntah virtual atau pure virtual
+    // for (int i = 0; i < enemies.size(); i++) {
+    //     this->enemies.push_back(c.enemies[i]->clone());
+    // }
+
+    return *this;
+}
+
+int Chamber::getRewardExp() const { return rewardExp; }
+int Chamber::getRewardGold() const { return rewardGold; }
+int Chamber::getEnemyCount() const { return enemyCount; }
+int Chamber::isLast() const { return isLastChamber; }
+int Chamber::getMinMobLevel() const { return minMobLevel; }
+int Chamber::getMaxMobLevel() const { return maxMobLevel; }
+std::vector<Mobs*> Chamber::getEnemies() const {
+    return enemies;
+
+    // TODO: buat clone(). ntah virtual atau pure virtual
+    // std::vector<Mobs*> enemiesClone;
+    // for (int i = 0; i < enemies.size(); i++) {
+    //     enemiesClone.push_back(enemies[i]->clone());
+    // }
+    // return enemiesClone;
+}
+
+// void Chamber::setRewardExp(int rewardExp) { this->rewardExp = rewardExp; }
+// void Chamber::setRewardGold(int rewardGold) { this->rewardGold = rewardGold;
+// } void Chamber::setEnemyCount(int enemyCount) { this->enemyCount =
+// enemyCount; } void Chamber::setLast(bool isLast) { this->isLastChamber =
+// isLast; }
+
+int Chamber::generateRewardGold() {
+    int a = 2;
+    int b = 3;
+    int c = 1;
+    return a * minMobLevel + b * maxMobLevel + c * (maxMobLevel - minMobLevel);
+}
+
+int Chamber::generateRewardExp() {
+    int a = 4;
+    int b = 6;
+    int c = 2;
+    return a * minMobLevel + b * maxMobLevel + c * (maxMobLevel - minMobLevel);
+}
+
+int Chamber::generateEnemyCount() {
+    if (isLastChamber) {
+        return Randomizer::random(MIN_ENEMIES_LAST_CHAMBER,
+                                  MAX_ENEMIES_LAST_CHAMBER);
+    } else {
+        return Randomizer::random(MIN_ENEMIES_CHAMBER, MAX_ENEMIES_CHAMBER);
+    }
+}
+
+BasicMobs* Chamber::generateBasicMobs(int level) {
+    int expReward = 100 * level;
+    switch (Randomizer::random(1, 4)) {
+        case 1:
+            return new Slime(level, expReward, *mobLoots);
+        case 2:
+            return new Goblin(level, expReward, *mobLoots);
+        case 3:
+            return new Skeleton(level, expReward, *mobLoots);
+        case 4:
+            return new Orc(level, expReward, *mobLoots);
+        default:
+            return nullptr;
+    }
+}
+
+BossMobs* Chamber::generateBossMobs(int level) {
+    int expReward = 200 * level;
+    switch (Randomizer::random(1, 4)) {
+        case 1:
+            return new Ogre(level, expReward, *mobLoots);
+        case 2:
+            return new DarkKnight(level, expReward, *mobLoots);
+        case 3:
+            return new DemonLord(level, expReward, *mobLoots);
+        case 4:
+            return new Lich(level, expReward, *mobLoots);
+        default:
+            return nullptr;
+    }
+}
+
+void Chamber::generateEnemies() {
+    // std::cout << "Check1A Chamber.cpp\n";
+    // std::cout << enemyCount << "\n";
+    // for (int i = 0; i < enemyCount; i++) {
+    //     // std::cout << "Check1AA Chamber.cpp\n";
+    //     // delete enemies[i];
+    //     // std::cout << "Check1AB Chamber.cpp\n";
+    // }
+    // enemies.clear();
+    // std::cout << "Check1B Chamber.cpp\n";
+
+    bool isBossSpawnedInBasicChamber = false;
+    enemyCount = generateEnemyCount();
+    for (int i = 0; i < enemyCount; i++) {
+        if (isLastChamber) {
+            int level = Randomizer::random(minMobLevel, maxMobLevel);
+            std::cout << level << "INI LEVEL BOS JING\n";
+            enemies.push_back(generateBossMobs(level));
+        } else {
+            if (!isBossSpawnedInBasicChamber) {
+                if (Randomizer::chance(CHANCE_BOSS_NOT_ON_LAST_CHAMBER)) {
+                    int level = Randomizer::random(minMobLevel, maxMobLevel);
+                    enemies.push_back(generateBossMobs(level));
+                    isBossSpawnedInBasicChamber = true;
+                    std::cout << level << "INI LEVEL BOS JING\n";
+                } else {
+                    int level = Randomizer::random(minMobLevel, maxMobLevel);
+                    enemies.push_back(generateBasicMobs(level));
+                    std::cout << level << "INI LEVEL BOS JING\n";
+                }
+            } else {
+                int level = Randomizer::random(minMobLevel, maxMobLevel);
+                enemies.push_back(generateBasicMobs(level));
+                std::cout << level << "INI LEVEL BOS JING\n";
+            }
+        }
+    }
+}
+
+bool Chamber::battle(Character& c, Inventory& inv, Reward& prize,
+                     Items& items) {
+    for (int i = 0; i < enemyCount; i++) {
+        bool isCharTurn = true;
+        enemies[i]->setCurrentHealth(enemies[i]->getMaxHealth());
+        while (enemies[i]->getCurrentHealth() > 0 && c.getCurrentHealth() > 0) {
+            // system("cls");
+            std::cout << "minMobLevel: " << getMinMobLevel() << "\n";
+            std::cout << "maxMobLevel: " << getMaxMobLevel() << "\n";
+            std::cout << enemies[i]->getName()
+                      << "'s Current Health: " << enemies[i]->getCurrentHealth()
+                      << "\n";
+            if (isCharTurn) {
+                c.applyActiveEffect();
+                c.heal(c.getHealthRegen());
+                c.restoreMana(c.getManaRegen());
+                if (c.getTurnEffectStatus(
+                        "Stun")) {  // Cek apakah ada activeEffect stun
+                    isCharTurn = !isCharTurn;
+                    continue;
+                }
+                int opt = inputOption();
+                if (opt == 1) {
+                    c.attack(*enemies[i], inv);
+                    std::cout << "Check3 Chamber.cpp\n";
+                } else if (opt == 2) {
+                    if (c.getSkills().empty()) {
+                        std::cout << "No skills available." << std::endl;
+                        continue;
+                    }
+                    int skillOpt = inputSkillOption(&c);
+                    c.useSkill(c.getSkills()[skillOpt - 1], *enemies[i]);
+                } else if (opt == 3) {
+                    string optItem = inputItemOption(inv);
+                    inv.useItem(optItem, c, items);
+                } else if (opt == 4) {  // KABUR
+                    return false;
+                }
+                removeExpiredEffects(&c);
+            } else {
+                enemies[i]->applyActiveEffect();
+                if (enemies[i]->getTurnEffectStatus("Stun")) {
+                    isCharTurn = !isCharTurn;
+                    continue;
+                }
+                int opt = Randomizer::random(1, 2);
+                if (opt == 1) {
+                    enemies[i]->attack(c, inv);
+                } else if (opt == 2) {
+                    if (c.getSkills().empty()) {
+                        std::cout << "No skills available." << std::endl;
+                        continue;
+                    }
+                    int skillOpt = Randomizer::random(
+                        0, enemies[i]->getSkills().size() - 1);
+                    enemies[i]->useSkill(enemies[i]->getSkills()[skillOpt], c);
+                }
+                removeExpiredEffects(enemies[i]);
+            }
+            isCharTurn = !isCharTurn;
+        }
+
+        if (c.getCurrentHealth() <= 0) {
+            return false;
+        }
+
+        if (enemies[i]->getCurrentHealth() <= 0) {
+            prize.addExp(enemies[i]->getExpReward());
+            for (auto* loot : enemies[i]->dropLoot()) {
+                if (loot != nullptr) {
+                    prize.addItem(loot, 1);
+                }
+            }
+        }
+    }
+    prize.addExp(rewardExp);
+    prize.addGold(rewardGold);
+    c.reset();
+    return true;
+}
+
+void Chamber::displayInfo() {
+    std::cout << "Reward Exp: " << rewardExp << std::endl;
+    std::cout << "Reward Gold: " << rewardGold << std::endl;
+    std::cout << "Enemy Count: " << enemyCount << std::endl;
+    std::cout << "Last Chamber: " << isLastChamber << std::endl;
+    std::cout << "minMobLevel: " << minMobLevel << std::endl;
+    std::cout << "maxMobLevel: " << maxMobLevel << std::endl;
+    std::cout << "Enemies: " << std::endl;
+    for (int i = 0; i < enemyCount; i++) {
+        std::cout << "============================" << std::endl;
+        std::cout << "Enemy " << i + 1 << ": " << std::endl;
+        std::cout << enemies[i]->getName() << std::endl;
+        std::cout << "Level: " << enemies[i]->getLevel() << std::endl;
+        std::cout << "Health: " << enemies[i]->getCurrentHealth() << "/"
+                  << enemies[i]->getMaxHealth() << std::endl;
+        std::cout << "Health Regen: " << enemies[i]->getHealthRegen()
+                  << std::endl;
+        std::cout << "Mana: " << enemies[i]->getCurrentMana() << "/"
+                  << enemies[i]->getMaxMana() << std::endl;
+        std::cout << "Mana Regen: " << enemies[i]->getManaRegen() << std::endl;
+        std::cout << "Attack Damage: " << enemies[i]->getAttackDamage()
+                  << std::endl;
+        std::cout << "Exp Reward: " << enemies[i]->getExpReward() << std::endl;
+        std::cout << "Intelligence: "
+                  << enemies[i]->getStats().getIntelligence() << std::endl;
+        std::cout << "Agility: " << enemies[i]->getStats().getAgility()
+                  << std::endl;
+        std::cout << "Strength: " << enemies[i]->getStats().getStrength()
+                  << std::endl;
+        std::cout << "Exp Reward: " << enemies[i]->getExpReward() << std::endl;
+        std::cout << "Skills: " << std::endl;
+        int ctr = 1;
+        for (auto* skill : enemies[i]->getSkills()) {
+            std::cout << "    " << ctr << ". " << skill->getName() << std::endl;
+            std::cout << "    Name: " << skill->getName() << std::endl;
+            std::cout << "    Mana Cost: " << skill->getManaCost() << std::endl;
+            std::cout << "    Master Cost: " << skill->getMasterCost()
+                      << std::endl;
+            std::cout << "    Skill Chance: " << skill->getskillChance()
+                      << std::endl;
+            std::cout << "    Damage: " << skill->getDamage() << std::endl;
+            ctr++;
+            int ctr2 = 1;
+            for (auto* effect : skill->getEffects()) {
+                std::cout << "        " << ctr2 << ". " << effect->getName()
+                          << std::endl;
+                std::cout << "        Effect: " << effect->getName()
+                          << std::endl;
+                std::cout << "        Effect Desc: " << effect->getDescription()
+                          << std::endl;
+                std::cout << "        Effect Duration: "
+                          << effect->getDuration() << std::endl;
+                std::cout << "        Effect RemainingDur: "
+                          << effect->getRemainingDuration() << std::endl;
+            }
+        }
+        std::cout << "Active Effects: " << std::endl;
+        int ctr3 = 1;
+        for (auto* effect : enemies[i]->getActiveEffects()) {
+            std::cout << "    " << ctr3 << ". " << effect->getName()
+                      << std::endl;
+            std::cout << "    Effect: " << effect->getName() << std::endl;
+            std::cout << "    Effect Desc: " << effect->getDescription()
+                      << std::endl;
+            std::cout << "    Effect Duration: " << effect->getDuration()
+                      << std::endl;
+            std::cout << "    Effect RemainingDur: "
+                      << effect->getRemainingDuration() << std::endl;
+            ctr3++;
+        }
+        std::cout << "Loot Drop: BELOM ADA GETTERNYA!" << std::endl;
+        std::cout << "============================" << std::endl;
+    }
+}
+
+int Chamber::inputOption() {
+    int opt;
+    bool isValid = false;
+    while (!isValid) {
+        std::cout << "Choose your action: " << std::endl;
+        std::cout << "1. Attack" << std::endl;
+        std::cout << "2. Use Skill" << std::endl;
+        std::cout << "3. Use Item" << std::endl;
+        std::cout << "4. Run Away" << std::endl;
+        std::cin >> opt;
+
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Invalid input. Please enter a number between 1 and 4."
+                      << std::endl;
+        } else if (opt >= 1 && opt <= 4) {
+            isValid = true;
+        } else {
+            std::cout << "Invalid option. Please try again." << std::endl;
+        }
+    }
+
+    return opt;
+}
+
+void Chamber::removeExpiredEffects(Unit* u) {
+    std::vector<Effect*> toRemove;
+    for (auto* effect : u->getActiveEffects()) {
+        if (effect->getRemainingDuration() <= 0) {
+            toRemove.push_back(effect);
+        }
+    }
+
+    for (auto* effect : toRemove) {
+        u->removeActiveEffect(effect);
+    }
+}
+
+int Chamber::inputSkillOption(Unit* u) {
+    int opt;
+    bool isValid = false;
+    while (!isValid) {
+        int ctr = 1;
+        std::cout << "Choose your skill: " << std::endl;
+        for (auto* skill : u->getSkills()) {
+            std::cout << ctr << ". " << skill->getName() << std::endl;
+            ctr++;
+        }
+
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Invalid input. Please enter a number between 1 and 4."
+                      << std::endl;
+        } else if (opt >= 1 && opt <= u->getSkills().size()) {
+            isValid = true;
+        } else {
+            std::cout << "Invalid option. Please try again." << std::endl;
+        }
+    }
+
+    return opt;
+}
+
+string Chamber::inputItemOption(Inventory& inv) {
+    string opt;
+    std::cout << "Choose your item: " << std::endl;
+    inv.displayBackpack();
+    std::cout << "Enter item id: ";
+    std::cin >> opt;
+    return opt;
+}

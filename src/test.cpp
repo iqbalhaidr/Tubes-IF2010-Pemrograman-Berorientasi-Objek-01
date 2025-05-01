@@ -3,8 +3,10 @@
 #include <map>
 #include <limits>
 
-// #include "../include/Randomizer.hpp"
+#include "../include/Randomizer.hpp"
 #include "../include/items.hpp"
+#include "../include/Dungeon.hpp"
+#include "../include/fighter.hpp"
 
 using namespace std;
 
@@ -106,6 +108,16 @@ void itemsParserTest() {
     }
 }
 
+void dungeonTest() {
+    Items items = Items::createFromDirectory("../data/");
+    Mobloot mobLoot = Mobloot("../data/", items);
+    Dungeon ds ("E", mobLoot, items);
+    Fighter f ("player1", 100, 100, 100, 100, 100, 100, 100);
+    Inventory inv = Inventory::loadInventory("C:/Users/IQBAL-LAPTOP/IF/if2010-2425-tubes-1-lah/data/", items);
+    // ds.displayInfo();
+    ds.start(f, inv, items);
+}
+
 int main() {
     // int i = 5;
     // for (; i < 10; i++) {
@@ -120,5 +132,6 @@ int main() {
     // mapTest();
     // cout << mapReturnTest()["a"] << endl;
     // cout << inputOption() << endl;
-    itemsParserTest();
+    // itemsParserTest();
+    dungeonTest();
 }
