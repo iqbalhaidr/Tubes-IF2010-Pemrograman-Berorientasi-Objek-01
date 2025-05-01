@@ -193,6 +193,8 @@ void Unit::updateBasicAttributes() {
     setHealthRegen(10 * getStats().getStrength());
     setMaxMana(60 + 12 * getStats().getIntelligence());
     setManaRegen(5 * getStats().getIntelligence());
+    setCurrentHealth(getMaxHealth());
+    setCurrentMana(getMaxMana());
 }
 
 vector<Effect*> Unit::getCombinedEffect(const vector<Effect*>& activeEffects) const {
