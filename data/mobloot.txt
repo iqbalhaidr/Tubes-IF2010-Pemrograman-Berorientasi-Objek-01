@@ -1,0 +1,8 @@
+Slime MNP 0.99
+Dark_Knight EXC 0.99
+Goblin PHP 0.99
+Skeleton DRA 0.99
+Orc ABS 0.99
+Ogre ABS 0.99
+Demon_Lord ABS 0.99
+Lich PHP 0.99
