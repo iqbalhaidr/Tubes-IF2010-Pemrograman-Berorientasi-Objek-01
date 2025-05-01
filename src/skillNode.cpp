@@ -80,3 +80,7 @@ void SkillNode::setLeftNode(SkillNode* left) {
 void SkillNode::setRightNode(SkillNode* right) {
     this->right = right;
 }
+
+bool SkillNode::canRemove() const {
+    return left->unlocked && right->unlocked;
+}

@@ -1,11 +1,11 @@
 #ifndef CHAMBER_H
 #define CHAMBER_H
 
-#define MIN_ENEMIES_LAST_CHAMBER 2
-#define MAX_ENEMIES_LAST_CHAMBER 3
-#define MIN_ENEMIES_CHAMBER 3
-#define MAX_ENEMIES_CHAMBER 5
-#define CHANCE_BOSS_NOT_ON_LAST_CHAMBER 0.1f
+#define MIN_ENEMIES_LAST_CHAMBER 1
+#define MAX_ENEMIES_LAST_CHAMBER 2
+#define MIN_ENEMIES_CHAMBER 2
+#define MAX_ENEMIES_CHAMBER 4
+#define CHANCE_BOSS_NOT_ON_LAST_CHAMBER 0.05f
 
 #include <string>
 #include <vector>
@@ -154,7 +154,38 @@ class Chamber {
     /* Fungsi memilih item yang digunakan */
     string inputItemOption(Inventory &);
 
+    /* Fungsi menampilkan status player tiap turn
+     * Format:
+     * <player name>'s Status
+     * Health: <current health>/<max health> | +<health regen>/turn
+     * Mana: <current mana>/<max mana> | +<mana regen>/turn
+     * Active Effects:
+     *    <effect name> -> <remaining duration> turn left
+     */
+    void displayPlayerStatus(Character &);
+
+    void displayEnemyStatus(Mobs *enemy);
 
 };
 
 #endif
+
+/*
+Enemy: 2/4 | Turn: 10
+
+Player1's Status
+Health: 120/150 | +20/turn
+Mana: 30/60 | +10/turn
+Active Effects:
+    Poison -> 10 turn left
+  
+<enemy>'s Status
+Health: <current health>/<max health> | +<health regen>/turn
+Mana: <current mana>/<max mana> | +<mana regen>/turn
+Active Effects:
+    <effect name> -> <remaining duration> turn left
+
+=============================================================
+
+Choose option:
+*/

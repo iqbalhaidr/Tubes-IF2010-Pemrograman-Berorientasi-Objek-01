@@ -7,7 +7,6 @@ Dungeon::Dungeon(string rank, Mobloot &mobLoots, Items &items) : prize() {
     this->penaltyGold = 100;
     helperSet(items);
     randomizeDoubleDungeon();
-    std::cout << "Check1 Dungeon.cpp\n";
     generateChambers(mobLoots);
 }
 
@@ -127,12 +126,12 @@ void Dungeon::generateChambers(Mobloot &mobLoots) {
         int minMobLevel = isDD ? 0 : 0;
         int maxMobLevel = isDD ? 20 : 10;
 
-        std::cout << "Check2 Dungeon.cpp\n";
+        // std::cout << "Check2 Dungeon.cpp\n";
         for (int i = 0; i < totalChambers; i++) {
-            std::cout << "Check3 Dungeon.cpp\n";
+            // std::cout << "Check3 Dungeon.cpp\n";
             chambers.push_back(new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
-            std::cout << minMobLevel<<" MINIMAL LEVEL E \n";
-            std::cout << maxMobLevel<<" MAXIMAL LEVEL E \n";
+            // std::cout << minMobLevel<<" MINIMAL LEVEL E \n";
+            // std::cout << maxMobLevel<<" MAXIMAL LEVEL E \n";
         }
     } else if (rank == "SPECIAL") {
         totalChambers = 100;

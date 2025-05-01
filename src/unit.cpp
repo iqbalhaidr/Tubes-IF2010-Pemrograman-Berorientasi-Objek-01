@@ -66,9 +66,12 @@ int Unit::calculateDamage(Unit& target, int baseDamage, Inventory& inventory) {
         }
     }
     if (totalDamage < 0) totalDamage = 0;
-    int weaponDamage = inventory.getEquippedItem("weapon")->getBaseStat();
-    totalDamage += (baseDamage + weaponDamage);
-    totalDamage *= getLevelFactor(target);
+    totalDamage += baseDamage; // total damage = base damage + critical damage
+    Item* weapon = inventory.getEquippedItem("WEAPON");
+    if (weapon != nullptr) {
+        totalDamage += weapon->getFinalStat(); // total damage + weapon damage
+    }
+    totalDamage *= getLevelFactor(target); // total damage * level factor
 
     return totalDamage;
 }
@@ -77,7 +80,7 @@ void Unit::attack(Unit& target, Inventory& inventory) {
 }
 
 void Unit::takeDamage(int damage) {
-    int defence  = 0;
+    int defence  = 0; // damage reduction
     for (const auto& activeEffect : getCombinedEffect(activeEffects)) {
         if (activeEffect->isDefensive()) {
             if (activeEffect->getName() == "Infernal Curse") {
