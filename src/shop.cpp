@@ -37,6 +37,11 @@ Shop::Shop(const std::string& directory){
             shopConfig[name] = stock;
         }
     }
+
+    for (const auto& item : availableItems) {
+        std::string category = std::get<0>(item.second);
+        categoryShop[category].push_back(std::make_pair(item.first, std::get<2>(item.second)));
+    }
 }
 
 void Shop::saveShop(const std::string& directory, Items& itemMap) {
@@ -176,49 +181,13 @@ void Shop::displayDetails(std::string itemName) const {
 }
 
 void Shop::displayShop() const {
-    std::cout << "Available items in shop:\n";
-    std::cout << "----------------------------------------\n";
-    std::cout << "Weapon\n";
-    std::cout << "----------------------------------------\n";
-    for (const auto& item : availableItems) {
-        if(std::get<0>(item.second) == "Weapon") {
-            std::cout << item.first << "\n";
+    std::cout << "Shop Items:\n";
+    for (const auto& category : categoryShop) {
+        std::cout << "Category: " << category.first << "\n";
+        for (const auto& item : category.second) {
+            std::cout << "Item: " << item.first << ", Stock: " << item.second << "\n";
         }
-        
-        // Display items in a 5x2 matrix (5 columns, 2 rows per category)
-        for (size_t row = 0; row < 2 && row * 5 < itemCount; ++row) {
-            // Print divider line
-            std::cout << "+";
-            for (size_t col = 0; col < 5 && (row * 5 + col) < itemCount; ++col) {
-                std::cout << "--------------------+";
-            }
-            std::cout << "\n|";
-            
-            // Print item names
-            for (size_t col = 0; col < 5 && (row * 5 + col) < itemCount; ++col) {
-                size_t index = row * 5 + col;
-                std::string name = items[index].getName();
-                std::cout << std::setw(19) << std::left << name << " |";
-            }
-            std::cout << "\n|";
-            
-            // Print price and stock
-            for (size_t col = 0; col < 5 && (row * 5 + col) < itemCount; ++col) {
-                size_t index = row * 5 + col;
-                std::string name = items[index].getName();
-                int price = availableItems.at(name).first;
-                int stock = availableItems.at(name).second;
-                
-                std::string info = "P:" + std::to_string(price) + " S:" + std::to_string(stock);
-                std::cout << std::setw(19) << std::left << info << " |";
-            }
-            std::cout << "\n+";
-            
-            // Print bottom divider
-            for (size_t col = 0; col < 5 && (row * 5 + col) < itemCount; ++col) {
-                std::cout << "--------------------+";
-            }
-            std::cout << "\n";
-        }
+        std::cout << "\n";
     }
 }
+

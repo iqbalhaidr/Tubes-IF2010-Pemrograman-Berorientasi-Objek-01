@@ -17,6 +17,7 @@ private:
     std::map<std::string, std::tuple<std::string,int,int>> availableItems;
     Items *itemMap;
     std::map<std::string, int> shopConfig;
+    std::map<std::string, std::vector<std::pair<std::string, int>>> categoryShop;
 public: 
     Shop(const std::string& directory);
     void saveShop(const std::string& directory, Items& itemMap) ;
