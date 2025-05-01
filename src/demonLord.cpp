@@ -6,12 +6,10 @@ DemonLord::DemonLord(int level, int expReward, Mobloot& mobLoots)
     updateBasicAttributes();
     vector<Effect*> effects;
     string debuffEffectDescription = "berpeluang 0.15 untuk memberikan kutukan yang mengurangi attack power dan defense power selama 5 turn";
-    EffectDamage* attackReducEffect = new EffectDamage("Infernal Curse", debuffEffectDescription, 5, 5, 1, -10);
-    EffectDefensive* manaReducEffect = new EffectDefensive("Infernal Curse", debuffEffectDescription, 5, 5, 1, 10, 0);
-    // kurang chance buat stun
-    // param skill damage dimana?
-    effects.push_back(attackReducEffect);
-    effects.push_back(manaReducEffect);
+    EffectDamage* attackDebuff = new EffectDamage("Infernal Curse", debuffEffectDescription, 5, 5, 1, -10);
+    EffectDefensive* defenseDebuff = new EffectDefensive("Infernal Curse", debuffEffectDescription, 5, 5, 1, 10, 0);
+    effects.push_back(attackDebuff);
+    effects.push_back(defenseDebuff);
     Skill *skill = new Skill("Infernal Curse", 0, 0, 15, 0, effects);
     addSkill(skill);
 }
