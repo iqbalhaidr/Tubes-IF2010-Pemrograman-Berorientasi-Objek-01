@@ -8,6 +8,7 @@
 #include "../include/EffectManaRegen.hpp"
 #include "../include/EffectHealth.hpp"
 #include "../include/EffectPoison.hpp"
+#include "../include/EffectTurn.hpp"
 
 Effect::Effect(const std::string& name, const std::string& description, double duration, double remainingDuration)
     : name(name), description(description), duration(duration), remainingDuration(remainingDuration) {}
@@ -103,6 +104,10 @@ bool Effect::isReducePower() {
     return false;
 }
 
+bool Effect::operator==(const Effect& other) const{
+    return name == other.name && description == other.description && duration == other.duration && remainingDuration == other.remainingDuration;
+}
+
 Effect* Effect::createEffect(const std::string& nama) {
     std::ifstream EffectFile("../config/effect.txt");
     std::string line = "";
@@ -185,11 +190,7 @@ Effect* Effect::createEffect(const std::string& nama) {
    else if (type == "EffectPoison"){
         return new EffectPoison(name, description, duration, duration, chance, amount);
    }
-
-    return nullptr;
-
+   else if (type == "EffectTurn"){
+        return new EffectTurn(name, description, duration, duration, chance);
 }
-
-bool Effect::operator==(const Effect& other) const {
-    return name == other.name && description == other.description && duration == other.duration && remainingDuration == other.remainingDuration;
 }

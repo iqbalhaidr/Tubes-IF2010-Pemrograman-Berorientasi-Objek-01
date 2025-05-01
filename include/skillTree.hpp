@@ -1,32 +1,25 @@
-#ifndef SKILLTREE
-#define SKILLTREE
-#include "skill.hpp"
-#include "EffectDamage.hpp"
-#include "EffectDefensive.hpp"
-#include "EffectHealth.hpp"
-#include "EffectHealthRegen.hpp"
-#include "EffectManaReduc.hpp"
-#include "EffectManaRegen.hpp"
-#include "EffectPoison.hpp"
-#include "EffectTurn.hpp"
+#ifndef SKILLTREE_CPP
+#define SKILLTREE_CPP
+#include "skillNode.hpp"
+#include <string>
+#include <vector>
 
-class SkillNode{
+class SkillTree{
     private:
-        Skill* skill;
-        SkillNode* left;
-        SkillNode* right;
-    public:
-        SkillNode(Skill* skill);
-        SkillNode(Skill* skill, SkillNode* left, SkillNode* right);
-        ~SkillNode();
-        SkillNode(const SkillNode& other) = default;
-        SkillNode& operator=(const SkillNode& other);
+        SkillNode* root1;
+        SkillNode* root2;
+        SkillNode* root3;
+        string char_type;
 
-        SkillNode* getLeftNode() const;
-        SkillNode* getRightNode() const;
-        Skill* getLeftSkill() const;
-        Skill* getRightSkill() const;
-    
+    public:
+        SkillTree(string char_type);
+        ~SkillTree();
+        void destroy(SkillNode*);
+        vector<Skill*> getAvailableUpgrade() const;  
+        void upgradeSkill(int skill_awal, bool isLeft);      
+        void upgradeSkill(Skill skill_awal, Skill skill_baru);      
+        void upgradeSkill(Skill* skill_awal, Skill* skill_baru);      
+        
 };
 
 #endif

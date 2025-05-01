@@ -26,3 +26,11 @@ double EffectTurn::apply(Unit* unit) {
 Effect* EffectTurn::clone() const {
     return new EffectTurn(*this);
 }
+
+int EffectTurn::getChance() const {
+    return chance;
+}
+
+void EffectTurn::setChance(int chance) {
+    this->chance = chance;
+}

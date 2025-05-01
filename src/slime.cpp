@@ -1,7 +1,7 @@
 #include "../include/slime.hpp"
 
 Slime::Slime(int level, int expReward, Mobloot& mobLoots)
- : BasicMobs("Slime", level, 6, 6, 16, expReward, mobLoots) {
+ : BasicMobs("Slime", level, 6 + (level -1) * 1.2, 6 + (level -1) * 1.5, 16 + (level -1) * 2, expReward, mobLoots) {
     updateBasicAttributes();
     vector<Effect*> effects;
     string effectDescription = "menyemburkan cairan asam pekat ke target, menyebabkan damage over time (kerusakan berkelanjutan) selama 3 turn";

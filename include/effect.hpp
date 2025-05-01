@@ -19,7 +19,7 @@ class Effect{
         Effect& operator=(Effect& other);
         static Effect* createEffect(const std::string& name);
         bool operator==(const Effect& other) const;
-        //Setter Getter
+            //Setter Getter
         std::string getName() const;   
         std::string getDescription() const;
         double getDuration() const;

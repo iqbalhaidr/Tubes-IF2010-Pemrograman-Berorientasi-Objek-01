@@ -1,7 +1,7 @@
 #include "../include/orc.hpp"
 
 Orc::Orc(int level,  int expReward, Mobloot& mobLoots)
- : BasicMobs("Orc", level, 15, 8, 6, expReward, mobLoots) {
+ : BasicMobs("Orc", level, 15 + (level -1) * 2, 8 + (level -1) * 1.5, 6 + (level -1) * 1.2, expReward, mobLoots) {
     updateBasicAttributes();
     vector<Effect*> effects;
     string stunEffectDescription = "berpeluang 0.5 untuk memberikan stun selama 1 turn";

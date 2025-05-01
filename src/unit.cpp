@@ -5,7 +5,9 @@ using namespace std;
 
 Unit::Unit(string name, int strength, int agility, int intelligence, int level) : stats(strength, agility, intelligence) {
     this->name = name;
-    updateBasicAttributes();   
+    updateBasicAttributes(); 
+    this->currentHealth = maxHealth;
+    this->currentMana = maxMana;  
     this->level = level;  
 }
 
@@ -21,7 +23,7 @@ int Unit::getManaRegen() const { return manaRegen;}
 int Unit::getAttackDamage() const { return attackDamage;}
 int Unit::getLevel() const { return level;}
 int Unit::getLevelFactor(Unit& target) const {
-    return 1 + (this->level - target.level) * 0.05;
+    return 1 + (abs(this->level - target.level)) * 0.05;
 }
 bool Unit::getTurnEffectStatus(string turnEffectName) const { 
     for (const auto& effect : activeEffects) {
@@ -63,8 +65,9 @@ int Unit::calculateDamage(Unit& target, int baseDamage, Inventory& inventory) {
             }
         }
     }
+    if (totalDamage < 0) totalDamage = 0;
     int weaponDamage = inventory.getEquippedItem("weapon")->getBaseStat();
-    totalDamage *= (baseDamage + weaponDamage);
+    totalDamage += (baseDamage + weaponDamage);
     totalDamage *= getLevelFactor(target);
 
     return totalDamage;
@@ -84,6 +87,7 @@ void Unit::takeDamage(int damage) {
             }
         }
     }
+    if (defence < 0) defence = 0;
     damage *= 1 - defence;
     currentHealth -= damage;
     if (currentHealth < 0) {
