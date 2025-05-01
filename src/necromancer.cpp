@@ -14,7 +14,7 @@ double Necromancer::getSummonChance() const { return summonChance;}
 void Necromancer::setSummonChance(double summonChance) { this->summonChance = summonChance;}
 
 void Necromancer::attack(Unit& target, Inventory& inventory) {
-    if (!summons && (rand() + 1 % 100 + 1) < summonChance) {
+    if (!summons && (rand() % 100 + 1) < summonChance) {
         summons = true;
         summonTurns = 4;
         Unit::attack(target, inventory); 

@@ -13,7 +13,7 @@ float Fighter::getBlockChance() const { return blockChance;}
 void Fighter::setBlockChance(float blockChance) { this->blockChance = blockChance;}
 
 void Fighter::takeDamage(int damage) {
-    if (rand() % 100 < blockChance) { // Peluang diblok
+    if ((rand() % 100 + 1)< blockChance) { // Peluang diblok
         cout << "Serangan musuh berhasil diblok" << endl;
         return;
     } 
