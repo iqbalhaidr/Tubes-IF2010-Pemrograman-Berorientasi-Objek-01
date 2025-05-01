@@ -65,3 +65,7 @@ std::vector<Effect*> Skill::getEffects() const {
 void Skill::setEffects(std::vector<Effect*> effects) {
     this->effects = effects;
 }
+
+bool Skill::operator==(const Skill& other) const {
+    return name == other.name;
+}

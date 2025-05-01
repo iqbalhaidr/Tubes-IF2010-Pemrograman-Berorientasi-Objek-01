@@ -19,6 +19,7 @@ class Skill{
         ~Skill();
         Skill(Skill& other);
         Skill& operator=(Skill& other);
+        bool operator==(const Skill& other) const;
 
 
     //Setter Getter
