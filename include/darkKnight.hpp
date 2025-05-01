@@ -1,21 +1,16 @@
-#ifndef Mobloot_HPP
-#define Mobloot_HPP
+#ifndef DARKKNIGHT_HPP
+#define DARKKNIGHT_HPP
 
-#include "items.hpp"
-#include <map>
+#include "bossMobs.hpp"
 #include <string>
-#include <vector>
-#include <utility>
 using namespace std;
 
-class Mobloot {
-private:
-    map<string, vector<pair<Item*, double>>> MobLoots;
-
-public:
-    Mobloot(const string& directory, const Items& itemMap);
-    ~Mobloot();
-    vector<pair<Item*, double>> getLootforMob(const string& name);
+class DarkKnight : public BossMobs {
+    public:
+        // ctor dtor
+        DarkKnight(int level, int expReward, Mobloot& mobLoots);
+        ~DarkKnight();
+        void updateBasicAttributes() override ;
 
 
 
