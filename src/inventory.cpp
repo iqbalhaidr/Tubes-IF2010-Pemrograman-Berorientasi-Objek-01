@@ -53,6 +53,7 @@ Inventory Inventory :: loadInventory(const std::string& directory, const Items& 
                 
                 Item* cloned =itemMap.getItem(itemId);
                 backp.set(row, col, {cloned , total}); //add
+                std::cout << cloned->getId() << " INI NAMANYA\n";
             } else {
                 throw InputOutputException("Slot backpack bertumpuk"); //untuk config ga boleh bertumpuk
             }
@@ -316,10 +317,9 @@ void Inventory :: displayBackpack(){
                 item="";
             }
             else{
+
                 item=txtGenerator(backpack.get(i,j));
-                break;
             }
-            break;
             std::cout<<"|"<<Inventory::centerText(item, 10)<<"|";
         }   
         cout<<"\n";
