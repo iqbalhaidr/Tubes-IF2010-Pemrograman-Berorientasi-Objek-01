@@ -116,6 +116,10 @@ void Inventory::saveInventory(const std::string& directory) {
 
 
 void Inventory::addItem(std::pair<Item*, int>& value) {
+    auto isExist = getIdxItembyId(value.first->getId());
+    if(isExist.first== -1){ // not exist
+        
+    }
     bool isItemStackable = value.first->isStackable();
     int excessAmount = 0;
     bool foundEmptyCell = false;
@@ -138,7 +142,12 @@ void Inventory::addItem(std::pair<Item*, int>& value) {
                 }
             }
 
-            if (!foundEmptyCell && backpack.isEmptyCell(i,j)) {
+            else if(!isItemStackable && backpack.isEmptyCell(i,j) &&value.second>0){
+                value.second-=1;
+                backpack.set(i, j, {value.first, 1});
+            }
+
+            if (!foundEmptyCell && backpack.isEmptyCell(i,j) && isItemStackable) {
                 foundEmptyCell = true;
                 emptyIndex = {i, j};
             }

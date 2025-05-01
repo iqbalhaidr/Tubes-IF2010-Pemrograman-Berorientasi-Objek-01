@@ -19,7 +19,8 @@ public:
     Player(/* args */);
     ~Player();
 
-    
+    void goToDungeon(); //mekanisme buat dungeon dan start dungeon
+    void goToShop(); //
 };
 
 
