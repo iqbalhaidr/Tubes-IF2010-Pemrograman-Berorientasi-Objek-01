@@ -9,16 +9,16 @@ class SkillTree{
         SkillNode* root1;
         SkillNode* root2;
         SkillNode* root3;
-        string char_type;
 
-    public:
+        string char_type;
+        
+        public:
+        vector<SkillNode*> currentSkills;
         SkillTree(string char_type);
         ~SkillTree();
         void destroy(SkillNode*);
-        vector<Skill*> getAvailableUpgrade() const;  
-        void upgradeSkill(int skill_awal, bool isLeft);      
-        void upgradeSkill(Skill skill_awal, Skill skill_baru);      
-        void upgradeSkill(Skill* skill_awal, Skill* skill_baru);      
+        vector<SkillNode*> getAvailableUpgrade(vector<SkillNode*>& res) const;  
+        void upgradeSkill(SkillNode* skill_awal, SkillNode* skill_baru);      
         
 };
 

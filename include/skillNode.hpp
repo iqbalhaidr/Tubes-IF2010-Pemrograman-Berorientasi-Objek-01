@@ -15,7 +15,8 @@ class SkillNode{
         Skill* skill;
         SkillNode* left;
         SkillNode* right;
-    public:
+        public:
+        bool unlocked;
         SkillNode(Skill* skill);
         SkillNode(Skill* skill, SkillNode* left, SkillNode* right);
         ~SkillNode();
@@ -29,7 +30,7 @@ class SkillNode{
         Skill* getRightSkill() const;
         void setLeftNode(SkillNode* left);
         void setRightNode(SkillNode* right);
-    
+        bool canRemove() const;
 };
 
 #endif
