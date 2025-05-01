@@ -1,5 +1,5 @@
 #include "../include/EffectManaReduc.hpp"
-#include "../include/Unit.hpp"
+#include "../include/unit.hpp"
 
 EffectManaReduc::EffectManaReduc(const std::string& name, const std::string& description, double duration, double remainingDuration, double manaAmount):
         EffectTurnBasedBased(name, description, duration, remainingDuration), manaAmount(manaAmount){}

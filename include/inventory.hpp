@@ -7,6 +7,7 @@
 #include <map>
 #include <string>
 #include <utility>
+#include <climits>
 
 #define MAX_ITEM 64
 
