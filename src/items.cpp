@@ -144,7 +144,9 @@ void Items::save(const std::string& directory) const {
 
 bool Items::isValidItemType(const std::string& type) {
     return (type == "Weapon" || type == "Armor" ||
-            type == "Potion" || type == "Pendant");
+            type == "Potion" || type == "Pendant" ||
+        type == "WEAPON" || type== "ARMOR_HEAD" || type== "ARMOR_BODY" || type== "ARMOR_FOOT"
+        || type== "PENDANT");
 }
 
 bool Items::isValidItemRarity(const std::string& rarity) {
