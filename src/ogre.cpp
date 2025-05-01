@@ -17,5 +17,4 @@ void Ogre::updateBasicAttributes() {
     setAttackDamage(4 * getStats().getStrength());
 }
 
-// void Ogre::useSkill(string skill, Unit& target) {}
 

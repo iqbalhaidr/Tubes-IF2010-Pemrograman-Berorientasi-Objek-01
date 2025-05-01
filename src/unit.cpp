@@ -5,7 +5,9 @@ using namespace std;
 
 Unit::Unit(string name, int strength, int agility, int intelligence, int level) : stats(strength, agility, intelligence) {
     this->name = name;
-    updateBasicAttributes();   
+    updateBasicAttributes(); 
+    this->currentHealth = maxHealth;
+    this->currentMana = maxMana;  
     this->level = level;  
 }
 

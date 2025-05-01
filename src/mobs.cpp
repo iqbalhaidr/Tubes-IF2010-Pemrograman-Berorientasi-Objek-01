@@ -25,7 +25,7 @@ void Mobs::setExpReward(int expReward) {
 vector<Item*> Mobs::dropLoot() {
     vector<Item*> droppedItem;
     for (const auto& loot : LootDrop) {
-        if (rand() % 100 < loot.second) {
+        if ((rand() % 100 + 1)< loot.second) {
             droppedItem.push_back(loot.first);      
         }
     }
