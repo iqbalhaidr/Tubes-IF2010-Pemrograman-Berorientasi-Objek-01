@@ -317,7 +317,6 @@ void Inventory :: displayBackpack(){
                 item="";
             }
             else{
-
                 item=txtGenerator(backpack.get(i,j));
             }
             std::cout<<"|"<<Inventory::centerText(item, 10)<<"|";
