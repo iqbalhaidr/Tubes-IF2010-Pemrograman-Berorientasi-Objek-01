@@ -3,6 +3,9 @@
 Necromancer::Necromancer(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost)
 : Character(name, strength, agility, intelligence, level, exp, gold, masteryCost, "Necromancer") {
     updateBasicAttributes();
+    for (int i = 0; i < skillTree.currentSkills.size(); i++) {
+        addSkill(skillTree.currentSkills[i]->getSkill());
+    }
     this->summonTurns = 0; 
     this->summons = false;
 }
