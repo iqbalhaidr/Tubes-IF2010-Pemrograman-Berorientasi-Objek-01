@@ -193,4 +193,4 @@ Effect* Effect::createEffect(const std::string& nama) {
    else if (type == "EffectTurn"){
         return new EffectTurn(name, description, duration, duration, chance);
 }
-
+}
