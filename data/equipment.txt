@@ -1,0 +1,3 @@
+Weapon EXC
+Armor ABB
+Pendant PHP
