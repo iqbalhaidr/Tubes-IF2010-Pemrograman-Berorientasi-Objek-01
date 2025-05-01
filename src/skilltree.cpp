@@ -241,15 +241,16 @@ std::vector<SkillNode*> SkillTree::getAvailableUpgrade(vector<SkillNode*>& resul
                 if (currentSkills[i]->getLeftNode()->unlocked == false){
                     result.push_back(currentSkills[i]->getLeftNode());
                 }
-                if (currentSkills[i]->getLeftNode()->unlocked == false){
+                if (currentSkills[i]->getRightNode()->unlocked == false){
                     result.push_back(currentSkills[i]->getRightNode());
                 }
-                return result;
             }
-    }
+        }
+        return result;
 }
 
 void SkillTree::upgradeSkill(SkillNode* skill_awal, SkillNode* skill_baru){
     skill_baru->unlocked = true;
     currentSkills.push_back(skill_baru);
 }
+
