@@ -225,8 +225,27 @@ SkillTree::~SkillTree() {
 
 void SkillTree::destroy(SkillNode* node) {
     if (node == nullptr){return;}
-
     destroy(node->getLeftNode());
     destroy(node->getRightNode());
     delete node;
+}
+
+std::vector<Skill*> SkillTree::getSkillTree() const{
+    std::vector<Skill*> aval_skill;
+
+    if (root1 != nullptr) {
+        aval_skill.push_back(root1->getLeftSkill());
+        aval_skill.push_back(root1->getRightSkill());
+    }
+
+    if (root2 != nullptr) {
+        aval_skill.push_back(root2->getLeftSkill());
+        aval_skill.push_back(root2->getRightSkill());
+    }
+
+    if (root3 != nullptr) {
+        aval_skill.push_back(root3->getLeftSkill());
+        aval_skill.push_back(root3->getRightSkill());
+    }
+    return aval_skill;
 }
