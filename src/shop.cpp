@@ -4,7 +4,7 @@
 
 Shop::Shop(const std::string& directory){
     std:: string filename = directory + "shop.txt";
-    this->itemMap = &Items::createFromDirectory(directory);
+    this->itemMap = new Items(Items::createFromDirectory(directory));
 
     if (!fs::exists(directory) || !fs::is_directory(directory)) {
         throw InputOutputException("Directory tidak ditemukan");
@@ -44,7 +44,11 @@ Shop::Shop(const std::string& directory){
     }
 }
 
-void Shop::saveShop(const std::string& directory, Items& itemMap) {
+Shop::~Shop() {
+    delete itemMap;
+}
+
+void Shop::saveShop(const std::string& directory) {
     std::string filePath = directory + "shop.txt";
     std::ofstream output(filePath);
 
@@ -62,7 +66,7 @@ void Shop::saveShop(const std::string& directory, Items& itemMap) {
     std::cout << "Shop successfully saved\n";
 }
 
-std::pair<int,int> Shop::buyItem(const std::string& itemName, int quantity, Inventory& inventory) {
+std::pair<int,int> Shop::buyItem(const std::string& itemName, int quantity) {
     auto it = availableItems.find(itemName);
 
     if (it != availableItems.end()) {
@@ -128,9 +132,9 @@ int Shop::sellItem(const std::string& itemName, int quantity, Inventory& invento
                 default:
                     break;
                 }
+                return price;
         } catch (const InputOutputException& e) {
-            std::cout << "Error: " << e.what() << "\n";
-            return;
+            throw; // Rethrow the caught exception
         }     
     }else{
         throw ItemNotFound("Item " + itemName + " not found in backpack");
@@ -160,7 +164,7 @@ int Shop::getCurrentStock(const std::string& itemName) {
     if (it != availableItems.end()) {
         return std::get<2>(it->second);
     } else {
-        std::cout << "Item " << itemName << " not found in shop.\n";
+        throw StockError("Item " + itemName + " not found in shop");
     }
 }
 

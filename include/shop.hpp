@@ -20,8 +20,9 @@ private:
     std::map<std::string, std::vector<std::pair<std::string, int>>> categoryShop;
 public: 
     Shop(const std::string& directory);
-    void saveShop(const std::string& directory, Items& itemMap) ;
-    std::pair<int,int> buyItem(const std::string& itemName, int quantity, Inventory& inventory);
+    ~Shop();
+    void saveShop(const std::string& directory) ;
+    std::pair<int,int> buyItem(const std::string& itemName, int quantity);
     int sellItem(const std::string& itemName, int quantity, Inventory& inventory);
     void restock();
     void setStock(const std::string& itemName, int stock);
