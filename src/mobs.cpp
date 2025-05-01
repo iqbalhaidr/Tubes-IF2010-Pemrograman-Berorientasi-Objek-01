@@ -1,6 +1,6 @@
 #include "../include/mobs.hpp"
 
-Mobs::Mobs(string name, int strength, int agility, int intelligence, int level, int expReward, Mobloot& mobLoots)
+Mobs::Mobs(string name, int level, int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots)
  : Unit(name, strength, agility, intelligence, level) {
     this->expReward = expReward; 
     this->LootDrop = mobLoots.getLootforMob(name);
