@@ -134,6 +134,7 @@ int Shop::sellItem(const std::string& itemName, int quantity, Inventory& invento
                 }
                 return price;
         } catch (const InputOutputException& e) {
+            std::cout << "Error: " << e.what() << "\n";
             throw; // Rethrow the caught exception
         }     
     }else{

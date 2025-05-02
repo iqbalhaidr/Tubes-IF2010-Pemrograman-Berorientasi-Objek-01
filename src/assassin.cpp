@@ -5,6 +5,10 @@ using namespace std;
 Assassin::Assassin(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost)
  : Character(name, strength, agility, intelligence, level, exp, gold, masteryCost, "Assassin") {
     updateBasicAttributes(); // kecuali critmultiplier
+    for (int i = 0; i < skillTree.currentSkills.size(); i++) {
+        addSkill(skillTree.currentSkills[i]->getSkill());
+    }
+    cout << "yes\n";
 }
 
 Assassin::~Assassin() {}
@@ -44,8 +48,8 @@ void Assassin::levelUp() {
     setMasteryCost(getMasteryCost() + 5);
     setExp(0);
     stats.setStrength(stats.getStrength() * 1.2);
-    stats.setAgility(stats.getAgility() * 2);
-    stats.setIntelligence(stats.getIntelligence() * 1.5);
+    stats.setAgility(stats.getAgility() * 1.5);
+    stats.setIntelligence(stats.getIntelligence() * 1.3);
     Unit::updateBasicAttributes(); 
     updateBasicAttributes();
     Character::reset();

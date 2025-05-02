@@ -109,7 +109,7 @@ bool Effect::operator==(const Effect& other) const{
 }
 
 Effect* Effect::createEffect(const std::string& nama) {
-    std::ifstream EffectFile("../config/effect.txt");
+    std::ifstream EffectFile("../data/effect.txt");
     std::string line = "";
     
     std::string type;
@@ -192,5 +192,15 @@ Effect* Effect::createEffect(const std::string& nama) {
    }
    else if (type == "EffectTurn"){
         return new EffectTurn(name, description, duration, duration, chance);
+    }
+
+    else{
+        std::cout<<"Effect not found" << std::endl;
+        return nullptr;
+    }
+
 }
+
+void Effect::decreaseRemainingDuration(){
+    remainingDuration = remainingDuration - 1;
 }

@@ -19,7 +19,7 @@ void EffectHealthRegen::setHealAmount(int healAmount) {
     this->healAmount = healAmount;
 }
 double EffectHealthRegen::apply(Unit* unit) {
-    remainingDuration = remainingDuration - 1;
+    // remainingDuration = remainingDuration - 1;
     return healAmount; 
 }
 

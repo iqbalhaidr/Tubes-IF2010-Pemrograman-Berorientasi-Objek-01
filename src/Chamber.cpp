@@ -169,18 +169,24 @@ void Chamber::generateEnemies() {
 bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) {
     for (int i = 0; i < enemyCount; i++) {
         bool isCharTurn = true;
-        enemies[i]->setCurrentHealth(enemies[i]->getMaxHealth());
         int turnCtr = 0;
         while (enemies[i]->getCurrentHealth() > 0 && c.getCurrentHealth() > 0) {
             if (isCharTurn) {
-                c.applyActiveEffect();
-                c.heal(c.getHealthRegen());
-                c.restoreMana(c.getManaRegen());
                 if (c.getTurnEffectStatus("Stun")) {  // Cek apakah ada activeEffect stun
+                    std::cout << "Character Terkena Stun! Chamber.cpp\n";
+                    c.applyActiveEffect();
+                    turnCtr++;
                     isCharTurn = !isCharTurn;
                     continue;
                 }
-
+                
+                c.applyActiveEffect();
+                
+                // Regen health and mana (hanya dipanggil jika tidak ada efek stun)
+                c.heal(c.getHealthRegen());
+                c.restoreMana(c.getManaRegen());
+                std::cout << "Character regen called\n";
+                
                 std::cout << "Enemy: " << i << "/" << enemyCount << " | Turn: " << turnCtr << std::endl; 
                 std::cout << "\n";
                 displayPlayerStatus(c) ;
@@ -192,7 +198,11 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
                 int opt = inputOption();
                 if (opt == 1) {
                     c.attack(*enemies[i], inv);
-                    // std::cout << "Check3 Chamber.cpp\n";
+                    std::cout << "\n=============================\n";
+                    std::cout << "Character Attack! Chamber.cpp\n";
+                    std::cout << "Enemy Status: \n";
+                    displayEnemyStatus(enemies[i]);
+                    std::cout << "=============================\n";
                 } else if (opt == 2) {
                     if (c.getSkills().empty()) {
                         std::cout << "No skills available." << std::endl;
@@ -206,28 +216,48 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
                 } else if (opt == 4) {  // KABUR
                     return false;
                 }
-                removeExpiredEffects(&c);
+                // removeExpiredEffects(&c);
                 turnCtr++;
             } else {
-                enemies[i]->applyActiveEffect();
+                std::cout << "Enemy Turn! Chamber.cpp\n";
                 if (enemies[i]->getTurnEffectStatus("Stun")) {
+                    std::cout << "Enemy Terkena Stun! Chamber.cpp\n";
+                    enemies[i]->applyActiveEffect();
                     isCharTurn = !isCharTurn;
                     continue;
                 }
-                int opt = Randomizer::random(1, 2);
+                
+                enemies[i]->applyActiveEffect();
+                
+                // Regen health and mana (hanya dipanggil jika tidak ada efek stun)
+                enemies[i]->heal(enemies[i]->getHealthRegen());
+                enemies[i]->restoreMana(enemies[i]->getManaRegen());
+                std::cout << "Enemy regen called\n";
+
+                int opt = Randomizer::random(1, 10);
                 if (opt == 1) {
                     enemies[i]->attack(c, inv);
-                } else if (opt == 2) {
+                    std::cout << "\n=============================\n";
+                    std::cout << "Enemy Attack! Chamber.cpp\n"; 
+                    std::cout << "Character Status: \n";
+                    displayPlayerStatus(c);
+                    std::cout << "=============================\n";
+                } else if (opt > 1) {
+                    std::cout << "\n=============================\n";
+                    std::cout << "Enemy Use Skill! Chamber.cpp\n";
                     if (c.getSkills().empty()) {
                         std::cout << "No skills available." << std::endl;
                         continue;
                     }
-                    int skillOpt = Randomizer::random(
-                        0, enemies[i]->getSkills().size() - 1);
+                    int skillOpt = Randomizer::random(0, enemies[i]->getSkills().size() - 1);
+                    std::cout << "Enemy uses: " << enemies[i]->getSkills()[skillOpt]->getName() << std::endl;
                     enemies[i]->useSkill(enemies[i]->getSkills()[skillOpt], c);
+                    std::cout << "=============================\n";
                 }
-                removeExpiredEffects(enemies[i]);
+                // removeExpiredEffects(enemies[i]);
             }
+            removeExpiredEffects(enemies[i]);
+            removeExpiredEffects(&c);
             isCharTurn = !isCharTurn;
         }
 
@@ -236,6 +266,7 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
         }
 
         if (enemies[i]->getCurrentHealth() <= 0) {
+            std::cout << "BERHASIL MENGALAHKAN " << enemies[i]->getName() << std::endl;
             prize.addExp(enemies[i]->getExpReward());
             for (auto* loot : enemies[i]->dropLoot()) {
                 if (loot != nullptr) {
@@ -349,7 +380,10 @@ int Chamber::inputOption() {
 void Chamber::removeExpiredEffects(Unit* u) {
     std::vector<Effect*> toRemove;
     for (auto* effect : u->getActiveEffects()) {
+        std::cout << "Effect: " << effect->getName() << " -> "
+                  << effect->getRemainingDuration() << " turn left\n";
         if (effect->getRemainingDuration() <= 0) {
+            std::cout << "Effect Deleted: " << effect->getName() << " expired\n";
             toRemove.push_back(effect);
         }
     }
@@ -364,6 +398,7 @@ int Chamber::inputSkillOption(Unit* u) {
     bool isValid = false;
     while (!isValid) {
         int ctr = 1;
+        cin >> opt;
         for (auto* skill : u->getSkills()) {
             std::cout << ctr << ". " << skill->getName() << std::endl;
             ctr++;

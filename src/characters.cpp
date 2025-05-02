@@ -30,19 +30,14 @@ Characters::Characters(const string& directory) {
 
         if (ss >> name >> strength >> agility >> intelligence >> level >> exp >> gold >> masteryCost >> type) {
             if (type == "Mage") {
-                if (ss.fail()) throw InputOutputException("Format baris salah di file characters.txt untuk Mage");
                 addCharacters(new Mage(name, strength, agility, intelligence, level, exp, gold, masteryCost));
             } else if (type == "Assassin") {
-                if (ss.fail()) throw InputOutputException("Format baris salah di file characters.txt untuk Assassin");
                 addCharacters(new Assassin(name, strength, agility, intelligence, level, exp, gold, masteryCost));
             } else if (type == "Fighter") {
-                if (ss.fail()) throw InputOutputException("Format baris salah di file characters.txt untuk Fighter");
                 addCharacters(new Fighter(name, strength ,agility ,intelligence ,level ,exp ,gold ,masteryCost));
             } else if (type == "Berserker") {
-                if (ss.fail()) throw InputOutputException("Format baris salah di file characters.txt untuk Berserker");
                 addCharacters(new Berserker(name, strength, agility, intelligence, level, exp, gold, masteryCost));
             } else if (type == "Necromancer") {
-                if (ss.fail()) throw InputOutputException("Format baris salah di file characters.txt untuk Necromancer");
                 addCharacters(new Necromancer(name, strength, agility, intelligence, level, exp, gold, masteryCost));
             } else {
                 throw InputOutputException("Tipe karakter tidak valid");
@@ -88,8 +83,6 @@ void Characters::save(const string& directory) const {
         throw InventoryEror("Directory tidak ditemukan");
     }
 
-    file << "#<name> [<str> <agi> <int>] <level> <exp> <gold> <masteryCost> <type>\n";
-    
     for (const auto& character : characterMap) {
         Character* c = character.second;
         file << c->getName() << " "

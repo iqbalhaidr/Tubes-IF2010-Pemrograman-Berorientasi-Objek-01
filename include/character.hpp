@@ -39,7 +39,7 @@ class Character : public Unit {
         void setType(string type);
         void setSkillTree(SkillTree skillTree);
         void displayAvailableSkillUpgrades();
-        void UpgradeSkill(vector<string> skills);
+        void UpgradeSkill(string& name);
 
         // Fungsi
         virtual void levelUp() = 0;
