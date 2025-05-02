@@ -194,79 +194,101 @@ void Inventory::reduceItem(const Item* item, int target) {
     }
 }
 
-// void Inventory::useItem(const std::string itemID, Character& orang, const Items& itemMap) {
-//     auto idxItem = getIdxItembyId(itemID);
-//     if (idxItem.first == -1 && idxItem.second == -1){
-//         return; // bisa throw atau error handling lainnya
-//     }
+void Inventory::useItem(const std::string itemID, Character& orang, const Items& itemMap) {
+    auto idxItem = getIdxItembyId(itemID);
+    if (idxItem.first == -1 && idxItem.second == -1){
+        return; // bisa throw atau error handling lainnya
+    }
 
-//     auto itemInInventory = backpack.get(idxItem.first, idxItem.second);
-//     if (!(itemInInventory.first->isConsumable())) {
-//         std::string type = itemInInventory.first->getItemType();
+    auto itemInInventory = backpack.get(idxItem.first, idxItem.second);
+    if (!(itemInInventory.first->isConsumable())) {
+        std::string type = itemInInventory.first->getItemType();
 
-//         if (type == "Weapon") {
-//             //unequip Current Weapon
-//             unequipItem(orang, "WEAPON");
-//             generalEquip("WEAPON", orang, itemInInventory.first);
-//             orang.setAttackDamage(orang.getAttackDamage() + itemInInventory.first->getFinalStat());
-//         }
+        if (type == "Weapon") {
+            //unequip Current Weapon
+            unequipItem(orang, "WEAPON");
+            generalEquip("WEAPON", orang, itemInInventory.first);
+            orang.setAttackDamage(orang.getAttackDamage() + itemInInventory.first->getFinalStat());
+        }
 
-//         else if (type == "Armor") {
-//             std::vector<std::string> armorSlots = {"ARMOR_BODY", "ARMOR_FOOT", "ARMOR_HEAD"};
+        else if (type == "Armor") {
+            std::vector<std::string> armorSlots = {"ARMOR_BODY", "ARMOR_FOOT", "ARMOR_HEAD"};
 
-//             // Find Empty Slot
-//             for (const std::string& slot : armorSlots) {
-//                 if (equipped[slot] == nullptr) {
-//                     equipped[slot] = itemInInventory.first;
-//                     reduceItem(itemInInventory.first, 1);
-//                     return;
-//                 }
-//             }
+            // Find Empty Slot
+            for (const std::string& slot : armorSlots) {
+                if (equipped[slot] == nullptr) {
+                    equipped[slot] = itemInInventory.first;
+                    reduceItem(itemInInventory.first, 1);
+                    return;
+                }
+            }
 
-//             // No empty slot
-//             std::string minSlot = "";
-//             int minStat = INT_MAX;
-//             for (const auto& slot : armorSlots) {
-//                 if (equipped[slot] != nullptr) {
-//                     int stat = equipped[slot]->getFinalStat();
-//                     if (stat < minStat) {
-//                         minStat = stat;
-//                         minSlot = slot;
-//                     }
-//                 }
-//             }
+            // No empty slot
+            std::string minSlot = "";
+            int minStat = INT_MAX;
+            for (const auto& slot : armorSlots) {
+                if (equipped[slot] != nullptr) {
+                    int stat = equipped[slot]->getFinalStat();
+                    if (stat < minStat) {
+                        minStat = stat;
+                        minSlot = slot;
+                    }
+                }
+            }
 
-//             if (minSlot != "") {
-//                 generalUnequip(minSlot, orang);
-//                 generalEquip(minSlot, orang, itemInInventory.first);
-//             }
-//         }
+            if (minSlot != "") {
+                generalUnequip(minSlot, orang);
+                generalEquip(minSlot, orang, itemInInventory.first);
+            }
+        }
 
-//         else if (type == "Pendant") {
-//             if(!(equipped["PENDANT"] == nullptr)){
-//                 generalUnequip("PENDANT", orang);
-//             }  
-//             generalEquip("PENDANT", orang, itemInInventory.first);
-//         }
-//     }
-//     else{
-//         reduceItem(itemInInventory.first,1);
-//         std::vector<Effect*> effectItem = itemInInventory.first->getEffects();
-//         for (Effect* e : effectItem){
-//             orang.addActiveEffect(e);
-//         }
-//     }
-// }
+        else if (type == "Pendant") {
+            if(!(equipped["PENDANT"] == nullptr)){
+                generalUnequip("PENDANT", orang);
+            }  
+            generalEquip("PENDANT", orang, itemInInventory.first);
+        }
+    }
+    else{
+        reduceItem(itemInInventory.first,1);
+        std::vector<Effect*> effectItem = itemInInventory.first->getEffects();
+        for (Effect* e : effectItem){
+            orang.addActiveEffect(e);
+        }
+    }
+}
 
-// void Inventory :: generalEquip(std::string slot, Character& orang, Item* item){
-//     reduceItem(item,1);
-//     std::vector<Effect*> effectItem = item->getEffects();
-//     for (Effect* e : effectItem){
-//         orang.addActiveEffect(e);
-//     }
-//     equipped[slot] = item;
-// }
+void Inventory :: generalEquip(std::string slot, Character& orang, Item* item){
+    reduceItem(item,1);
+    std::vector<Effect*> effectItem = item->getEffects();
+    for (Effect* e : effectItem){
+        orang.addActiveEffect(e);
+    }
+    equipped[slot] = item;
+}
 
+void Inventory :: unequipItem(Character& orang, const std::string& slot){
+    if(slot == "WEAPON"){
+        if(!(equipped["WEAPON"] == nullptr)){
+            orang.setAttackDamage(orang.getAttackDamage() - equipped["WEAPON"]->getFinalStat());
+            generalUnequip("WEAPON", orang);
+        }
+    }
+    else{
+        generalUnequip(slot, orang);
+    }
+
+}
+
+void Inventory :: generalUnequip(std::string slot, Character& orang){
+    std::pair<Item*, int> item = {equipped[slot],1};
+    addItem(item);
+    std::vector<Effect*> effectItem = equipped[slot]->getEffects();
+    for (Effect* e : effectItem){
+        orang.removeActiveEffect(e);
+    }
+    equipped[slot] = nullptr;
+}
 
 
 Item* Inventory::unequipItem(const std::string& slot) {
