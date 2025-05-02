@@ -67,15 +67,20 @@ int Unit::calculateDamage(Unit& target, int baseDamage, Inventory& inventory) {
     }
     if (totalDamage < 0) totalDamage = 0;
     totalDamage += baseDamage; // total damage = base damage + critical damage
+    // cout << "totalDamage sblm wepen: " << totalDamage << endl;
     Item* weapon = inventory.getEquippedItem("WEAPON");
+
     if (weapon != nullptr) {
         totalDamage += weapon->getFinalStat(); // total damage + weapon damage
     }
+    // cout << "totalDamage sblm lvl: " << totalDamage << endl;
+    // cout << "baseDamage: " << baseDamage << endl;
     totalDamage *= getLevelFactor(target); // total damage * level factor
 
     return totalDamage;
 }
 void Unit::attack(Unit& target, Inventory& inventory) {
+    std::cout << name << " attacks " << target.getName() << " sebesar " << calculateDamage(target, attackDamage, inventory) << std::endl;
     target.takeDamage(calculateDamage(target, attackDamage, inventory)); 
 }
 
@@ -92,6 +97,7 @@ void Unit::takeDamage(int damage) {
     }
     if (defence < 0) defence = 0;
     damage *= 1 - defence;
+    std::cout << name << " takes " << damage << " damage!\n";
     currentHealth -= damage;
     if (currentHealth < 0) {
         currentHealth = 0;
@@ -120,9 +126,11 @@ void Unit::useSkill(Skill* skill, Unit& target) {
         cout << "Not enough mana to use " << skill->getName() << endl;
         return;
     }
-    if ((rand() % 100 + 1) > skill->getskillChance()) {
-        return;
-    }
+    // if ((rand() % 100 + 1) > skill->getskillChance()) {
+    //     std::cout << "Skill tidak mengenai target" << std::endl;
+    //     return;
+    // }
+    std::cout << "Skill mengenai target" << std::endl;
     currentMana -= skill->getManaCost(); 
     int totalDamage = skill->getDamage();
 
@@ -141,7 +149,7 @@ void Unit::useSkill(Skill* skill, Unit& target) {
     }
 
     for (const auto& ActiveEffect : getCombinedEffect(activeEffects)) {
-        if (auto* damageEffect = dynamic_cast<EffectDamage*>(ActiveEffect)) {
+        if (EffectDamage* damageEffect = dynamic_cast<EffectDamage*>(ActiveEffect)) {
             if (damageEffect->getName() == "Brittle" && (damageEffect->getDuration() == damageEffect->getRemainingDuration())) {
                 continue;
             } 
@@ -149,6 +157,7 @@ void Unit::useSkill(Skill* skill, Unit& target) {
         }
     }
 
+    std::cout << "Skill damage: " << totalDamage << std::endl;
     target.takeDamage(totalDamage); 
 
 }
