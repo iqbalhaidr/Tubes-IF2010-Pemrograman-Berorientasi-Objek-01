@@ -198,12 +198,22 @@ void Shop::displayDetails(std::string itemName) const {
 }
 
 void Shop::displayShop() const {
-    std::cout << "Shop Items:\n";
+    std::cout << "========== Shop Items ==========\n";
     for (const auto& category : categoryShop) {
         std::cout << "Category: " << category.first << "\n";
+        std::cout << std::left 
+                  << std::setw(20) << "Item Name" 
+                  << std::setw(10) << "Price" 
+                  << std::setw(10) << "Stock" << "\n";
+        std::cout << std::string(40, '-') << "\n";
+
         for (const auto& item : category.second) {
-            std::cout << "Item: " << item.first << ", Price: " << getPrice(item.first)<< ", Stock: " << item.second << "\n";
+            std::cout << std::left 
+                      << std::setw(20) << item.first 
+                      << std::setw(10) << getPrice(item.first) 
+                      << std::setw(10) << item.second << "\n";
         }
+
         std::cout << "\n";
     }
 }
