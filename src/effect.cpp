@@ -109,7 +109,7 @@ bool Effect::operator==(const Effect& other) const{
 }
 
 Effect* Effect::createEffect(const std::string& nama) {
-    std::ifstream EffectFile("../config/effect.txt");
+    std::ifstream EffectFile("../data/effect.txt");
     std::string line = "";
     
     std::string type;

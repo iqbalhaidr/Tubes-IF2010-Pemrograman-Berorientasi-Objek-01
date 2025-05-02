@@ -131,12 +131,12 @@ void dungeonTest() {
     Items items = Items::createFromDirectory("../data/");
     Mobloot mobLoot = Mobloot("../data/", items);
     Dungeon ds("E", mobLoot, items);
-    std::cout << "Dungeon created" << std::endl;
+    // std::cout << "Dungeon created" << std::endl;
     // ds.displayInfo();
     Fighter f ("Fighter1");
     // Assassin f ("Assassin1");
-    std::cout << "Fighter created" << std::endl;
-    std::cout << "Assassin created" << std::endl;
+    // std::cout << "Fighter created" << std::endl;
+    // std::cout << "Assassin created" << std::endl;
     Inventory inv = Inventory::loadInventory("../data/", items);
     ds.start(f, inv, items);
 }
@@ -155,8 +155,8 @@ int main() {
     // mapTest();
     // cout << mapReturnTest()["a"] << endl;
     // cout << inputOption() << endl;
-    itemsParserTest();
-    itemInventoryParserTest();
     // itemsParserTest();
-    // dungeonTest();
+    // itemInventoryParserTest();
+    // itemsParserTest();
+    dungeonTest();
 }

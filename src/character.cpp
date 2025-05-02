@@ -33,33 +33,34 @@ void Character::displayAvailableSkillUpgrades() {
         counter++;
     }
 }
-void Character::UpgradeSkill(string& skilltoLearn) {
+void Character::UpgradeSkill(string& skillNameToLearn) {
     bool found = false;
     vector<SkillNode*> availableSkillNodes;
     int idx = 0;
     skillTree.getAvailableUpgrade(availableSkillNodes);
     for (int i = 0; i < availableSkillNodes.size(); i++) {
-        if (availableSkillNodes[i]->getSkill()->getName() == skilltoLearn) {
+        if (availableSkillNodes[i]->getSkill()->getName() == skillNameToLearn) {
             found = true;
             idx = i;
         }
     }
     
     if (found) {
-
+        Skill* skillToLearn = availableSkillNodes[idx]->getSkill();
         SkillNode* parentNode = skillTree.getParent(*(availableSkillNodes[idx]->getSkill()));
-
+        if (masteryCost < availableSkillNodes[idx]->getSkill()->getMasterCost()) {
+            cout << "masteryCost tidak cukup untuk mempelajari skill" << skillToLearn->getName() << endl;
+            return;
+        }
+        masteryCost -= skillToLearn->getMasterCost();
         skillTree.upgradeSkill(parentNode, availableSkillNodes[idx]);
-        addSkill(availableSkillNodes[idx]->getSkill());
+        addSkill(skillToLearn);
 
         bool canRemove = parentNode->canRemove();
         if (canRemove) {
             removeSkill(parentNode->getSkill());
         }
     }
-
-
-
 
 }
 

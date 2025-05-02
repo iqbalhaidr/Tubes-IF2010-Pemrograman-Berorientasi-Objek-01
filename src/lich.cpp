@@ -9,7 +9,7 @@ Lich::Lich(int level, int expReward, Mobloot& mobLoots)
     EffectManaReduc* manaReducEffect = new EffectManaReduc("Withering Touch", poisonEffectDescription, 4, 4, 10);
     effects.push_back(poisonEffect);
     effects.push_back(manaReducEffect);
-    Skill *skill = new Skill("Withering Touch", 0, 0, 15, 2*getStats().getIntelligence(), effects);
+    Skill *skill = new Skill("Withering Touch", 9, 0, 15, 2*getStats().getIntelligence(), effects);
     addSkill(skill);
 }
 
