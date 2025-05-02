@@ -215,7 +215,10 @@ SkillTree::SkillTree(string char_type){
 
         root3 = new SkillNode(b3_1);
     }
-
+    root1->unlocked = true;
+    root2->unlocked = true;
+    root3->unlocked = true;
+    
     currentSkills.push_back(root1);
     currentSkills.push_back(root2);
     currentSkills.push_back(root3);
