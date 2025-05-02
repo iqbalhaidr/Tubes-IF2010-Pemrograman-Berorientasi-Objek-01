@@ -126,7 +126,7 @@ void Unit::useSkill(Skill* skill, Unit& target) {
     currentMana -= skill->getManaCost(); 
     int totalDamage = skill->getDamage();
 
-    for (const auto& effect : skill->effects) {
+    for (Effect* effect : skill->effects) {
         if ((effect->isTurn() || effect->isTurnBased()) 
         || (effect->isDamage() && effect->getName() == "Infernal Curse")
         || (effect->isDefensive() && effect->getName() == "Infernal Curse")
@@ -140,8 +140,8 @@ void Unit::useSkill(Skill* skill, Unit& target) {
         
     }
 
-    for (const auto& ActiveEffect : getCombinedEffect(activeEffects)) {
-        if (auto* damageEffect = dynamic_cast<EffectDamage*>(ActiveEffect)) {
+    for (Effect* ActiveEffect : getCombinedEffect(activeEffects)) {
+        if (EffectDamage* damageEffect = dynamic_cast<EffectDamage*>(ActiveEffect)) {
             if (damageEffect->getName() == "Brittle" && (damageEffect->getDuration() == damageEffect->getRemainingDuration())) {
                 continue;
             } 

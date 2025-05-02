@@ -10,7 +10,7 @@ DemonLord::DemonLord(int level, int expReward, Mobloot& mobLoots)
     EffectDefensive* defenseDebuff = new EffectDefensive("Infernal Curse", debuffEffectDescription, 5, 5, 1, 10, 0);
     effects.push_back(attackDebuff);
     effects.push_back(defenseDebuff);
-    Skill *skill = new Skill("Infernal Curse", 0, 0, 15, 0, effects);
+    Skill *skill = new Skill("Infernal Curse", 8, 0, 15, 0, effects);
     addSkill(skill);
 }
 
