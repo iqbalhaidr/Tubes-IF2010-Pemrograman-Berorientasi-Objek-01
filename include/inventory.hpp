@@ -36,6 +36,7 @@ public:
     Item* getEquippedItem(const std::string& slot){return equipped[slot];};
     std::string getEquippedItemId(const std::string& slot) const;
     void displayBackpack();
+    void displayEquipment();
 };
 
 #endif

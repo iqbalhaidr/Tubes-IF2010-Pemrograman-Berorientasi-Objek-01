@@ -328,3 +328,15 @@ void Inventory :: displayBackpack(){
         cout<<"\n";
     }
 }
+
+void Inventory::displayEquipment(){
+    for (const auto& [key, value] : equipped) {
+        if(!(value == nullptr)){
+            std::cout << key << " => " << value->getName() << std::endl;
+        }
+        else{
+            std::cout << key << " => " << "KOSONG" << std::endl;
+        }
+       
+    }
+}
