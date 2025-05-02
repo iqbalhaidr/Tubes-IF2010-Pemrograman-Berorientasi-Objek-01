@@ -24,7 +24,7 @@ void EffectManaReduc::setManaAmount(int manaAmount) {
 }
 
 double EffectManaReduc::apply(Unit* unit) {
-    remainingDuration = remainingDuration - 1;
+    // remainingDuration = remainingDuration - 1;
     return manaAmount; 
 }
 

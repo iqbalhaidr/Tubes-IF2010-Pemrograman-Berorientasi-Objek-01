@@ -6,7 +6,9 @@ Berserker::Berserker(string name, int strength, int agility, int intelligence, i
 : Character(name , strength, agility, intelligence, level, exp, gold, masteryCost, "Berserker") {
     std::cout << "[DEBUG] Masuk constructor Berserker" << std::endl;
     updateBasicAttributes();
-    std::cout << "[DEBUG] Berhasil update" << std::endl;
+    for (int i = 0; i < skillTree.currentSkills.size(); i++) {
+        addSkill(skillTree.currentSkills[i]->getSkill());
+    }
 }
 
 Berserker::~Berserker() {}

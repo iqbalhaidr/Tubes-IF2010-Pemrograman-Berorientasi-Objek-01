@@ -1,7 +1,7 @@
 #include <iostream>
-#include <vector>
-#include <map>
 #include <limits>
+#include <map>
+#include <vector>
 
 #include "../include/Randomizer.hpp"
 #include "../include/items.hpp"
@@ -37,7 +37,8 @@ void switchTest(int i) {
 //             ctr++;
 //         }
 //     }
-//     cout << "ini chance true " << ((float) ctr/ (float) n) * 100.00f << "%" << endl;
+//     cout << "ini chance true " << ((float)ctr / (float)n) * 100.00f << "%"
+//          << endl;
 // }
 
 /*
@@ -65,32 +66,38 @@ map<string, int> mapReturnTest() {
     return m;
 }
 
-int inputOption() {
-    int opt;
-    bool isValid = false;
-    while (!isValid) {
-        std::cout << "Choose your action: " << std::endl;
-        std::cout << "1. Attack" << std::endl;
-        std::cout << "2. Use Skill" << std::endl;
-        std::cout << "3. Use Item" << std::endl;
-        std::cout << "4. Run Away" << std::endl;
-        std::cin >> opt;
+// int inputOption() {
+//     int opt;
+//     bool isValid = false;
+//     while (!isValid) {
+//         std::cout << "Choose your action: " << std::endl;
+//         std::cout << "1. Attack" << std::endl;
+//         std::cout << "2. Use Skill" << std::endl;
+//         std::cout << "3. Use Item" << std::endl;
+//         std::cout << "4. Run Away" << std::endl;
+//         std::cin >> opt;
 
-        if (std::cin.fail()) {
-            std::cin.clear(); // reset fail state
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // buang sisa input
-            std::cout << "Invalid input. Please enter a number between 1 and 4." << std::endl;
-        } else if (opt >= 1 && opt <= 4) {
-            isValid = true;
-        } else {
-            std::cout << "Invalid option. Please try again." << std::endl;
-        }
-    }
+//         if (std::cin.fail()) {
+//             std::cin.clear();  // reset fail state
+//             std::cin.ignore(std::numeric_limits<std::streamsize>::max(),
+//                             '\n');  // buang sisa input
+//             std::cout << "Invalid input. Please enter a number between 1
+//             and 4."
+//                       << std::endl;
+//         } else if (opt >= 1 && opt <= 4) {
+//             isValid = true;
+//         } else {
+//             std::cout << "Invalid option. Please try again." << std::endl;
+//         }
+//     }
 
-    return opt;
-}
+//     return opt;
+// }
 
-// g++ test.cpp Randomizer.cpp items.cpp item.cpp effect.cpp EffectDamage.cpp EffectDefensive.cpp EffectHealthRegen.cpp EffectManaRegen.cpp EffectPoison.cpp
+// test.cpp Randomizer.cpp items.cpp item.cpp effect.cpp EffectDamage.cpp
+// EffectDefensive.cpp EffectHealthRegen.cpp EffectManaRegen.cpp
+// EffectPoison.cpp EffectTurnBased.cpp  EffectHealth.cpp EffectTurn.cpp
+// Weapon.cpp Armor.cpp Pendant.cpp Potion.cpp unit.cpp stats.cpp Skill.cpp
 void itemsParserTest() {
     Items items = Items::createFromDirectory("../data/");
     std::map<std::string, Item*> itemMap = items.getItemMap();
@@ -110,12 +117,6 @@ void itemsParserTest() {
     }
 }
 
-void itemInventoryParserTest(){
-    Items items = Items::createFromDirectory("../data/");
-    Inventory inv = Inventory::loadInventory("../data/", items);
-    inv.displayBackpack();
-}
-
 /*
 g++ -o test test.cpp items.cpp item.cpp effect.cpp EffectDamage.cpp
 EffectDefensive.cpp EffectHealthRegen.cpp EffectManaRegen.cpp EffectPoison.cpp
@@ -131,13 +132,14 @@ EffectManaReduc.cpp
 //     Items items = Items::createFromDirectory("../data/");
 //     Mobloot mobLoot = Mobloot("../data/", items);
 //     Dungeon ds("E", mobLoot, items);
-//     std::cout << "Dungeon created" << std::endl;
+//     // std::cout << "Dungeon created" << std::endl;
 //     // ds.displayInfo();
 //     Fighter f ("Fighter1");
 //     // Assassin f ("Assassin1");
-//     std::cout << "Fighter created" << std::endl;
-//     std::cout << "Assassin created" << std::endl;
+//     // std::cout << "Fighter created" << std::endl;
+//     // std::cout << "Assassin created" << std::endl;
 //     Inventory inv = Inventory::loadInventory("../data/", items);
+//     // ds.displayInfo();
 //     ds.start(f, inv, items);
 // }
 
@@ -155,8 +157,8 @@ int main() {
     // mapTest();
     // cout << mapReturnTest()["a"] << endl;
     // cout << inputOption() << endl;
-    itemsParserTest();
-    itemInventoryParserTest();
+    // itemsParserTest();
+    // itemInventoryParserTest();
     // itemsParserTest();
     // dungeonTest();
 }
