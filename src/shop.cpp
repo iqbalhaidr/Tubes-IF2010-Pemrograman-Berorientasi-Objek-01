@@ -130,7 +130,6 @@ int Shop::sellItem(const std::string& itemName, int quantity, Inventory& invento
                 }
         } catch (const InputOutputException& e) {
             std::cout << "Error: " << e.what() << "\n";
-            return;
         }     
     }else{
         throw ItemNotFound("Item " + itemName + " not found in backpack");
