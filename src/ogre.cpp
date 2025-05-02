@@ -5,7 +5,7 @@ Ogre::Ogre(int level, int expReward, Mobloot& mobLoots)
     updateBasicAttributes();
     vector<Effect*> effects;
     string stunEffectDescription = "berpeluang 0.5 untuk memberikan stun selama 1 turn";
-    EffectTurn* stunEffect = new EffectTurn("Pulverize", stunEffectDescription, 1, 1, 0.9);
+    EffectTurn* stunEffect = new EffectTurn("Pulverize (Stun)", stunEffectDescription, 1, 1, 0.9);
     effects.push_back(stunEffect);
     Skill *skill = new Skill("Pulverize", 10, 0, 30, attackDamage * 2.5, effects);
     addSkill(skill);

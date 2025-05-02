@@ -139,7 +139,6 @@ void Unit::useSkill(Skill* skill, Unit& target) {
     // if ((rand() % 100 + 1) > skill->getskillChance()) {
     //     return;
     // }
-    currentMana -= skill->getManaCost(); 
     // if ((rand() % 100 + 1) > skill->getskillChance()) {
     //     std::cout << "Skill tidak mengenai target" << std::endl;
     //     return;
@@ -211,6 +210,8 @@ void Unit::applyActiveEffect() {
             currentHealth -= activeEffect->apply(this);
         } else if (activeEffect->isManaReduc()) {
             currentMana -= activeEffect->apply(this);
+        } else if (activeEffect->isTurn()) {
+            int stunReturn = activeEffect->apply(this);
         }
     }
 }
