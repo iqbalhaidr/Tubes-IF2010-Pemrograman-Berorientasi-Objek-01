@@ -66,12 +66,16 @@ void Shop::saveShop(const std::string& directory) {
     std::cout << "Shop successfully saved\n";
 }
 
-std::pair<int,int> Shop::buyItem(const std::string& itemName, int quantity) {
+std::pair<Item*, int> Shop::buyItem(const std::string& itemName, int quantity) { //mengembalikan price total dari quantity dan stock
     auto it = availableItems.find(itemName);
 
     if (it != availableItems.end()) {
         int price = std::get<1>(it->second);
         int stock = std::get<2>(it->second);
+        if(quantity > stock){
+            throw StockError();
+        }
+        Item *item = itemMap->getItem(itemName);
         price *= quantity; 
         switch (std::get<0>(it->second)[0]) {
         case 'S': 
@@ -95,20 +99,20 @@ std::pair<int,int> Shop::buyItem(const std::string& itemName, int quantity) {
         default:
             break;
         }
-        return std::make_pair(price, stock);
+        return std::make_pair(item,price);
     }else {
         throw ItemNotFound("Item " + itemName + " not found in shop");
     }
 }
 
-int Shop::sellItem(const std::string& itemName, int quantity, Inventory& inventory){
+std::pair<Item*,int> Shop::sellItem(const std::string& itemName, int quantity){
     int price;
     
     if (quantity >= 0) {
         try{
             Item *item = itemMap->getItem(itemName);
-            inventory.reduceItem(item, quantity);
-            std::cout << "Item " << itemName << " sold successfully\n"; 
+            // inventory.reduceItem(item, quantity);
+            // std::cout << "Item " << itemName << " sold successfully\n"; 
             price = 0.7*quantity;
             switch (item->getRarity()[0]) {
                 case 'S': 
@@ -132,7 +136,7 @@ int Shop::sellItem(const std::string& itemName, int quantity, Inventory& invento
                 default:
                     break;
                 }
-                return price;
+                return {item,price};
         } catch (const InputOutputException& e) {
             throw; // Rethrow the caught exception
         }     

@@ -24,7 +24,8 @@ public:
     ~Player();
 
     // void goToDungeon(std::string rankDungeon); //mekanisme buat dungeon dan start dungeon
-    // void goToShop(Shop& shop); //
+    void buyFromShop(Shop& shop, const std::string& itemId, int quantity); 
+    int sellToShop(Shop& shop, const std::string& itemId, int quantity);
 
     void onUnEquip(const std::string& slot);
     void useItem(const std::string& itemId);

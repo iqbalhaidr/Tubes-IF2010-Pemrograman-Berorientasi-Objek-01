@@ -22,8 +22,8 @@ public:
     Shop(const std::string& directory);
     ~Shop();
     void saveShop(const std::string& directory) ;
-    std::pair<int,int> buyItem(const std::string& itemName, int quantity);
-    int sellItem(const std::string& itemName, int quantity, Inventory& inventory);
+    std::pair<Item*,int> buyItem(const std::string& itemName, int quantity);
+    std::pair<Item*,int> sellItem(const std::string& itemName, int quantity);
     void restock();
     void setStock(const std::string& itemName, int stock);
     int getCurrentStock(const std::string& itemName);
