@@ -12,7 +12,7 @@ SkillTree::SkillTree(string char_type){
         EffectDefensive* damageReductionPlus = dynamic_cast<EffectDefensive*>(Effect::createEffect("Armor"));
         damageReductionPlus->setDefense(damageReductionPlus->getDefense() * 1.5);
 
-        EffectHealthRegen* healthRegenPlus = dynamic_cast<EffectHealthRegen*>(Effect::createEffect("Obay"));
+        EffectHealthRegen* healthRegenPlus = dynamic_cast<EffectHealthRegen*>(Effect::createEffect("Obat"));
         healthRegenPlus->setHealAmount(healthRegenPlus->getHealAmount() * 1.5);
 
         // Skill1
@@ -86,7 +86,7 @@ SkillTree::SkillTree(string char_type){
         DisablePlus->setChance(DisablePlus->getChance() * 1.5);
         EffectManaRegen* manaRegenPlus = dynamic_cast<EffectManaRegen*>(Effect::createEffect("Kukubima"));
         manaRegenPlus->setManaAmount(manaRegenPlus->getManaAmount() * 1.5);
-        EffectHealthRegen* healthRegenPlus = dynamic_cast<EffectHealthRegen*>(Effect::createEffect("Obay"));
+        EffectHealthRegen* healthRegenPlus = dynamic_cast<EffectHealthRegen*>(Effect::createEffect("Obat"));
         healthRegenPlus->setHealAmount(healthRegenPlus->getHealAmount() * 1.5);
 
         Skill* m2_1 = new Skill("Chains of Ruin", 10, 0, 0.5, 0, {Disable});
@@ -133,7 +133,7 @@ SkillTree::SkillTree(string char_type){
         Skill* a2_1 = new Skill("Silent Ambush", 10, 0, 0.5, 0, {StunPlusPlus});
 
         // Assassin skill3
-        EffectHealthRegen* healthRegenPlusPlus = dynamic_cast<EffectHealthRegen*>(Effect::createEffect("Obay"));
+        EffectHealthRegen* healthRegenPlusPlus = dynamic_cast<EffectHealthRegen*>(Effect::createEffect("Obat"));
         healthRegenPlusPlus->setHealAmount(healthRegenPlusPlus->getHealAmount() * 2);
 
         Skill* a3_1 = new Skill("Blood Pact", 10, 0, 0.5, 0, {healthRegenPlusPlus});
@@ -149,8 +149,8 @@ SkillTree::SkillTree(string char_type){
 
     else if (char_type == "Necromancer") {
         // Necromancer skill1
-        EffectHealthRegen* healthRegen = dynamic_cast<EffectHealthRegen*>(Effect::createEffect("Obay"));
-        EffectHealthRegen* healthRegenPlus = dynamic_cast<EffectHealthRegen*>(Effect::createEffect("Obay"));
+        EffectHealthRegen* healthRegen = dynamic_cast<EffectHealthRegen*>(Effect::createEffect("Obat"));
+        EffectHealthRegen* healthRegenPlus = dynamic_cast<EffectHealthRegen*>(Effect::createEffect("Obat"));
         healthRegenPlus->setHealAmount(healthRegenPlus->getHealAmount() * 1.5);
         EffectManaRegen* manaRegenPlus = dynamic_cast<EffectManaRegen*>(Effect::createEffect("Kukubima"));
         manaRegenPlus->setManaAmount(manaRegenPlus->getManaAmount() * 1.5);
@@ -202,7 +202,7 @@ SkillTree::SkillTree(string char_type){
         Skill* b2_1 = new Skill("Indomitable Fury", 10, 0, 0.5, 0, {damageReductionPlusPlus});
 
         // Berserk skill3
-        EffectHealthRegen* healthRegenPlusPlus = dynamic_cast<EffectHealthRegen*>(Effect::createEffect("Obay"));
+        EffectHealthRegen* healthRegenPlusPlus = dynamic_cast<EffectHealthRegen*>(Effect::createEffect("Obat"));
         healthRegenPlusPlus->setHealAmount(healthRegenPlusPlus->getHealAmount() * 2);
 
         Skill* b3_1 = new Skill("Blood Renewal", 10, 0, 0.5, 0, {healthRegenPlusPlus});
