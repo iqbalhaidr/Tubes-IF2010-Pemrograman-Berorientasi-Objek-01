@@ -262,10 +262,7 @@ void Inventory :: generalEquip(std::string slot, Character& orang, Item* item, U
     reduceItem(item,1);
     std::vector<Effect*> effectItem = item->getEffects();
     for (Effect* e : effectItem){
-        if(e->isThrowable()){
-            target.addActiveEffect(e);
-        }
-        else{
+        if(!(e->isThrowable())){
             orang.addActiveEffect(e);
         }
     }
@@ -290,7 +287,7 @@ void Inventory :: generalUnequip(std::string slot, Character& orang, Unit& targe
     addItem(item);
     std::vector<Effect*> effectItem = equipped[slot]->getEffects();
     for (Effect* e : effectItem){
-        if(e->isThrowable()){
+        if(!(e->isThrowable())){
             orang.removeActiveEffect(e);
         }
     }
