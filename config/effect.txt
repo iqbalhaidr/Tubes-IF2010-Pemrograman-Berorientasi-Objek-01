@@ -5,6 +5,6 @@ EffectPoison Racun <ini Racun gw> 23 34 5
 EffectDamage Critical <Menambahkan damage anda> 5 7 20
 EffectPoison Bleed <Menambahkan damage anda> 5 7 20
 EffectPoison Burn <Menambahkan damage anda> 5 7 20
-EffectTurn Stun <STOP> 1 1 1    
-EffectTurn Disable <STOP> 1 1 1
+EffectTurn Stun <STOP> 7 1 1    
+EffectTurn Disable <STOP> 7 1 1
 EffectManaRegen Kukubima <semangat> 6 3 2

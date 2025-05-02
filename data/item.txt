@@ -1,4 +1,4 @@
-EXC Excalibur Weapon S 100 Critical -
+EXC Excalibur Weapon A 100 Critical -
 DRA Dragon_Armor Armor A 200 Armor -
 MNP Mana_Potion Potion C 0 Critical -
 PHP Phoenix_Pendant Pendant B 0 Critical -
@@ -9,3 +9,11 @@ BRN Burn_Sword Weapon D 10 Burn -
 KKM Regen_Kukubima Potion C 0 Kukubima -
 ABB Armor_Burn Armor C 10 Burn -
 ABS Armor_Bleed Armor C 10 Bleed -
+PDF Def_Pendant Pendant A 100 Armor -
+PAT Attack_Pendant Pendant A 10 Critical -
+PRH RegenHealth_Pendant Pendant A 100 Obat -
+PRM RegenMana_Pendant Pendant A 100 Kukubima -
+PCR Potion_Critical Potion A 20 Critical -
+PAR Potion_Armor Potion A 0 Armor - 
+PST Potion_Stun Potion A 0 Stun -
+PDB Potion_Disable Potion A 0 Disable - 

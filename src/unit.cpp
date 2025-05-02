@@ -79,7 +79,10 @@ int Unit::calculateDamage(Unit& target, int baseDamage, Inventory& inventory) {
 
     if (weapon != nullptr) {
         totalDamage += weapon->getFinalStat();  // total damage + weapon damage
+        cout << "Weapon name: " << weapon->getName() << std::endl;
+        std::cout << "Weapon damage: " << weapon->getFinalStat() << std::endl;
     }
+    cout << "totalDamage: " << totalDamage << endl;
     // cout << "totalDamage sblm lvl: " << totalDamage << endl;
     // cout << "baseDamage: " << baseDamage << endl;
     totalDamage *= getLevelFactor(target);  // total damage * level factor
@@ -104,6 +107,7 @@ void Unit::takeDamage(int damage) {
         }
     }
     if (defence < 0) defence = 0;
+    std::cout << "Defence: " << defence << std::endl;
     damage *= 1 - defence;
     std::cout << name << " takes " << damage << " damage!\n";
     currentHealth -= damage;
@@ -201,8 +205,10 @@ void Unit::applyActiveEffect() {
     for (auto& activeEffect : activeEffects) {
         if (activeEffect->isHealthRegen() || activeEffect->isManaRegen()) {
             if (activeEffect->isHealthRegen()) {
+                std::cout << "Health regen effect called: " << activeEffect->getName() << std::endl;
                 heal(activeEffect->apply(this));
             } else if (activeEffect->isManaRegen()) {
+                std::cout << "Mana regen effect called: " << activeEffect->getName() << std::endl;
                 restoreMana(activeEffect->apply(this));
             }
         } else if (activeEffect->isPoison()) {
