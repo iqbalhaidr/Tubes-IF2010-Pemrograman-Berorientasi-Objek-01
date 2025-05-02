@@ -203,6 +203,8 @@ void Unit::applyActiveEffect() {
             currentHealth -= activeEffect->apply(this);
         } else if (activeEffect->isManaReduc()) {
             currentMana -= activeEffect->apply(this);
+        } else if (activeEffect->isTurn()) {
+            int stunReturn = activeEffect->apply(this);
         }
     }
 }
