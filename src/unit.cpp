@@ -122,9 +122,9 @@ void Unit::useSkill(Skill* skill, Unit& target) {
         cout << "Not enough mana to use " << skill->getName() << endl;
         return;
     }
-    if ((rand() % 100 + 1) > skill->getskillChance()) {
-        return;
-    }
+    // if ((rand() % 100 + 1) > skill->getskillChance()) {
+    //     return;
+    // }
     currentMana -= skill->getManaCost(); 
     int totalDamage = skill->getDamage();
     cout<< "TOTAL DAMAGE: " << totalDamage << endl;
