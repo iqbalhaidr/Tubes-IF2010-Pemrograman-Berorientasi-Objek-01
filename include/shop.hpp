@@ -3,6 +3,7 @@
 
 #include "items.hpp"
 #include "inventory.hpp"
+#include "exception.hpp"
 #include <sstream>
 #include <fstream>
 #include <map>
@@ -26,7 +27,8 @@ public:
     int sellItem(const std::string& itemName, int quantity, Inventory& inventory);
     void restock();
     void setStock(const std::string& itemName, int stock);
-    int getCurrentStock(const std::string& itemName);
+    int getCurrentStock(const std::string& itemName) const;
+    int getPrice(const std::string& itemName) const;
     void displayDetails(std::string itemName) const;
     void displayShop() const;
 };

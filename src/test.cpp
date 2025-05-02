@@ -9,6 +9,7 @@
 #include "../include/Dungeon.hpp"
 #include "../include/fighter.hpp"
 #include "../include/assassin.hpp"
+#include "../include/Shop.hpp"
 
 using namespace std;
 
@@ -155,8 +156,10 @@ int main() {
     // mapTest();
     // cout << mapReturnTest()["a"] << endl;
     // cout << inputOption() << endl;
-    itemsParserTest();
-    itemInventoryParserTest();
+    // itemsParserTest();
+    // itemInventoryParserTest();
     // itemsParserTest();
     // dungeonTest();
+    Shop shop("../data/");
+    shop.displayShop();
 }

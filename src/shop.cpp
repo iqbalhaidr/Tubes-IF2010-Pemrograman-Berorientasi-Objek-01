@@ -1,11 +1,13 @@
-#include "shop.hpp"
-#include "exception.hpp"
+#include "../include/shop.hpp"
+
 #include <iostream>
 
 Shop::Shop(const std::string& directory){
     std:: string filename = directory + "shop.txt";
     this->itemMap = new Items(Items::createFromDirectory(directory));
-
+    for (const auto& item : itemMap->getItemMap()) {
+        std::string name = item.second->getName();
+    }
     if (!fs::exists(directory) || !fs::is_directory(directory)) {
         throw InputOutputException("Directory tidak ditemukan");
     }
@@ -24,13 +26,13 @@ Shop::Shop(const std::string& directory){
         int basePrice, stock;
 
         if (ss >> name >> rarity >> basePrice >> stock){ //parsing berhasil
-            if(!(stock < 0 && Items::isValidItemRarity(rarity))){
+            if(stock < 0 && !Items::isValidItemRarity(rarity)){
                 throw InputOutputException("Stock atau rarity tidak valid"); //eror format file tidak sesuai silahkan masukkan file yang valid
             }
 
             //validasi nama
             if(!itemMap->lookUpbyName(name)){
-                throw InputOutputException("Nama item tidak valid"); //eror format file tidak sesuai silahkan masukkan file yang valid
+                throw InputOutputException("Item " + name + " tidak ditemukan di itemMap"); //eror format file tidak sesuai silahkan masukkan file yang valid
             }
             
             availableItems[name] = std::make_tuple(rarity, basePrice, stock);
@@ -39,7 +41,8 @@ Shop::Shop(const std::string& directory){
     }
 
     for (const auto& item : availableItems) {
-        std::string category = std::get<0>(item.second);
+        Item * itemObj = itemMap->getItembyName(item.first);
+        std::string category = itemObj->getItemType();
         categoryShop[category].push_back(std::make_pair(item.first, std::get<2>(item.second)));
     }
 }
@@ -160,12 +163,21 @@ void Shop::setStock(const std::string& itemName, int stock) {
     }
 }
 
-int Shop::getCurrentStock(const std::string& itemName) {
+int Shop::getCurrentStock(const std::string& itemName) const {
     auto it = availableItems.find(itemName);
     if (it != availableItems.end()) {
         return std::get<2>(it->second);
     } else {
         throw StockError("Item " + itemName + " not found in shop");
+    }
+}
+
+int Shop::getPrice(const std::string& itemName) const {
+    auto it = availableItems.find(itemName);
+    if (it != availableItems.end()) {
+        return std::get<1>(it->second);
+    } else {
+        throw ItemNotFound("Item " + itemName + " not found in shop");
     }
 }
 
@@ -190,7 +202,7 @@ void Shop::displayShop() const {
     for (const auto& category : categoryShop) {
         std::cout << "Category: " << category.first << "\n";
         for (const auto& item : category.second) {
-            std::cout << "Item: " << item.first << ", Stock: " << item.second << "\n";
+            std::cout << "Item: " << item.first << ", Price: " << getPrice(item.first)<< ", Stock: " << item.second << "\n";
         }
         std::cout << "\n";
     }
