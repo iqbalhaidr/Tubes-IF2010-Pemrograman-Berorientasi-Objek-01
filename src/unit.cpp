@@ -213,6 +213,7 @@ void Unit::applyActiveEffect() {
         } else if (activeEffect->isTurn()) {
             int stunReturn = activeEffect->apply(this);
         }
+        activeEffect->decreaseRemainingDuration();
     }
 }
 
