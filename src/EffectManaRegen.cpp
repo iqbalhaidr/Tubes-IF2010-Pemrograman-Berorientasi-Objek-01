@@ -20,7 +20,7 @@ void EffectManaRegen::setManaAmount(int manaAmount) {
 }
 
 double EffectManaRegen::apply(Unit* unit) {
-    remainingDuration = remainingDuration - 1;
+    // remainingDuration = remainingDuration - 1;
     return manaAmount;
 }
 
