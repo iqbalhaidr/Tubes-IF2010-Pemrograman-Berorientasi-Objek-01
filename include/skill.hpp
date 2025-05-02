@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <string>
-#include "Effect.hpp"   
+#include "effect.hpp"   
 #include <vector>
 using namespace std;
 class Skill{

@@ -8,6 +8,7 @@
 #include "../include/inventory.hpp"
 // #include "../include/Dungeon.hpp"
 // #include "../include/fighter.hpp"
+// #include "../include/assassin.hpp"
 
 using namespace std;
 
@@ -133,9 +134,11 @@ EffectManaReduc.cpp
 //     std::cout << "Dungeon created" << std::endl;
 //     // ds.displayInfo();
 //     Fighter f ("Fighter1");
+//     // Assassin f ("Assassin1");
 //     std::cout << "Fighter created" << std::endl;
-//     // Inventory inv = Inventory::loadInventory("../data/", items);
-//     // ds.start(f, inv, items);
+//     std::cout << "Assassin created" << std::endl;
+//     Inventory inv = Inventory::loadInventory("../data/", items);
+//     ds.start(f, inv, items);
 // }
 
 int main() {
