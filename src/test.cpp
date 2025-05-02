@@ -6,6 +6,7 @@
 #include "../include/Dungeon.hpp"
 #include "../include/Randomizer.hpp"
 #include "../include/fighter.hpp"
+#include "../include/necromancer.hpp"
 #include "../include/items.hpp"
 
 using namespace std;
@@ -133,6 +134,7 @@ void dungeonTest() {
     // std::cout << "Dungeon created" << std::endl;
     // ds.displayInfo();
     Fighter f ("Fighter1");
+    // Necromancer n("Necromancer1");
     // Assassin f ("Assassin1");
     // std::cout << "Fighter created" << std::endl;
     // std::cout << "Assassin created" << std::endl;

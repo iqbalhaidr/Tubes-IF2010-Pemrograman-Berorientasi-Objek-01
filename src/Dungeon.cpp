@@ -170,6 +170,8 @@ void Dungeon::start(Character &c, Inventory &inv, Items &items) {
         }
     }
 
+    prize.displayInfo();
+
     std::cout << "SAMPAI JUMPA LAGI!" << std::endl;
     c.reset();
 }

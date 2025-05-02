@@ -130,7 +130,6 @@ void Unit::restoreMana(int amount) {
 }
 
 void Unit::useSkill(Skill* skill, Unit& target) {
-
     cout << "Using skill: " << skill->getName() << endl;
     if (currentMana < skill->getManaCost()) {
         cout << "Not enough mana to use " << skill->getName() << endl;
@@ -146,8 +145,8 @@ void Unit::useSkill(Skill* skill, Unit& target) {
     std::cout << "Skill mengenai target" << std::endl;
     currentMana -= skill->getManaCost();
     int totalDamage = skill->getDamage();
-    cout<< "TOTAL DAMAGE: " << totalDamage << endl;
-    cout <<"MANA: "<< currentMana << endl;
+    cout << "TOTAL DAMAGE: " << skill->getDamage() << endl;
+    cout << "MANA: " << currentMana << endl;
 
     for (Effect* effect : skill->effects) {
         if ((effect->isTurn() || effect->isTurnBased()) ||

@@ -174,13 +174,20 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
             if (isCharTurn) {
                 if (c.getTurnEffectStatus("Stun")) {  // Cek apakah ada activeEffect stun
                     std::cout << "Character Terkena Stun! Chamber.cpp\n";
+                    std::cout << "\n==========================\n";
+                    std::cout << "SETELAH APPLY EFFECT\n";
                     c.applyActiveEffect();
+                    displayPlayerStatus(c);
+                    std::cout << "==========================\n";
                     turnCtr++;
                     isCharTurn = !isCharTurn;
                     continue;
                 }
-                
+                std::cout << "\n==========================\n";
+                std::cout << "SETELAH APPLY EFFECT\n";
                 c.applyActiveEffect();
+                displayPlayerStatus(c);
+                std::cout << "\n==========================\n";
                 
                 // Regen health and mana (hanya dipanggil jika tidak ada efek stun)
                 c.heal(c.getHealthRegen());
@@ -204,12 +211,17 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
                     displayEnemyStatus(enemies[i]);
                     std::cout << "=============================\n";
                 } else if (opt == 2) {
+                    std::cout << "\n=============================\n";
                     if (c.getSkills().empty()) {
                         std::cout << "No skills available." << std::endl;
+                        std::cout << "=============================\n";
                         continue;
                     }
                     int skillOpt = inputSkillOption(&c);
                     c.useSkill(c.getSkills()[skillOpt - 1], *enemies[i]);
+                    std::cout << "Character uses: " << c.getSkills()[skillOpt - 1]->getName() << std::endl;
+                    displayEnemyStatus(enemies[i]);
+                    std::cout << "=============================\n";
                 } else if (opt == 3) {
                     string optItem = inputItemOption(inv);
                     inv.useItem(optItem, c, items);
@@ -222,12 +234,19 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
                 std::cout << "Enemy Turn! Chamber.cpp\n";
                 if (enemies[i]->getTurnEffectStatus("Stun")) {
                     std::cout << "Enemy Terkena Stun! Chamber.cpp\n";
+                    std::cout << "\n==========================\n";
+                    std::cout << "SETELAH APPLY EFFECT\n";
                     enemies[i]->applyActiveEffect();
+                    displayEnemyStatus(enemies[i]);
+                    std::cout << "==========================\n";
                     isCharTurn = !isCharTurn;
                     continue;
                 }
-                
+                std::cout << "\n==========================\n";
+                std::cout << "SETELAH APPLY EFFECT\n";
                 enemies[i]->applyActiveEffect();
+                displayEnemyStatus(enemies[i]);
+                std::cout << "==========================\n";
                 
                 // Regen health and mana (hanya dipanggil jika tidak ada efek stun)
                 enemies[i]->heal(enemies[i]->getHealthRegen());
@@ -250,8 +269,9 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
                         continue;
                     }
                     int skillOpt = Randomizer::random(0, enemies[i]->getSkills().size() - 1);
-                    std::cout << "Enemy uses: " << enemies[i]->getSkills()[skillOpt]->getName() << std::endl;
                     enemies[i]->useSkill(enemies[i]->getSkills()[skillOpt], c);
+                    std::cout << "Enemy uses: " << enemies[i]->getSkills()[skillOpt]->getName() << std::endl;
+                    displayPlayerStatus(c);
                     std::cout << "=============================\n";
                 }
                 // removeExpiredEffects(enemies[i]);
@@ -380,8 +400,8 @@ int Chamber::inputOption() {
 void Chamber::removeExpiredEffects(Unit* u) {
     std::vector<Effect*> toRemove;
     for (auto* effect : u->getActiveEffects()) {
-        std::cout << "Effect: " << effect->getName() << " -> "
-                  << effect->getRemainingDuration() << " turn left\n";
+        // std::cout << "Effect: " << effect->getName() << " -> "
+        //           << effect->getRemainingDuration() << " turn left\n";
         if (effect->getRemainingDuration() <= 0) {
             std::cout << "Effect Deleted: " << effect->getName() << " expired\n";
             toRemove.push_back(effect);
@@ -398,12 +418,12 @@ int Chamber::inputSkillOption(Unit* u) {
     bool isValid = false;
     while (!isValid) {
         int ctr = 1;
-        cin >> opt;
         for (auto* skill : u->getSkills()) {
             std::cout << ctr << ". " << skill->getName() << std::endl;
             ctr++;
         }
         std::cout << "Pilih skill: ";
+        cin >> opt;
 
         if (std::cin.fail()) {
             std::cin.clear();
