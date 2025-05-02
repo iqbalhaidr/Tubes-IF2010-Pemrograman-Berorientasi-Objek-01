@@ -175,6 +175,7 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
                 if (c.getTurnEffectStatus("Stun")) {  // Cek apakah ada activeEffect stun
                     std::cout << "Character Terkena Stun! Chamber.cpp\n";
                     c.applyActiveEffect();
+                    turnCtr++;
                     isCharTurn = !isCharTurn;
                     continue;
                 }
@@ -215,7 +216,7 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
                 } else if (opt == 4) {  // KABUR
                     return false;
                 }
-                removeExpiredEffects(&c);
+                // removeExpiredEffects(&c);
                 turnCtr++;
             } else {
                 std::cout << "Enemy Turn! Chamber.cpp\n";
@@ -253,8 +254,10 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
                     enemies[i]->useSkill(enemies[i]->getSkills()[skillOpt], c);
                     std::cout << "=============================\n";
                 }
-                removeExpiredEffects(enemies[i]);
+                // removeExpiredEffects(enemies[i]);
             }
+            removeExpiredEffects(enemies[i]);
+            removeExpiredEffects(&c);
             isCharTurn = !isCharTurn;
         }
 
