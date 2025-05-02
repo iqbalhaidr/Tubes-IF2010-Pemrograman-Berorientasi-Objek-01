@@ -142,6 +142,17 @@ void dungeonTest() {
     ds.start(f, inv, items);
 }
 
+void shopTest() {
+    Shop shop("../data/");
+    std::cout << "Shop created" << std::endl;
+    shop.displayShop();
+    std::cout << "Shop displayed" << std::endl;
+    // shop.buyItem("Potion", 1);
+    // std::cout << "Item bought" << std::endl;
+    // shop.sellItem("Potion", 1, inv);
+    // std::cout << "Item sold" << std::endl;
+}
+
 int main() {
     // int i = 5;
     // for (; i < 10; i++) {
@@ -159,7 +170,6 @@ int main() {
     // itemsParserTest();
     // itemInventoryParserTest();
     // itemsParserTest();
-    // dungeonTest();
-    Shop shop("../data/");
-    shop.displayShop();
+    dungeonTest();
+    // shopTest();
 }
