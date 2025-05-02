@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+EXC Excalibur Weapon S 20 Critical -
+=======
 EXC Excalibur Weapon S 30 Critical -
+>>>>>>> 8daa9ab72eac7b8a4631b28a9505139de661caa8
 DRA Dragon_Armor Armor A 200 Armor -
 MNP Mana_Potion Potion C 0 Critical -
 PHP Phoenix_Pendant Pendant B 0 Critical -
