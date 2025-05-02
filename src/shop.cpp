@@ -1,5 +1,5 @@
-#include "shop.hpp"
-#include "exception.hpp"
+#include "../include/shop.hpp"
+#include "../include/exception.hpp"
 #include <iostream>
 
 Shop::Shop(const std::string& directory){
@@ -24,7 +24,9 @@ Shop::Shop(const std::string& directory){
         int basePrice, stock;
 
         if (ss >> name >> rarity >> basePrice >> stock){ //parsing berhasil
-            if(!(stock < 0 && Items::isValidItemRarity(rarity))){
+            std::cout<<stock<<" INI STOCK\n";
+            std::cout<<rarity<<" INI RARITY\n";
+            if(!(stock > 0 && Items::isValidItemRarity(rarity))){
                 throw InputOutputException("Stock atau rarity tidak valid"); //eror format file tidak sesuai silahkan masukkan file yang valid
             }
 
@@ -42,6 +44,7 @@ Shop::Shop(const std::string& directory){
         std::string category = std::get<0>(item.second);
         categoryShop[category].push_back(std::make_pair(item.first, std::get<2>(item.second)));
     }
+    std::cout<<"SELESAI\n";
 }
 
 Shop::~Shop() {

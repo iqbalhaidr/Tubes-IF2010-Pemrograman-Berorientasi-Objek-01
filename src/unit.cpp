@@ -4,11 +4,13 @@
 using namespace std;
 
 Unit::Unit(string name, int strength, int agility, int intelligence, int level) : stats(strength, agility, intelligence) {
+    std::cout << "\n[DEBUG] Masuk constructor Unit" << std::endl;
     this->name = name;
     updateBasicAttributes(); 
     this->currentHealth = maxHealth;
     this->currentMana = maxMana;  
     this->level = level;
+    std::cout << "[DEBUG] Keluar constructor Unit" << std::endl;
 }
 
 Unit::~Unit() {}

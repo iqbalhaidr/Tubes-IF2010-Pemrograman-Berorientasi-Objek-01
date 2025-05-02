@@ -1,8 +1,21 @@
-#include "Player.hpp"
+#include "../include/Player.hpp"
+#include "../include/shop.hpp"
+#include "../include/character.hpp"
+#include "../include/unit.hpp"
+#include "../include/inventory.hpp"
+#include "../include/items.hpp"
+#include "../include/item.hpp"
+#include "../include/effect.hpp"
 
-Player::Player(std::string dir, std::string charType, Items& itemMap, Characters& allChar){
-    this->inv = &Inventory::loadInventory(dir, itemMap);
-    this->playerChar = allChar.getCharacterbyName(charType);
+Player::Player(const std::string& dir, const std::string& charType, Items& itemMap){
+    Inventory inv =Inventory::loadInventory(dir, itemMap);
+    this->inv = &inv;
+    this->playerChar = new Fighter("Fighter");
+}
+
+Player::~Player(){
+    delete inv;
+    delete playerChar;
 }
 
 void Player::equipItem(const std::string& slot, Item* item){
@@ -35,7 +48,8 @@ void Player::onUnEquip(const std::string& slot) {
         playerChar->setAttackDamage(playerChar->getAttackDamage() - item->getFinalStat());
     }
 
-    inv->addItem({item, 1});
+    std::pair<Item*, int> addedItem = {item,1};
+    inv->addItem(addedItem);
 }
 
 
@@ -99,7 +113,8 @@ void Player::buyFromShop(Shop& shop, const std::string& itemId, int quantity){
         throw GoldNotEnough();
     }
 
-    inv->addItem({item, quantity});
+    std::pair<Item*, int> addedItem = {item,quantity};
+    inv->addItem(addedItem);
     playerChar->setGold(playerChar->getGold()-price);
 
     //update shop stock
@@ -130,6 +145,37 @@ int Player::sellToShop(Shop& shop, const std::string& itemId, int quantity){
 
     // Delete Unused Pointer to Avoid Memorly Leak
     delete itemShop.first;
+}
+
+
+
+int main() {
+    try {
+        cout << "HAI" << endl;
+        // Characters allChar("../data/");
+        // cout << "HAI charac" << endl;
+        
+        Items itemMap = Items::createFromDirectory("../data/");
+        cout << "HAI itemMap" << endl;
+
+        Shop shop("../data/");
+        cout << "HAI berhasil" << endl;
+        
+        // Player p1("../data/", "Fighter", itemMap);
+        // cout << "HAI player" << endl;
+        
+    
+    }
+    catch (const exception& e) {  // Menangkap semua exception standar
+        cerr << "Error: " << e.what() << endl;
+        return 1;
+    }
+    catch (...) {  // Menangkap semua exception lainnya
+        cerr << "Unknown error occurred" << endl;
+        return 1;
+    }
+    
+    return 0;
 }
 
 

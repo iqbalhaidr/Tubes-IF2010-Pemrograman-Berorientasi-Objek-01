@@ -4,7 +4,9 @@ using namespace std;
 
 Berserker::Berserker(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost)
 : Character(name , strength, agility, intelligence, level, exp, gold, masteryCost, "Berserker") {
+    std::cout << "[DEBUG] Masuk constructor Berserker" << std::endl;
     updateBasicAttributes();
+    std::cout << "[DEBUG] Berhasil update" << std::endl;
 }
 
 Berserker::~Berserker() {}

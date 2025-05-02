@@ -22,7 +22,6 @@ Characters::Characters(const string& directory) {
     string line;
     while (getline(file, line)) {
         if (line.empty() || line[0] == '#') continue;
-
         stringstream ss(line);
         string name, type;
         int strength, agility, intelligence;
@@ -30,20 +29,33 @@ Characters::Characters(const string& directory) {
 
         if (ss >> name >> strength >> agility >> intelligence >> level >> exp >> gold >> masteryCost >> type) {
             if (type == "Mage") {
+                cout<<"\nHAII MAGE";
                 if (ss.fail()) throw InputOutputException("Format baris salah di file characters.txt untuk Mage");
+                cout<<"\nHAII MAGE";
                 addCharacters(new Mage(name, strength, agility, intelligence, level, exp, gold, masteryCost));
             } else if (type == "Assassin") {
                 if (ss.fail()) throw InputOutputException("Format baris salah di file characters.txt untuk Assassin");
                 addCharacters(new Assassin(name, strength, agility, intelligence, level, exp, gold, masteryCost));
             } else if (type == "Fighter") {
+                cout<<"\nHAII FIGHTER";
                 if (ss.fail()) throw InputOutputException("Format baris salah di file characters.txt untuk Fighter");
-                addCharacters(new Fighter(name, strength ,agility ,intelligence ,level ,exp ,gold ,masteryCost));
+                Character* p = new Fighter(name, strength ,agility ,intelligence ,level ,exp ,gold ,masteryCost);
+                cout<<"\nHAII FIGHTER";
+                addCharacters(p);
+                cout<<"\nHAII FIGHTER";
             } else if (type == "Berserker") {
-                if (ss.fail()) throw InputOutputException("Format baris salah di file characters.txt untuk Berserker");
-                addCharacters(new Berserker(name, strength, agility, intelligence, level, exp, gold, masteryCost));
+                cout<<"\nHAII BERSEKER\n";
+                cout<<name << " "<< type <<" INI NAMA DAN TYPE YANG MASUK\n";
+                // if (ss.fail()) throw InputOutputException("Format baris salah di file characters.txt untuk Berserker");
+                Character* p = new Berserker(name, strength ,agility ,intelligence ,level ,exp ,gold ,masteryCost);
+                cout<<p->getName() << "INI NAMA YANG MASUK\n";
+                // addCharacters(new Berserker(name, strength, agility, intelligence, level, exp, gold, masteryCost));
+                cout<<"\nHAII BERSEKER";
             } else if (type == "Necromancer") {
+                cout<<"\nHAII NECROMANCER";
                 if (ss.fail()) throw InputOutputException("Format baris salah di file characters.txt untuk Necromancer");
                 addCharacters(new Necromancer(name, strength, agility, intelligence, level, exp, gold, masteryCost));
+                cout<<"\nHAII NECROMANCER";
             } else {
                 throw InputOutputException("Tipe karakter tidak valid");
             }
@@ -54,6 +66,7 @@ Characters::Characters(const string& directory) {
 }
 
 Characters::~Characters() {
+    
     for (auto& character : characterMap) {
         delete character.second;
     }

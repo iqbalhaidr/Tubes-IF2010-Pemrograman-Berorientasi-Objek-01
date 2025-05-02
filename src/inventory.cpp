@@ -343,3 +343,7 @@ std::pair<Item *, int>  Inventory :: getItemById(const std::string& itemId){
     if(idx.first ==-1 && idx.second==-1) return {nullptr, -1};
     return backpack.get(idx.first, idx.second);
 }
+
+void Inventory::setEquipped(const std::string& slot, Item* item){
+    equipped[slot] = item;
+}

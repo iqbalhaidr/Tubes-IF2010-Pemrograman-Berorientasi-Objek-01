@@ -5,11 +5,11 @@
 #include "characters.hpp"
 #include "exception.hpp"
 #include "items.hpp"
-#include "fighter.hpp"
-#include "mage.hpp"
-#include "assassin.hpp"
-#include "necromancer.hpp"
-#include "berserker.hpp"
+// #include "fighter.hpp"
+// #include "mage.hpp"
+// #include "assassin.hpp"
+// #include "necromancer.hpp"
+// #include "berserker.hpp"
 #include "inventory.hpp"
 #include "shop.hpp"
 
@@ -20,7 +20,7 @@ private:
     Inventory* inv;
     Character* playerChar;
 public:
-    Player(std::string dir, std::string charType, Items& itemMap, Characters& allChar);
+    Player(const std::string& dir, const std::string& charType, Items& itemMap);
     ~Player();
 
     // void goToDungeon(std::string rankDungeon); //mekanisme buat dungeon dan start dungeon
