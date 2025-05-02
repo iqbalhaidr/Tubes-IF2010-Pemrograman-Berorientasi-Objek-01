@@ -2,6 +2,9 @@
 #define PLAYER_HPP
 
 #include "character.hpp"
+#include "characters.hpp"
+#include "exception.hpp"
+#include "items.hpp"
 #include "fighter.hpp"
 #include "mage.hpp"
 #include "assassin.hpp"
@@ -14,16 +17,18 @@
 class Player
 {
 private:
-    Inventory inv;
+    Inventory* inv;
     Character* playerChar;
 public:
-    Player(/* args */);
+    Player(std::string dir, std::string charType, Items& itemMap, Characters& allChar);
     ~Player();
 
-    void goToDungeon(std::string rankDungeon); //mekanisme buat dungeon dan start dungeon
-    void goToShop(Shop& shop); //
+    // void goToDungeon(std::string rankDungeon); //mekanisme buat dungeon dan start dungeon
+    // void goToShop(Shop& shop); //
 
-    void useItemInInventory();
+    void onUnEquip(const std::string& slot);
+    void useItem(const std::string& itemId);
+    void equipItem(const std::string& slot, Item* item);
 };
 
 
