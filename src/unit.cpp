@@ -139,7 +139,6 @@ void Unit::useSkill(Skill* skill, Unit& target) {
     // if ((rand() % 100 + 1) > skill->getskillChance()) {
     //     return;
     // }
-    currentMana -= skill->getManaCost(); 
     // if ((rand() % 100 + 1) > skill->getskillChance()) {
     //     std::cout << "Skill tidak mengenai target" << std::endl;
     //     return;
