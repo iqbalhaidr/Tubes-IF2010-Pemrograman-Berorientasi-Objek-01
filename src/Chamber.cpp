@@ -395,6 +395,7 @@ int Chamber::inputSkillOption(Unit* u) {
     bool isValid = false;
     while (!isValid) {
         int ctr = 1;
+        cin >> opt;
         for (auto* skill : u->getSkills()) {
             std::cout << ctr << ". " << skill->getName() << std::endl;
             ctr++;
