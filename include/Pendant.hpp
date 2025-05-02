@@ -14,8 +14,8 @@ public:
     Pendant(const Pendant& other);
     ~Pendant();
     bool isConsumable() const;
-    bool isStackAble() const;
-    Item* cloneItem();
+    bool isStackable() const;
+    Item* cloneItem() ;
 };
 
 #endif

@@ -31,6 +31,7 @@ public:
     void useItem(const std::string& itemId);
     void equipItem(const std::string& slot, Item* item);
     void showInventory(bool isBackpack);
+    void showCurrency();
 };
 
 

@@ -7,6 +7,69 @@
 #include "../include/item.hpp"
 #include "../include/effect.hpp"
 
+void runShopMenu(Player& p1, Shop& shop) {
+    std::string command;
+
+    while (true) {
+        std::cout << "Current Currency ";
+        p1.showCurrency();
+        std::cout << "\n";
+        std::cout << "\n=== Menu ===\n";
+        std::cout << "1. Display Shop\n";
+        std::cout << "2. Display Backpack\n";
+        std::cout << "3. Display Equipment\n";
+        std::cout << "4. Buy Item\n";
+        std::cout << "5. Sell Item\n";
+        std::cout << "6. Exit\n";
+        std::cout << "Enter command number: ";
+        std::cin >> command;
+
+        try {
+            if (command == "1") {
+                shop.displayShop();
+            }
+            else if (command == "2") {
+                p1.showInventory(true);
+            }
+            else if (command == "3") {
+                p1.showInventory(false);
+            }
+            else if (command == "4") {
+                std::string itemName;
+                int qty;
+                std::cout << "Enter item name to buy: ";
+                std::cin >> itemName;
+                std::cout << "Enter quantity: ";
+                std::cin >> qty;
+                p1.buyFromShop(shop, itemName, qty);
+            }
+            else if (command == "5") {
+                std::string itemId;
+                int qty;
+                std::cout << "Enter item id to sell: ";
+                std::cin >> itemId;
+                std::cout << "Enter quantity: ";
+                std::cin >> qty;
+                p1.sellToShop(shop, itemId, qty);
+            }
+            else if (command == "6") {
+                std::cout << "Exiting menu.\n";
+                break;
+            }
+            else {
+                std::cout << "Invalid command.\n";
+            }
+        }
+        catch (const std::exception& e) {
+            std::cerr << "❌ Error: " << e.what() << std::endl;
+        }
+        catch (...) {
+            std::cerr << "❌ Unknown error occurred" << std::endl;
+        }
+    }
+}
+
+
 Player::Player(const std::string& dir, const std::string& charType, Items& itemMap, Characters& allChar){
     this->inv = new Inventory(Inventory::loadInventory(dir, itemMap));
     this->playerChar = new Fighter("Kelra",  26, 17, 13, 1, 0,99999999, 0);
@@ -16,6 +79,10 @@ Player::Player(const std::string& dir, const std::string& charType, Items& itemM
 Player::~Player(){
     delete inv;
     delete playerChar;
+}
+
+void Player::showCurrency(){
+    cout<<playerChar->getGold();
 }
 
 void Player::showInventory(bool isBackpack){
@@ -117,8 +184,11 @@ void Player::buyFromShop(Shop& shop, const std::string& itemName, int quantity){
     // VALIDASI CURRENCY
     Item* item = itemPriceAndStock.first;  // ambil Item*
     int price  = itemPriceAndStock.second;  // ambil harga (int)
-    cout<<"BERHASIL MASUK\n";
+    cout<<item->getName()<<"INI NAMA DALAM BUY FROM SHOP HASIL RETURN BUY ITEM\n";
 
+    if(item==nullptr){
+        throw StockError("INI NULL PTR");
+    }
     if(playerChar==nullptr){
         throw StockError("INI NULL PTR");
     }
@@ -141,28 +211,39 @@ void Player::buyFromShop(Shop& shop, const std::string& itemName, int quantity){
 
     // Delete Unused Pointer to Avoid Memorly Leak
     cout<<"BERHASIL Keluar\n";
-    delete item;
 }
 
 
 void Player::sellToShop(Shop& shop, const std::string& itemName, int quantity){
     auto itemInventory = inv->getItemBackpackByName(itemName);
+    cout<<"BERHASIL MASUK KE SSELL SHOP\n";
 
-    if(quantity > itemInventory.second){
+    if(itemInventory.first==nullptr){
+        cout<<"EROR ini\n";
+        throw ItemNotFound("Item Tidak ada dalam backpack");
+    }
+    cout<<"Cek1.5\n";
+    if(inv->getItemQtyInInvent(itemName) < quantity){
+        cout<<"EROR2 ini\n";
         throw StockError("Jumlah item yang ingin dijual lebih besar dari banyak item di inventory");
     }
 
+    cout<<"Cek2\n";
     auto itemShop = shop.sellItem(itemName, quantity); // Dapat throw eror
     auto price = itemShop.second;
 
+    //update shop stock
+    cout<<"Cek3\n";
+    auto currStock =shop.getCurrentStock(itemName);
+    shop.setStock(itemName,currStock+quantity);
+    
+
+    cout<<"Cek4\n";
     inv->reduceItem(itemInventory.first, quantity);
     playerChar->setGold(playerChar->getGold()+price);
 
-    //update shop stock
-    auto currStock =shop.getCurrentStock(itemName);
-    shop.setStock(itemName,currStock+quantity);
-
     // Delete Unused Pointer to Avoid Memorly Leak
+    cout<<"Cek5\n";
     delete itemShop.first;
 }
 
@@ -182,38 +263,13 @@ int main() {
     Player p1("../data/", "Fighter", itemMap, allChar);
     cout << "HAI player" << endl;
 
-    p1.showInventory(true);
-    cout << "INI BACKPACK HARUSNYA" << endl;
-    cout<<endl;
-
-    p1.showInventory(false);
-    try {
-        //start TEST
-        shop.displayShop();
-        p1.buyFromShop(shop, "Dragon_Armor", 1);
-        p1.showInventory(true);
-        shop.displayShop();
-        cout<<"\n\n\n";
-        shop.displayShop();
-        p1.sellToShop(shop, "Dragon_Armor", 1);
-        p1.showInventory(true);
-        shop.displayShop();
-        
-        
-    
-    }
-    catch (const exception& e) {  // Menangkap semua exception standar
-        cerr << "Error: " << e.what() << endl;
-        
-        return 1;
-    }
-    catch (...) {  // Menangkap semua exception lainnya
-        cerr << "Unknown error occurred" << endl;
-        return 1;
-    }
-    
+    runShopMenu(p1, shop);
     return 0;
 }
+
+//command to start test run
+// g++ -o player Player.cpp items.cpp item.cpp effect.cpp EffectDamage.cpp EffectDefensive.cpp EffectHealthRegen.cpp EffectManaRegen.cpp EffectPoison.cpp EffectTurnBased.cpp  EffectHealth.cpp EffectTurn.cpp Weapon.cpp Pendant.cpp Armor.cpp Potion.cpp unit.cpp stats.cpp Skill.cpp Randomizer.cpp mobloot.cpp Dungeon.cpp Chamber.cpp Reward.cpp fighter.cpp character.cpp darkKnight.cpp demonLord.cpp goblin.cpp lich.cpp mobs.cpp necromancer.cpp ogre.cpp orc.cpp skeleton.cpp slime.cpp bossMobs.cpp basicMobs.cpp inventory.cpp EffectManaReduc.cpp characters.cpp shop.cpp skillNode.cpp skilltree.cpp mage.cpp berserker.cpp assassin.cpp
+
 
 
 

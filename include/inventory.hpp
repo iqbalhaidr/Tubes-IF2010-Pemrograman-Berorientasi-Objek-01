@@ -41,6 +41,7 @@ public:
     void setEquipped(const std::string& slot, Item* item);
     void displayBackpack();
     void displayEquipment();
+    int getItemQtyInInvent(const std::string& itemName);
 };
 
 #endif

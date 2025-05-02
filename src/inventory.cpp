@@ -136,7 +136,8 @@ void Inventory::addItem(std::pair<Item*, int>& value) {
                     if (current.first == item && current.second < MAX_ITEM) {
                         int spaceAvailable = MAX_ITEM - current.second;
                         int amountToAdd = std::min(spaceAvailable, quantity);
-                        
+                        cout<<current.first->getName() << " KIRI NAME CURRENT KANAN NAME ITEM"<< item->getName()<<"\n";
+                        cout<<i<<","<<j<<" INI DIA I J NYA SAAT SET\n";
                         backpack.set(i, j, {current.first, current.second + amountToAdd});
                         quantity -= amountToAdd;
                     }
@@ -149,12 +150,15 @@ void Inventory::addItem(std::pair<Item*, int>& value) {
     for (int i = 0; i < 8 && quantity > 0; ++i) {
         for (int j = 0; j < 4 && quantity > 0; ++j) {
             if (backpack.isEmptyCell(i, j)) {
+                cout<<"MASUKKK KOSONNGG KATANYA GEESSS\n";
                 if (isStackable && quantity>0) {
                     int amountToAdd = std::min(MAX_ITEM, quantity);
+                    cout<<i<<","<<j<<" INI DIA I J NYA SAAT SET\n";
                     backpack.set(i, j, {item, amountToAdd});
                     quantity -= amountToAdd;
                 } 
                 else if(quantity>0){
+                    cout<<i<<","<<j<<" INI DIA I J NYA SAAT SET\n";
                     backpack.set(i, j, {item, 1});
                     quantity -= 1;
                 }
@@ -178,6 +182,7 @@ void Inventory::reduceItem(const Item* item, int target) {
                 current.second -= toRemove;
                 target -= toRemove;
                 if(current.second == 0){
+                    cout<<i<<","<<j<<" INI DIA I J NYA SAAT SET\n";
                     backpack.set(i, j, std::pair<Item*, int>());
                 }
                 else{
@@ -190,6 +195,7 @@ void Inventory::reduceItem(const Item* item, int target) {
                 target-=1;
                 current.second-=1;
                 if(current.second == 0){
+                    cout<<i<<","<<j<<" INI DIA I J NYA SAAT SET\n";
                     backpack.set(i, j, std::pair<Item*, int>());
                 }
                 else{
@@ -317,6 +323,10 @@ Item* Inventory::unequipItem(const std::string& slot) {
 
 std:: pair<int,int>  Inventory::getIdxItembyId(const std::string& itemID) const{
     auto lambda = [itemID] (const std::pair<Item*, int>& a){
+        if(a.first != nullptr && itemID == a.first->getId()){
+            cout <<"Ini tu stackable atau ngga "<<a.first->isStackable() <<"\n";
+            cout<<itemID << "INI ITEM ID DAN KANANNYA ITEM DALAM BACKPACK NAMA: "<<a.first->getName() <<"\n";
+        }
          return a.first != nullptr && itemID == a.first->getId();
     };
     auto idxItemInBackpack = backpack.isInMatrix(lambda);
@@ -373,10 +383,27 @@ void Inventory::displayEquipment(){
 }
 
 std::pair<Item *, int> Inventory::getItemBackpackByName(const std::string& itemName){
+    cout<< backpack.get(0,5).second << " WOI INI BERAPA COUNTNYA\n";
     auto lambda = [itemName] (const std::pair<Item*, int>& a){
+        // cout<<itemName << "INI ITEM NAME DAN KANANNYA ITEM DALAM BACKPACK NAMA: "<<a.first->getName() <<"\n";
         return a.first != nullptr && itemName == a.first->getName();
     };
     auto idxItem = backpack.isInMatrix(lambda);
     if(idxItem.first ==-1 && idxItem.second==-1) return {nullptr, -1};
     return backpack.get(idxItem.first, idxItem.second);
+}
+
+int Inventory::getItemQtyInInvent(const std::string& itemName){
+    int qty = 0;
+    cout<< backpack.get(0,5).second << "WOI INI BERAPA COUNTNYA\n";
+    for(int i=0; i<8; i++){
+        for(int j = 0; j<4; j++){
+            auto curr = backpack.get(i,j);
+            if(curr.first!= nullptr && curr.first->getName() == itemName){
+                qty+=curr.second;
+            }
+        }
+    }
+
+    return qty;
 }
