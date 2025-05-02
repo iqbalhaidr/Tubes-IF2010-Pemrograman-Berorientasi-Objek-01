@@ -172,12 +172,15 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
         int turnCtr = 0;
         while (enemies[i]->getCurrentHealth() > 0 && c.getCurrentHealth() > 0) {
             if (isCharTurn) {
-                c.applyActiveEffect();
                 if (c.getTurnEffectStatus("Stun")) {  // Cek apakah ada activeEffect stun
+                    std::cout << "Character Terkena Stun! Chamber.cpp\n";
+                    c.applyActiveEffect();
                     isCharTurn = !isCharTurn;
                     continue;
                 }
-
+                
+                c.applyActiveEffect();
+                
                 // Regen health and mana (hanya dipanggil jika tidak ada efek stun)
                 c.heal(c.getHealthRegen());
                 c.restoreMana(c.getManaRegen());
@@ -216,12 +219,15 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
                 turnCtr++;
             } else {
                 std::cout << "Enemy Turn! Chamber.cpp\n";
-                enemies[i]->applyActiveEffect();
                 if (enemies[i]->getTurnEffectStatus("Stun")) {
+                    std::cout << "Enemy Terkena Stun! Chamber.cpp\n";
+                    enemies[i]->applyActiveEffect();
                     isCharTurn = !isCharTurn;
                     continue;
                 }
-
+                
+                enemies[i]->applyActiveEffect();
+                
                 // Regen health and mana (hanya dipanggil jika tidak ada efek stun)
                 enemies[i]->heal(enemies[i]->getHealthRegen());
                 enemies[i]->restoreMana(enemies[i]->getManaRegen());
@@ -371,6 +377,8 @@ int Chamber::inputOption() {
 void Chamber::removeExpiredEffects(Unit* u) {
     std::vector<Effect*> toRemove;
     for (auto* effect : u->getActiveEffects()) {
+        std::cout << "Effect: " << effect->getName() << " -> "
+                  << effect->getRemainingDuration() << " turn left\n";
         if (effect->getRemainingDuration() <= 0) {
             std::cout << "Effect Deleted: " << effect->getName() << " expired\n";
             toRemove.push_back(effect);
