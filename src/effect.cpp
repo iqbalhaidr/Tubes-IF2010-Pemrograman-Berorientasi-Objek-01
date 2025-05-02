@@ -193,4 +193,14 @@ Effect* Effect::createEffect(const std::string& nama) {
    else if (type == "EffectTurn"){
         return new EffectTurn(name, description, duration, duration, chance);
     }
+
+    else{
+        std::cout<<"Effect not found" << std::endl;
+        return nullptr;
+    }
+
+}
+
+void Effect::decreaseRemainingDuration(){
+    remainingDuration = remainingDuration - 1;
 }
