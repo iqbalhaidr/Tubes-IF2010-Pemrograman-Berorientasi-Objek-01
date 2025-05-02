@@ -1,4 +1,4 @@
-#include "../include/Mobloot.hpp"
+#include "../include/mobloot.hpp"
 #include "../include/exception.hpp"
 #include <fstream>
 #include <sstream>

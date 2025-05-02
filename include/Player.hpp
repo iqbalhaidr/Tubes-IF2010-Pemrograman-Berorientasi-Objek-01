@@ -8,6 +8,7 @@
 #include "necromancer.hpp"
 #include "berserker.hpp"
 #include "inventory.hpp"
+#include "shop.hpp"
 
 
 class Player
@@ -19,11 +20,10 @@ public:
     Player(/* args */);
     ~Player();
 
-    void goToDungeon(); //mekanisme buat dungeon dan start dungeon
-    void goToShop(); //
+    void goToDungeon(std::string rankDungeon); //mekanisme buat dungeon dan start dungeon
+    void goToShop(Shop& shop); //
 
     void useItemInInventory();
-    
 };
 
 

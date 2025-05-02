@@ -20,7 +20,7 @@ Dungeon::~Dungeon() {
 }
 
 void Dungeon::randomizeDoubleDungeon() {
-    if (Randomizer::random(1, 2) == 1) {
+    if (Randomizer::random(1, 5) == 1) {
         std::cout << "TERJADI DOUBLE DUNGEON!" << std::endl;
         isDD = true;
         rewardExp *= 3;

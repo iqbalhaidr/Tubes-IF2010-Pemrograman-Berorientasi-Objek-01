@@ -5,6 +5,9 @@ using namespace std;
 Assassin::Assassin(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost)
  : Character(name, strength, agility, intelligence, level, exp, gold, masteryCost, "Assassin") {
     updateBasicAttributes(); // kecuali critmultiplier
+    for (int i = 0; i < skillTree.currentSkills.size(); i++) {
+        addSkill(skillTree.currentSkills[i]->getSkill());
+    }
 }
 
 Assassin::~Assassin() {}

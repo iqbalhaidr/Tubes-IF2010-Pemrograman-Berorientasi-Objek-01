@@ -11,7 +11,7 @@ class BasicMobs : public Mobs {
         BasicMobs(string name, int level, int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots);
         virtual ~BasicMobs();
 
-        void reset();
+        // void reset();
 
 
 };
