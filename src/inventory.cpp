@@ -124,6 +124,8 @@ void Inventory::addItem(std::pair<Item*, int>& value) {
     int& quantity = value.second;
     bool isStackable = item->isStackable();
     
+    cout<< isStackable<<" INI STATE STACKABLE ATAU NGGA\n";
+    cout<<"MASUK ADD ITEM\n";
     if (isStackable) {
         auto existingItem = getIdxItembyId(item->getId());
         if (existingItem.first != -1) {
@@ -175,14 +177,24 @@ void Inventory::reduceItem(const Item* item, int target) {
                 int toRemove = std::min(current.second, target);
                 current.second -= toRemove;
                 target -= toRemove;
-                backpack.set(i, j, current);
+                if(current.second == 0){
+                    backpack.set(i, j, std::pair<Item*, int>());
+                }
+                else{
+                    backpack.set(i, j, current);
+                }
 
                 if (target == 0) return;
             }
             else if(current.first == item && current.second > 0){
                 target-=1;
                 current.second-=1;
-                backpack.set(i, j, current);
+                if(current.second == 0){
+                    backpack.set(i, j, std::pair<Item*, int>());
+                }
+                else{
+                    backpack.set(i, j, current);
+                }
 
                 if (target == 0) return;
             }
@@ -346,4 +358,25 @@ std::pair<Item *, int>  Inventory :: getItemById(const std::string& itemId){
 
 void Inventory::setEquipped(const std::string& slot, Item* item){
     equipped[slot] = item;
+}
+
+void Inventory::displayEquipment(){
+    for (const auto& [key, value] : equipped) {
+        if(!(value == nullptr)){
+            std::cout << key << " => " << value->getName() << std::endl;
+        }
+        else{
+            std::cout << key << " => " << "KOSONG" << std::endl;
+        }
+       
+    }
+}
+
+std::pair<Item *, int> Inventory::getItemBackpackByName(const std::string& itemName){
+    auto lambda = [itemName] (const std::pair<Item*, int>& a){
+        return a.first != nullptr && itemName == a.first->getName();
+    };
+    auto idxItem = backpack.isInMatrix(lambda);
+    if(idxItem.first ==-1 && idxItem.second==-1) return {nullptr, -1};
+    return backpack.get(idxItem.first, idxItem.second);
 }

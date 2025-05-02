@@ -36,9 +36,11 @@ public:
     Matrix<std::pair<Item*, int>> getBackpack(){return backpack;};
     Item* getEquippedItem(const std::string& slot){return equipped[slot];};
     std::pair<Item *, int> getItemById(const std::string& itemId);
+    std::pair<Item *, int> getItemBackpackByName(const std::string& itemName);
     std::string getEquippedItemId(const std::string& slot) const;
     void setEquipped(const std::string& slot, Item* item);
     void displayBackpack();
+    void displayEquipment();
 };
 
 #endif

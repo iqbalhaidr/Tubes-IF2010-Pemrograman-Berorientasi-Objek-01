@@ -7,15 +7,24 @@
 #include "../include/item.hpp"
 #include "../include/effect.hpp"
 
-Player::Player(const std::string& dir, const std::string& charType, Items& itemMap){
-    Inventory inv =Inventory::loadInventory(dir, itemMap);
-    this->inv = &inv;
-    this->playerChar = new Fighter("Fighter");
+Player::Player(const std::string& dir, const std::string& charType, Items& itemMap, Characters& allChar){
+    this->inv = new Inventory(Inventory::loadInventory(dir, itemMap));
+    this->playerChar = new Fighter("Kelra",  26, 17, 13, 1, 0,99999999, 0);
+    std::cout<<"test";
 }
 
 Player::~Player(){
     delete inv;
     delete playerChar;
+}
+
+void Player::showInventory(bool isBackpack){
+    if(isBackpack){
+        inv->displayBackpack();
+    }
+    else{
+        inv->displayEquipment();
+    }
 }
 
 void Player::equipItem(const std::string& slot, Item* item){
@@ -100,48 +109,58 @@ void Player:: useItem(const std::string& itemId){
     }
 }
 
-void Player::buyFromShop(Shop& shop, const std::string& itemId, int quantity){
+void Player::buyFromShop(Shop& shop, const std::string& itemName, int quantity){
     if (quantity <= 0) 
         throw InvalidValue("Quantity must be positive");
-    auto itemPriceAndStock = shop.buyItem(itemId, quantity); //{priceTotal, stock}
+    auto itemPriceAndStock = shop.buyItem(itemName, quantity); //{priceTotal, stock}
 
     // VALIDASI CURRENCY
-    Item* item = std::get<0>(itemPriceAndStock);  // ambil Item*
-    int price  = std::get<1>(itemPriceAndStock);  // ambil harga (int)
+    Item* item = itemPriceAndStock.first;  // ambil Item*
+    int price  = itemPriceAndStock.second;  // ambil harga (int)
+    cout<<"BERHASIL MASUK\n";
 
+    if(playerChar==nullptr){
+        throw StockError("INI NULL PTR");
+    }
     if(playerChar->getGold()< price){
+        cout<<playerChar->getGold()<<"\n";
+        cout<<price<<"\n";
         throw GoldNotEnough();
     }
-
-    std::pair<Item*, int> addedItem = {item,quantity};
+    cout<<"BERHASIL MASUK2\n";
+    std::pair<Item*, int> addedItem = std::make_pair(item,quantity);
+    
     inv->addItem(addedItem);
     playerChar->setGold(playerChar->getGold()-price);
-
+    cout<<"Berhasil set gold dan add item\n";
     //update shop stock
-    auto currStock =shop.getCurrentStock(itemId);
-    shop.setStock(itemId,currStock-quantity);
+
+    auto currStock =shop.getCurrentStock(itemName);
+    shop.setStock(itemName,currStock-quantity);
+    cout<<"Berhasil update shop stock\n";
 
     // Delete Unused Pointer to Avoid Memorly Leak
+    cout<<"BERHASIL Keluar\n";
     delete item;
 }
 
 
-int Player::sellToShop(Shop& shop, const std::string& itemId, int quantity){
-    auto itemInventory = inv->getItemById(itemId);
+void Player::sellToShop(Shop& shop, const std::string& itemName, int quantity){
+    auto itemInventory = inv->getItemBackpackByName(itemName);
 
     if(quantity > itemInventory.second){
         throw StockError("Jumlah item yang ingin dijual lebih besar dari banyak item di inventory");
     }
 
-    auto itemShop = shop.sellItem(itemId, quantity); // Dapat throw eror
+    auto itemShop = shop.sellItem(itemName, quantity); // Dapat throw eror
     auto price = itemShop.second;
 
     inv->reduceItem(itemInventory.first, quantity);
     playerChar->setGold(playerChar->getGold()+price);
 
     //update shop stock
-    auto currStock =shop.getCurrentStock(itemId);
-    shop.setStock(itemId,currStock+quantity);
+    auto currStock =shop.getCurrentStock(itemName);
+    shop.setStock(itemName,currStock+quantity);
 
     // Delete Unused Pointer to Avoid Memorly Leak
     delete itemShop.first;
@@ -150,24 +169,42 @@ int Player::sellToShop(Shop& shop, const std::string& itemId, int quantity){
 
 
 int main() {
-    try {
-        cout << "HAI" << endl;
-        // Characters allChar("../data/");
-        // cout << "HAI charac" << endl;
-        
-        Items itemMap = Items::createFromDirectory("../data/");
-        cout << "HAI itemMap" << endl;
+    cout << "HAI" << endl;
+    Characters allChar("../data/");
+    cout << "HAI charac" << endl;
+    
+    Items itemMap = Items::createFromDirectory("../data/");
+    cout << "HAI itemMap" << endl;
 
-        Shop shop("../data/");
-        cout << "HAI berhasil" << endl;
+    Shop shop("../data/");
+    cout << "HAI berhasil" << endl;
+    
+    Player p1("../data/", "Fighter", itemMap, allChar);
+    cout << "HAI player" << endl;
+
+    p1.showInventory(true);
+    cout << "INI BACKPACK HARUSNYA" << endl;
+    cout<<endl;
+
+    p1.showInventory(false);
+    try {
+        //start TEST
+        shop.displayShop();
+        p1.buyFromShop(shop, "Dragon_Armor", 1);
+        p1.showInventory(true);
+        shop.displayShop();
+        cout<<"\n\n\n";
+        shop.displayShop();
+        p1.sellToShop(shop, "Dragon_Armor", 1);
+        p1.showInventory(true);
+        shop.displayShop();
         
-        // Player p1("../data/", "Fighter", itemMap);
-        // cout << "HAI player" << endl;
         
     
     }
     catch (const exception& e) {  // Menangkap semua exception standar
         cerr << "Error: " << e.what() << endl;
+        
         return 1;
     }
     catch (...) {  // Menangkap semua exception lainnya

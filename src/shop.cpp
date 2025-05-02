@@ -70,7 +70,7 @@ void Shop::saveShop(const std::string& directory) {
 }
 
 std::pair<Item*, int> Shop::buyItem(const std::string& itemName, int quantity) { //mengembalikan price total dari quantity dan stock
-    auto it = availableItems.find(itemName);
+    auto it = availableItems.find(itemName);  //nama, rarity, price stock
 
     if (it != availableItems.end()) {
         int price = std::get<1>(it->second);
@@ -78,7 +78,7 @@ std::pair<Item*, int> Shop::buyItem(const std::string& itemName, int quantity) {
         if(quantity > stock){
             throw StockError();
         }
-        Item *item = itemMap->getItem(itemName);
+        Item *item = itemMap->getItembyName(itemName);
         price *= quantity; 
         switch (std::get<0>(it->second)[0]) {
         case 'S': 
@@ -113,7 +113,7 @@ std::pair<Item*,int> Shop::sellItem(const std::string& itemName, int quantity){
     
     if (quantity >= 0) {
         try{
-            Item *item = itemMap->getItem(itemName);
+            Item *item = itemMap->getItembyName(itemName);
             // inventory.reduceItem(item, quantity);
             // std::cout << "Item " << itemName << " sold successfully\n"; 
             price = 0.7*quantity;
@@ -161,7 +161,18 @@ void Shop::restock() {
 void Shop::setStock(const std::string& itemName, int stock) {
     auto it = availableItems.find(itemName);
     if (it != availableItems.end()) {
-        std::get<2>(it->second) = stock;
+        auto& item = it->second; 
+        std::get<2>(item) = stock;
+        auto rarity = std::get<0>(item);
+        for(auto& value : categoryShop[rarity]){
+            if(value.first == itemName){
+                value.second = stock;
+                break;
+            }
+        }
+        
+        std::cout<<"INI KALI AVAILABLE ITEMNYA: "<< std::get<2>(item)<< "\n";
+        std::cout<<"INI WEH STOCKNYA: "<< stock<< "\n";
     } else {
         std::cout << "Item " << itemName << " not found in shop.\n";
     }
