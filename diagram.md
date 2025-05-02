@@ -76,8 +76,15 @@ classDiagram
     }
 
     class Character {
-        +String name
-        +levelUp()
+        #exp : int
+        #gold : int
+        #masteryCost : int
+        #type : string
+        #skillTree : SkillTree
+        +Character(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, string type)
+        +virtual ~Character()
+        +getExp() const: int
+        +
     }
 
     Unit *-- Stats   

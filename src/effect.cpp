@@ -200,3 +200,7 @@ Effect* Effect::createEffect(const std::string& nama) {
     }
 
 }
+
+void Effect::decreaseRemainingDuration(){
+    remainingDuration = remainingDuration - 1;
+}
