@@ -3,15 +3,12 @@
 using namespace std;
 
 Character::Character(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, vector<string> skillNames, string type)
-: Unit(name, strength, agility, intelligence, level), skillTree(type) {
+: Unit(name, strength, agility, intelligence, level), 
+    skillTree(type), exp(exp), gold(gold), masteryCost(masteryCost), type(type) {
     this->isChar = true;
     if (!skillNames.empty()) {
         loadCharacterSkills(skillNames);
     }
-    setExp(exp);
-    setGold(gold);
-    setMasteryCost(masteryCost);
-    setType(type);
 }
 
 void Character::loadCharacterSkills(vector<string> skillNames) {

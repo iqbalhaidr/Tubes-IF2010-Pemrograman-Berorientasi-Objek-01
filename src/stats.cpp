@@ -1,10 +1,7 @@
 #include "../include/stats.hpp"
 
-Stats::Stats(int strength, int agility, int intelligence) {
-    this->strength = strength;
-    this->agility = agility;
-    this->intelligence = intelligence;
-}
+Stats::Stats(int strength, int agility, int intelligence) 
+    : strength(strength), agility(agility), intelligence(intelligence) {}
 
 Stats::~Stats() {}
 
