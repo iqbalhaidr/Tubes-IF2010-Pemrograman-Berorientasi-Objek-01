@@ -6,6 +6,7 @@
 #include "../include/items.hpp"
 #include "../include/item.hpp"
 #include "../include/effect.hpp"
+#include "../include/exception.hpp"
 
 void runShopMenu(Player& p1, Shop& shop) {
     std::string command;
@@ -23,7 +24,8 @@ void runShopMenu(Player& p1, Shop& shop) {
         std::cout << "6. Exit\n";
         std::cout << "Enter command number: ";
         std::cin >> command;
-
+        int addableQty = 0;
+        std::string addAbleItem ="";
         try {
             if (command == "1") {
                 shop.displayShop();
@@ -36,12 +38,11 @@ void runShopMenu(Player& p1, Shop& shop) {
             }
             else if (command == "4") {
                 std::string itemName;
-                int qty;
                 std::cout << "Enter item name to buy: ";
-                std::cin >> itemName;
+                std::cin >> addAbleItem;
                 std::cout << "Enter quantity: ";
-                std::cin >> qty;
-                p1.buyFromShop(shop, itemName, qty);
+                std::cin >> addableQty;
+                p1.buyFromShop(shop, addAbleItem, addableQty);
             }
             else if (command == "5") {
                 std::string itemId;
@@ -60,20 +61,24 @@ void runShopMenu(Player& p1, Shop& shop) {
                 std::cout << "Invalid command.\n";
             }
         }
+        catch (const InventoryFull& e) {
+            p1.reduceItemInvetory(addAbleItem, addableQty-e.getOverflow());
+            std::cerr << "Error: " << e.what() << std::endl;
+        }
         catch (const std::exception& e) {
-            std::cerr << "❌ Error: " << e.what() << std::endl;
+            std::cerr << "Error: " << e.what() << std::endl;
         }
         catch (...) {
-            std::cerr << "❌ Unknown error occurred" << std::endl;
+            std::cerr << "Unknown error occurred" << std::endl;
         }
     }
 }
 
 
 Player::Player(const std::string& dir, const std::string& charType, Items& itemMap, Characters& allChar){
+    this->itemMap = &itemMap;
     this->inv = new Inventory(Inventory::loadInventory(dir, itemMap));
     this->playerChar = new Fighter("Kelra",  26, 17, 13, 1, 0,99999999, 0);
-    std::cout<<"test";
 }
 
 Player::~Player(){
@@ -88,6 +93,7 @@ void Player::showCurrency(){
 void Player::showInventory(bool isBackpack){
     if(isBackpack){
         inv->displayBackpack();
+        inv->displayBackpackDetails();
     }
     else{
         inv->displayEquipment();
@@ -113,7 +119,7 @@ void Player::equipItem(const std::string& slot, Item* item){
 void Player::onUnEquip(const std::string& slot) {
     Item* item = inv->unequipItem(slot);
     if (item == nullptr){
-        throw InventoryEror("Maaf anda mengakses slot equipment yang kosong"); // bisa throw eror
+        return;
     } 
 
     for (Effect* effect : item->getEffects()) {
@@ -123,13 +129,10 @@ void Player::onUnEquip(const std::string& slot) {
     if (slot == "WEAPON") {
         playerChar->setAttackDamage(playerChar->getAttackDamage() - item->getFinalStat());
     }
-
-    std::pair<Item*, int> addedItem = {item,1};
-    inv->addItem(addedItem);
 }
 
 
-void Player:: useItem(const std::string& itemId){
+void Player:: useItem(const std::string& itemId, Unit& target){
     auto [item, count] = inv->getItemById(itemId);
     if (item == nullptr) return;
 
@@ -171,7 +174,13 @@ void Player:: useItem(const std::string& itemId){
     }
     else {
         for (Effect* effect : item->getEffects()) {
-            playerChar->addActiveEffect(effect);
+            if(effect->isThrowable()){
+                target.addActiveEffect(effect);
+            }
+            else{
+                playerChar->addActiveEffect(effect);
+            }
+            
         }
     }
 }
@@ -247,6 +256,11 @@ void Player::sellToShop(Shop& shop, const std::string& itemName, int quantity){
     delete itemShop.first;
 }
 
+
+void Player::reduceItemInvetory(const std::string& addAbleItem, int target){
+    Item* item = itemMap->getItembyName(addAbleItem);
+    inv->reduceItem(item, target);
+}
 
 
 int main() {

@@ -1,5 +1,5 @@
 Excalibur S 5000 1
-Dragon_Armor A 3000 2
+Dragon_Armor A 3000 64
 Mana_Potion C 500 198
 Phoenix_Pendant B 2000 3
 Health_Potion C 300 15

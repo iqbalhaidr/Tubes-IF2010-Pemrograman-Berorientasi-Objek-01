@@ -42,6 +42,7 @@ public:
     void displayBackpack();
     void displayEquipment();
     int getItemQtyInInvent(const std::string& itemName);
+    void displayBackpackDetails();
 };
 
 #endif

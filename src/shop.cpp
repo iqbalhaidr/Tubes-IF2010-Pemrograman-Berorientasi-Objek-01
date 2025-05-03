@@ -114,7 +114,7 @@ std::pair<Item*,int> Shop::sellItem(const std::string& itemName, int quantity){
     
     if (quantity >= 0) {
         try{
-            Item *item = itemMap->getItem(itemName);
+            Item *item = itemMap->getItembyName(itemName);
             
             price = 0.7*quantity;
             switch (item->getRarity()[0]) {
@@ -161,7 +161,7 @@ void Shop::setStock(const std::string& itemName, int stock) {
     auto it = availableItems.find(itemName);
     if (it != availableItems.end()) {
         std::get<2>(it->second) = stock;
-        Item * item = itemMap->getItem(itemName);
+        Item * item = itemMap->getItembyName(itemName);
         auto category = item->getItemType();
         for(auto& value : categoryShop[category]){
             if(value.first == itemName){
@@ -199,7 +199,7 @@ void Shop::displayDetails(std::string itemName) const {
         std::cout << "Price: " << std::get<1>(it->second) << "\n";
         std::cout << "Stock: " << std::get<2>(it->second)<< "\n";
         std::cout << "Effects:\n";
-        Item * item = itemMap->getItem(itemName);
+        Item * item = itemMap->getItembyName(itemName);
         for (const auto& effect : item->getEffects()) {
             std::cout << "- " << effect->getName() << "\n";
         }
