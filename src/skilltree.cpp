@@ -225,15 +225,33 @@ SkillTree::SkillTree(string char_type){
 }
 
 SkillTree::~SkillTree() {
-    destroy(root1);
-    destroy(root2);
-    destroy(root3);
+    if (root1){
+        destroy(root1);
+
+    }
+    if (root2){
+        destroy(root2);
+    }
+    if (root3){
+        destroy(root3);
+    }
 }
 
 void SkillTree::destroy(SkillNode* node) {
-    if (node == nullptr){return;}
-    destroy(node->getLeftNode());
-    destroy(node->getRightNode());
+
+    if (node == nullptr) {
+        return;
+    }
+
+
+
+    if (node->getLeftNode() != nullptr){
+        destroy(node->getLeftNode());
+    }
+
+    if (node->getRightNode() != nullptr){
+        destroy(node->getRightNode());
+    }
     delete node;
 }
 
