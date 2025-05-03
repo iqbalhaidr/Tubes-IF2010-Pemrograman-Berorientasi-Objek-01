@@ -11,7 +11,7 @@ class Mage : public Character {
         void updateBasicAttributes() override;
     public:
         // ctor dtor
-        Mage(string name, int strength = 16, int agility = 20, int intelligence = 25, int level = BASE_LEVEL, int exp = BASE_EXP, int gold = BASE_GOLD, int masteryCost = BASE_MASTERY_COST);
+        Mage(string name, int strength = 16, int agility = 20, int intelligence = 25, int level = BASE_LEVEL, int exp = BASE_EXP, int gold = BASE_GOLD, int masteryCost = BASE_MASTERY_COST, vector<string> skillNames = {});
         ~Mage();
 
         // setter getter
@@ -20,7 +20,7 @@ class Mage : public Character {
 
         // Fungsi
         void attack(Unit& target, Inventory& inventory) override;
-        void useSkill(Skill* skill, Unit& target);
+        void useSkill(Skill* skill, Unit& target, Inventory& inventory);
         void levelUp();
 };
 

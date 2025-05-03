@@ -2,8 +2,8 @@
 #include <iostream>
 using namespace std;
 
-Mage::Mage(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost)
- : Character(name, strength, agility, intelligence, level, exp, gold, masteryCost, "Mage") {
+Mage::Mage(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, vector<string> skillNames)
+ : Character(name, strength, agility, intelligence, level, exp, gold, masteryCost, skillNames, "Mage") {
     updateBasicAttributes();
     for (int i = 0; i < skillTree.currentSkills.size(); i++) {
         addSkill(skillTree.currentSkills[i]->getSkill());
@@ -20,13 +20,14 @@ void Mage::attack(Unit& target, Inventory& inventory) {
     Unit::restoreMana(extraMana);
 }
 
-void Mage::useSkill(Skill* skill, Unit& target) {
+void Mage::useSkill(Skill* skill, Unit& target, Inventory& inventory) {
     skill->setDamage(skill->getDamage() + stats.getIntelligence() * 0.5);
-    Unit::useSkill(skill, target); 
+    Unit::useSkill(skill, target, inventory); 
     currentMana -= stats.getIntelligence();
     if (currentMana < 0) {
         currentMana = 0;
     }
+    skill->setDamage(skill->getDamage() - stats.getIntelligence() * 0.5);
 }
 
 void Mage::updateBasicAttributes() {

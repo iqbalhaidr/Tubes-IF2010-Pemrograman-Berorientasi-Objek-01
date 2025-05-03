@@ -2,8 +2,8 @@
 #include <iostream>
 using namespace std;
 
-Berserker::Berserker(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost)
-: Character(name , strength, agility, intelligence, level, exp, gold, masteryCost, "Berserker") {
+Berserker::Berserker(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, vector<string> skillNames)
+: Character(name , strength, agility, intelligence, level, exp, gold, masteryCost, skillNames, "Berserker") {
     updateBasicAttributes();
     for (int i = 0; i < skillTree.currentSkills.size(); i++) {
         addSkill(skillTree.currentSkills[i]->getSkill());
@@ -18,11 +18,11 @@ void Berserker::setRageMultiplier(int rageMultiplier) { this->rageMultiplier = r
 void Berserker::attack(Unit& target, Inventory& inventory)  {
     int totalDamage = calculateDamage(target, attackDamage, inventory); 
     totalDamage *= rageMultiplier; 
-    target.takeDamage(totalDamage); 
+    target.takeDamage(totalDamage, inventory); 
 }
 
-void Berserker::useSkill(Skill* skill, Unit& target) {
-    Unit::useSkill(skill, target); 
+void Berserker::useSkill(Skill* skill, Unit& target, Inventory& inventory) {
+    Unit::useSkill(skill, target, inventory); 
     rageMultiplier += 3;
 }
 

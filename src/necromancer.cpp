@@ -1,7 +1,7 @@
 #include "../include/necromancer.hpp"
 
-Necromancer::Necromancer(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost)
-: Character(name, strength, agility, intelligence, level, exp, gold, masteryCost, "Necromancer") {
+Necromancer::Necromancer(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, vector<string> skillNames)
+: Character(name, strength, agility, intelligence, level, exp, gold, masteryCost, skillNames, "Necromancer") {
     updateBasicAttributes();
     for (int i = 0; i < skillTree.currentSkills.size(); i++) {
         addSkill(skillTree.currentSkills[i]->getSkill());
@@ -29,13 +29,13 @@ void Necromancer::attack(Unit& target, Inventory& inventory) {
         }
         int totalDamage = calculateDamage(target, attackDamage, inventory); 
         totalDamage += stats.getIntelligence() * 0.25; 
-        target.takeDamage(totalDamage); // damage dari minion
+        target.takeDamage(totalDamage, inventory); // damage dari minion
     }
 }
 
-void Necromancer::useSkill(Skill* skill, Unit& target) {
-    Unit::useSkill(skill, target); 
-    target.takeDamage(getStats().getIntelligence() * 0.25);
+void Necromancer::useSkill(Skill* skill, Unit& target, Inventory& inventory) {
+    Unit::useSkill(skill, target, inventory); 
+    target.takeDamage(getStats().getIntelligence() * 0.25, inventory);
     currentHealth += getStats().getIntelligence() * 0.25;
     if (currentHealth > maxHealth) {
         currentHealth = maxHealth;

@@ -1,0 +1,5 @@
+Thorgar 18 12 5 1 0 100 20 Berserker
+Kaelen 15 13 7 1 0 100 15 Fighter
+Malzeth 7 10 18 1 0 100 25 Necromancer
+Lyra 5 9 20 1 0 100 30 Mage
+Shadow 10 18 7 1 0 100 20 Assassin
