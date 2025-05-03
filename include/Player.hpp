@@ -28,9 +28,6 @@ public:
     void buyFromShop(Shop& shop, const std::string& itemId, int quantity); 
     void sellToShop(Shop& shop, const std::string& itemId, int quantity);
 
-    void onUnEquip(const std::string& slot);
-    void useItem(const std::string& itemId, Unit& target);
-    void equipItem(const std::string& slot, Item* item);
     void showInventory(bool isBackpack);
     void showCurrency();
     void reduceItemInvetory(const std::string& addAbleItem, int target);

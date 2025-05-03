@@ -208,112 +208,83 @@ void Inventory::reduceItem(const Item* item, int target) {
     }
 }
 
-void Inventory::useItem(const std::string itemID, Character& orang, const Items& itemMap) {
-    auto idxItem = getIdxItembyId(itemID);
-    if (idxItem.first == -1 && idxItem.second == -1){
-        return; // bisa throw atau error handling lainnya
+void Inventory::equipItem(std::string slot, Character& orang, Item* item, Unit& target){
+    for (Effect* effect : item->getEffects()) {
+        orang.addActiveEffect(effect);
     }
 
-    auto itemInInventory = backpack.get(idxItem.first, idxItem.second);
-    if (!(itemInInventory.first->isConsumable())) {
-        std::string type = itemInInventory.first->getItemType();
+    setEquipped(slot, item);
+    reduceItem(item, 1);
+}
+
+void Inventory::unequipItem(Character& orang, const std::string& slot, Unit& target){
+    Item* item = equipped[slot];
+    if (item == nullptr){
+        return;
+    } 
+
+    equipped[slot] = nullptr;
+    std:: pair<Item*,int> p = {item,1};
+    addItem(p);
+    
+
+    for (Effect* effect : item->getEffects()) {
+        orang.removeActiveEffect(effect);
+    }
+}
+
+
+void Inventory:: useItem(const std::string itemID, Character& orang, const Items& itemMap, Unit& target){
+    auto [item, count] = this->getItemById(itemID);
+    if (item == nullptr) return;
+
+    if (!item->isConsumable()) {
+        std::string type = item->getItemType();
 
         if (type == "Weapon") {
-            //unequip Current Weapon
-            unequipItem(orang, "WEAPON");
-            generalEquip("WEAPON", orang, itemInInventory.first);
-            orang.setAttackDamage(orang.getAttackDamage() + itemInInventory.first->getFinalStat());
+            unequipItem(orang,"WEAPON", target);
+            equipItem("WEAPON", orang, item, target);
         }
-
+        else if (type == "Pendant") {
+            unequipItem(orang,"PENDANT", target);
+            equipItem("PENDANT", orang, item, target);
+        }
         else if (type == "Armor") {
             std::vector<std::string> armorSlots = {"ARMOR_BODY", "ARMOR_FOOT", "ARMOR_HEAD"};
-
-            // Find Empty Slot
-            for (const std::string& slot : armorSlots) {
-                if (equipped[slot] == nullptr) {
-                    equipped[slot] = itemInInventory.first;
-                    reduceItem(itemInInventory.first, 1);
+            for (const auto& slot : armorSlots) {
+                if (this->getEquippedItem(slot) == nullptr) {
+                    equipItem(slot, orang, item, target);
                     return;
                 }
             }
 
-            // No empty slot
             std::string minSlot = "";
             int minStat = INT_MAX;
             for (const auto& slot : armorSlots) {
-                if (equipped[slot] != nullptr) {
-                    int stat = equipped[slot]->getFinalStat();
-                    if (stat < minStat) {
-                        minStat = stat;
-                        minSlot = slot;
-                    }
+                Item* equipped = this->getEquippedItem(slot);
+                if (equipped && equipped->getFinalStat() < minStat) {
+                    minStat = equipped->getFinalStat();
+                    minSlot = slot;
                 }
             }
 
-            if (minSlot != "") {
-                generalUnequip(minSlot, orang);
-                generalEquip(minSlot, orang, itemInInventory.first);
+            if (!minSlot.empty()) {
+                unequipItem(orang,minSlot, target);
+                equipItem(minSlot, orang, item, target);
             }
         }
-
-        else if (type == "Pendant") {
-            if(!(equipped["PENDANT"] == nullptr)){
-                generalUnequip("PENDANT", orang);
-            }  
-            generalEquip("PENDANT", orang, itemInInventory.first);
+    }
+    else {
+        for (Effect* effect : item->getEffects()) {
+            if(effect->isThrowable()){
+                target.addActiveEffect(effect);
+            }
+            else{
+                orang.addActiveEffect(effect);
+            }
+            
         }
     }
-    else{
-        reduceItem(itemInInventory.first,1);
-        std::vector<Effect*> effectItem = itemInInventory.first->getEffects();
-        for (Effect* e : effectItem){
-            orang.addActiveEffect(e);
-        }
-    }
-}
-
-void Inventory :: generalEquip(std::string slot, Character& orang, Item* item){
-    reduceItem(item,1);
-    std::vector<Effect*> effectItem = item->getEffects();
-    for (Effect* e : effectItem){
-        orang.addActiveEffect(e);
-    }
-    equipped[slot] = item;
-}
-
-void Inventory :: unequipItem(Character& orang, const std::string& slot){
-    if(!(equipped[slot] == nullptr)){return;}
-    if(slot == "WEAPON"){
-        orang.setAttackDamage(orang.getAttackDamage() - equipped["WEAPON"]->getFinalStat());
-        generalUnequip("WEAPON", orang);
-    }
-    else{
-        generalUnequip(slot, orang);
-    }
-
-}
-
-void Inventory :: generalUnequip(std::string slot, Character& orang){
-    std::pair<Item*, int> item = {equipped[slot],1};
-    addItem(item);
-    std::vector<Effect*> effectItem = equipped[slot]->getEffects();
-    for (Effect* e : effectItem){
-        orang.removeActiveEffect(e);
-    }
-    equipped[slot] = nullptr;
-}
-
-
-Item* Inventory::unequipItem(const std::string& slot) {
-    if (equipped.count(slot) == 0 || equipped[slot] == nullptr) {
-        return nullptr;
-    }
-
-    Item* item = equipped[slot];
-    equipped[slot] = nullptr;
-    std:: pair<Item*,int> p = {item,1};
-    addItem(p);
-    return item;
 }
 
 std:: pair<int,int>  Inventory::getIdxItembyId(const std::string& itemID) const{
