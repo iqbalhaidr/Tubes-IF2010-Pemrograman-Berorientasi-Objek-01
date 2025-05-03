@@ -8,12 +8,12 @@
 #include "../include/effect.hpp"
 #include "../include/exception.hpp"
 
-void runShopMenu(Player& p1, Shop& shop) {
+void Player:: goToShop(Shop& shop) {
     std::string command;
 
     while (true) {
         std::cout << "Current Currency ";
-        p1.showCurrency();
+        this->showCurrency();
         std::cout << "\n";
         std::cout << "\n=== Menu ===\n";
         std::cout << "1. Display Shop\n";
@@ -31,10 +31,10 @@ void runShopMenu(Player& p1, Shop& shop) {
                 shop.displayShop();
             }
             else if (command == "2") {
-                p1.showInventory(true);
+                this->showInventory(true);
             }
             else if (command == "3") {
-                p1.showInventory(false);
+                this->showInventory(false);
             }
             else if (command == "4") {
                 std::string itemName;
@@ -42,7 +42,7 @@ void runShopMenu(Player& p1, Shop& shop) {
                 std::cin >> addAbleItem;
                 std::cout << "Enter quantity: ";
                 std::cin >> addableQty;
-                p1.buyFromShop(shop, addAbleItem, addableQty);
+                this->buyFromShop(shop, addAbleItem, addableQty);
             }
             else if (command == "5") {
                 std::string itemId;
@@ -51,7 +51,7 @@ void runShopMenu(Player& p1, Shop& shop) {
                 std::cin >> itemId;
                 std::cout << "Enter quantity: ";
                 std::cin >> qty;
-                p1.sellToShop(shop, itemId, qty);
+                this->sellToShop(shop, itemId, qty);
             }
             else if (command == "6") {
                 std::cout << "Exiting menu.\n";
@@ -62,7 +62,7 @@ void runShopMenu(Player& p1, Shop& shop) {
             }
         }
         catch (const InventoryFull& e) {
-            p1.reduceItemInvetory(addAbleItem, addableQty-e.getOverflow());
+            this->reduceItemInvetory(addAbleItem, addableQty-e.getOverflow());
             std::cerr << "Error: " << e.what() << std::endl;
         }
         catch (const std::exception& e) {
@@ -75,10 +75,30 @@ void runShopMenu(Player& p1, Shop& shop) {
 }
 
 
-Player::Player(const std::string& dir, const std::string& charType, Items& itemMap, Characters& allChar){
+Player::Player(const std::string& dir, const std::string& charName, Items& itemMap, Characters& allChar, int type){
     this->itemMap = &itemMap;
     this->inv = new Inventory(Inventory::loadInventory(dir, itemMap));
-    this->playerChar = new Fighter("Kelra",  26, 17, 13, 1, 0,99999999, 0);
+    if(type == 0){ // load
+        this->playerChar = allChar.getCharacterbyName(charName);
+    }
+    else if(type == 1){
+        this->playerChar = new Berserker(charName);
+    }
+    else if (type == 2){
+        this->playerChar = new Fighter(charName);
+    }
+    else if(type == 3){
+        this->playerChar = new Mage(charName);
+    }
+    else if (type == 4){
+        this->playerChar = new Necromancer(charName);
+    }
+    else if(type == 5){
+        this->playerChar = new Assassin(charName);
+    }
+
+    
+    // this->playerChar = new Fighter("Kelra",  26, 17, 13, 1, 0,99999999, 0);
 }
 
 Player::~Player(){
@@ -176,6 +196,15 @@ void Player::sellToShop(Shop& shop, const std::string& itemName, int quantity){
 void Player::reduceItemInvetory(const std::string& addAbleItem, int target){
     Item* item = itemMap->getItembyName(addAbleItem);
     inv->reduceItem(item, target);
+}
+
+void Player::goToDungeon(Mobloot& moobLoot, Items& items){
+    std::cout<<"Masukkan rank" << std::endl;
+    std::string input;
+    cin>>input;
+
+    Dungeon dungeon(input, moobLoot, items, *playerChar);
+    dungeon.start(*playerChar, *inv, items);
 }
 
 

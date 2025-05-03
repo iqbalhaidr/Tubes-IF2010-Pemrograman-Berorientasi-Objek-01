@@ -1,0 +1,5 @@
+Kaelen 15 13 7 1 0 99999 15 Fighter Stone Skin Fighter Fist Battle Instinct
+Lyra 5 9 20 1 0 100 30 Mage Fire Arrow Chains of Ruin Mana Spring
+Malzeth 7 10 18 1 0 100 25 Necromancer Soul Feast Plague Surge Soul Paralysis
+Shadow 10 18 7 1 0 100 20 Assassin Silent Cut Silent Ambush Blood Pact
+Thorgar 18 12 5 1 0 100 20 Berserker Fury Strike Indomitable Fury Blood Renewal
