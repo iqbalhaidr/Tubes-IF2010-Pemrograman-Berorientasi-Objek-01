@@ -100,6 +100,7 @@ void Unit::attack(Unit& target, Inventory& inventory) {
 }
 
 void Unit::takeDamage(int damage, Inventory& inventory) {
+    std::cout << "damage from takeDamage(): " << damage << std::endl;
     int defence = 0;  // damage reduction
     Item* armorHead = inventory.getEquippedItem("ARMOR_HEAD");
     if (armorHead != nullptr) {
