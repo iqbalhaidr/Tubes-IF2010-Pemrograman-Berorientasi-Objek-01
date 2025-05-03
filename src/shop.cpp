@@ -26,7 +26,7 @@ Shop::Shop(const std::string& directory){
         int basePrice, stock;
 
         if (ss >> name >> rarity >> basePrice >> stock){ //parsing berhasil
-            if(stock < 0 && !Items::isValidItemRarity(rarity)){
+            if(stock < 0 || !Items::isValidItemRarity(rarity)){
                 throw InputOutputException("Stock atau rarity tidak valid"); //eror format file tidak sesuai silahkan masukkan file yang valid
             }
 
@@ -69,12 +69,16 @@ void Shop::saveShop(const std::string& directory) {
     std::cout << "Shop successfully saved\n";
 }
 
-std::pair<int,int> Shop::buyItem(const std::string& itemName, int quantity) {
+std::pair<Item*, int> Shop::buyItem(const std::string& itemName, int quantity) {
     auto it = availableItems.find(itemName);
 
     if (it != availableItems.end()) {
         int price = std::get<1>(it->second);
         int stock = std::get<2>(it->second);
+        if(quantity > stock){
+            throw StockError();
+        }
+        Item *item = itemMap->getItembyName(itemName);
         price *= quantity; 
         switch (std::get<0>(it->second)[0]) {
         case 'S': 
@@ -98,20 +102,19 @@ std::pair<int,int> Shop::buyItem(const std::string& itemName, int quantity) {
         default:
             break;
         }
-        return std::make_pair(price, stock);
+        return std::make_pair(item,price);
     }else {
         throw ItemNotFound("Item " + itemName + " not found in shop");
     }
 }
 
-int Shop::sellItem(const std::string& itemName, int quantity, Inventory& inventory){
+std::pair<Item*,int> Shop::sellItem(const std::string& itemName, int quantity){
     int price;
     
     if (quantity >= 0) {
         try{
             Item *item = itemMap->getItem(itemName);
-            inventory.reduceItem(item, quantity);
-            std::cout << "Item " << itemName << " sold successfully\n"; 
+            
             price = 0.7*quantity;
             switch (item->getRarity()[0]) {
                 case 'S': 
@@ -135,7 +138,7 @@ int Shop::sellItem(const std::string& itemName, int quantity, Inventory& invento
                 default:
                     break;
                 }
-                return price;
+                return {item, price};
         } catch (const InputOutputException& e) {
             std::cout << "Error: " << e.what() << "\n";
             throw; // Rethrow the caught exception
@@ -147,10 +150,9 @@ int Shop::sellItem(const std::string& itemName, int quantity, Inventory& invento
 
 void Shop::restock() {
     for (auto& item : availableItems) {
-        auto shopItem = shopConfig.find(item.first);
-        if (shopItem != shopConfig.end()) {
-            std::get<2>(item.second) = shopItem->second; 
-        }
+        std::string name = item.first;
+        int stock = shopConfig[name];
+        setStock(name, stock);
     }
 }
 
@@ -158,6 +160,14 @@ void Shop::setStock(const std::string& itemName, int stock) {
     auto it = availableItems.find(itemName);
     if (it != availableItems.end()) {
         std::get<2>(it->second) = stock;
+        Item * item = itemMap->getItem(itemName);
+        auto category = item->getItemType();
+        for(auto& value : categoryShop[category]){
+            if(value.first == itemName){
+                value.second = stock;
+                break;
+            }
+        }
     } else {
         std::cout << "Item " << itemName << " not found in shop.\n";
     }
