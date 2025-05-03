@@ -19,7 +19,7 @@ bool EffectTurn::isTurn() {
 
 double EffectTurn::apply(Unit* unit) {
     // Default implementation does nothing
-    remainingDuration -= 1;
+    // remainingDuration -= 1;
     return 0;
 }
 
