@@ -269,3 +269,25 @@ SkillNode* SkillTree::getParent(Skill child) {
     }
     return nullptr;
 }
+
+vector<SkillNode*> SkillTree::getRoot() const {
+    return {root1, root2, root3};
+}
+
+SkillNode* SkillTree::getNodebyName(string name, SkillNode* root) const {
+    if (root == nullptr) {
+        return nullptr;
+    }
+
+    else if (root->getSkill()->getName() == name) {
+        return root;
+    }
+
+    SkillNode* left = getNodebyName(name, root->getLeftNode());
+    if (left != nullptr) {
+        return left;
+    }
+
+    return getNodebyName(name, root->getRightNode());
+    
+}

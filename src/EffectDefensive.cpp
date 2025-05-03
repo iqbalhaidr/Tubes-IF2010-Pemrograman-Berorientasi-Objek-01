@@ -33,7 +33,7 @@ void EffectDefensive::setDefense(double defense) {
 
 double EffectDefensive::apply(Unit* unit) {
     int random = rand() % 100 + 1;
-    remainingDuration -= 1;
+    // remainingDuration -= 1;
     if (random <= chance){
         return defense;
     }

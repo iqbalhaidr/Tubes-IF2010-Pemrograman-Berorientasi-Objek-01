@@ -216,9 +216,11 @@ void Unit::removeSkill(Skill* skill) {
     }
 }
 
-void Unit::addActiveEffect(Effect* effect) { activeEffects.push_back(effect); }
+void Unit::addActiveEffect(Effect* effect) {
+    activeEffects.push_back(effect->clone());
+}
 
-void Unit::removeActiveEffect(Effect* activeEffect) {
+void Unit::removeActiveEffect(Effect* activeEffect) { //akhir
     auto it = find(activeEffects.begin(), activeEffects.end(), activeEffect);
     if (it != activeEffects.end()) {
         activeEffect->remove(this);
@@ -226,7 +228,7 @@ void Unit::removeActiveEffect(Effect* activeEffect) {
     }
 }
 
-void Unit::applyActiveEffect() {
+void Unit::applyActiveEffect() { //awal
     for (auto& activeEffect : activeEffects) {
         if (activeEffect->isHealthRegen() || activeEffect->isManaRegen()) {
             if (activeEffect->isHealthRegen()) {

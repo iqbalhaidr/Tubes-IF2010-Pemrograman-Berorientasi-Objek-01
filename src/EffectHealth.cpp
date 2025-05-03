@@ -35,7 +35,7 @@ void EffectHealth::setChance(double chance) {
 }
 
 double EffectHealth::apply(Unit* unit) {
-    remainingDuration -= 1;
+    // remainingDuration -= 1;
     int randomValue = rand() % 100 + 1;
     int currentRegen = unit->getHealthRegen();
     baseHealAmount = currentRegen;
