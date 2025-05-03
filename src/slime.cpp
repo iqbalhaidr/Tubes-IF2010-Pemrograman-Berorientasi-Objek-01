@@ -1,8 +1,8 @@
 #include "../include/slime.hpp"
 
 Slime::Slime(int level, int expReward, Mobloot& mobLoots)
-    : BasicMobs("Slime", level, 6 + (level - 1) * 1.2, 6 + (level - 1) * 1.5,
-                16 + (level - 1) * 2, expReward, mobLoots) {
+    : BasicMobs("Slime", level, 6 + (level - 1) * 1.2, 11 + (level - 1) * 1.5,
+                13 + (level - 1) * 2, expReward, mobLoots) {
     updateBasicAttributes();
     vector<Effect*> effects;
     string effectDescription =
@@ -20,5 +20,5 @@ Slime::Slime(int level, int expReward, Mobloot& mobLoots)
 Slime::~Slime() {}
 
 void Slime::updateBasicAttributes() {
-    setAttackDamage(2 * getStats().getIntelligence());
+    setAttackDamage(3 * getStats().getIntelligence() + getStats().getAgility());
 }

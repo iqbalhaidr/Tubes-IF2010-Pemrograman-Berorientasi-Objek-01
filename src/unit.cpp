@@ -246,9 +246,6 @@ void Unit::applyActiveEffect() { //awal
                 restoreMana(activeEffect->apply(this));
             }
         } else if (activeEffect->isPoison()) {
-            EffectPoison* poisonEffect =
-                dynamic_cast<EffectPoison*>(activeEffect);
-            cout << poisonEffect->getDamage() << endl;
             currentHealth -= activeEffect->apply(this);
         } else if (activeEffect->isManaReduc()) {
             currentMana -= activeEffect->apply(this);
@@ -261,7 +258,7 @@ void Unit::applyActiveEffect() { //awal
 
 void Unit::updateBasicAttributes() {
     setMaxHealth(100 + 22 * getStats().getStrength());
-    setHealthRegen(10 * getStats().getStrength());
+    setHealthRegen(8 * getStats().getStrength());
     setMaxMana(60 + 12 * getStats().getIntelligence());
     setManaRegen(5 * getStats().getIntelligence());
 }

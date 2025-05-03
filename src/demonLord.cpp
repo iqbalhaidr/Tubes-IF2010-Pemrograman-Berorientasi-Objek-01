@@ -17,5 +17,5 @@ DemonLord::DemonLord(int level, int expReward, Mobloot& mobLoots)
 DemonLord::~DemonLord() {}
 
 void DemonLord::updateBasicAttributes() {
-    setAttackDamage(4* getStats().getAgility());
+    setAttackDamage(2* getStats().getAgility() + 3*getStats().getIntelligence());
 }
