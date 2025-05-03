@@ -127,7 +127,8 @@ void Unit::takeDamage(int damage, Inventory& inventory) {
     }
     if (defence < 0) defence = 0;
     std::cout << "Defence: " << defence << std::endl;
-    damage *= 1 - defence;
+    damage -= defence;
+    if (damage < 0) damage = 0;
     std::cout << name << " takes " << damage << " damage!\n";
     currentHealth -= damage;
     if (currentHealth < 0) {
