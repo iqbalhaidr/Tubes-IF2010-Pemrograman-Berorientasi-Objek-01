@@ -286,11 +286,10 @@ void Inventory :: generalEquip(std::string slot, Character& orang, Item* item){
 }
 
 void Inventory :: unequipItem(Character& orang, const std::string& slot){
+    if(!(equipped[slot] == nullptr)){return;}
     if(slot == "WEAPON"){
-        if(!(equipped["WEAPON"] == nullptr)){
-            orang.setAttackDamage(orang.getAttackDamage() - equipped["WEAPON"]->getFinalStat());
-            generalUnequip("WEAPON", orang);
-        }
+        orang.setAttackDamage(orang.getAttackDamage() - equipped["WEAPON"]->getFinalStat());
+        generalUnequip("WEAPON", orang);
     }
     else{
         generalUnequip(slot, orang);
@@ -344,7 +343,7 @@ std::string Inventory::getEquippedItemId(const std::string& slot) const {
 
 
 void Inventory :: displayBackpack(){
-    auto txtGenerator = [](std::pair<Item*, int> p){return p.first->getId() +" ("+ std::to_string(p.second) +") " ;};
+    auto txtGenerator = [](std::pair<Item*, int> p){return p.first->getId() +" ("+ std::to_string(p.second) +") " + p.first->getItemType() ;};
     std::string item = "";
     for(int i=0; i<8; i++){
         for(int j = 0; j<4; j++){
@@ -352,9 +351,9 @@ void Inventory :: displayBackpack(){
                 item="";
             }
             else{
-                item=txtGenerator(backpack.get(i,j));
+                item=txtGenerator(backpack.get(i,j)) + "";
             }
-            std::cout<<"|"<<Inventory::centerText(item, 10)<<"|";
+            std::cout<<"|"<<Inventory::centerText(item, 20)<<"|";
         }   
         cout<<"\n";
     }
