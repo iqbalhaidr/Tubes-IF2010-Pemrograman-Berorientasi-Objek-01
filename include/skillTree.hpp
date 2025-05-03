@@ -1,5 +1,5 @@
-#ifndef SKILLTREE_CPP
-#define SKILLTREE_CPP
+#ifndef SKILLTREE
+#define SKILLTREE
 #include "skillNode.hpp"
 #include <string>
 #include <vector>
@@ -19,7 +19,9 @@ class SkillTree{
         void destroy(SkillNode*);
         vector<SkillNode*> getAvailableUpgrade(vector<SkillNode*>& res) const;  
         void upgradeSkill(SkillNode* skill_awal, SkillNode* skill_baru);      
-         SkillNode* getParent(Skill child);
+        SkillNode* getParent(Skill child);
+        vector<SkillNode*> getRoot() const;
+        SkillNode* getNodebyName(string name, SkillNode* root) const;
 
 };
 

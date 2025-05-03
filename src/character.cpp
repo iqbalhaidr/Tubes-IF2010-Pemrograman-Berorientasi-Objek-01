@@ -2,13 +2,61 @@
 #include <iostream>
 using namespace std;
 
-Character::Character(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, string type)
+Character::Character(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, vector<string> skillNames, string type)
 : Unit(name, strength, agility, intelligence, level), skillTree(type) {
-    // std::cout << "Character constructor called" << std::endl;
+    if (!skillNames.empty()) {
+        loadCharacterSkills(skillNames);
+    }
     setExp(exp);
     setGold(gold);
     setMasteryCost(masteryCost);
     setType(type);
+}
+
+void Character::loadCharacterSkills(vector<string> skillNames) {
+    vector<SkillNode*> roots = skillTree.getRoot();
+    for (const string& skillName : skillNames) { // cek skill dengan skillname ada pada skilltree
+        for (SkillNode* root : roots) {
+            SkillNode* node = skillTree.getNodebyName(skillName, root);
+            if (node == nullptr) {
+                return;
+            }
+        }
+    }
+
+    for (SkillNode* root : roots) {
+        bool hasRoot, hasLeft, hasRight = false;
+
+        for (const string& skillName : skillNames) {
+            if (root == nullptr && root->getSkill()->getName() == skillName) {
+                hasRoot = true;
+            } else if (root && root->getLeftNode() && root->getLeftSkill()->getName() == skillName) {
+                hasLeft = true;
+            } else if (root && root->getRightNode() && root->getRightSkill()->getName() == skillName) {
+                hasRight = true;
+            }
+        }
+
+        if ((!hasRoot && ((hasLeft && !hasRight) || (!hasLeft && hasRight))) 
+            || (hasRoot && hasLeft && hasRight)) {
+            return;
+        }
+
+        if (hasRoot && (hasLeft || hasRight)) {
+            if (hasLeft) skillTree.currentSkills.push_back(root->getLeftNode());
+            else if (hasRight) skillTree.currentSkills.push_back(root->getRightNode());
+        } else if (!hasRoot && hasLeft && hasRight) {
+            skillTree.currentSkills.push_back(root->getLeftNode());
+            skillTree.currentSkills.push_back(root->getRightNode());
+
+            auto it = find(skillTree.currentSkills.begin(), skillTree.currentSkills.end(), root);
+            if (it != skillTree.currentSkills.end()) {
+                skillTree.currentSkills.erase(it);
+            }
+        }
+
+    }
+    
 }
 
 Character::~Character() {}
@@ -58,7 +106,15 @@ void Character::UpgradeSkill(string& skillNameToLearn) {
 
         bool canRemove = parentNode->canRemove();
         if (canRemove) {
-            removeSkill(parentNode->getSkill());
+            removeSkill(parentNode->getSkill()); //hapus vektor skill char
+            for (auto it = skillTree.currentSkills.begin(); it != skillTree.currentSkills.end(); ) {
+                if ((*it)->getSkill()->getName() == parentNode->getSkill()->getName()) {
+                    it = skillTree.currentSkills.erase(it);  //hapus vektor currentskill di skilltree
+                } else {
+                    ++it;
+                }
+            }
+            
         }
     }
 

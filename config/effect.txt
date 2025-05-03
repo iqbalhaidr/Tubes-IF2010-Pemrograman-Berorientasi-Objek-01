@@ -1,10 +1,10 @@
 #<EffectDamage/EffectDefense/EffectHealthRegen/EffectManaRegen/EffectPoision/EffectTurn> <name> <description> <duration> <amount(%)> <chance(%)>
 EffectDefensive Armor <Armor gw> 4 5 6
 EffectHealthRegen Obat <obat gw> 7 8 9
-EffectPoison Racun <ini Racun gw> 23 34 5
+EffectPoison Racun <ini Racun gw> 23 7 5
 EffectDamage Critical <Menambahkan damage anda> 5 7 20
 EffectPoison Bleed <Menambahkan damage anda> 5 7 20
 EffectPoison Burn <Menambahkan damage anda> 5 7 20
-EffectTurn Stun <STOP> 1 1 1    
-EffectTurn Disable <STOP> 1 1 1
+EffectTurn Stun <STOP> 7 1 1    
+EffectTurn Disable <STOP> 7 1 1
 EffectManaRegen Kukubima <semangat> 6 3 2

@@ -6,12 +6,12 @@ SkillNode::SkillNode(Skill* skill) : skill(skill){
 }
 
 
-SkillNode::SkillNode(Skill* skill, SkillNode* left, SkillNode* right) : skill(skill), left(left), right(right) {}
+SkillNode::SkillNode(Skill* skill, SkillNode* left, SkillNode* right) : skill(skill), left(left), right(right) {unlocked = false;}
 
 SkillNode::~SkillNode() {
     delete skill;
-    delete left;
-    delete right;
+    // delete left;
+    // delete right;
 }
 
 SkillNode::SkillNode(const SkillNode& other): skill(new Skill(*other.skill)) {

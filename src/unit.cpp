@@ -14,7 +14,12 @@ Unit::Unit(string name, int strength, int agility, int intelligence, int level)
     std::cout << "[DEBUG] Keluar constructor Unit" << std::endl;
 }
 
-Unit::~Unit() {}
+Unit::~Unit() {
+    for (Effect* effect : activeEffects) {
+        delete effect;
+    }
+    activeEffects.clear();
+}
 
 string Unit::getName() const { return name; }
 int Unit::getCurrentHealth() const { return currentHealth; }
@@ -64,6 +69,7 @@ void Unit::setStats(int strength, int agility, int intelligence) {
 }
 int Unit::calculateDamage(Unit& target, int baseDamage, Inventory& inventory) {
     int totalDamage = 0;
+    // std::cout << "baseDamage: " << baseDamage << std::endl;
     for (const auto& ActiveEffect : getCombinedEffect(activeEffects)) {
         if (ActiveEffect->isDamage()) {
             if (ActiveEffect->getName() == "Infernal Curse") {
@@ -77,9 +83,15 @@ int Unit::calculateDamage(Unit& target, int baseDamage, Inventory& inventory) {
     totalDamage += baseDamage;  // total damage = base damage + critical damage
     // cout << "totalDamage sblm wepen: " << totalDamage << endl;
     Item* weapon = inventory.getEquippedItem("WEAPON");
-
     if (weapon != nullptr) {
         totalDamage += weapon->getFinalStat();  // total damage + weapon damage
+        // cout << "Weapon name: " << weapon->getName() << std::endl;
+        // std::cout << "Weapon damage: " << weapon->getFinalStat() << std::endl;
+    }
+
+    Item* pendant = inventory.getEquippedItem("PENDANT");
+    if (pendant != nullptr) {
+        totalDamage += pendant->getFinalStat();  // total damage + weapon damage
     }
     // cout << "totalDamage sblm lvl: " << totalDamage << endl;
     // cout << "baseDamage: " << baseDamage << endl;
@@ -88,13 +100,29 @@ int Unit::calculateDamage(Unit& target, int baseDamage, Inventory& inventory) {
     return totalDamage;
 }
 void Unit::attack(Unit& target, Inventory& inventory) {
-    std::cout << name << " attacks " << target.getName() << " sebesar "
-              << calculateDamage(target, attackDamage, inventory) << std::endl;
-    target.takeDamage(calculateDamage(target, attackDamage, inventory));
+    // std::cout << "attack: " << attackDamage << std::endl;
+    std::cout << name << " attacks " << target.getName() << " sebesar " << calculateDamage(target, attackDamage, inventory) << std::endl;
+    target.takeDamage(calculateDamage(target, attackDamage, inventory), inventory);
 }
 
-void Unit::takeDamage(int damage) {
+void Unit::takeDamage(int damage, Inventory& inventory) {
+    // std::cout << "damage from takeDamage(): " << damage << std::endl;
     int defence = 0;  // damage reduction
+    Item* armorHead = inventory.getEquippedItem("ARMOR_HEAD");
+    if (armorHead != nullptr) {
+        defence += armorHead->getFinalStat();
+    }
+
+    Item* armorBody = inventory.getEquippedItem("ARMOR_BODY");
+    if (armorBody != nullptr) {
+        defence += armorBody->getFinalStat();
+    }
+
+    Item* armorFoot = inventory.getEquippedItem("ARMOR_FOOT");
+    if (armorFoot != nullptr) {
+        defence += armorFoot->getFinalStat();
+    }
+
     for (const auto& activeEffect : getCombinedEffect(activeEffects)) {
         if (activeEffect->isDefensive()) {
             if (activeEffect->getName() == "Infernal Curse") {
@@ -105,7 +133,9 @@ void Unit::takeDamage(int damage) {
         }
     }
     if (defence < 0) defence = 0;
-    damage *= 1 - defence;
+    std::cout << name << " Defence: " << defence << std::endl;
+    damage -= defence;
+    if (damage < 0) damage = 0;
     std::cout << name << " takes " << damage << " damage!\n";
     currentHealth -= damage;
     if (currentHealth < 0) {
@@ -130,9 +160,10 @@ void Unit::restoreMana(int amount) {
     }
 }
 
-void Unit::useSkill(Skill* skill, Unit& target) {
-
-    cout << "Using skill: " << skill->getName() << endl;
+void Unit::useSkill(Skill* skill, Unit& target, Inventory& inventory) {
+    // cout << "Using skill: " << skill->getName() << endl;
+    // cout << "Skill effect: " << skill->getEffects()[0]->getName() << endl;
+    // cout << "Skill damage:" << skill->getDamage() << endl;
     if (currentMana < skill->getManaCost()) {
         cout << "Not enough mana to use " << skill->getName() << endl;
         return;
@@ -144,11 +175,11 @@ void Unit::useSkill(Skill* skill, Unit& target) {
     //     std::cout << "Skill tidak mengenai target" << std::endl;
     //     return;
     // }
-    std::cout << "Skill mengenai target" << std::endl;
+    std::cout << name << "'s " << skill->getName() << " mengenai " << target.getName() << "dmg skill pure/mana | " << skill->getDamage() << "/" << skill->getManaCost() << std::endl;
     currentMana -= skill->getManaCost();
     int totalDamage = skill->getDamage();
-    cout<< "TOTAL DAMAGE: " << totalDamage << endl;
-    cout <<"MANA: "<< currentMana << endl;
+    // cout << "TOTAL DAMAGE: " << skill->getDamage() << endl;
+    // cout << "MANA: " << currentMana << endl;
 
     for (Effect* effect : skill->effects) {
         if ((effect->isTurn() || effect->isTurnBased()) ||
@@ -157,6 +188,8 @@ void Unit::useSkill(Skill* skill, Unit& target) {
              effect->getName() ==
                  "Infernal Curse")) {  // kasus crit masukin efek crit dari
                                        // skill ke vector dulu
+            // std::cout << "masuk if pertama unit.cpp: " << effect->getName()
+                      //<< std::endl;
             target.addActiveEffect(effect);
         } else if (effect->isDefensive() || effect->isDamage()) {
             this->addActiveEffect(effect);
@@ -177,8 +210,8 @@ void Unit::useSkill(Skill* skill, Unit& target) {
         }
     }
 
-    std::cout << "Skill damage: " << totalDamage << std::endl;
-    target.takeDamage(totalDamage);
+    // std::cout << "Skill damage: " << totalDamage << std::endl;
+    target.takeDamage(totalDamage, inventory);
 }
 
 void Unit::addSkill(Skill* skill) { skills.push_back(skill); }
@@ -189,9 +222,11 @@ void Unit::removeSkill(Skill* skill) {
     }
 }
 
-void Unit::addActiveEffect(Effect* effect) { activeEffects.push_back(effect); }
+void Unit::addActiveEffect(Effect* effect) {
+    activeEffects.push_back(effect->clone());
+}
 
-void Unit::removeActiveEffect(Effect* activeEffect) {
+void Unit::removeActiveEffect(Effect* activeEffect) { //akhir
     auto it = find(activeEffects.begin(), activeEffects.end(), activeEffect);
     if (it != activeEffects.end()) {
         activeEffect->remove(this);
@@ -199,15 +234,22 @@ void Unit::removeActiveEffect(Effect* activeEffect) {
     }
 }
 
-void Unit::applyActiveEffect() {
+void Unit::applyActiveEffect() { //awal
     for (auto& activeEffect : activeEffects) {
         if (activeEffect->isHealthRegen() || activeEffect->isManaRegen()) {
             if (activeEffect->isHealthRegen()) {
+                std::cout << "Health regen effect called: "
+                          << activeEffect->getName() << std::endl;
                 heal(activeEffect->apply(this));
             } else if (activeEffect->isManaRegen()) {
+                std::cout << "Mana regen effect called: "
+                          << activeEffect->getName() << std::endl;
                 restoreMana(activeEffect->apply(this));
             }
         } else if (activeEffect->isPoison()) {
+            EffectPoison* poisonEffect =
+                dynamic_cast<EffectPoison*>(activeEffect);
+            // cout << poisonEffect->getDamage() << endl;
             currentHealth -= activeEffect->apply(this);
         } else if (activeEffect->isManaReduc()) {
             currentMana -= activeEffect->apply(this);
@@ -275,6 +317,7 @@ vector<Effect*> Unit::getCombinedEffect(
                         if (damageBase->getName() == "Infernal Curse") {
                             damageBase->setRemainingDuration(
                                 damageBase->getDuration());
+                            damageOther->setRemainingDuration(0);
                         } else {
                             damageBase->setChance(damageBase->getChance() +
                                                   damageOther->getChance());
@@ -290,6 +333,7 @@ vector<Effect*> Unit::getCombinedEffect(
                         if (defensiveBase->getName() == "Infernal Curse") {
                             defensiveBase->setRemainingDuration(
                                 defensiveBase->getDuration());
+                            defensiveOther->setRemainingDuration(0);
                         } else {
                             defensiveBase->setChance(
                                 defensiveBase->getChance() +

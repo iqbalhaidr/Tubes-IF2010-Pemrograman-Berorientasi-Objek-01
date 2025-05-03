@@ -1,27 +1,28 @@
 #include "../include/inventory.hpp"
-#include "../include/matrix.hpp"
-#include "../include/exception.hpp"
-#include "../include/character.hpp"
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <filesystem>
 
+#include <filesystem>
+#include <fstream>
+#include <iostream>
+#include <sstream>
+
+#include "../include/character.hpp"
+#include "../include/exception.hpp"
+#include "../include/matrix.hpp"
 
 namespace fs = std::filesystem;
 
-std::string Inventory :: centerText(const std::string &text, int width) {
+std::string Inventory ::centerText(const std::string& text, int width) {
     int padding = width - text.length();
     if (padding <= 0) return text;  // Jika teks lebih panjang, return as-is
-    
+
     int left = padding / 2;
     int right = padding - left;
-    
+
     return std::string(left, ' ') + text + std::string(right, ' ');
 }
-    
 
-Inventory Inventory :: loadInventory(const std::string& directory, const Items& itemMap){ 
+Inventory Inventory ::loadInventory(const std::string& directory,
+                                    const Items& itemMap) {
     Matrix<std::pair<Item*, int>> backp(8, 4);
     std::map<std::string, Item*> equippedItem;
 
@@ -49,40 +50,40 @@ Inventory Inventory :: loadInventory(const std::string& directory, const Items& 
         std::stringstream ss(line1);
 
         if (ss >> row >> col >> itemId >> total) {
-            if (backp.isEmptyCell(row,col)) { // jika kosong
-                
-                Item* cloned =itemMap.getItem(itemId);
-                backp.set(row, col, {cloned , total}); //add
-                std::cout << cloned->getId() << " INI NAMANYA\n";
+            if (backp.isEmptyCell(row, col)) {  // jika kosong
+
+                Item* cloned = itemMap.getItem(itemId);
+                backp.set(row, col, {cloned, total});  // add
+                // std::cout << cloned->getId() << " INI NAMANYA\n";
             } else {
-                throw InputOutputException("Slot backpack bertumpuk"); //untuk config ga boleh bertumpuk
+                throw InputOutputException(
+                    "Slot backpack bertumpuk");  // untuk config ga boleh
+                                                 // bertumpuk
             }
         }
     }
 
-    std::string line2;  //bagian equipment
+    std::string line2;  // bagian equipment
     while (std::getline(fileEquipment, line2)) {
         std::string type, itemId;
         std::stringstream ss(line2);
 
         if (ss >> type) {
-            if(ss >> itemId){
+            if (ss >> itemId) {
                 if (!(Items::isValidItemType(type) && itemMap.lookup(itemId))) {
                     throw InputOutputException("Data equipment tidak valid");
                 }
                 equippedItem[type] = itemMap.getItem(itemId);
-            }
-            else{
+            } else {
                 equippedItem[type] = nullptr;
             }
-
         }
     }
-    return Inventory(backp,equippedItem);
+    return Inventory(backp, equippedItem);
 }
 
-
-Inventory::Inventory(const Matrix<std::pair<Item*, int>>& backp, const std::map<std::string, Item*>& equippedItem){
+Inventory::Inventory(const Matrix<std::pair<Item*, int>>& backp,
+                     const std::map<std::string, Item*>& equippedItem) {
     this->backpack = backp;
     this->equipped = equippedItem;
 }
@@ -100,9 +101,10 @@ void Inventory::saveInventory(const std::string& directory) {
 
     for (int i = 0; i < 8; ++i) {
         for (int j = 0; j < 4; ++j) {
-            if (!(backpack.isEmptyCell(i,j))) {
-                auto current = backpack.get(i,j);
-                outputBackpack << i << " " << j << " " << current.first->getId() << " " << current.second << "\n";
+            if (!(backpack.isEmptyCell(i, j))) {
+                auto current = backpack.get(i, j);
+                outputBackpack << i << " " << j << " " << current.first->getId()
+                               << " " << current.second << "\n";
             }
         }
     }
@@ -115,9 +117,6 @@ void Inventory::saveInventory(const std::string& directory) {
     outputEquipment.close();
     std::cout << "Inventory successfully saved\n";
 }
-
-
-
 
 void Inventory::addItem(std::pair<Item*, int>& value) {
     Item* item = value.first;
@@ -145,24 +144,23 @@ void Inventory::addItem(std::pair<Item*, int>& value) {
             }
         }
     }
-    
-    //tambahkan sisa
+
+    // tambahkan sisa
     for (int i = 0; i < 8 && quantity > 0; ++i) {
         for (int j = 0; j < 4 && quantity > 0; ++j) {
             if (backpack.isEmptyCell(i, j)) {
-                if (isStackable && quantity>0) {
+                if (isStackable && quantity > 0) {
                     int amountToAdd = std::min(MAX_ITEM, quantity);
                     backpack.set(i, j, {item, amountToAdd});
                     quantity -= amountToAdd;
-                } 
-                else if(quantity>0){
+                } else if (quantity > 0) {
                     backpack.set(i, j, {item, 1});
                     quantity -= 1;
                 }
             }
         }
     }
-    
+
     // Jika masih ada sisa yang tidak bisa dimasukkan, lempar exception
     if (quantity > 0) {
         throw InventoryFull("Backpack penuh, tidak bisa menambahkan sisa item", quantity);
@@ -204,7 +202,9 @@ void Inventory::reduceItem(const Item* item, int target) {
     }
 
     if (target > 0) {
-        throw InputOutputException("Jumlah item tidak cukup untuk dikurangi");  // dont forget to handle try and catch
+        throw InputOutputException(
+            "Jumlah item tidak cukup untuk dikurangi");  // dont forget to
+                                                         // handle try and catch
     }
 }
 
@@ -312,13 +312,13 @@ std::string Inventory::getEquippedItemId(const std::string& slot) const {
 void Inventory :: displayBackpack(){
     auto txtGenerator = [](std::pair<Item*, int> p){return p.first->getId() +" ("+ std::to_string(p.second) +") " + p.first->getItemType() ;};
     std::string item = "";
-    for(int i=0; i<8; i++){
-        for(int j = 0; j<4; j++){
-            if(backpack.isEmptyCell(i,j)){
-                item="";
-            }
-            else{
-                item=txtGenerator(backpack.get(i,j)) + "";
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (backpack.isEmptyCell(i, j)) {
+                item = "";
+            } 
+            else {
+                item = txtGenerator(backpack.get(i, j));
             }
             std::cout<<"|"<<Inventory::centerText(item, 20)<<"|";
         }   

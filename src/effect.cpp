@@ -108,6 +108,10 @@ bool Effect::operator==(const Effect& other) const{
     return name == other.name && description == other.description && duration == other.duration && remainingDuration == other.remainingDuration;
 }
 
+void Effect::decreaseRemainingDuration(){
+    remainingDuration = remainingDuration - 1;
+}
+
 Effect* Effect::createEffect(const std::string& nama) {
     std::ifstream EffectFile("../data/effect.txt");
     std::string line = "";
@@ -201,6 +205,3 @@ Effect* Effect::createEffect(const std::string& nama) {
 
 }
 
-void Effect::decreaseRemainingDuration(){
-    remainingDuration = remainingDuration - 1;
-}

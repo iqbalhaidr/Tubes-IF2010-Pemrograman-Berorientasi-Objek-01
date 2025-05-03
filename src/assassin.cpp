@@ -2,8 +2,8 @@
 #include <iostream>
 using namespace std;
 
-Assassin::Assassin(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost)
- : Character(name, strength, agility, intelligence, level, exp, gold, masteryCost, "Assassin") {
+Assassin::Assassin(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, vector<string> skillNames)
+ : Character(name, strength, agility, intelligence, level, exp, gold, masteryCost, skillNames, "Assassin") {
     updateBasicAttributes(); // kecuali critmultiplier
     for (int i = 0; i < skillTree.currentSkills.size(); i++) {
         addSkill(skillTree.currentSkills[i]->getSkill());
@@ -24,19 +24,19 @@ void Assassin::attack(Unit& target, Inventory& inventory) {
         int totalDamage = calculateDamage(target, attackDamage, inventory); 
         totalDamage *= criticalMultiplier; 
         cout << "Critical hit!" << endl;
-        target.takeDamage(totalDamage);
+        target.takeDamage(totalDamage, inventory);
     } else {
         Unit::attack(target, inventory); 
     }
 
 }
 
-void Assassin::takeDamage(int damage) {
+void Assassin::takeDamage(int damage, Inventory& inventory) {
     if ((rand() % 100 + 1) < stats.getAgility()) { 
         cout << "Serangan terhindar" << endl;
         return; // No damage taken
     }
-    Unit::takeDamage(damage);
+    Unit::takeDamage(damage, inventory);
 }
 
 void Assassin::updateBasicAttributes() {

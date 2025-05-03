@@ -63,25 +63,43 @@ void Reward::displayInfo() {
 
     int ctr = 1;
     for (auto it = items.cbegin(); it != items.cend(); ++it) {
-        std::cout << "    " << ctr << ". " << it->second << " " << it->first->getName() << std::endl;
+        std::cout << "    " << ctr << ". [" << it->second << "] " << it->first->getName() << std::endl;
     }
 }
 
+//TODO: implementasi exp bar
 void Reward::addExpToCharacter(Character* c, int exp) {
     if (exp < 0) {
-        std::cout << "Exp reward cannot be negative" << std::endl;
+        std::cout << "Reward EXP bernilai negatif (diabaikan)" << std::endl;
         return;
     }
+
+    // Rumus Level Up = Level ^ 1.5 * 100 ^ (1 + 0.005 * Level)
+    int expToLevelUp = int(pow(c->getLevel(), 1.5)) * int(pow(100, 1 + 0.005 * c->getLevel()));
+    
     c->setExp(c->getExp() + exp);
-    if (c->getExp() >= c->getLevel() * 100) { // INI MASIH MANUAL
+    if (c->getExp() >= expToLevelUp) {
+        // Rumus Bonus Gold Level Up = 100 ^ (1 + 0.01 * Level)
+        int bonusGoldLevelUp = int(pow(100, 1 + 0.01 * c->getLevel()));
+
+        int expRemaining = c->getExp() - (expToLevelUp);
         c->levelUp();
+        c->setLevel(c->getLevel() + 1);
+        c->setExp(expRemaining);
+        addGoldToCharacter(c, bonusGoldLevelUp);
+        std::cout << c->getName() << " naik level ke " << c->getLevel()  << "!\n";
+        std::cout << "Bonus Gold Level Up: " << bonusGoldLevelUp << std::endl;
+
+        if (expRemaining >= c->getLevel() * 100) {
+            addExpToCharacter(c, 0);
+        }
     }
 }
 
 // Helper menambahkan gold ke character
 void Reward::addGoldToCharacter(Character* c, int gold) {
     if (gold < 0) {
-        std::cout << "Gold reward cannot be negative" << std::endl;
+        std::cout << "Reward Gold bernilai negatif (diabaikan)" << std::endl;
         return;
     }
     c->setGold(c->getGold() + gold);

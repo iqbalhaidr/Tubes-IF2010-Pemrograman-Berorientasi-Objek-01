@@ -5,7 +5,7 @@
 #define MAX_ENEMIES_LAST_CHAMBER 2
 #define MIN_ENEMIES_CHAMBER 2
 #define MAX_ENEMIES_CHAMBER 4
-#define CHANCE_BOSS_NOT_ON_LAST_CHAMBER 0.05f
+#define CHANCE_BOSS_NOT_ON_LAST_CHAMBER 0.10f
 
 #include <string>
 #include <vector>
@@ -151,8 +151,17 @@ class Chamber {
     /* Fungsi memilih skill yang digunakan */
     int inputSkillOption(Unit *);
 
-    /* Fungsi memilih item yang digunakan */
-    string inputItemOption(Inventory &);
+    // /* Fungsi memilih item yang digunakan */
+    // string inputItemOption(Inventory &);
+
+    /* Fungsi helper Opsi Use Item pada battle chamber  */
+    void useItemOption(Character &, Inventory &, Items &, Unit &);
+
+    /* Fungsi helper untuk memilih item yang digunakan */
+    bool useItemMenu(Character &, Inventory &, Items &, Unit &);
+
+    /* Fungsi helper unequip equipment */
+    void unequipMenu(Character &, Unit &, Inventory &);
 
     /* Fungsi menampilkan status player tiap turn
      * Format:

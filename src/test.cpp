@@ -6,10 +6,13 @@
 #include "../include/Randomizer.hpp"
 #include "../include/items.hpp"
 #include "../include/inventory.hpp"
-// #include "../include/Dungeon.hpp"
-// #include "../include/fighter.hpp"
-// #include "../include/assassin.hpp"
+#include "../include/Dungeon.hpp"
+#include "../include/fighter.hpp"
+#include "../include/assassin.hpp"
 #include "../include/Shop.hpp"
+#include "../include/berserker.hpp"
+#include "../include/items.hpp"
+#include "../include/necromancer.hpp"
 
 using namespace std;
 
@@ -129,30 +132,35 @@ skeleton.cpp slime.cpp bossMobs.cpp basicMobs.cpp inventory.cpp
 EffectManaReduc.cpp
 */
 
-// void dungeonTest() {
-//     Items items = Items::createFromDirectory("../data/");
-//     Mobloot mobLoot = Mobloot("../data/", items);
-//     Dungeon ds("E", mobLoot, items);
-//     // std::cout << "Dungeon created" << std::endl;
-//     // ds.displayInfo();
-//     Fighter f ("Fighter1");
-//     // Assassin f ("Assassin1");
-//     // std::cout << "Fighter created" << std::endl;
-//     // std::cout << "Assassin created" << std::endl;
-//     Inventory inv = Inventory::loadInventory("../data/", items);
-//     // ds.displayInfo();
-//     ds.start(f, inv, items);
-// }
+void dungeonTest() {
+    Items items = Items::createFromDirectory("../data/");
+    Mobloot mobLoot = Mobloot("../data/", items);
+    // std::cout << "Dungeon created" << std::endl;
+    // ds.displayInfo();
+    Fighter f("Fighter1");
+    Necromancer n("Necromancer1");
+    Assassin a("Assassin1");
+    Berserker b("Berserker1");
+    std::cout << "All Character created" << std::endl;
+    Dungeon ds("E", mobLoot, items, f);
 
-void shopTest() {
-    Shop shop("../data/");
-    std::cout << "Shop created" << std::endl;
-    shop.displayShop();
-    std::cout << "Shop displayed" << std::endl;
-    // shop.buyItem("Potion", 1);
-    // std::cout << "Item bought" << std::endl;
-    // shop.sellItem("Potion", 1, inv);
-    // std::cout << "Item sold" << std::endl;
+    // std::cout << "Fighter created" << std::endl;
+    // std::cout << "Assassin created" << std::endl;
+    Inventory inv = Inventory::loadInventory("../data/", items);
+    // ds.displayInfo();
+    // std::cout << "Init gold: " << f.getGold() << std::endl;
+    // std::cout << "Init exp: " << f.getExp() << std::endl;
+    // std::cout << "Init level: " << f.getLevel() << std::endl;
+    // inv.displayBackpack();
+    ds.start(f, inv, items);
+    // std::cout << "Final gold: " << f.getGold() << std::endl;
+    // std::cout << "Final exp: " << f.getExp() << std::endl;
+    // std::cout << "Final level: " << f.getLevel() << std::endl;
+    // inv.displayBackpack();
+    // Chamber cBoss (true, 10, 30, mobLoot);
+    // Reward rew;
+    // cBoss.battle(f, inv, rew, items);
+    // rew.displayInfo();
 }
 
 int main() {

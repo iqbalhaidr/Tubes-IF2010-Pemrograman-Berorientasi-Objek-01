@@ -216,22 +216,43 @@ SkillTree::SkillTree(string char_type){
 
         root3 = new SkillNode(b3_1);
     }
-
+    root1->unlocked = true;
+    root2->unlocked = true;
+    root3->unlocked = true;
+    
     currentSkills.push_back(root1);
     currentSkills.push_back(root2);
     currentSkills.push_back(root3);
 }
 
 SkillTree::~SkillTree() {
-    destroy(root1);
-    destroy(root2);
-    destroy(root3);
+    if (root1){
+        destroy(root1);
+
+    }
+    if (root2){
+        destroy(root2);
+    }
+    if (root3){
+        destroy(root3);
+    }
 }
 
 void SkillTree::destroy(SkillNode* node) {
-    if (node == nullptr){return;}
-    destroy(node->getLeftNode());
-    destroy(node->getRightNode());
+
+    if (node == nullptr) {
+        return;
+    }
+
+
+
+    if (node->getLeftNode() != nullptr){
+        destroy(node->getLeftNode());
+    }
+
+    if (node->getRightNode() != nullptr){
+        destroy(node->getRightNode());
+    }
     delete node;
 }
 
@@ -266,4 +287,26 @@ SkillNode* SkillTree::getParent(Skill child) {
         }
     }
     return nullptr;
+}
+
+vector<SkillNode*> SkillTree::getRoot() const {
+    return {root1, root2, root3};
+}
+
+SkillNode* SkillTree::getNodebyName(string name, SkillNode* root) const {
+    if (root == nullptr) {
+        return nullptr;
+    }
+
+    else if (root->getSkill()->getName() == name) {
+        return root;
+    }
+
+    SkillNode* left = getNodebyName(name, root->getLeftNode());
+    if (left != nullptr) {
+        return left;
+    }
+
+    return getNodebyName(name, root->getRightNode());
+    
 }

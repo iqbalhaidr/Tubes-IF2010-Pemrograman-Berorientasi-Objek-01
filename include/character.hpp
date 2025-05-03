@@ -21,9 +21,10 @@ class Character : public Unit {
         int masteryCost;
         string type;
         SkillTree skillTree;
+        void loadCharacterSkills(vector<string> skillNames);
     public:
         // ctor dtor
-        Character(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, string type);
+        Character(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, vector<string> skillNames, string type);
         virtual ~Character();
 
         // setter getter

@@ -12,7 +12,7 @@ class Assassin : public Character {
         void updateBasicAttributes() override;
     public:
         // ctor dtor
-        Assassin(string name,  int strength = 16, int agility = 26, int intelligence = 20, int level = BASE_LEVEL, int exp = BASE_EXP, int gold = BASE_GOLD, int masteryCost = BASE_MASTERY_COST);
+        Assassin(string name,  int strength = 16, int agility = 26, int intelligence = 20, int level = BASE_LEVEL, int exp = BASE_EXP, int gold = BASE_GOLD, int masteryCost = BASE_MASTERY_COST, vector<string> skillNames = {});
         ~Assassin();
 
         // setter getter
@@ -23,7 +23,7 @@ class Assassin : public Character {
 
         // Fungsi override
         void attack(Unit& target, Inventory& inventory) override;
-        void takeDamage(int damage) override;
+        void takeDamage(int damage, Inventory& inventory) override;
         void levelUp() override;
 };
 

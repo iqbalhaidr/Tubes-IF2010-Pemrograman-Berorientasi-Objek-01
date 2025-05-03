@@ -13,7 +13,7 @@ class Berserker : public Character {
         void updateBasicAttributes() override;
     public:
         // ctor dtor
-        Berserker(string name, int strength = 28, int agility = 17, int intelligence = 1, int level = BASE_LEVEL, int exp = BASE_EXP, int gold = BASE_GOLD, int masteryCost = BASE_MASTERY_COST);
+        Berserker(string name, int strength = 28, int agility = 17, int intelligence = 1, int level = BASE_LEVEL, int exp = BASE_EXP, int gold = BASE_GOLD, int masteryCost = BASE_MASTERY_COST, vector<string> skillNames = {});
         ~Berserker();
 
         // setter getter
@@ -22,8 +22,7 @@ class Berserker : public Character {
 
         // Fungsi override
         void attack(Unit& target, Inventory& inventory);
-        // void takeDamage(int damage);
-        void useSkill(Skill* skill, Unit& target);
+        void useSkill(Skill* skill, Unit& target, Inventory& inventory);
         void levelUp();
 };
 
