@@ -2,8 +2,8 @@
 #include <iostream>
 using namespace std;
 
-Fighter::Fighter(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost)
-: Character(name, strength, agility, intelligence, level, exp, gold, masteryCost, "Fighter") {
+Fighter::Fighter(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, vector<string> skillNames)
+: Character(name, strength, agility, intelligence, level, exp, gold, masteryCost, skillNames, "Fighter") {
     updateBasicAttributes();
     for (int i = 0; i < skillTree.currentSkills.size(); i++) {
         addSkill(skillTree.currentSkills[i]->getSkill());
@@ -16,16 +16,16 @@ Fighter::~Fighter() {}
 float Fighter::getBlockChance() const { return blockChance;}
 void Fighter::setBlockChance(float blockChance) { this->blockChance = blockChance;}
 
-void Fighter::takeDamage(int damage) {
+void Fighter::takeDamage(int damage, Inventory& inventory) {
     if ((rand() % 100 + 1)< blockChance) { // Peluang diblok
         cout << "Serangan musuh berhasil diblok" << endl;
         return;
     } 
-    Unit::takeDamage(damage); 
+    Unit::takeDamage(damage, inventory); 
 }
 
-void Fighter::useSkill(Skill* skill, Unit& target) {
-    Unit::useSkill(skill, target);
+void Fighter::useSkill(Skill* skill, Unit& target, Inventory& inventory) {
+    Unit::useSkill(skill, target, inventory);
     currentHealth += stats.getStrength() * 0.25;
     if (currentHealth > maxHealth) {
         currentHealth = maxHealth;

@@ -2,13 +2,21 @@
 #include <iostream>
 using namespace std;
 
-Character::Character(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, string type)
+Character::Character(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, vector<string> skillNames, string type)
 : Unit(name, strength, agility, intelligence, level), skillTree(type) {
-    // std::cout << "Character constructor called" << std::endl;
+    if (!skillNames.empty()) {
+        loadCharacterSkills(skillNames);
+    }
     setExp(exp);
     setGold(gold);
     setMasteryCost(masteryCost);
     setType(type);
+}
+
+void Character::loadCharacterSkills(vector<string> skillNames) {
+    // for (const string& skillName : skillNames) {
+        // BELUM JADI
+    // }
 }
 
 Character::~Character() {}
@@ -58,7 +66,15 @@ void Character::UpgradeSkill(string& skillNameToLearn) {
 
         bool canRemove = parentNode->canRemove();
         if (canRemove) {
-            removeSkill(parentNode->getSkill());
+            removeSkill(parentNode->getSkill()); //hapus vektor skill char
+            for (auto it = skillTree.currentSkills.begin(); it != skillTree.currentSkills.end(); ) {
+                if ((*it)->getSkill()->getName() == parentNode->getSkill()->getName()) {
+                    it = skillTree.currentSkills.erase(it);  //hapus vektor currentskill di skilltree
+                } else {
+                    ++it;
+                }
+            }
+            
         }
     }
 
