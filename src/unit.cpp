@@ -13,7 +13,12 @@ Unit::Unit(string name, int strength, int agility, int intelligence, int level)
     this->level = level;
 }
 
-Unit::~Unit() {}
+Unit::~Unit() {
+    for (Effect* effect : activeEffects) {
+        delete effect;
+    }
+    activeEffects.clear();
+}
 
 string Unit::getName() const { return name; }
 int Unit::getCurrentHealth() const { return currentHealth; }
