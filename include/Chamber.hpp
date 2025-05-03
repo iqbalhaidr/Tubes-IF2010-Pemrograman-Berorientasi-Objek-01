@@ -5,7 +5,7 @@
 #define MAX_ENEMIES_LAST_CHAMBER 2
 #define MIN_ENEMIES_CHAMBER 2
 #define MAX_ENEMIES_CHAMBER 4
-#define CHANCE_BOSS_NOT_ON_LAST_CHAMBER 0.05f
+#define CHANCE_BOSS_NOT_ON_LAST_CHAMBER 0.10f
 
 #include <string>
 #include <vector>

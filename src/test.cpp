@@ -132,7 +132,6 @@ EffectManaReduc.cpp
 void dungeonTest() {
     Items items = Items::createFromDirectory("../data/");
     Mobloot mobLoot = Mobloot("../data/", items);
-    Dungeon ds("E", mobLoot, items);
     // std::cout << "Dungeon created" << std::endl;
     // ds.displayInfo();
     Fighter f("Fighter1");
@@ -140,20 +139,21 @@ void dungeonTest() {
     Assassin a("Assassin1");
     Berserker b("Berserker1");
     std::cout << "All Character created" << std::endl;
+    Dungeon ds("E", mobLoot, items, f);
 
     // std::cout << "Fighter created" << std::endl;
     // std::cout << "Assassin created" << std::endl;
     Inventory inv = Inventory::loadInventory("../data/", items);
     // ds.displayInfo();
-    std::cout << "Init gold: " << f.getGold() << std::endl;
-    std::cout << "Init exp: " << f.getExp() << std::endl;
-    std::cout << "Init level: " << f.getLevel() << std::endl;
-    inv.displayBackpack();
+    // std::cout << "Init gold: " << f.getGold() << std::endl;
+    // std::cout << "Init exp: " << f.getExp() << std::endl;
+    // std::cout << "Init level: " << f.getLevel() << std::endl;
+    // inv.displayBackpack();
     ds.start(f, inv, items);
-    std::cout << "Final gold: " << f.getGold() << std::endl;
-    std::cout << "Final exp: " << f.getExp() << std::endl;
-    std::cout << "Final level: " << f.getLevel() << std::endl;
-    inv.displayBackpack();
+    // std::cout << "Final gold: " << f.getGold() << std::endl;
+    // std::cout << "Final exp: " << f.getExp() << std::endl;
+    // std::cout << "Final level: " << f.getLevel() << std::endl;
+    // inv.displayBackpack();
     // Chamber cBoss (true, 10, 30, mobLoot);
     // Reward rew;
     // cBoss.battle(f, inv, rew, items);

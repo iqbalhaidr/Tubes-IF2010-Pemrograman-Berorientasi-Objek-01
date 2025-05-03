@@ -6,6 +6,7 @@
 #include <thread>
 #include <vector>
 #include <stdlib.h>
+#include <cmath>
 #include "Chamber.hpp"
 #include "Randomizer.hpp"
 #include "Reward.hpp"
@@ -18,8 +19,8 @@ class Dungeon {
     std::vector<Chamber *> chambers;
     int rewardExp;
     int rewardGold;
-    Item *bonusItem;  // KALO DOUBLE DUNGEON TIDAK 3x KAH?
-    bool isDD;        // Double Dungeon
+    Item *bonusItem;
+    bool isDD;
     Reward prize;
     int penaltyExp;
     int penaltyGold;
@@ -28,7 +29,7 @@ class Dungeon {
     int entryCost;
 
    public:
-    Dungeon(string rank, Mobloot &mobLoots, Items &items);
+    Dungeon(string rank, Mobloot &mobLoots, Items &items, Character &c);
     ~Dungeon();
     // Dungeon(const Dungeon &);
     // Dungeon &operator=(const Dungeon &);
@@ -44,7 +45,7 @@ class Dungeon {
     void randomizeDoubleDungeon();
 
     /* Setter attribute based on rank */
-    void helperSet(Items &);
+    void helperSet(Items &, Character &);
 
     /* Generate chambers berdasarkan rank, set totalChambers */
     void generateChambers(Mobloot &);
@@ -62,8 +63,10 @@ class Dungeon {
     /* Fungsi menampilkan message lore awal masuk dungeon */
     void welcomeMessage();
 
+    /* Fungsi menampilkan message kemenangan */
     void winningMessage();
-    
+
+    /* Fungsi menampilkan message kekalahan */
     void losingMessage();
 };
 
