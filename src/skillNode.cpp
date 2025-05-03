@@ -10,8 +10,8 @@ SkillNode::SkillNode(Skill* skill, SkillNode* left, SkillNode* right) : skill(sk
 
 SkillNode::~SkillNode() {
     delete skill;
-    delete left;
-    delete right;
+    // delete left;
+    // delete right;
 }
 
 SkillNode::SkillNode(const SkillNode& other): skill(new Skill(*other.skill)) {
