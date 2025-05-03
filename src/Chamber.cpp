@@ -2,8 +2,12 @@
 
 #include <iostream>
 
-Chamber::Chamber(bool isLast, int minMobLevel, int maxMobLevel, Mobloot& mobLoots)
-    : isLastChamber(isLast), minMobLevel(minMobLevel), maxMobLevel(maxMobLevel), mobLoots(&mobLoots) {
+Chamber::Chamber(bool isLast, int minMobLevel, int maxMobLevel,
+                 Mobloot& mobLoots)
+    : isLastChamber(isLast),
+      minMobLevel(minMobLevel),
+      maxMobLevel(maxMobLevel),
+      mobLoots(&mobLoots) {
     rewardExp = generateRewardExp();
     rewardGold = generateRewardGold();
     generateEnemies();
@@ -89,7 +93,8 @@ int Chamber::generateRewardExp() {
 
 int Chamber::generateEnemyCount() {
     if (isLastChamber) {
-        return Randomizer::random(MIN_ENEMIES_LAST_CHAMBER, MAX_ENEMIES_LAST_CHAMBER);
+        return Randomizer::random(MIN_ENEMIES_LAST_CHAMBER,
+                                  MAX_ENEMIES_LAST_CHAMBER);
     } else {
         return Randomizer::random(MIN_ENEMIES_CHAMBER, MAX_ENEMIES_CHAMBER);
     }
@@ -166,7 +171,8 @@ void Chamber::generateEnemies() {
     }
 }
 
-bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) {
+bool Chamber::battle(Character& c, Inventory& inv, Reward& prize,
+                     Items& items) {
     for (int i = 0; i < enemyCount; i++) {
         bool isCharTurn = true;
         enemies[i]->setCurrentHealth(enemies[i]->getMaxHealth());
@@ -176,7 +182,8 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
                 c.applyActiveEffect();
                 c.heal(c.getHealthRegen());
                 c.restoreMana(c.getManaRegen());
-                if (c.getTurnEffectStatus("Stun")) {  // Cek apakah ada activeEffect stun
+                if (c.getTurnEffectStatus(
+                        "Stun")) {  // Cek apakah ada activeEffect stun
                     std::cout << "Character Terkena Stun! Chamber.cpp\n";
                     std::cout << "\n==========================\n";
                     std::cout << "SETELAH APPLY EFFECT\n";
@@ -192,19 +199,22 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
                 c.applyActiveEffect();
                 displayPlayerStatus(c);
                 std::cout << "\n==========================\n";
-                
-                // Regen health and mana (hanya dipanggil jika tidak ada efek stun)
+
+                // Regen health and mana (hanya dipanggil jika tidak ada efek
+                // stun)
                 c.heal(c.getHealthRegen());
                 c.restoreMana(c.getManaRegen());
                 std::cout << "Character regen called\n";
-                
-                std::cout << "Enemy: " << i << "/" << enemyCount << " | Turn: " << turnCtr << std::endl; 
+
+                std::cout << "Enemy: " << i << "/" << enemyCount
+                          << " | Turn: " << turnCtr << std::endl;
                 std::cout << "\n";
-                displayPlayerStatus(c) ;
+                displayPlayerStatus(c);
                 std::cout << "\n";
                 displayEnemyStatus(enemies[i]);
                 std::cout << "\n";
-                std::cout << "==============================================\n\n";
+                std::cout
+                    << "==============================================\n\n";
 
                 int opt = inputOption();
                 if (opt == 1) {
@@ -222,8 +232,10 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
                         continue;
                     }
                     int skillOpt = inputSkillOption(&c);
-                    c.useSkill(c.getSkills()[skillOpt - 1], *enemies[i]);
-                    std::cout << "Character uses: " << c.getSkills()[skillOpt - 1]->getName() << std::endl;
+                    c.useSkill(c.getSkills()[skillOpt - 1], *enemies[i], inv);
+                    std::cout << "Character uses: "
+                              << c.getSkills()[skillOpt - 1]->getName()
+                              << std::endl;
                     displayEnemyStatus(enemies[i]);
                     std::cout << "=============================\n";
                 } else if (opt == 3) {
@@ -233,11 +245,15 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
                     useItemOption(c, inv, items, *enemies[i]);
                 } else if (opt == 4) {  // KABUR
                     return false;
+                } else if (opt == 5) {
+                    return true;
                 }
                 removeExpiredEffects(&c);
                 turnCtr++;
             } else {
-                enemies[i]->applyActiveEffect();
+                std::cout << "Enemy Turn! Chamber.cpp\n";
+                std::cout << "Enemy level: " << enemies[i]->getLevel()
+                          << std::endl;
                 if (enemies[i]->getTurnEffectStatus("Stun")) {
                     std::cout << "Enemy Terkena Stun! Chamber.cpp\n";
                     std::cout << "\n==========================\n";
@@ -253,8 +269,9 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
                 enemies[i]->applyActiveEffect();
                 displayEnemyStatus(enemies[i]);
                 std::cout << "==========================\n";
-                
-                // Regen health and mana (hanya dipanggil jika tidak ada efek stun)
+
+                // Regen health and mana (hanya dipanggil jika tidak ada efek
+                // stun)
                 enemies[i]->heal(enemies[i]->getHealthRegen());
                 enemies[i]->restoreMana(enemies[i]->getManaRegen());
                 std::cout << "Enemy regen called\n";
@@ -267,10 +284,19 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
                         std::cout << "No skills available." << std::endl;
                         continue;
                     }
-                    int skillOpt = Randomizer::random(1, enemies[i]->getSkills().size() - 1);
-                    std::cout << "Skill enemy tidak mungkin heal untuk keperluan debugging\n";
-                    enemies[i]->useSkill(enemies[i]->getSkills()[skillOpt], c);
-                    std::cout << "Enemy uses: " << enemies[i]->getSkills()[skillOpt]->getName() << std::endl;
+                    // int skillOpt = Randomizer::random(1,
+                    // enemies[i]->getSkills().size() - 1);
+                    std::cout << "Enemy pasti skill 1\n";
+                    int skillOpt = 1;
+                    // std::cout << "Skill enemy tidak mungkin heal untuk
+                    // keperluan debugging\n";
+                    // enemies[i]->useSkill(enemies[i]->getSkills()[skillOpt],
+                    // c, inv);
+                    enemies[i]->useSkill(enemies[i]->getSkills()[skillOpt], c,
+                                         inv);
+                    std::cout << "Enemy uses: "
+                              << enemies[i]->getSkills()[skillOpt]->getName()
+                              << std::endl;
                     displayPlayerStatus(c);
                     std::cout << "=============================\n";
                 }
@@ -311,15 +337,22 @@ void Chamber::displayInfo() {
         std::cout << "Enemy " << i + 1 << ": " << std::endl;
         std::cout << enemies[i]->getName() << std::endl;
         std::cout << "Level: " << enemies[i]->getLevel() << std::endl;
-        std::cout << "Health: " << enemies[i]->getCurrentHealth() << "/" << enemies[i]->getMaxHealth() << std::endl;
-        std::cout << "Health Regen: " << enemies[i]->getHealthRegen() << std::endl;
-        std::cout << "Mana: " << enemies[i]->getCurrentMana() << "/" << enemies[i]->getMaxMana() << std::endl;
+        std::cout << "Health: " << enemies[i]->getCurrentHealth() << "/"
+                  << enemies[i]->getMaxHealth() << std::endl;
+        std::cout << "Health Regen: " << enemies[i]->getHealthRegen()
+                  << std::endl;
+        std::cout << "Mana: " << enemies[i]->getCurrentMana() << "/"
+                  << enemies[i]->getMaxMana() << std::endl;
         std::cout << "Mana Regen: " << enemies[i]->getManaRegen() << std::endl;
-        std::cout << "Attack Damage: " << enemies[i]->getAttackDamage() << std::endl;
+        std::cout << "Attack Damage: " << enemies[i]->getAttackDamage()
+                  << std::endl;
         std::cout << "Exp Reward: " << enemies[i]->getExpReward() << std::endl;
-        std::cout << "Intelligence: " << enemies[i]->getStats().getIntelligence() << std::endl;
-        std::cout << "Agility: " << enemies[i]->getStats().getAgility() << std::endl;
-        std::cout << "Strength: " << enemies[i]->getStats().getStrength() << std::endl;
+        std::cout << "Intelligence: "
+                  << enemies[i]->getStats().getIntelligence() << std::endl;
+        std::cout << "Agility: " << enemies[i]->getStats().getAgility()
+                  << std::endl;
+        std::cout << "Strength: " << enemies[i]->getStats().getStrength()
+                  << std::endl;
         std::cout << "Exp Reward: " << enemies[i]->getExpReward() << std::endl;
         std::cout << "Skills: " << std::endl;
         int ctr = 1;
@@ -327,27 +360,38 @@ void Chamber::displayInfo() {
             std::cout << "    " << ctr << ". " << skill->getName() << std::endl;
             std::cout << "    Name: " << skill->getName() << std::endl;
             std::cout << "    Mana Cost: " << skill->getManaCost() << std::endl;
-            std::cout << "    Master Cost: " << skill->getMasterCost() << std::endl;
-            std::cout << "    Skill Chance: " << skill->getskillChance() << std::endl;
+            std::cout << "    Master Cost: " << skill->getMasterCost()
+                      << std::endl;
+            std::cout << "    Skill Chance: " << skill->getskillChance()
+                      << std::endl;
             std::cout << "    Damage: " << skill->getDamage() << std::endl;
             ctr++;
             int ctr2 = 1;
             for (auto* effect : skill->getEffects()) {
-                std::cout << "        " << ctr2 << ". " << effect->getName() << std::endl;
-                std::cout << "        Effect: " << effect->getName() << std::endl;
-                std::cout << "        Effect Desc: " << effect->getDescription() << std::endl;
-                std::cout << "        Effect Duration: " << effect->getDuration() << std::endl;
-                std::cout << "        Effect RemainingDur: " << effect->getRemainingDuration() << std::endl;
+                std::cout << "        " << ctr2 << ". " << effect->getName()
+                          << std::endl;
+                std::cout << "        Effect: " << effect->getName()
+                          << std::endl;
+                std::cout << "        Effect Desc: " << effect->getDescription()
+                          << std::endl;
+                std::cout << "        Effect Duration: "
+                          << effect->getDuration() << std::endl;
+                std::cout << "        Effect RemainingDur: "
+                          << effect->getRemainingDuration() << std::endl;
             }
         }
         std::cout << "Active Effects: " << std::endl;
         int ctr3 = 1;
         for (auto* effect : enemies[i]->getActiveEffects()) {
-            std::cout << "    " << ctr3 << ". " << effect->getName() << std::endl;
+            std::cout << "    " << ctr3 << ". " << effect->getName()
+                      << std::endl;
             std::cout << "    Effect: " << effect->getName() << std::endl;
-            std::cout << "    Effect Desc: " << effect->getDescription() << std::endl;
-            std::cout << "    Effect Duration: " << effect->getDuration() << std::endl;
-            std::cout << "    Effect RemainingDur: " << effect->getRemainingDuration() << std::endl;
+            std::cout << "    Effect Desc: " << effect->getDescription()
+                      << std::endl;
+            std::cout << "    Effect Duration: " << effect->getDuration()
+                      << std::endl;
+            std::cout << "    Effect RemainingDur: "
+                      << effect->getRemainingDuration() << std::endl;
             ctr3++;
         }
         std::cout << "Loot Drop: BELOM ADA GETTERNYA!" << std::endl;
@@ -359,14 +403,15 @@ int Chamber::inputOption() {
     int opt;
     bool isValid = false;
     while (!isValid) {
-        std::cout << "Aksi -> 1. Attack / 2. Use Skill / 3. Use Item / 4. Kabur : ";
+        std::cout
+            << "Aksi -> 1. Attack / 2. Use Skill / 3. Use Item / 4. Kabur / 5. Cheat: ";
         std::cin >> opt;
 
         if (std::cin.fail()) {
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cout << "Masukan tidak valid." << std::endl;
-        } else if (opt >= 1 && opt <= 4) {
+        } else if (opt >= 1 && opt <= 5) {
             isValid = true;
         } else {
             std::cout << "Masukan tidak valid." << std::endl;
@@ -423,7 +468,8 @@ int Chamber::inputSkillOption(Unit* u) {
 //     return opt;
 // }
 
-void Chamber::useItemOption(Character& c, Inventory& inv, Items& itemsMap, Unit& t) {
+void Chamber::useItemOption(Character& c, Inventory& inv, Items& itemsMap,
+                            Unit& t) {
     bool alreadyUseItem = false;
     while (true) {
         std::cout << "Selamat datang di menu penggunaan item!\n";
@@ -439,7 +485,8 @@ void Chamber::useItemOption(Character& c, Inventory& inv, Items& itemsMap, Unit&
 
             if (std::cin.fail()) {
                 std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(),
+                                '\n');
                 std::cout << "Masukan tidak valid." << std::endl;
             } else if (opt >= 1 && opt <= 3) {
                 isValid = true;
@@ -462,7 +509,8 @@ void Chamber::useItemOption(Character& c, Inventory& inv, Items& itemsMap, Unit&
     }
 }
 
-bool Chamber::useItemMenu(Character &c, Inventory &inv, Items &itemsMap, Unit &t) {
+bool Chamber::useItemMenu(Character& c, Inventory& inv, Items& itemsMap,
+                          Unit& t) {
     std::cout << "\n==========================\n";
     std::cout << "Items di Backpack: \n";
     inv.displayBackpack();
@@ -477,18 +525,21 @@ bool Chamber::useItemMenu(Character &c, Inventory &inv, Items &itemsMap, Unit &t
     return true;
 }
 
-void Chamber::unequipMenu(Character &c, Unit &t, Inventory &inv) {
+void Chamber::unequipMenu(Character& c, Unit& t, Inventory& inv) {
     while (true) {
         std::cout << "\n==========================\n";
         std::cout << "Equipped Items: \n";
         inv.displayEquipment();
-        
+
         bool isInputTrue = false;
         std::string opt;
         while (!isInputTrue) {
-            std::cout << "Pilih item yang ingin di-un-equip (WEAPON/ARMOR_HEAD/ARMOR_BODY/ARMOR_FOOT/PENDANT/KELUAR): ";
+            std::cout
+                << "Pilih item yang ingin di-un-equip "
+                   "(WEAPON/ARMOR_HEAD/ARMOR_BODY/ARMOR_FOOT/PENDANT/KELUAR): ";
             std::cin >> opt;
-            if (opt == "WEAPON" || opt == "ARMOR_HEAD" || opt == "ARMOR_BODY" || opt == "ARMOR_FOOT" || opt == "PENDANT" || opt == "KELUAR") {
+            if (opt == "WEAPON" || opt == "ARMOR_HEAD" || opt == "ARMOR_BODY" ||
+                opt == "ARMOR_FOOT" || opt == "PENDANT" || opt == "KELUAR") {
                 isInputTrue = true;
             } else {
                 std::cout << "Input tidak valid." << std::endl;
@@ -517,22 +568,30 @@ void Chamber::unequipMenu(Character &c, Unit &t, Inventory &inv) {
     }
 }
 
-void Chamber::displayPlayerStatus(Character &c) {
+void Chamber::displayPlayerStatus(Character& c) {
     std::cout << c.getName() << "'s Status\n";
-    std::cout << "Health: " << c.getCurrentHealth() << "/" << c.getMaxHealth() << " | +" << c.getHealthRegen() << "/turn\n";
-    std::cout << "Mana: " << c.getCurrentMana() << "/" << c.getMaxMana() << " | +" << c.getManaRegen() << "/turn\n";
+    std::cout << "Health: " << c.getCurrentHealth() << "/" << c.getMaxHealth()
+              << " | +" << c.getHealthRegen() << "/turn\n";
+    std::cout << "Mana: " << c.getCurrentMana() << "/" << c.getMaxMana()
+              << " | +" << c.getManaRegen() << "/turn\n";
     std::cout << "Active Effects: \n";
     for (auto* effect : c.getActiveEffects()) {
-        std::cout << "    " << effect->getName() << " -> " << effect->getRemainingDuration() << "turn left\n";
+        std::cout << "    " << effect->getName() << " -> "
+                  << effect->getRemainingDuration() << "turn left\n";
     }
 }
 
-void Chamber::displayEnemyStatus(Mobs *enemy) {
+void Chamber::displayEnemyStatus(Mobs* enemy) {
     std::cout << enemy->getName() << "'s Status\n";
-    std::cout << "Health: " << enemy->getCurrentHealth() << "/" << enemy->getMaxHealth() << " | +" << enemy->getHealthRegen() << "/turn\n";
-    std::cout << "Mana: " << enemy->getCurrentMana() << "/" << enemy->getMaxMana() << " | +" << enemy->getManaRegen() << "/turn\n";
+    std::cout << "Health: " << enemy->getCurrentHealth() << "/"
+              << enemy->getMaxHealth() << " | +" << enemy->getHealthRegen()
+              << "/turn\n";
+    std::cout << "Mana: " << enemy->getCurrentMana() << "/"
+              << enemy->getMaxMana() << " | +" << enemy->getManaRegen()
+              << "/turn\n";
     std::cout << "Active Effects: \n";
     for (auto* effect : enemy->getActiveEffects()) {
-        std::cout << "    " << effect->getName() << " -> " << effect->getRemainingDuration() << "turn left\n";
+        std::cout << "    " << effect->getName() << " -> "
+                  << effect->getRemainingDuration() << "turn left\n";
     }
 }

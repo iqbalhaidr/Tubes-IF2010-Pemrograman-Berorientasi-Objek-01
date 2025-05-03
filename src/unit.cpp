@@ -13,7 +13,12 @@ Unit::Unit(string name, int strength, int agility, int intelligence, int level)
     this->level = level;
 }
 
-Unit::~Unit() {}
+Unit::~Unit() {
+    for (Effect* effect : activeEffects) {
+        delete effect;
+    }
+    activeEffects.clear();
+}
 
 string Unit::getName() const { return name; }
 int Unit::getCurrentHealth() const { return currentHealth; }
@@ -100,6 +105,7 @@ void Unit::attack(Unit& target, Inventory& inventory) {
 }
 
 void Unit::takeDamage(int damage, Inventory& inventory) {
+    std::cout << "damage from takeDamage(): " << damage << std::endl;
     int defence = 0;  // damage reduction
     Item* armorHead = inventory.getEquippedItem("ARMOR_HEAD");
     if (armorHead != nullptr) {
@@ -155,17 +161,16 @@ void Unit::restoreMana(int amount) {
 
 void Unit::useSkill(Skill* skill, Unit& target, Inventory& inventory) {
     cout << "Using skill: " << skill->getName() << endl;
+    cout << "Skill effect: " << skill->getEffects()[0]->getName() << endl;
+    cout << "Skill damage:" << skill->getDamage() << endl;
     if (currentMana < skill->getManaCost()) {
         cout << "Not enough mana to use " << skill->getName() << endl;
         return;
     }
-    // if ((rand() % 100 + 1) > skill->getskillChance()) {
-    //     return;
-    // }
-    // if ((rand() % 100 + 1) > skill->getskillChance()) {
-    //     std::cout << "Skill tidak mengenai target" << std::endl;
-    //     return;
-    // }
+    if ((rand() % 100 + 1) > skill->getskillChance()) {
+        std::cout << "Skill tidak mengenai target" << std::endl;
+        return;
+    }
     std::cout << "Skill mengenai target" << std::endl;
     currentMana -= skill->getManaCost();
     int totalDamage = skill->getDamage();
@@ -179,6 +184,8 @@ void Unit::useSkill(Skill* skill, Unit& target, Inventory& inventory) {
              effect->getName() ==
                  "Infernal Curse")) {  // kasus crit masukin efek crit dari
                                        // skill ke vector dulu
+            std::cout << "masuk if pertama unit.cpp: " << effect->getName()
+                      << std::endl;
             target.addActiveEffect(effect);
         } else if (effect->isDefensive() || effect->isDamage()) {
             this->addActiveEffect(effect);
@@ -248,7 +255,7 @@ void Unit::applyActiveEffect() { //awal
 
 void Unit::updateBasicAttributes() {
     setMaxHealth(100 + 22 * getStats().getStrength());
-    setHealthRegen(10 * getStats().getStrength());
+    setHealthRegen(8 * getStats().getStrength());
     setMaxMana(60 + 12 * getStats().getIntelligence());
     setManaRegen(5 * getStats().getIntelligence());
 }

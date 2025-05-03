@@ -63,7 +63,7 @@ void Reward::displayInfo() {
 
     int ctr = 1;
     for (auto it = items.cbegin(); it != items.cend(); ++it) {
-        std::cout << "    " << ctr << ". " << it->second << " " << it->first->getName() << std::endl;
+        std::cout << "    " << ctr << ". [" << it->second << "] " << it->first->getName() << std::endl;
     }
 }
 

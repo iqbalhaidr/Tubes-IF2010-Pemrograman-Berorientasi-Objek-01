@@ -31,16 +31,16 @@ void Mage::useSkill(Skill* skill, Unit& target, Inventory& inventory) {
 }
 
 void Mage::updateBasicAttributes() {
-    setAttackDamage(8 + 10*getStats().getIntelligence()); 
-    setExtraMana(getStats().getIntelligence() / 3);
+    setAttackDamage(8 + 6*getStats().getIntelligence() + 2*getStats().getAgility()); 
+    setExtraMana(getStats().getIntelligence() / 7);
 }
 
 void Mage::levelUp() {
     setMasteryCost(getMasteryCost() + 5);
     setExp(0);
-    stats.setStrength(stats.getStrength() * 1.2);
-    stats.setAgility(stats.getAgility() * 1.5);
-    stats.setIntelligence(stats.getIntelligence() * 2);
+    stats.setStrength(stats.getStrength() + 1);
+    stats.setAgility(stats.getAgility() + 2);
+    stats.setIntelligence(stats.getIntelligence() + 3);
     Unit::updateBasicAttributes(); 
     updateBasicAttributes();
     Character::reset();

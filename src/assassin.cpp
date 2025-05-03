@@ -42,14 +42,14 @@ void Assassin::takeDamage(int damage, Inventory& inventory) {
 void Assassin::updateBasicAttributes() {
     setAttackDamage(12 + 7 * getStats().getAgility() + getStats().getStrength());
     setCriticalMultiplier(getStats().getAgility() / 5);
-    setCriticalChance(getStats().getAgility() * 4 / 100);
+    setCriticalChance(getStats().getAgility() / 1.5);
 }
 void Assassin::levelUp() {
     setMasteryCost(getMasteryCost() + 5);
     setExp(0);
-    stats.setStrength(stats.getStrength() * 1.2);
-    stats.setAgility(stats.getAgility() * 1.5);
-    stats.setIntelligence(stats.getIntelligence() * 1.3);
+    stats.setStrength(stats.getStrength() + 1);
+    stats.setAgility(stats.getAgility() * + 3);
+    stats.setIntelligence(stats.getIntelligence() + 2);
     Unit::updateBasicAttributes(); 
     updateBasicAttributes();
     Character::reset();

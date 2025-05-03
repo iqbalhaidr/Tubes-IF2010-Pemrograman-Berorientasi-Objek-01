@@ -11,7 +11,7 @@ class Fighter : public Character {
         void updateBasicAttributes() override;
     public:
         // ctor dtor
-        Fighter(string name, int strength = 26, int agility = 17, int intelligence = 13, int level = BASE_LEVEL, int exp = BASE_EXP, int gold = BASE_GOLD, int masteryCost = BASE_MASTERY_COST, vector<string> skillNames = {});
+        Fighter(string name, int strength = 27, int agility = 17, int intelligence = 15, int level = BASE_LEVEL, int exp = BASE_EXP, int gold = BASE_GOLD, int masteryCost = BASE_MASTERY_COST, vector<string> skillNames = {});
         ~Fighter();
 
         // setter getter
