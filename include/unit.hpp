@@ -74,10 +74,10 @@ class Unit {
 
         // Fungsi
         virtual void attack(Unit& target, Inventory& inventory); // TEMPORARY
-        virtual void takeDamage(int damage);
+        virtual void takeDamage(int damage, Inventory& inventory);
         virtual void heal(int amount);
         virtual void restoreMana(int amount);
-        virtual void useSkill(Skill* skill, Unit& target); // TEMPORARY
+        virtual void useSkill(Skill* skill, Unit& target, Inventory& inventory); // TEMPORARY
         virtual void addSkill(Skill* skill); // TEMPORARY
         virtual void removeSkill(Skill* skill); // TEMPORARY
         void addActiveEffect(Effect* effect); // TEMPORARY

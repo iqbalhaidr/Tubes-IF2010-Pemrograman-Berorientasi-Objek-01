@@ -1,5 +1,6 @@
 #include "../include/characters.hpp"
 #include "../include/exception.hpp"
+#include <iterator>
 #include <sstream>
 #include <fstream>
 #include <iostream>
@@ -23,28 +24,43 @@ Characters::Characters(const string& directory) {
     while (getline(file, line)) {
         if (line.empty() || line[0] == '#') continue;
 
-        stringstream ss(line);
-        string name, type;
-        int strength, agility, intelligence;
-        int level, exp, gold, masteryCost;
+        istringstream iss(line);
+        vector<string> columns{istream_iterator<string>{iss}, istream_iterator<string>{}};
 
-        if (ss >> name >> strength >> agility >> intelligence >> level >> exp >> gold >> masteryCost >> type) {
+        if (columns.size() < 9) {
+            throw InputOutputException("Format baris salah di file characters.txt");
+        }
+        try {
+            string name = columns[0];
+            int strength = stoi(columns[1]);
+            int agility = stoi(columns[2]);
+            int intelligence = stoi(columns[3]);
+            int level = stoi(columns[4]);
+            int exp = stoi(columns[5]);
+            int gold = stoi(columns[6]);
+            int masteryCost = stoi(columns[7]);
+            string type = columns[8];
+            vector<string> skillNames;
+            for (size_t i = 9; i < columns.size(); ++i) {
+                skillNames.push_back(columns[i]);
+            }
             if (type == "Mage") {
-                addCharacters(new Mage(name, strength, agility, intelligence, level, exp, gold, masteryCost));
+                addCharacters(new Mage(name, strength, agility, intelligence, level, exp, gold, masteryCost, skillNames));
             } else if (type == "Assassin") {
-                addCharacters(new Assassin(name, strength, agility, intelligence, level, exp, gold, masteryCost));
+                addCharacters(new Assassin(name, strength, agility, intelligence, level, exp, gold, masteryCost, skillNames));
             } else if (type == "Fighter") {
-                addCharacters(new Fighter(name, strength ,agility ,intelligence ,level ,exp ,gold ,masteryCost));
+                addCharacters(new Fighter(name, strength ,agility ,intelligence ,level ,exp ,gold ,masteryCost, skillNames));
             } else if (type == "Berserker") {
-                addCharacters(new Berserker(name, strength, agility, intelligence, level, exp, gold, masteryCost));
+                addCharacters(new Berserker(name, strength, agility, intelligence, level, exp, gold, masteryCost, skillNames));
             } else if (type == "Necromancer") {
-                addCharacters(new Necromancer(name, strength, agility, intelligence, level, exp, gold, masteryCost));
+                addCharacters(new Necromancer(name, strength, agility, intelligence, level, exp, gold, masteryCost, skillNames));
             } else {
                 throw InputOutputException("Tipe karakter tidak valid");
             }
-        } else {
-            throw InputOutputException("Format baris salah di file characters.txt");
+        } catch (const invalid_argument& e) {
+            throw InputOutputException("Format angka tidak valid di file characters.txt");
         }
+    
     }   
 }
 
@@ -73,6 +89,7 @@ Character* Characters::getCharacterbyName(const string& name) {
     if (it != characterMap.end()) {
         return it->second;
     }
+
     return nullptr;
 }
 
@@ -94,7 +111,13 @@ void Characters::save(const string& directory) const {
             << c->getGold() << " "
             << c->getMasteryCost() << " "
             << c->getType();
+
+        const vector<Skill*>& skills = c->getSkills();
+        for (const Skill* skill : skills) {
+            file << " " << skill->getName();
+        }
         file << endl;
+
     
     }
     file.close();

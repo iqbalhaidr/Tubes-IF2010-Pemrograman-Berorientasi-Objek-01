@@ -15,7 +15,7 @@ class Necromancer : public Character {
         void updateBasicAttributes() override;
     public:
         // ctor dtor
-        Necromancer(string name, int strength = 13, int agility = 16, int intelligence = 28, int level = BASE_LEVEL, int exp = BASE_EXP, int gold = BASE_GOLD, int masteryCost = BASE_MASTERY_COST);
+        Necromancer(string name, int strength = 13, int agility = 16, int intelligence = 28, int level = BASE_LEVEL, int exp = BASE_EXP, int gold = BASE_GOLD, int masteryCost = BASE_MASTERY_COST, vector<string> skillNames = {});
         ~Necromancer();
 
         // setter getter
@@ -25,7 +25,7 @@ class Necromancer : public Character {
 
         // Fungsi
         void attack(Unit& target, Inventory& inventory) ;
-        void useSkill(Skill* skill, Unit& target);
+        void useSkill(Skill* skill, Unit& target, Inventory& inventory);
         void levelUp();
 };
 
