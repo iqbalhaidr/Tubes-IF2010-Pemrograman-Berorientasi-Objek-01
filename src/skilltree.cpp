@@ -16,7 +16,7 @@ SkillTree::SkillTree(string char_type){
         healthRegenPlus->setHealAmount(healthRegenPlus->getHealAmount() * 1.5);
 
         // Skill1
-        Skill* f1_1 = new Skill("Stone Skin", 10, 10,  80, 50, {damageReduction});
+        Skill* f1_1 = new Skill("Stone Skin", 10, 10,  80, 300, {damageReduction});
         Skill* f1_2 = new Skill("Divine Shield", 10, 10,  80, 50, {damageReductionPlusPlus});
         Skill* f1_3 = new Skill("Guardian's Oath", 10, 10,  80, 50, {damageReductionPlus, healthRegenPlus});
 
@@ -162,7 +162,7 @@ SkillTree::SkillTree(string char_type){
         Skill* n1_3 = new Skill("Necrotic Wellspring", 10, 10,  80, 50, {manaRegenPlusPlus});
 
         // Necromancer skill2
-        EffectPoison* PoisonPlusPlus = dynamic_cast<EffectPoison*>(Effect::createEffect("Poison"));
+        EffectPoison* PoisonPlusPlus = dynamic_cast<EffectPoison*>(Effect::createEffect("Racun"));
         PoisonPlusPlus->setDamage(PoisonPlusPlus->getDamage() * 2);
 
         Skill* n2_1 = new Skill("Plague Surge", 10, 10,  80, 50, {PoisonPlusPlus});
@@ -215,7 +215,10 @@ SkillTree::SkillTree(string char_type){
 
         root3 = new SkillNode(b3_1);
     }
-
+    root1->unlocked = true;
+    root2->unlocked = true;
+    root3->unlocked = true;
+    
     currentSkills.push_back(root1);
     currentSkills.push_back(root2);
     currentSkills.push_back(root3);

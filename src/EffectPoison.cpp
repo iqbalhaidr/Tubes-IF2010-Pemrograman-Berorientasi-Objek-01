@@ -28,7 +28,7 @@ void EffectPoison::setChance(int chance) {
 }
 
 double EffectPoison::apply(Unit* unit) {
-    remainingDuration -= 1;
+    // remainingDuration -= 1;
     return damage; 
 }
 

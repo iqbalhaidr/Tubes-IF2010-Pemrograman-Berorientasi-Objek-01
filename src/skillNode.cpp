@@ -6,7 +6,7 @@ SkillNode::SkillNode(Skill* skill) : skill(skill){
 }
 
 
-SkillNode::SkillNode(Skill* skill, SkillNode* left, SkillNode* right) : skill(skill), left(left), right(right) {}
+SkillNode::SkillNode(Skill* skill, SkillNode* left, SkillNode* right) : skill(skill), left(left), right(right) {unlocked = false;}
 
 SkillNode::~SkillNode() {
     delete skill;
