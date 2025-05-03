@@ -4,6 +4,7 @@ using namespace std;
 
 Character::Character(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, vector<string> skillNames, string type)
 : Unit(name, strength, agility, intelligence, level), skillTree(type) {
+    this->isChar = true;
     if (!skillNames.empty()) {
         loadCharacterSkills(skillNames);
     }

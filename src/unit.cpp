@@ -80,16 +80,18 @@ int Unit::calculateDamage(Unit& target, int baseDamage, Inventory& inventory) {
     if (totalDamage < 0) totalDamage = 0;
     totalDamage += baseDamage;  // total damage = base damage + critical damage
     // cout << "totalDamage sblm wepen: " << totalDamage << endl;
-    Item* weapon = inventory.getEquippedItem("WEAPON");
-    if (weapon != nullptr) {
-        totalDamage += weapon->getFinalStat();  // total damage + weapon damage
-        cout << "Weapon name: " << weapon->getName() << std::endl;
-        std::cout << "Weapon damage: " << weapon->getFinalStat() << std::endl;
-    }
+    if (this->isChar = true) {
+        Item* weapon = inventory.getEquippedItem("WEAPON");
+        if (weapon != nullptr) {
+            totalDamage += weapon->getFinalStat();  // total damage + weapon damage
+            cout << "Weapon name: " << weapon->getName() << std::endl;
+            std::cout << "Weapon damage: " << weapon->getFinalStat() << std::endl;
+        }
 
-    Item* pendant = inventory.getEquippedItem("PENDANT");
-    if (pendant != nullptr) {
-        totalDamage += pendant->getFinalStat();  // total damage + weapon damage
+        Item* pendant = inventory.getEquippedItem("PENDANT");
+        if (pendant != nullptr) {
+            totalDamage += pendant->getFinalStat();  // total damage + weapon damage
+        }
     }
     // cout << "totalDamage sblm lvl: " << totalDamage << endl;
     // cout << "baseDamage: " << baseDamage << endl;
@@ -107,19 +109,21 @@ void Unit::attack(Unit& target, Inventory& inventory) {
 void Unit::takeDamage(int damage, Inventory& inventory) {
     std::cout << "damage from takeDamage(): " << damage << std::endl;
     int defence = 0;  // damage reduction
-    Item* armorHead = inventory.getEquippedItem("ARMOR_HEAD");
-    if (armorHead != nullptr) {
-        defence += armorHead->getFinalStat();
-    }
+    if (this->isChar = true) {
+        Item* armorHead = inventory.getEquippedItem("ARMOR_HEAD");
+        if (armorHead != nullptr) {
+            defence += armorHead->getFinalStat();
+        }
 
-    Item* armorBody = inventory.getEquippedItem("ARMOR_BODY");
-    if (armorBody != nullptr) {
-        defence += armorBody->getFinalStat();
-    }
+        Item* armorBody = inventory.getEquippedItem("ARMOR_BODY");
+        if (armorBody != nullptr) {
+            defence += armorBody->getFinalStat();
+        }
 
-    Item* armorFoot = inventory.getEquippedItem("ARMOR_FOOT");
-    if (armorFoot != nullptr) {
-        defence += armorFoot->getFinalStat();
+        Item* armorFoot = inventory.getEquippedItem("ARMOR_FOOT");
+        if (armorFoot != nullptr) {
+            defence += armorFoot->getFinalStat();
+        }
     }
 
     for (const auto& activeEffect : getCombinedEffect(activeEffects)) {

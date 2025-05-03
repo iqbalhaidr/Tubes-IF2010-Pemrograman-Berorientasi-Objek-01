@@ -34,6 +34,7 @@ class Unit {
         int manaRegen;
         int attackDamage;
         int level;
+        bool isChar;
         Stats stats;
         vector<Skill*> skills;
         vector<Effect*> activeEffects;

@@ -2,6 +2,7 @@
 
 Mobs::Mobs(string name, int level, int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots)
  : Unit(name, strength, agility, intelligence, level) {
+    this->isChar = false;
     this->expReward = expReward; 
     this->LootDrop = mobLoots.getLootforMob(name);
     vector<Effect*> effects;
