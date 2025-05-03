@@ -9,6 +9,7 @@
 // #include "../include/Dungeon.hpp"
 // #include "../include/fighter.hpp"
 // #include "../include/assassin.hpp"
+#include "../include/Shop.hpp"
 
 using namespace std;
 
@@ -143,6 +144,17 @@ EffectManaReduc.cpp
 //     ds.start(f, inv, items);
 // }
 
+void shopTest() {
+    Shop shop("../data/");
+    std::cout << "Shop created" << std::endl;
+    shop.displayShop();
+    std::cout << "Shop displayed" << std::endl;
+    // shop.buyItem("Potion", 1);
+    // std::cout << "Item bought" << std::endl;
+    // shop.sellItem("Potion", 1, inv);
+    // std::cout << "Item sold" << std::endl;
+}
+
 int main() {
     // int i = 5;
     // for (; i < 10; i++) {
@@ -161,4 +173,6 @@ int main() {
     // itemInventoryParserTest();
     // itemsParserTest();
     // dungeonTest();
+    // dungeonTest();
+    // shopTest();
 }
