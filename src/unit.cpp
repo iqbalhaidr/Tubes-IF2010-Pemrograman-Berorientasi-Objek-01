@@ -167,6 +167,14 @@ void Unit::useSkill(Skill* skill, Unit& target, Inventory& inventory) {
     cout << "Using skill: " << skill->getName() << endl;
     cout << "Skill effect: " << skill->getEffects()[0]->getName() << endl;
     cout << "Skill damage:" << skill->getDamage() << endl;
+
+    // cek skill ada di vector skill atau tidak
+    bool isSkillValid = std::find(skills.begin(), skills.end(), skill) != skills.end();
+    if (!isSkillValid) {
+        cout << "Skill tidak valid\n";
+        return;
+    }
+
     if (currentMana < skill->getManaCost()) {
         cout << "Not enough mana to use " << skill->getName() << endl;
         return;
@@ -259,9 +267,9 @@ void Unit::applyActiveEffect() { //awal
 
 void Unit::updateBasicAttributes() {
     setMaxHealth(100 + 22 * getStats().getStrength());
-    setHealthRegen(8 * getStats().getStrength());
+    setHealthRegen(1.6 * getStats().getStrength());
     setMaxMana(60 + 12 * getStats().getIntelligence());
-    setManaRegen(5 * getStats().getIntelligence());
+    setManaRegen(1.3 * getStats().getIntelligence());
 }
 
 vector<Effect*> Unit::getCombinedEffect(

@@ -38,9 +38,9 @@ class Character : public Unit {
         void setGold(int gold);
         void setMasteryCost(int masteryCost);
         void setType(string type);
-        void setSkillTree(SkillTree skillTree);
         void displayAvailableSkillUpgrades();
         void UpgradeSkill(string& name);
+        void displayCharacter();
 
         // Fungsi
         virtual void levelUp() = 0;
