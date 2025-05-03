@@ -181,6 +181,6 @@ int main() {
     // itemInventoryParserTest();
     // itemsParserTest();
     // dungeonTest();
-    // dungeonTest();
+    dungeonTest();
     // shopTest();
 }

@@ -179,23 +179,23 @@ void Player::reduceItemInvetory(const std::string& addAbleItem, int target){
 }
 
 
-int main() {
-    cout << "HAI" << endl;
-    Characters allChar("../data/");
-    cout << "HAI charac" << endl;
+// int main() {
+//     cout << "HAI" << endl;
+//     Characters allChar("../data/");
+//     cout << "HAI charac" << endl;
     
-    Items itemMap = Items::createFromDirectory("../data/");
-    cout << "HAI itemMap" << endl;
+//     Items itemMap = Items::createFromDirectory("../data/");
+//     cout << "HAI itemMap" << endl;
 
-    Shop shop("../data/");
-    cout << "HAI berhasil" << endl;
+//     Shop shop("../data/");
+//     cout << "HAI berhasil" << endl;
     
-    Player p1("../data/", "Fighter", itemMap, allChar);
-    cout << "HAI player" << endl;
+//     Player p1("../data/", "Fighter", itemMap, allChar);
+//     cout << "HAI player" << endl;
 
-    runShopMenu(p1, shop);
-    return 0;
-}
+//     runShopMenu(p1, shop);
+//     return 0;
+// }
 
 //command to start test run
 // g++ -o player Player.cpp items.cpp item.cpp effect.cpp EffectDamage.cpp EffectDefensive.cpp EffectHealthRegen.cpp EffectManaRegen.cpp EffectPoison.cpp EffectTurnBased.cpp  EffectHealth.cpp EffectTurn.cpp Weapon.cpp Pendant.cpp Armor.cpp Potion.cpp unit.cpp stats.cpp Skill.cpp Randomizer.cpp mobloot.cpp Dungeon.cpp Chamber.cpp Reward.cpp fighter.cpp character.cpp darkKnight.cpp demonLord.cpp goblin.cpp lich.cpp mobs.cpp necromancer.cpp ogre.cpp orc.cpp skeleton.cpp slime.cpp bossMobs.cpp basicMobs.cpp inventory.cpp EffectManaReduc.cpp characters.cpp shop.cpp skillNode.cpp skilltree.cpp mage.cpp berserker.cpp assassin.cpp
