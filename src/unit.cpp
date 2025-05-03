@@ -156,6 +156,8 @@ void Unit::restoreMana(int amount) {
 
 void Unit::useSkill(Skill* skill, Unit& target, Inventory& inventory) {
     cout << "Using skill: " << skill->getName() << endl;
+    cout << "Skill effect: " << skill->getEffects()[0]->getName() << endl;
+    cout << "Skill damage:" << skill->getDamage() << endl;
     if (currentMana < skill->getManaCost()) {
         cout << "Not enough mana to use " << skill->getName() << endl;
         return;
@@ -180,6 +182,8 @@ void Unit::useSkill(Skill* skill, Unit& target, Inventory& inventory) {
              effect->getName() ==
                  "Infernal Curse")) {  // kasus crit masukin efek crit dari
                                        // skill ke vector dulu
+            std::cout << "masuk if pertama unit.cpp: " << effect->getName()
+                      << std::endl;
             target.addActiveEffect(effect);
         } else if (effect->isDefensive() || effect->isDamage()) {
             this->addActiveEffect(effect);
@@ -235,6 +239,9 @@ void Unit::applyActiveEffect() {
                 restoreMana(activeEffect->apply(this));
             }
         } else if (activeEffect->isPoison()) {
+            EffectPoison* poisonEffect =
+                dynamic_cast<EffectPoison*>(activeEffect);
+            cout << poisonEffect->getDamage() << endl;
             currentHealth -= activeEffect->apply(this);
         } else if (activeEffect->isManaReduc()) {
             currentMana -= activeEffect->apply(this);

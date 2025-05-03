@@ -1,4 +1,4 @@
-EXC Excalibur Weapon A 100 Critical -
+EXC Excalibur Weapon A 200 Critical -
 DRA Dragon_Armor Armor A 200 Armor -
 MNP Mana_Potion Potion C 0 Critical -
 PHP Phoenix_Pendant Pendant B 0 Critical -

@@ -1,9 +1,10 @@
 #include "../include/Dungeon.hpp"
+
 #include <iostream>
 
 Dungeon::Dungeon(string rank, Mobloot &mobLoots, Items &items) : prize() {
     this->rank = rank;
-    this->penaltyExp = 100; // Tiap rank dibuat penalty sama
+    this->penaltyExp = 100;  // Tiap rank dibuat penalty sama
     this->penaltyGold = 100;
     helperSet(items);
     randomizeDoubleDungeon();
@@ -11,7 +12,7 @@ Dungeon::Dungeon(string rank, Mobloot &mobLoots, Items &items) : prize() {
 }
 
 Dungeon::~Dungeon() {
-    for (Chamber* c : chambers) {
+    for (Chamber *c : chambers) {
         delete c;
     }
     chambers.clear();
@@ -83,43 +84,52 @@ void Dungeon::generateChambers(Mobloot &mobLoots) {
         int maxMobLevel = isDD ? 200 : 100;
 
         for (int i = 0; i < totalChambers - 1; i++) {
-            chambers.push_back(new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
+            chambers.push_back(
+                new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
         }
-        chambers.push_back(new Chamber(true, minMobLevel, maxMobLevel, mobLoots));
+        chambers.push_back(
+            new Chamber(true, minMobLevel, maxMobLevel, mobLoots));
     } else if (rank == "A") {
         totalChambers = 5;
         int minMobLevel = isDD ? 60 : 30;
         int maxMobLevel = isDD ? 140 : 70;
 
         for (int i = 0; i < totalChambers - 1; i++) {
-            chambers.push_back(new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
+            chambers.push_back(
+                new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
         }
-        chambers.push_back(new Chamber(true, minMobLevel, maxMobLevel, mobLoots));
+        chambers.push_back(
+            new Chamber(true, minMobLevel, maxMobLevel, mobLoots));
     } else if (rank == "B") {
         totalChambers = 4;
         int minMobLevel = isDD ? 40 : 20;
         int maxMobLevel = isDD ? 100 : 50;
 
         for (int i = 0; i < totalChambers - 1; i++) {
-            chambers.push_back(new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
+            chambers.push_back(
+                new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
         }
-        chambers.push_back(new Chamber(true, minMobLevel, maxMobLevel, mobLoots));
+        chambers.push_back(
+            new Chamber(true, minMobLevel, maxMobLevel, mobLoots));
     } else if (rank == "C") {
         totalChambers = 3;
         int minMobLevel = isDD ? 20 : 10;
         int maxMobLevel = isDD ? 70 : 35;
 
         for (int i = 0; i < totalChambers - 1; i++) {
-            chambers.push_back(new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
+            chambers.push_back(
+                new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
         }
-        chambers.push_back(new Chamber(true, minMobLevel, maxMobLevel, mobLoots));
+        chambers.push_back(
+            new Chamber(true, minMobLevel, maxMobLevel, mobLoots));
     } else if (rank == "D") {
         totalChambers = 2;
         int minMobLevel = isDD ? 0 : 0;
         int maxMobLevel = isDD ? 50 : 25;
 
         for (int i = 0; i < totalChambers; i++) {
-            chambers.push_back(new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
+            chambers.push_back(
+                new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
         }
     } else if (rank == "E") {
         totalChambers = 1;
@@ -129,7 +139,8 @@ void Dungeon::generateChambers(Mobloot &mobLoots) {
         // std::cout << "Check2 Dungeon.cpp\n";
         for (int i = 0; i < totalChambers; i++) {
             // std::cout << "Check3 Dungeon.cpp\n";
-            chambers.push_back(new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
+            chambers.push_back(
+                new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
             // std::cout << minMobLevel<<" MINIMAL LEVEL E \n";
             // std::cout << maxMobLevel<<" MAXIMAL LEVEL E \n";
         }
@@ -138,7 +149,8 @@ void Dungeon::generateChambers(Mobloot &mobLoots) {
 
         for (int i = 0; i < totalChambers - 1; i++) {
             int curLevel = isDD ? (i + 1) * 2 : (i + 1);
-            chambers.push_back(new Chamber(false, curLevel, curLevel, mobLoots));
+            chambers.push_back(
+                new Chamber(false, curLevel, curLevel, mobLoots));
         }
         int curLevel = isDD ? 200 : 100;
         chambers.push_back(new Chamber(true, 100, 100, mobLoots));
@@ -176,7 +188,7 @@ void Dungeon::start(Character &c, Inventory &inv, Items &items) {
     c.reset();
 }
 
-void Dungeon::displayInfo()  {
+void Dungeon::displayInfo() {
     std::cout << "Dungeon Rank: " << rank << std::endl;
     std::cout << "Total Chambers: " << totalChambers << std::endl;
     std::cout << "Entry Cost: " << entryCost << std::endl;
@@ -188,7 +200,8 @@ void Dungeon::displayInfo()  {
     std::cout << "Penalty Gold: " << penaltyGold << std::endl;
     std::cout << "Prize: " << std::endl;
     prize.displayInfo();
-    std::cout << "Bonus Item: " << (bonusItem ? bonusItem->getName() : "None") << std::endl;
+    std::cout << "Bonus Item: " << (bonusItem ? bonusItem->getName() : "None")
+              << std::endl;
     std::cout << "Chambers:" << std::endl;
     for (int i = 0; i < totalChambers; ++i) {
         std::cout << "  Chamber " << i + 1 << ":" << std::endl;
@@ -209,3 +222,16 @@ void Dungeon::substractGold(Character *c, int penaltyGold) {
     }
     c->setGold(c->getGold() - penaltyGold);
 }
+
+void Dungeon::typeEffect(const std::string &text, int delayMs) {
+    for (char c : text) {
+        std::cout << c << std::flush;
+        std::this_thread::sleep_for(std::chrono::milliseconds(delayMs));
+    }
+}
+
+void Dungeon::welcomeMessage() {
+    std::string kalimat =
+        "Kau berdiri di hadapan gerbang kuno yang mengarah ke " to_string
+        ", tempat di mana cahaya dunia luar sirna, dan "
+        "hanya keberanianmu yang jadi penerang.\n\n";

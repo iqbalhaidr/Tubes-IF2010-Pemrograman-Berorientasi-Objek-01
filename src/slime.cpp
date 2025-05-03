@@ -5,7 +5,7 @@ Slime::Slime(int level, int expReward, Mobloot& mobLoots)
     updateBasicAttributes();
     vector<Effect*> effects;
     string effectDescription = "menyemburkan cairan asam pekat ke target, menyebabkan damage over time (kerusakan berkelanjutan) selama 3 turn";
-    EffectPoison* DamageOverTime = new EffectPoison("Acidic Corrosion (Poison)", effectDescription, 3, 3, 1, attackDamage * getStats().getIntelligence());
+    EffectPoison* DamageOverTime = new EffectPoison("Acidic Corrosion (Poison)", effectDescription, 3, 3, 1, attackDamage * getStats().getIntelligence() * 0.05);
     effects.push_back(DamageOverTime);
     Skill *skill = new Skill("Acidic Corrosion", 16, 0, 20, attackDamage, effects);
     addSkill(skill);

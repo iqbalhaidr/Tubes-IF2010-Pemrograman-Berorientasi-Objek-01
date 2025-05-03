@@ -218,7 +218,7 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
                         continue;
                     }
                     int skillOpt = inputSkillOption(&c);
-                    c.useSkill(c.getSkills()[skillOpt - 1], *enemies[i]);
+                    c.useSkill(c.getSkills()[skillOpt - 1], *enemies[i], inv);
                     std::cout << "Character uses: " << c.getSkills()[skillOpt - 1]->getName() << std::endl;
                     displayEnemyStatus(enemies[i]);
                     std::cout << "=============================\n";
@@ -234,6 +234,7 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
                 turnCtr++;
             } else {
                 std::cout << "Enemy Turn! Chamber.cpp\n";
+                std::cout << "Enemy level: " << enemies[i]->getLevel() << std::endl;
                 if (enemies[i]->getTurnEffectStatus("Stun")) {
                     std::cout << "Enemy Terkena Stun! Chamber.cpp\n";
                     std::cout << "\n==========================\n";
@@ -270,9 +271,12 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
                         std::cout << "No skills available." << std::endl;
                         continue;
                     }
-                    int skillOpt = Randomizer::random(1, enemies[i]->getSkills().size() - 1);
-                    std::cout << "Skill enemy tidak mungkin heal untuk keperluan debugging\n";
-                    enemies[i]->useSkill(enemies[i]->getSkills()[skillOpt], c);
+                    // int skillOpt = Randomizer::random(1, enemies[i]->getSkills().size() - 1);
+                    std::cout << "Enemy pasti skill 1\n";
+                    int skillOpt = 1;
+                    // std::cout << "Skill enemy tidak mungkin heal untuk keperluan debugging\n";
+                    // enemies[i]->useSkill(enemies[i]->getSkills()[skillOpt], c, inv);
+                    enemies[i]->useSkill(enemies[i]->getSkills()[skillOpt], c, inv);
                     std::cout << "Enemy uses: " << enemies[i]->getSkills()[skillOpt]->getName() << std::endl;
                     displayPlayerStatus(c);
                     std::cout << "=============================\n";

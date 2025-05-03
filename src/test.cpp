@@ -5,11 +5,11 @@
 
 #include "../include/Dungeon.hpp"
 #include "../include/Randomizer.hpp"
-#include "../include/fighter.hpp"
-#include "../include/necromancer.hpp"
 #include "../include/assassin.hpp"
-// #include "../include/berserker.hpp"
+#include "../include/berserker.hpp"
+#include "../include/fighter.hpp"
 #include "../include/items.hpp"
+#include "../include/necromancer.hpp"
 
 using namespace std;
 
@@ -135,21 +135,21 @@ void dungeonTest() {
     Dungeon ds("E", mobLoot, items);
     // std::cout << "Dungeon created" << std::endl;
     // ds.displayInfo();
-    Fighter f ("Fighter1", 100, 100, 100, 10, 100, 100, 100);
-    // Necromancer n ("Necromancer1");
-    Assassin a ("Assassin1");
-    // Berserker b ("Berserker1");
+    Fighter f("Fighter1");
+    Necromancer n("Necromancer1");
+    Assassin a("Assassin1");
+    Berserker b("Berserker1");
     std::cout << "All Character created" << std::endl;
 
     // std::cout << "Fighter created" << std::endl;
     // std::cout << "Assassin created" << std::endl;
     Inventory inv = Inventory::loadInventory("../data/", items);
     // ds.displayInfo();
-    //ds.start(a, inv, items);
-    Chamber cBoss (true, 10, 30, mobLoot);
-    Reward rew;
-    cBoss.battle(f, inv, rew, items);
-    rew.displayInfo();
+    ds.start(f, inv, items);
+    // Chamber cBoss (true, 10, 30, mobLoot);
+    // Reward rew;
+    // cBoss.battle(f, inv, rew, items);
+    // rew.displayInfo();
 }
 
 int main() {
