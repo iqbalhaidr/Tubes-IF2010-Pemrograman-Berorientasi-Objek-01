@@ -1,7 +1,7 @@
 #include "../include/goblin.hpp"
 
 Goblin::Goblin(int level, int expReward, Mobloot& mobLoots)
- : BasicMobs("Goblin", level, 7 + (level -1) * 1.2, 15 + (level -1) * 2, 6 + (level -1) * 1.5, expReward, mobLoots) {
+ : BasicMobs("Goblin", level, 7 + (level -1) * 1, 15 + (level -1) * 2, 6 + (level -1) * 0.7, expReward, mobLoots) {
     updateBasicAttributes();
     vector<Effect*> effects;
     string effectDescription = "menghilang sesaat dalam kepulan asap atau bayangan, lalu muncul tiba-tiba di belakang target untuk memberikan serangan kejutan dengan bonus critical damage, memberikan damage 2x dari attack biasa";

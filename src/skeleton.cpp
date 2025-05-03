@@ -1,7 +1,7 @@
 #include "../include/skeleton.hpp"
 
 Skeleton::Skeleton(int level, int expReward, Mobloot& mobLoots)
- : BasicMobs("Skeleton", level, 11 + (level -1) * 1.8, 9 + (level -1) * 1.8, 7 + (level -1) * 1.2, expReward, mobLoots) {
+ : BasicMobs("Skeleton", level, 11 + (level -1) * 1.4, 9 + (level -1) * 0.7, 7 + (level -1) * 1.3, expReward, mobLoots) {
     updateBasicAttributes();
     vector<Effect*> effects;
     string damageEffectDesc = "berpeluang 0.25 untuk memberikan damage fisik tambahan pada serangan selanjutnya";

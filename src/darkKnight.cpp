@@ -1,7 +1,7 @@
 #include "../include/darkKnight.hpp"
 
 DarkKnight::DarkKnight(int level, int expReward, Mobloot& mobLoots)
- : BossMobs("Dark Knight", level, 20 + (level -1) * 1.8, 20 + (level -1) * 1.8, 16 + (level -1) * 1.2, expReward, mobLoots) {
+ : BossMobs("Dark Knight", level, 20 + (level -1) * 1.8, 20 + (level -1) * 1.6, 16 + (level -1) * 1.3, expReward, mobLoots) {
     updateBasicAttributes();
     vector<Effect*> effects;
     string lifeStealEffectDescription = "berpeluang 0.35 untuk melakukan lifesteal pada turn selanjutnya (effect, 0.8 chance)";
