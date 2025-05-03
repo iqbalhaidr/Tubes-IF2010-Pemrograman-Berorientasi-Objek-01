@@ -41,8 +41,14 @@ Characters::Characters(const string& directory) {
             int masteryCost = stoi(columns[7]);
             string type = columns[8];
             vector<string> skillNames;
-            for (size_t i = 9; i < columns.size(); ++i) {
-                skillNames.push_back(columns[i]);
+            for (int i = 9; i < columns.size(); i++) {
+                if (i + 1 < columns.size() && columns[i].front() == '"' 
+                    && columns[i+1].back() == '"') { // "Battle instinct" -> battle instinct
+                    skillNames.push_back(columns[i].substr(1) + " " + columns[i+1].substr(0, columns[i+1].size() - 1));
+                    i++; // longkap 1 elemen 
+                } else if (columns[i].front() == '"' && columns[i].back() == '"') { // "Stormbreaker" -> stormbreaker
+                    skillNames.push_back(columns[i].substr(1, columns[i].size() - 2));
+                }
             }
             if (type == "Mage") {
                 addCharacters(new Mage(name, strength, agility, intelligence, level, exp, gold, masteryCost, skillNames));
@@ -114,7 +120,9 @@ void Characters::save(const string& directory) const {
 
         const vector<Skill*>& skills = c->getSkills();
         for (const Skill* skill : skills) {
-            file << " " << skill->getName();
+            string skillName = skill->getName();
+                skillName = "\"" + skillName + "\"";
+            file << " " << skillName;
         }
         file << endl;
 
