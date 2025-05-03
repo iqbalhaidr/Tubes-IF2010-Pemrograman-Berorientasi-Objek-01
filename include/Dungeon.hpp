@@ -5,7 +5,7 @@
 #include <iostream>
 #include <thread>
 #include <vector>
-
+#include <stdlib.h>
 #include "Chamber.hpp"
 #include "Randomizer.hpp"
 #include "Reward.hpp"
@@ -61,6 +61,10 @@ class Dungeon {
 
     /* Fungsi menampilkan message lore awal masuk dungeon */
     void welcomeMessage();
+
+    void winningMessage();
+    
+    void losingMessage();
 };
 
 #endif

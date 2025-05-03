@@ -145,7 +145,15 @@ void dungeonTest() {
     // std::cout << "Assassin created" << std::endl;
     Inventory inv = Inventory::loadInventory("../data/", items);
     // ds.displayInfo();
+    std::cout << "Init gold: " << f.getGold() << std::endl;
+    std::cout << "Init exp: " << f.getExp() << std::endl;
+    std::cout << "Init level: " << f.getLevel() << std::endl;
+    inv.displayBackpack();
     ds.start(f, inv, items);
+    std::cout << "Final gold: " << f.getGold() << std::endl;
+    std::cout << "Final exp: " << f.getExp() << std::endl;
+    std::cout << "Final level: " << f.getLevel() << std::endl;
+    inv.displayBackpack();
     // Chamber cBoss (true, 10, 30, mobLoot);
     // Reward rew;
     // cBoss.battle(f, inv, rew, items);

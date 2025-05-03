@@ -245,6 +245,8 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize,
                     useItemOption(c, inv, items, *enemies[i]);
                 } else if (opt == 4) {  // KABUR
                     return false;
+                } else if (opt == 5) {
+                    return true;
                 }
                 removeExpiredEffects(&c);
                 turnCtr++;
@@ -402,14 +404,14 @@ int Chamber::inputOption() {
     bool isValid = false;
     while (!isValid) {
         std::cout
-            << "Aksi -> 1. Attack / 2. Use Skill / 3. Use Item / 4. Kabur : ";
+            << "Aksi -> 1. Attack / 2. Use Skill / 3. Use Item / 4. Kabur / 5. Cheat: ";
         std::cin >> opt;
 
         if (std::cin.fail()) {
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cout << "Masukan tidak valid." << std::endl;
-        } else if (opt >= 1 && opt <= 4) {
+        } else if (opt >= 1 && opt <= 5) {
             isValid = true;
         } else {
             std::cout << "Masukan tidak valid." << std::endl;
