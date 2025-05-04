@@ -10,6 +10,15 @@ void typeEffect(const std::string &text, int delayMs) {
 
 
 int main(){
+    Characters* allChar = nullptr;
+    Items* itemMap = nullptr;
+    Shop* shop = nullptr;
+    Player* p1 = nullptr;
+    Mobloot* mobsLoot = nullptr;
+    Inventory* inv = nullptr;
+
+
+
     std::vector<std::string> required_files = {
         "characters.txt",
         "item.txt",
@@ -54,21 +63,32 @@ int main(){
                 }
                 throw InputOutputException(error_msg);
             }
+            try {
 
-            std::cout << "Folder valid dan semua file ditemukan!" << std::endl;
-            break;
+                allChar = new Characters(folder_path);
+                itemMap = new Items(Items::createFromDirectory(folder_path)); 
+                shop = new Shop(folder_path);
+                mobsLoot = new Mobloot(folder_path, *itemMap);
+                inv = new Inventory(Inventory::loadInventory(folder_path, *itemMap));
+                
+            } catch (const std::exception& e) {
+                // Cleanup jika ada exception
+                delete allChar;
+                delete shop;
+                delete mobsLoot;
+                delete itemMap;
+                delete inv;
+                throw; 
+            }
 
-        } catch (const std::exception& e) {
+
+        } 
+        catch (const std::exception& e) {
             std::cerr << "Terjadi kesalahan: " << e.what() << std::endl;
         }
     }
 
 
-    Characters allChar(folder_path);
-    Items itemMap = Items::createFromDirectory(folder_path);
-    Shop shop(folder_path);
-    Player* p1;
-    Mobloot mobsLoot(folder_path, itemMap);
 
     bool end = false;
     bool characterCreated = false;
@@ -121,19 +141,27 @@ int main(){
                         std::cout << "Silahkan masukkan tipe yang anda inginkan (1-5): " << std::endl;
                     } else if (optPlay >= 1 && optPlay <= 5) {
                         isValid2 = true;
+                        std::cout << std::endl << std::endl;
                     } else {
                         std::cout << "Masukan tidak valid." << std::endl;
                     }
                 }
-                
+
+                allChar->displayAvailableCharacters();
                 while (true) {
                     std::cout << "Silahkan Masukkan nama character Anda: ";
                     std::cin >> name;
                 
                     try {
-                        p1 = new Player(folder_path, name, itemMap, allChar, optPlay);
-                
-                        std::cout << "Pembuatan karakter berhasil!" << std::endl;
+                        if (!allChar->searchCharacter(name)) {
+                            p1 = new Player(folder_path, name, *itemMap, *allChar, optPlay);
+                            allChar->addCharacters(p1->getChar());
+                            std::cout << "Pembuatan karakter berhasil!" << std::endl;
+                        }
+                        else{
+                            throw CharactersError("Jangan memasukkan nama character yang sudah pernah ada");
+                        }
+
                         break; 
                 
                     } catch (const std::exception& e) {
@@ -143,21 +171,21 @@ int main(){
                 }
             } 
             else{
-                p1->getChar()->displayCharacter();
+                allChar->displayAvailableCharacters();
                 std::cout << "Silahkan pilih karakter Anda: ";
                 
                 std::string chosenName;
                 while (true) {
                     std::cin >> chosenName;
                 
-                    if (allChar.searchCharacter(chosenName)) {
+                    if (allChar->searchCharacter(chosenName)) {
                         std::cout << "Karakter '" << chosenName << "' berhasil dipilih!" << std::endl;
                         break;
                     } else {
                         std::cout << "Karakter tidak ditemukan. Silakan masukkan nama karakter yang valid: ";
                     }
                 }
-                p1 = new Player(folder_path, chosenName, itemMap, allChar, 0);
+                p1 = new Player(folder_path, chosenName, *itemMap, *allChar, 0);
             }
             characterCreated = true;
             std::cout << "Selamat datang jiwa yang tersesat" <<std::endl;
@@ -166,29 +194,36 @@ int main(){
 
         bool isValid3 = false;
         int opt;
-        std::cout << "Silahkan pilih tujuan Anda" <<std::endl;
-        std::cout << "1. Shop " <<std::endl;
-        std::cout << "2. Dungeon "<<std::endl;
-        std::cout << "3. Gunung Myoboku (upgrade skil) "<<std::endl;
-        std::cout << "4. Turu (save) "<<std::endl;
-        std::cout << "5. Keluar "<<std::endl;
+
 
         while (!isValid3) {
+            std::cout << "Silahkan pilih tujuan Anda" <<std::endl;
+            std::cout << "1. Shop " <<std::endl;
+            std::cout << "2. Dungeon "<<std::endl;
+            std::cout << "3. Gunung Myoboku (upgrade skil) "<<std::endl;
+            std::cout << "4. Turu (save) "<<std::endl;
+            std::cout << "5. Keluar "<<std::endl;
+            std::cout << "Silahkan Masukkan Angka (1-5):" ;
             std::cin >> opt;
             if (std::cin.fail()) {
                 std::cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 std::cout << "Masukan tidak valid." << std::endl;
-            } else if (opt >= 1 && opt <= 4) {
+            } else if (opt >= 1 && opt <= 5) {
                 if(opt==1){
-                    p1->goToShop(shop);
+                    p1->goToShop(*shop);
+                    break;
                 }
                 else if(opt==2){
-                    p1->goToDungeon(mobsLoot, itemMap);
+                    p1->goToDungeon(*mobsLoot, *itemMap);
+                    break;
                 }
                 else if(opt==3){
                     std::string skillName;
                     p1->getChar()->displayAvailableSkillUpgrades();
+                    cout<<"Masukkan Pilihan Anda: ";
+                    cin>>skillName;
+                    break;
                     while (true) {
                         cout<<"Masukkan Pilihan Anda\n";
                         cin>>skillName;
@@ -226,10 +261,11 @@ int main(){
 
                     //sementara
                     p1->getInv()->saveInventory("../datadump/");
-                    allChar.save("../datadump/");
-                    itemMap.save("../datadump/");
-                    shop.saveShop("../datadump/");
-
+                    allChar->save("../datadump/");
+                    itemMap->save("../datadump/");
+                    std::cout<<"hei tayo\n";
+                    shop->saveShop("../datadump/");
+                    break;
                 }
                 else{
                     std::string penutup = 
@@ -240,6 +276,7 @@ int main(){
                         "Untuk sekarang… istirahatlah, penjelajah.\n"
                         "Kabut akan menyelimuti lagi, dan dunia ini… akan menunggu.\n";
                     typeEffect(penutup,50);
+                    end = true;
                     isValid3 = true;
                 }
 

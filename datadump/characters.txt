@@ -1,1 +1,6 @@
+Alucard 32 26 22 3 50 2000 120 Assassin "Silent Cut" "Silent Ambush" "Blood Pact"
+Balon 27 17 15 1 0 0 5 Fighter "Stone Skin" "Fighter Fist" "Battle Instinct"
+Eudora 52 70 78 5 200 1000 600 Mage "Fire Arrow" "Chains Ruin" "Mana Spring"
+Grock 112 100 96 8 60 1500 400 Berserker "Fury Strike" "Indomitable Fury" "Blood Renewal"
+KabutoYakushi 130 145 160 12 200 3000 600 Necromancer "Soul Feast" "Plague Surge" "Soul Paralysis"
 Kaelen 15 13 7 1 0 100 15 Fighter "Stone Skin" "Fighter Fist" "Battle Instinct"

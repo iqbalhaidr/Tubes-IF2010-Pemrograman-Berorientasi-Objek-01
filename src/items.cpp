@@ -69,6 +69,7 @@ Items Items :: createFromDirectory(const std::string& directory) {
             throw InventoryEror("Format baris salah di file item.txt");
         }
     }
+    std::cout<<"WOI INI KOK BERHASIL";
     Items listItem (itemMap);
     
     return listItem;
@@ -135,7 +136,7 @@ void Items::save(const std::string& directory) const {
         for (const auto& effect : item.second->getEffects()) {
             outputFile << effect->getName() << " ";
         }
-        outputFile << "\n";
+        outputFile << "-\n";
     }
 
     outputFile.close();
