@@ -253,6 +253,221 @@ classDiagram
         +getLootforMob(const string& name) vector<pair<Item*, double>>
     }
 
+    class Reward {
+        -exp : int
+        -gold : int
+        -items : map<Item*, int>
+
+        +Reward()
+        +~Reward()
+        +getExp() int
+        +getGold() int
+        +getItems() map<Item*, int>
+        +addExp(int exp) void
+        +addGold(int gold) void
+        +addItem(Item* item, int count) void
+        +displayInfo() void
+        +giveTo(Character* c, Inventory* inv) void
+        +giveTo(Inventory* inv) void
+        +addExpToCharacter(Character* c, int exp) void
+        +addGoldToCharacter(Character* c, int gold) void
+    }
+    Dungeon <|-- Reward
+
+    class Randomizer {
+        +random(int low, int up) int
+        +chance(float probability) bool
+    }
+
+    class Potion {
+        -durability : double
+
+        +Potion(string itemId, string name, string type, string rarity, double baseStat, vector<Effect*> effects)
+        +Potion(const Potion& other)
+        +~Potion()
+        +isConsumable() const bool
+        +isStackable() const bool
+        +cloneItem() Item*
+    }
+    Item <|-- Potion
+
+    class Pendant {
+        -durability : double
+
+        +Pendant(string itemId, string name, string type, string rarity, double baseStat, vector<Effect*> effects)
+        +Pendant(const Pendant& other)
+        +~Pendant()
+        +isConsumable() const bool
+        +isStackable() const bool
+        +cloneItem() Item*
+    }
+    Item <|-- Pendant
+
+    class Shop {
+        -availableItems : map<string, tuple<string, int, int>>
+        -itemMap : Items*
+        -shopConfig : map<string, int>
+        -categoryShop : map<string, vector<pair<string, int>>>
+
+        +Shop(const string& directory)
+        +~Shop()
+        +saveShop(const string& directory) void
+        +buyItem(const string& itemName, int quantity) pair<Item*, int>
+        +sellItem(const string& itemName, int quantity) pair<Item*, int>
+        +restock() void
+        +setStock(const string& itemName, int stock) void
+        +getCurrentStock(const string& itemName) const int
+        +getPrice(const string& itemName) const int
+        +displayDetails(string itemName) const void
+        +displayShop() const void
+    }
+
+    class Weapon {
+        -durability : double
+
+        +Weapon(string itemId, string name, string type, string rarity, double baseStat, vector<Effect*> effects)
+        +Weapon(const Weapon& other)
+        +~Weapon()
+        +isConsumable() const bool
+        +isStackable() const bool
+        +cloneItem() Item*
+    }
+    Item <|-- Weapon
+
+    class Item {
+        -itemId : string
+        -name : string
+        -type : string
+        -rarity : string
+        -baseStat : double
+        -effects : vector<Effect*>
+
+        +Item(string itemId, string name, string type, string rarity, double baseStat, vector<Effect*> effects)
+        +Item(const Item& other)
+        +~Item()
+        +operator==(other : const Item&) bool
+        +getId() string
+        +getName() const string
+        +getItemType() const string
+        +getRarity() const string
+        +getBaseStat() const double
+        +getEffects() const vector<Effect*>
+        +getStatMultiplier() const double
+        +getFinalStat() const double
+        +scaleItemEffect() void
+        +isConsumable() const bool
+        +isStackable() const bool
+        +cloneItem() Item*
+    }
+
+    class Items {
+        -itemMap : map<string, Item*>
+
+        +Items(itemMap : map<string, Item*>)
+        +~Items()
+        +addItem(id : string, item : Item*) void
+        +lookup(id : string) const bool
+        +lookUpbyName(Name : string) const bool
+        +getItem(id : string) const Item*
+        +getItembyName(Name : string) Item*
+        +getItemMap() const map<string, Item*>
+        +save(directory : string) const void
+        +isValidItemType(type : string) static bool
+        +isValidItemRarity(rarity : string) static bool
+        +createFromDirectory(directory : string) static Items
+    }
+
+    class Matrix {
+        -rows : int
+        -cols : int
+        -matriks : vector<vector<T>>
+        -defaultVal : T
+
+        +Matrix()
+        +Matrix(r : int, c : int)
+        +~Matrix()
+        +setDefault(i : int, j : int) void
+        +set(i : int, j : int, value : T) void
+        +get(i : int, j : int) const T
+        +isInMatrix(predicate : function<bool(T)>) const pair<int, int>
+        +isEmptyCell(Rows : int, Cols : int) bool
+        +getRows() int
+        +getCols() int
+    }
+    Inventory *-- Matrix
+
+    class Skill {
+        -name : string
+        -manaCost : double
+        -masterCost : double
+        -skillChance : double
+        -damage : double
+        -effects : vector<Effect*>
+
+        +Skill(name : string, manaCost : double, masterCost : double, skillChance : double, damage : double, effects : vector<Effect*>)
+        +~Skill()
+        +Skill(other : Skill&)
+        +operator=(other : Skill&) : Skill&
+        +operator==(other : Skill) const : bool
+
+        +getName() const : string
+        +getManaCost() const : double
+        +getMasterCost() const : double
+        +getskillChance() const : double
+        +getDamage() const : double
+        +getEffects() const : vector<Effect*>
+
+        +setName(name : string) : void
+        +setManaCost(manaCost : double) : void
+        +setMasterCost(masterCost : double) : void
+        +setskillChance(skillChance : double) : void
+        +setDamage(damage : double) : void
+        +setEffects(effects : vector<Effect*>) : void
+    }
+
+    class SkillNode {
+        -skill : Skill*
+        -left : SkillNode*
+        -right : SkillNode*
+        +unlocked : bool
+
+        +SkillNode(skill : Skill*)
+        +SkillNode(skill : Skill*, left : SkillNode*, right : SkillNode*)
+        +~SkillNode()
+        +SkillNode(other : const SkillNode&)
+        +operator=(other : const SkillNode&) : SkillNode&
+
+        +getSkill() const : Skill*
+        +getLeftNode() const : SkillNode*
+        +getRightNode() const : SkillNode*
+        +getLeftSkill() const : Skill*
+        +getRightSkill() const : Skill*
+        +setLeftNode(left : SkillNode*) : void
+        +setRightNode(right : SkillNode*) : void
+        +canRemove() const : bool
+    }
+    SkillNode *-- Skill 
+
+    class SkillTree {
+        -root1 : SkillNode*
+        -root2 : SkillNode*
+        -root3 : SkillNode*
+        -char_type : string
+
+        +currentSkills : vector<SkillNode*>
+
+        +SkillTree(char_type : string)
+        +~SkillTree()
+
+        +destroy(root : SkillNode*) : void
+        +getAvailableUpgrade(res : vector<SkillNode*>) : vector<SkillNode*>
+        +upgradeSkill(skill_awal : SkillNode*, skill_baru : SkillNode*) : void
+        +getParent(child : Skill) : SkillNode*
+        +getRoot() : vector<SkillNode*>
+        +getNodebyName(name : string, root : SkillNode*) : SkillNode*
+    }
+    SkillTree *-- SkillNode
+
 
     Unit *-- Stats   
     Unit <|-- Mobs     
