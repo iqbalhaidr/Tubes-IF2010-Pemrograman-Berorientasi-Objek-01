@@ -10,28 +10,71 @@ void typeEffect(const std::string &text, int delayMs) {
 
 
 int main(){
-    Characters allChar("../data/");
-    Items itemMap = Items::createFromDirectory("../data/");
-    Shop shop("../data/");
+    std::vector<std::string> required_files = {
+        "character.txt",
+        "item.txt",
+        "shop.txt",
+        "backpack.txt",
+        "equipment.txt"
+    };
+
+    std::string folder_path;
+    
+    while (true) {
+        std::cout << "Masukkan path folder: ";
+        std::getline(std::cin, folder_path);
+
+        try {
+            if (!fs::is_directory(folder_path)) {
+                throw InputOutputException("Path tidak ditemukan atau bukan direktori.");
+            }
+
+            std::vector<std::string> missing_files;
+            for (const auto& filename : required_files) {
+                if (!fs::exists(fs::path(folder_path) / filename)) {
+                    missing_files.push_back(filename);
+                }
+            }
+
+            if (!missing_files.empty()) {
+                std::string error_msg = "File berikut tidak ditemukan di folder:\n";
+                for (const auto& file : missing_files) {
+                    error_msg += "- " + file + "\n";
+                }
+                throw InputOutputException(error_msg);
+            }
+
+            std::cout << "Folder valid dan semua file ditemukan!" << std::endl;
+            break; 
+
+        } catch (const std::exception& e) {
+            std::cerr << "Terjadi kesalahan: " << e.what() << std::endl;
+        }
+    }
+
+
+    Characters allChar(folder_path);
+    Items itemMap = Items::createFromDirectory(folder_path);
+    Shop shop(folder_path);
     Player* p1;
-    Mobloot mobsLoot("../data/", itemMap);
+    Mobloot mobsLoot(folder_path, itemMap);
 
     bool end = false;
     bool characterCreated = false;
 
     while(!end){
-        //pilih char
+        //pilih char    
         if(!characterCreated){
-            std::string kalimat = "Dunia ini… bukan dunia yang kau kenal"
-            "Di sini, waktu berputar tak menentu, dan takdir ditulis ulang oleh tangan-tangan berani."
-            "Jiwa-jiwa lama berbisik dari balik kabut abadi, meminta kesempatan kedua…"
-            "Sementara yang baru, menunggu untuk dilahirkan dalam legenda."
-            "Apakah kau jiwa yang telah hidup sebelumnya, atau jiwa baru yang memanggil petualangan pertama?";
+            std::string kalimat = "Dunia ini… bukan dunia yang kau kenal\n"
+            "Di sini, waktu berputar tak menentu, dan takdir ditulis ulang oleh tangan-tangan berani.\n"
+            "Jiwa-jiwa lama berbisik dari balik kabut abadi, meminta kesempatan kedua…\n"
+            "Sementara yang baru, menunggu untuk dilahirkan dalam legenda.\n"
+            "Apakah kau jiwa yang telah hidup sebelumnya, atau jiwa baru yang memanggil petualangan pertama?\n\n";
 
             typeEffect(kalimat,50);
-            std::cout << "\nBuat character baru:";
-            std::cout << "1. Ya ";
-            std::cout << "2. Tidak ";
+            std::cout << "\nBuat character baru:\n";
+            std::cout << "1. Ya \n";
+            std::cout << "2. Tidak \n";
             bool isValid = false;
             int opt;
             while (!isValid) {
@@ -55,7 +98,7 @@ int main(){
                 std::cout << "3. Mage "<<std::endl;
                 std::cout << "4. Necromancer "<<std::endl;
                 std::cout << "5. Assassin "<<std::endl;
-
+                std::cout << "Silahkan masukkan tipe yang anda inginkan (1-5): " << std::endl;
                 bool isValid2 = false;
                 std::string name;
                 while (!isValid2) {
@@ -64,17 +107,33 @@ int main(){
                         std::cin.clear();
                         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                         std::cout << "Masukan tidak valid." << std::endl;
+                        std::cout << "Silahkan masukkan tipe yang anda inginkan (1-5): " << std::endl;
                     } else if (optPlay >= 1 && optPlay <= 5) {
-                        cin>>name;
                         isValid2 = true;
                     } else {
                         std::cout << "Masukan tidak valid." << std::endl;
                     }
                 }
-                p1 = new Player("../data/", name, itemMap, allChar, optPlay);
+                
+                while (true) {
+                    std::cout << "Silahkan Masukkan nama character Anda: ";
+                    std::cin >> name;
+                
+                    try {
+                        p1 = new Player(folder_path, name, itemMap, allChar, optPlay);
+                
+                        std::cout << "Pembuatan karakter berhasil!" << std::endl;
+                        break; 
+                
+                    } catch (const std::exception& e) {
+                        std::cerr << "Gagal membuat karakter: " << e.what() << std::endl;
+                        std::cerr << "Silakan coba lagi." << std::endl;
+                    }
+                }
             } 
             else{
-                p1 = new Player("../data/", "Thorgar", itemMap, allChar, 0);
+
+                p1 = new Player(folder_path, "Thorgar", itemMap, allChar, 0);
             }
             characterCreated = true;
             std::cout << "Selamat datang jiwa yang tersesat" <<std::endl;
@@ -88,6 +147,7 @@ int main(){
         std::cout << "2. Dungeon "<<std::endl;
         std::cout << "3. Gunung Myoboku (upgrade skil) "<<std::endl;
         std::cout << "4. Turu (save) "<<std::endl;
+        std::cout << "5. Keluar "<<std::endl;
 
         while (!isValid3) {
             std::cin >> opt;
@@ -109,17 +169,48 @@ int main(){
                     cin>>skillName;
                     p1->getChar()->UpgradeSkill(skillName);
                 }
-                else{
+                else if(opt==4){
                     //input user
-                    std::string path;
-                    cout<<"Silahkan masukkan path menuju data yang akan disimpan";
-                    cin>>path;
+                    // std::string path;
+                    // while (true) {
+                    //     std::cout << "Silahkan masukkan path menuju data yang akan disimpan: ";
+                    //     std::cin >> path;
+                    
+                    //     try {
+                    //         if (!std::filesystem::exists(path)) {
+                    //             throw InputOutputException("Path tidak ditemukan.");
+                    //         }
+                    
+                    //         if (!std::filesystem::is_directory(path)) {
+                    //             throw InputOutputException("Path yang dimasukkan bukan folder.");
+                    //         }
+                    //         break;
+                    
+                    //     } catch (const std::exception& e) {
+                    //         std::cerr << "Terjadi kesalahan: " << e.what() << std::endl;
+                    //         std::cerr << "Silakan coba lagi.\n";
+                    //     }
+                    // }
+
+                    //sementara
+                    p1->getInv()->saveInventory("../datadump/");
                     allChar.save("../datadump/");
                     itemMap.save("../datadump/");
                     shop.saveShop("../datadump/");
 
                 }
-                isValid3 = true;
+                else{
+                    std::string penutup = 
+                        "\nLangkahmu mungkin terhenti di sini…\n"
+                        "Namun dunia ini tetap berputar dalam keheningan dan rahasia.\n"
+                        "Jejakmu terukir di antara legenda, bersama tawa, luka, dan keberanianmu.\n"
+                        "Suatu saat, mungkin kau akan kembali—atau mungkin jiwa lain akan meneruskan kisahmu.\n"
+                        "Untuk sekarang… istirahatlah, penjelajah.\n"
+                        "Kabut akan menyelimuti lagi, dan dunia ini… akan menunggu.\n";
+                    typeEffect(penutup,50);
+                    isValid3 = true;
+                }
+
             } else {
                 std::cout << "Masukan tidak valid." << std::endl;
             }

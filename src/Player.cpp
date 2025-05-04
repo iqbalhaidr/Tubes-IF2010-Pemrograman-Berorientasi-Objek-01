@@ -76,8 +76,6 @@ void Player:: goToShop(Shop& shop) {
 
 
 Player::Player(const std::string& dir, const std::string& charName, Items& itemMap, Characters& allChar, int type){
-    this->itemMap = &itemMap;
-    this->inv = new Inventory(Inventory::loadInventory(dir, itemMap));
     if(type == 0){ // load
         this->playerChar = allChar.getCharacterbyName(charName);
     }
@@ -96,8 +94,8 @@ Player::Player(const std::string& dir, const std::string& charName, Items& itemM
     else if(type == 5){
         this->playerChar = new Assassin(charName);
     }
-
-    
+    this->itemMap = &itemMap;
+    this->inv = new Inventory(Inventory::loadInventory(dir, itemMap));
     // this->playerChar = new Fighter("Kelra",  26, 17, 13, 1, 0,99999999, 0);
 }
 

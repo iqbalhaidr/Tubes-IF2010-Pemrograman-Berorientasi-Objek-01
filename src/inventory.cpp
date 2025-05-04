@@ -110,7 +110,13 @@ void Inventory::saveInventory(const std::string& directory) {
     }
 
     for (const auto& equipment : equipped) {
-        outputEquipment << equipment.first << " " << equipment.second << "\n";
+        outputEquipment << equipment.first << " " ;
+        if(equipment.second == nullptr){
+            outputEquipment << " " << "\n";
+        }
+        else{
+            outputEquipment << equipment.second->getId() << "\n";
+        }
     }
 
     outputBackpack.close();
