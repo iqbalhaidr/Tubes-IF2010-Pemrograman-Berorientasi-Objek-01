@@ -34,24 +34,33 @@ void Reward::addItem(Item *item, int count) {
     items[item] += count;
 }
 
+// TODO: Catch inventory full when addItem()
 void Reward::giveTo(Character* c, Inventory *inv) {
     addExpToCharacter(c, exp);
     addGoldToCharacter(c, gold);
-    for (auto it = items.cbegin(); it != items.cend(); ++it) {
-        std::pair<Item*, int> eachItem (it->first, it->second);
-        inv->addItem(eachItem);
+    try {
+        for (auto it = items.cbegin(); it != items.cend(); ++it) {
+            std::pair<Item*, int> eachItem (it->first, it->second);
+            inv->addItem(eachItem);
+        }
+    } catch (InventoryFull& e) {
+        std::cout << e.what() << std::endl;
     }
 }
 
 void Reward::giveTo(Inventory *inv) {
-    for (auto it = items.cbegin(); it != items.cend(); ++it) {
-        std::pair<Item*, int> eachItem (it->first, it->second);
-        inv->addItem(eachItem);
-    } 
+    try {
+        for (auto it = items.cbegin(); it != items.cend(); ++it) {
+            std::pair<Item*, int> eachItem (it->first, it->second);
+            inv->addItem(eachItem);
+        } 
+    } catch (InventoryFull& e) {
+        std::cout << e.what() << std::endl;
+    }
 }
 
 void Reward::displayInfo() {
-    std::cout << "Current Reward" << std::endl;
+    // std::cout << "Potential Reward" << std::endl;
     std::cout << "Exp: " << exp << std::endl;
     std::cout << "Gold: " << gold << std::endl;
     std::cout << "Items: " << std::endl;

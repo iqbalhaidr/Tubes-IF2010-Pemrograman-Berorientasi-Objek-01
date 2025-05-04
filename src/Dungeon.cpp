@@ -168,12 +168,19 @@ void Dungeon::start(Character &c, Inventory &inv, Items &items) {
     }
     c.setGold(c.getGold() - entryCost);
 
-    // welcomeMessage();
+    welcomeMessage();
     bool neverLose = true;
     int ctr = 0;
 
     while (neverLose && ctr < totalChambers) {
+        std::cout << "\e[1;1H\e[2J";  // Clear console
+        std::cout << "Entering chamber " << ctr + 1 << " of " << totalChambers << std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+        std::cout << "\e[1;1H\e[2J";  // Clear console
+
         bool result = chambers[ctr]->battle(c, inv, this->prize, items);
+        // std::cout << "[DEBUG] attackDamage keluar chamber: " << c.getAttackDamage() << std::endl;
+        // std::this_thread::sleep_for(std::chrono::milliseconds(5000));
         neverLose = result;
         ctr++;
     }
@@ -183,18 +190,24 @@ void Dungeon::start(Character &c, Inventory &inv, Items &items) {
         prize.addGold(rewardGold);
         prize.addItem(bonusItem, 1);
         prize.giveTo(&c, &inv);
-        // winningMessage();
+        winningMessage();
 
+        std::cout << "Final Reward\n";
         prize.displayInfo();
+        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+        std::cout << "\e[1;1H\e[2J";  // Clear console
     } else {
         substractExp(&c, penaltyExp);
         substractGold(&c, penaltyGold);
         if (isDD) {
             prize.giveTo(&inv);
         }
-        // losingMessage();
+        losingMessage();
 
+        std::cout << "Final Reward\n";
         prize.displayInfo();
+        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+        std::cout << "\e[1;1H\e[2J";  // Clear console
     }
 
     c.reset();
