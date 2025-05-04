@@ -6,11 +6,12 @@
 using namespace std;
 
 class Goblin : public BasicMobs {
+    private:
+        void updateBasicAttributes() override;
     public:
         // ctor dtor
         Goblin(int level, int expReward, Mobloot& mobLoots);
         ~Goblin();
-        void updateBasicAttributes() override ;
 
 
 };
