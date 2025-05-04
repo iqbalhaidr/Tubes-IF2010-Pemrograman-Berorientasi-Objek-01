@@ -411,8 +411,16 @@ void Inventory:: displayBackpackDetails() {
             }
         }
     }
-    for (const auto& line : txt) {
-        std::cout << line << std::endl;
+    const int col_count = 3;
+    const int items_per_col = (txt.size() + col_count - 1) / col_count;
+    for (int i = 0; i < items_per_col; i++) {
+        for (int col = 0; col < col_count; col++) {
+            int index = i + col * items_per_col;
+            if (index < txt.size()) {
+                std::cout << std::left << std::setw(30) << txt[index];
+            }
+        }
+        std::cout << std::endl;
     }
-    std::cout<<std::endl;
+    std::cout << "\n";
 }

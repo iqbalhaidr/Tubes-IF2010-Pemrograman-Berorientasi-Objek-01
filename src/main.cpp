@@ -309,6 +309,7 @@ int main(){
                             std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_TIME));
                         }
                         else if(optInvent==4){
+                            std::cout << "\n\n";
                             p1->showInventory(false);
                             std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_TIME));
                         }
