@@ -102,11 +102,12 @@ Character* Characters::getCharacterbyName(const string& name) {
 void Characters::displayAvailableCharacters() {
     int counter = 1;
     for (const auto& pair : characterMap) {
-        cout << counter << ". ";
+        cout << counter++ << ". ";
         cout << pair.first << " - "; // nama char
         cout << pair.second->getType() << " - "; // tipe char
         cout << pair.second->getLevel() << endl; // level char
     }
+
 }
 
 void Characters::save(const string& directory) const {
