@@ -71,6 +71,7 @@ Characters::Characters(const string& directory) {
 }
 
 Characters::~Characters() {
+    
     for (auto& character : characterMap) {
         delete character.second;
     }
@@ -97,6 +98,16 @@ Character* Characters::getCharacterbyName(const string& name) {
     }
 
     return nullptr;
+}
+void Characters::displayAvailableCharacters() {
+    int counter = 1;
+    for (const auto& pair : characterMap) {
+        cout << counter++ << ". ";
+        cout << pair.first << " - "; // nama char
+        cout << pair.second->getType() << " - "; // tipe char
+        cout << "Level: " << pair.second->getLevel() << endl; // level char
+    }
+
 }
 
 void Characters::save(const string& directory) const {

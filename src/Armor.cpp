@@ -10,7 +10,7 @@ bool Armor::isConsumable() const{
     return false;
 }
 
-bool Armor ::isStackAble() const{
+bool Armor ::isStackable() const{
     return false;
 }
 

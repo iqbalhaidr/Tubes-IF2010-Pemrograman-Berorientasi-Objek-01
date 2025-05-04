@@ -14,7 +14,7 @@ public:
     Weapon(const Weapon& other);
     ~Weapon();
     bool isConsumable() const;
-    bool isStackAble() const;
+    bool isStackable() const;
     Item* cloneItem();
 };
 

@@ -14,7 +14,7 @@ public:
     Armor(const Armor& other);
     ~Armor();
     bool isConsumable() const;
-    bool isStackAble() const;
+    bool isStackable() const;
     Item* cloneItem();
 };
 

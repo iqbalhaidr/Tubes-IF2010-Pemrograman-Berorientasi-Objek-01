@@ -27,16 +27,21 @@ public:
     void addItem(std::pair<Item*, int>& value);
     void reduceItem(const Item* item, int amount);
     void useItem(const std::string itemID, Character& orang, const Items& itemMap, Unit& target);
-    void unequipItem(Character& orang,const std::string& slot, Unit& target);
-    void generalUnequip(std::string slot, Character& orang, Unit& target);
-    void generalEquip(std::string slot, Character& orang, Item* item, Unit& target);
+    void unequipItem(Character& orang, const std::string& slot, Unit& target);
+    void equipItem(std::string slot, Character& orang, Item* item, Unit& target);
     std:: pair<int,int>  getIdxItembyId(const std::string& itemId) const;
 
     Matrix<std::pair<Item*, int>> getBackpack(){return backpack;};
     Item* getEquippedItem(const std::string& slot){return equipped[slot];};
+    std::pair<Item *, int> getItemById(const std::string& itemId);
+    std::pair<Item *, int> getItemBackpackByName(const std::string& itemName);
     std::string getEquippedItemId(const std::string& slot) const;
+    void setEquipped(const std::string& slot, Item* item);
     void displayBackpack();
     void displayEquipment();
+    int getItemQtyInInvent(const std::string& itemName);
+    void displayBackpackDetails();
+
 };
 
 #endif

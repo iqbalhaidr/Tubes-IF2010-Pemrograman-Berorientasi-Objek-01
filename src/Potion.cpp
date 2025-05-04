@@ -10,7 +10,7 @@ bool Potion::isConsumable() const{
     return true;
 }
 
-bool Potion ::isStackAble() const{
+bool Potion ::isStackable() const{
     return true;
 }
 

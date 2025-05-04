@@ -2,27 +2,26 @@
 
 #include <iostream>
 
-Dungeon::Dungeon(string rank, Mobloot &mobLoots, Items &items) : prize() {
+//DONE
+Dungeon::Dungeon(string rank, Mobloot &mobLoots, Items &items, Character &c) : prize() {
     this->rank = rank;
-    this->penaltyExp = 100;  // Tiap rank dibuat penalty sama
-    this->penaltyGold = 100;
-    helperSet(items);
+    helperSet(items, c);
     randomizeDoubleDungeon();
     generateChambers(mobLoots);
 }
 
+//DONE
 Dungeon::~Dungeon() {
     for (Chamber *c : chambers) {
         delete c;
     }
     chambers.clear();
-
-    delete bonusItem;
 }
 
+// DONE
 void Dungeon::randomizeDoubleDungeon() {
-    if (Randomizer::random(1, 1) == 1) {
-        std::cout << "TERJADI DOUBLE DUNGEON!" << std::endl;
+    // Chance double dungeon 30%
+    if (Randomizer::chance(0.3f)) {
         isDD = true;
         rewardExp *= 3;
         rewardGold *= 3;
@@ -31,49 +30,64 @@ void Dungeon::randomizeDoubleDungeon() {
     }
 }
 
-void Dungeon::helperSet(Items &items) {
+//DONE
+void Dungeon::helperSet(Items &items, Character &c) {
     if (rank == "S") {
         minLevel = 50;
         entryCost = 1000;
-        rewardExp = 600;
-        rewardGold = 600;
-        // bonusItem = items.getItem("ItemS");
+        rewardExp = 12000;
+        rewardGold = 2000;
+        penaltyExp = 1300;
+        penaltyGold = 500;
+        bonusItem = items.getItem("DRA");
     } else if (rank == "A") {
         minLevel = 35;
         entryCost = 500;
-        rewardExp = 500;
-        rewardGold = 500;
-        // bonusItem = items.getItem("ItemA");
+        rewardExp = 5000;
+        rewardGold = 1300;
+        penaltyExp = 850;
+        penaltyGold = 300;
+        bonusItem = items.getItem("PRM");
     } else if (rank == "B") {
         minLevel = 25;
         entryCost = 300;
-        rewardExp = 400;
-        rewardGold = 400;
-        // bonusItem = items.getItem("ItemB");
+        rewardExp = 2000;
+        rewardGold = 900;
+        penaltyExp = 650;
+        penaltyGold = 200;
+        bonusItem = items.getItem("PDF");
     } else if (rank == "C") {
         minLevel = 20;
         entryCost = 150;
-        rewardExp = 300;
-        rewardGold = 300;
-        // bonusItem = items.getItem("ItemC");
+        rewardExp = 1300;
+        rewardGold = 650;
+        penaltyExp = 400;
+        penaltyGold = 125;
+        bonusItem = items.getItem("PAT");
     } else if (rank == "D") {
         minLevel = 10;
         entryCost = 0;
-        rewardExp = 200;
-        rewardGold = 200;
-        // bonusItem = items.getItem("ItemD");
+        rewardExp = 800;
+        rewardGold = 350;
+        penaltyExp = 250;
+        penaltyGold = 80;
+        bonusItem = items.getItem("PSN");
     } else if (rank == "E") {
         minLevel = 0;
         entryCost = 0;
-        rewardExp = 100;
-        rewardGold = 100;
-        bonusItem = items.getItem("EXC");
+        rewardExp = 300;
+        rewardGold = 200;
+        penaltyExp = 100;
+        penaltyGold = 50;
+        bonusItem = items.getItem("HLT");
     } else if (rank == "SPECIAL") {
         minLevel = 0;
         entryCost = 0;
-        rewardExp = 1000;
-        rewardGold = 1000;
-        // bonusItem = items.getItem("ItemSPECIAL");
+        rewardExp = int(int(pow(c.getLevel(), 1.5)) * int(pow(100, 1 + 0.005 * c.getLevel())) * 0.3);
+        rewardGold = 10000;
+        penaltyExp = 100 * c.getLevel();
+        penaltyGold = 300;
+        bonusItem = items.getItem("EXC");
     }
 }
 
@@ -84,76 +98,61 @@ void Dungeon::generateChambers(Mobloot &mobLoots) {
         int maxMobLevel = isDD ? 200 : 100;
 
         for (int i = 0; i < totalChambers - 1; i++) {
-            chambers.push_back(
-                new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
+            chambers.push_back(new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
         }
-        chambers.push_back(
-            new Chamber(true, minMobLevel, maxMobLevel, mobLoots));
+        chambers.push_back(new Chamber(true, minMobLevel, maxMobLevel, mobLoots));
     } else if (rank == "A") {
         totalChambers = 5;
         int minMobLevel = isDD ? 60 : 30;
         int maxMobLevel = isDD ? 140 : 70;
 
         for (int i = 0; i < totalChambers - 1; i++) {
-            chambers.push_back(
-                new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
+            chambers.push_back(new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
         }
-        chambers.push_back(
-            new Chamber(true, minMobLevel, maxMobLevel, mobLoots));
+        chambers.push_back(new Chamber(true, minMobLevel, maxMobLevel, mobLoots));
     } else if (rank == "B") {
         totalChambers = 4;
         int minMobLevel = isDD ? 40 : 20;
         int maxMobLevel = isDD ? 100 : 50;
 
         for (int i = 0; i < totalChambers - 1; i++) {
-            chambers.push_back(
-                new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
+            chambers.push_back(new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
         }
-        chambers.push_back(
-            new Chamber(true, minMobLevel, maxMobLevel, mobLoots));
+        chambers.push_back(new Chamber(true, minMobLevel, maxMobLevel, mobLoots));
     } else if (rank == "C") {
         totalChambers = 3;
         int minMobLevel = isDD ? 20 : 10;
         int maxMobLevel = isDD ? 70 : 35;
 
         for (int i = 0; i < totalChambers - 1; i++) {
-            chambers.push_back(
-                new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
+            chambers.push_back(new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
         }
-        chambers.push_back(
-            new Chamber(true, minMobLevel, maxMobLevel, mobLoots));
+        chambers.push_back(new Chamber(true, minMobLevel, maxMobLevel, mobLoots));
     } else if (rank == "D") {
         totalChambers = 2;
         int minMobLevel = isDD ? 0 : 0;
         int maxMobLevel = isDD ? 50 : 25;
 
         for (int i = 0; i < totalChambers; i++) {
-            chambers.push_back(
-                new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
+            chambers.push_back(new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
         }
     } else if (rank == "E") {
         totalChambers = 1;
         int minMobLevel = isDD ? 0 : 0;
         int maxMobLevel = isDD ? 20 : 10;
 
-        // std::cout << "Check2 Dungeon.cpp\n";
         for (int i = 0; i < totalChambers; i++) {
-            // std::cout << "Check3 Dungeon.cpp\n";
-            chambers.push_back(
-                new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
-            // std::cout << minMobLevel<<" MINIMAL LEVEL E \n";
-            // std::cout << maxMobLevel<<" MAXIMAL LEVEL E \n";
+            chambers.push_back(new Chamber(false, minMobLevel, maxMobLevel, mobLoots));
         }
     } else if (rank == "SPECIAL") {
         totalChambers = 100;
 
         for (int i = 0; i < totalChambers - 1; i++) {
             int curLevel = isDD ? (i + 1) * 2 : (i + 1);
-            chambers.push_back(
-                new Chamber(false, curLevel, curLevel, mobLoots));
+            chambers.push_back(new Chamber(false, curLevel, curLevel, mobLoots));
         }
         int curLevel = isDD ? 200 : 100;
-        chambers.push_back(new Chamber(true, 100, 100, mobLoots));
+        chambers.push_back(new Chamber(true, curLevel, curLevel, mobLoots));
     }
 }
 
@@ -162,12 +161,14 @@ void Dungeon::start(Character &c, Inventory &inv, Items &items) {
         std::cout << "Level karakter tidak mencukupi untuk memasuki dungeon ini." << std::endl;
         return;
     }
+
     if (c.getGold() < entryCost) {
         std::cout << "Karakter tidak memiliki cukup gold untuk memasuki dungeon ini." << std::endl;
         return;
     }
     c.setGold(c.getGold() - entryCost);
-    welcomeMessage();
+
+    // welcomeMessage();
     bool neverLose = true;
     int ctr = 0;
 
@@ -182,7 +183,7 @@ void Dungeon::start(Character &c, Inventory &inv, Items &items) {
         prize.addGold(rewardGold);
         prize.addItem(bonusItem, 1);
         prize.giveTo(&c, &inv);
-        winningMessage();
+        // winningMessage();
 
         prize.displayInfo();
     } else {
@@ -191,7 +192,7 @@ void Dungeon::start(Character &c, Inventory &inv, Items &items) {
         if (isDD) {
             prize.giveTo(&inv);
         }
-        losingMessage();
+        // losingMessage();
 
         prize.displayInfo();
     }
@@ -211,8 +212,7 @@ void Dungeon::displayInfo() {
     std::cout << "Penalty Gold: " << penaltyGold << std::endl;
     std::cout << "Prize: " << std::endl;
     prize.displayInfo();
-    std::cout << "Bonus Item: " << (bonusItem ? bonusItem->getName() : "None")
-              << std::endl;
+    std::cout << "Bonus Item: " << (bonusItem ? bonusItem->getName() : "None") << std::endl;
     std::cout << "Chambers:" << std::endl;
     for (int i = 0; i < totalChambers; ++i) {
         std::cout << "  Chamber " << i + 1 << ":" << std::endl;

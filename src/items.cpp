@@ -112,7 +112,7 @@ Item* Items::getItem(const std::string& id) const {
 Item* Items::getItembyName(const std::string& Name) {
     for (const auto& item : itemMap) {
         if (item.second->getName() == Name) {
-            return item.second;
+            return item.second->cloneItem();
         }
     }
     return nullptr;
@@ -133,7 +133,7 @@ void Items::save(const std::string& directory) const {
                    << item.second->getRarity() << " "
                    << item.second->getBaseStat() << " ";
         for (const auto& effect : item.second->getEffects()) {
-            outputFile << effect << " ";
+            outputFile << effect->getName() << " ";
         }
         outputFile << "\n";
     }

@@ -3,14 +3,12 @@
 using namespace std;
 
 Character::Character(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, vector<string> skillNames, string type)
-: Unit(name, strength, agility, intelligence, level), skillTree(type) {
+: Unit(name, strength, agility, intelligence, level), 
+    skillTree(type), exp(exp), gold(gold), masteryCost(masteryCost), type(type) {
+    this->isChar = true;
     if (!skillNames.empty()) {
         loadCharacterSkills(skillNames);
     }
-    setExp(exp);
-    setGold(gold);
-    setMasteryCost(masteryCost);
-    setType(type);
 }
 
 void Character::loadCharacterSkills(vector<string> skillNames) {
@@ -75,13 +73,13 @@ void Character::setType(string type) { this->type = type;}
 void Character::displayAvailableSkillUpgrades() {
     vector<SkillNode*> availableSkillNodes;
     skillTree.getAvailableUpgrade(availableSkillNodes);
-    int counter = 0;
+    int counter = 1;
     for (SkillNode* skillNode : availableSkillNodes) {
         cout << to_string(counter) << ". " << skillNode->getSkill()->getName() << endl;
         counter++;
     }
 }
-void Character::UpgradeSkill(string& skillNameToLearn) {
+void Character::upgradeSkill(string& skillNameToLearn) {
     bool found = false;
     vector<SkillNode*> availableSkillNodes;
     int idx = 0;
@@ -97,7 +95,7 @@ void Character::UpgradeSkill(string& skillNameToLearn) {
         Skill* skillToLearn = availableSkillNodes[idx]->getSkill();
         SkillNode* parentNode = skillTree.getParent(*(availableSkillNodes[idx]->getSkill()));
         if (masteryCost < availableSkillNodes[idx]->getSkill()->getMasterCost()) {
-            cout << "masteryCost tidak cukup untuk mempelajari skill" << skillToLearn->getName() << endl;
+            throw MasteryCostNotEnough("masteryCost tidak cukup untuk mempelajari skill" + skillToLearn->getName());
             return;
         }
         masteryCost -= skillToLearn->getMasterCost();
@@ -116,10 +114,36 @@ void Character::UpgradeSkill(string& skillNameToLearn) {
             }
             
         }
+    } else {
+        throw InvalidSkill("skill tidak available untuk di-upgrade");
     }
 
 }
 
+void Character::displayCharacter() {
+    cout << "\n===== PROFIL CHARACTER =====\n\n";
+    cout << "Character Name : " << this->name << endl;
+    cout << "Type           : " << this->type << endl;
+    cout << "Level          : " << this->level << endl;
+    cout << "-> STATS, HEALTH, MANA \n";
+    cout << "Strength : " << this->getStats().getStrength() << " , ";
+    cout << "Agility : " << this->getStats().getStrength() << " , ";
+    cout << "Intelligence : " << this->getStats().getStrength() << endl;
+    cout << "Current Health :" << this->currentHealth << endl;
+    cout << "Current Mana :" << this->currentMana << endl;
+    cout << "<-\n";
+    cout << "Exp : " << this->exp << endl;
+    cout << "Gold : " << this->gold << endl;
+    cout << "Mastery Cost : " << this->masteryCost << endl;
+    cout << "Skills : [";
+    for (int i = 0; i < skills.size(); i++) {
+        cout << skills[i]->getName();
+        if (i < skills.size() - 1) {
+            cout << ",";
+        }
+    }
+    cout << "]\n";
+}
 void Character::reset() {
     currentHealth = maxHealth;
     currentMana = maxMana;

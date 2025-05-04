@@ -25,6 +25,7 @@ classDiagram
         #manaRegen : int
         #attackDamage : int
         #level : int
+        #isChar : bool
         #stats : Stats
         #skills : vector~Skill*~
         #activeEffects : vector~Effect*~
@@ -71,8 +72,14 @@ classDiagram
     }
 
     class Mobs {
-        +String type
-        +roam()
+        #expReward : int
+        #LootDrop : vector<pair<Item*, double>>
+        +Mobs(string name, int level, int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots)
+        +virtual~Mobs()
+        +getExpReward() int
+        +setExpReward(int expReward) void
+        +reset() void
+
     }
 
     class Character {
@@ -81,12 +88,46 @@ classDiagram
         #masteryCost : int
         #type : string
         #skillTree : SkillTree
+        #loadCharacterSkills(vector<string> skillNames) void
         +Character(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, string type)
         +virtual ~Character()
-        +getExp() const: int
-        +
+        +getExp() int
+        +getGold() int
+        +getMasteryCost() int
+        +getSkillTree() SkillTree
+        +getType() string
+        +setLevel(int level) void
+        +setExp(int exp) void
+        +setGold(int gold) void
+        +setMasteryCost(int masteryCost) void
+        +setType(string type) void
+        +displayAvailableSkillUpgrades() void
+        +UpgradeSkill(string& name) void
+        +displayCharacter() void
+        +virtual void levelUp() void [=0]
     }
+
+    class Assassin {
+        -criticalChance : float
+        -criticalMultiplier : int
+        -updateBasicAttributes() void
+        +Assassin(string name,  int strength = 16, int agility = 24, int intelligence = 19, int level = BASE_LEVEL, int exp = BASE_EXP, int gold = BASE_GOLD, int masteryCost = BASE_MASTERY_COST, vector<string> skillNames = {})
+        +~Assassin()
+        +getCriticalChance() float
+        +getCriticalMultiplier() int
+        +setCriticalChance(float criticalChance) void
+        +setCriticalMultiplier(int criticalMultiplier) void
+        +attack(Unit& target, Inventory& inventory) void
+        +takeDamage(int damage, Inventory& inventory) void
+        +levelUp() void
+
+        
+
+    }
+
+
 
     Unit *-- Stats   
     Unit <|-- Mobs     
     Unit <|-- Character
+    Character <|-- Assassin

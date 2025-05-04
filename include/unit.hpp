@@ -14,6 +14,7 @@
 #include "EffectHealth.hpp" 
 #include "EffectManaReduc.hpp"
 #include "EffectTurnBased.hpp"
+#include "exception.hpp"
 
 #include "inventory.hpp"
 #include <string>
@@ -34,6 +35,7 @@ class Unit {
         int manaRegen;
         int attackDamage;
         int level;
+        bool isChar;
         Stats stats;
         vector<Skill*> skills;
         vector<Effect*> activeEffects;
