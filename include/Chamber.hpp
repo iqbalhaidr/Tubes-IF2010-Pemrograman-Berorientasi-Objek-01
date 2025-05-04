@@ -6,10 +6,14 @@
 #define MIN_ENEMIES_CHAMBER 2
 #define MAX_ENEMIES_CHAMBER 4
 #define CHANCE_BOSS_NOT_ON_LAST_CHAMBER 0.10f
+#define DISPLAY_TIME 3000
+#define BIG_DAMAGE 9999
 
 #include <string>
 #include <vector>
 #include <stdlib.h>
+#include <thread>
+#include <chrono>
 
 #include "Randomizer.hpp"
 #include "Reward.hpp"
@@ -37,6 +41,9 @@ class Chamber {
     int minMobLevel;
     int maxMobLevel;
     Mobloot *mobLoots;
+    bool autoMenang;
+    bool cheatEnemyStun;
+    bool cheatDamage;
 
     /*
      * Rasionalisasi minMobLevel, maxMobLevel:
@@ -174,6 +181,10 @@ class Chamber {
     void displayPlayerStatus(Character &);
 
     void displayEnemyStatus(Mobs *enemy);
+
+    void displayStatus(Character &, Mobs *);
+
+    void cheatMode(Character &);
 
 };
 
