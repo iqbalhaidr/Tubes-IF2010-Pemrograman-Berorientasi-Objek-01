@@ -79,7 +79,7 @@ void Character::displayAvailableSkillUpgrades() {
         counter++;
     }
 }
-void Character::UpgradeSkill(string& skillNameToLearn) {
+void Character::upgradeSkill(string& skillNameToLearn) {
     bool found = false;
     vector<SkillNode*> availableSkillNodes;
     int idx = 0;

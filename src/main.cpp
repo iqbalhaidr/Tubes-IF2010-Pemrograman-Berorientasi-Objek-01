@@ -223,8 +223,18 @@ int main(){
                     p1->getChar()->displayAvailableSkillUpgrades();
                     cout<<"Masukkan Pilihan Anda: ";
                     cin>>skillName;
-                    p1->getChar()->UpgradeSkill(skillName);
                     break;
+                    while (true) {
+                        cout<<"Masukkan Pilihan Anda\n";
+                        cin>>skillName;
+                        try {
+                            p1->getChar()->upgradeSkill(skillName);
+                        } catch(const InvalidSkill& e) {
+                            std::cerr << "Error: " << e.what() << std::endl;
+                        } catch(const MasteryCostNotEnough& e) {
+                            std::cerr << "Error: " << e.what() << std::endl;
+                        }
+                    }
                 }
                 else if(opt==4){
                     //input user

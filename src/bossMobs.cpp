@@ -20,5 +20,6 @@ void BossMobs::rage() {
 
 void BossMobs::reset() {
     Mobs::reset();
+    setStats(getStats().getStrength() / 1.5, getStats().getAgility() / 1.5, getStats().getIntelligence() / 1.5);
     rageUsed = false;
 }
