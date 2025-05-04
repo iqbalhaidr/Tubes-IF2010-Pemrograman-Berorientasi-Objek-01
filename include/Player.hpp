@@ -23,6 +23,7 @@ private:
     Inventory* inv;
     Character* playerChar;
 public:
+    Player(const std::string& dir, const std::string& charType, Items& itemMap, Characters& allChar, int type, Inventory* inv);
     Player(const std::string& dir, const std::string& charType, Items& itemMap, Characters& allChar, int type);
     ~Player();
 

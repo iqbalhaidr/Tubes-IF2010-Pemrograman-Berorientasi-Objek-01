@@ -99,6 +99,30 @@ Player::Player(const std::string& dir, const std::string& charName, Items& itemM
     // this->playerChar = new Fighter("Kelra",  26, 17, 13, 1, 0,99999999, 0);
 }
 
+Player::Player(const std::string& dir, const std::string& charName, Items& itemMap, Characters& allChar, int type, Inventory* inv){
+    if(type == 0){ // load
+        this->playerChar = allChar.getCharacterbyName(charName);
+    }
+    else if(type == 1){
+        this->playerChar = new Berserker(charName);
+    }
+    else if (type == 2){
+        this->playerChar = new Fighter(charName);
+    }
+    else if(type == 3){
+        this->playerChar = new Mage(charName);
+    }
+    else if (type == 4){
+        this->playerChar = new Necromancer(charName);
+    }
+    else if(type == 5){
+        this->playerChar = new Assassin(charName);
+    }
+    this->itemMap = &itemMap;
+    this->inv = inv;
+    // this->playerChar = new Fighter("Kelra",  26, 17, 13, 1, 0,99999999, 0);
+}
+
 Player::~Player(){
     delete inv;
     delete playerChar;
