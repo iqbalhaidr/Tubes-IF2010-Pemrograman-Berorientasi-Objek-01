@@ -33,16 +33,16 @@ void Fighter::useSkill(Skill* skill, Unit& target, Inventory& inventory) {
 }
 
 void Fighter::updateBasicAttributes() {
-    setAttackDamage(15 + 4 * getStats().getStrength() + 2 *getStats().getAgility());
-    setBlockChance(getStats().getAgility() * 2 / 100); 
+    setAttackDamage(15 + 5 * getStats().getStrength() + 2 *getStats().getAgility());
+    setBlockChance(getStats().getAgility() / 1.4); 
 }
 
 void Fighter::levelUp() {
     setMasteryCost(getMasteryCost() + 5);
     setExp(0);
-    stats.setStrength(stats.getStrength() * 2);
-    stats.setAgility(stats.getAgility() * 1.5);
-    stats.setIntelligence(stats.getIntelligence() * 1.2);
+    stats.setStrength(stats.getStrength() + 3);
+    stats.setAgility(stats.getAgility() + 2);
+    stats.setIntelligence(stats.getIntelligence() + 1);
     Unit::updateBasicAttributes(); 
     updateBasicAttributes();
     Character::reset();

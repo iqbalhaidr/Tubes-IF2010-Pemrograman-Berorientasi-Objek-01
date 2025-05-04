@@ -1,7 +1,7 @@
 #include "../include/demonLord.hpp"
 
 DemonLord::DemonLord(int level, int expReward, Mobloot& mobLoots)
- : BossMobs("Demon Lord", level, 16 + (level -1) * 1.2, 32 + (level -1) * 2, 16 + (level -1) * 1.5, expReward, mobLoots) {
+ : BossMobs("Demon Lord", level, 16 + (level -1) * 1.2, 32 + (level -1) * 2.1, 16 + (level -1) * 1.7, expReward, mobLoots) {
     //
     updateBasicAttributes();
     vector<Effect*> effects;
@@ -17,5 +17,5 @@ DemonLord::DemonLord(int level, int expReward, Mobloot& mobLoots)
 DemonLord::~DemonLord() {}
 
 void DemonLord::updateBasicAttributes() {
-    setAttackDamage(4* getStats().getAgility());
+    setAttackDamage(2* getStats().getAgility() + 3*getStats().getIntelligence());
 }
