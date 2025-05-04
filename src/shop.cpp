@@ -1,11 +1,13 @@
-#include "shop.hpp"
-#include "exception.hpp"
+#include "../include/shop.hpp"
+#include "../include/exception.hpp"
 #include <iostream>
 
 Shop::Shop(const std::string& directory){
     std:: string filename = directory + "shop.txt";
     this->itemMap = new Items(Items::createFromDirectory(directory));
-
+    for (const auto& item : itemMap->getItemMap()) {
+        std::string name = item.second->getName();
+    }
     if (!fs::exists(directory) || !fs::is_directory(directory)) {
         throw InputOutputException("Directory tidak ditemukan");
     }
@@ -24,13 +26,13 @@ Shop::Shop(const std::string& directory){
         int basePrice, stock;
 
         if (ss >> name >> rarity >> basePrice >> stock){ //parsing berhasil
-            if(!(stock < 0 && Items::isValidItemRarity(rarity))){
+            if(stock < 0 || !Items::isValidItemRarity(rarity)){
                 throw InputOutputException("Stock atau rarity tidak valid"); //eror format file tidak sesuai silahkan masukkan file yang valid
             }
 
             //validasi nama
             if(!itemMap->lookUpbyName(name)){
-                throw InputOutputException("Nama item tidak valid"); //eror format file tidak sesuai silahkan masukkan file yang valid
+                throw InputOutputException("Item " + name + " tidak ditemukan di itemMap"); //eror format file tidak sesuai silahkan masukkan file yang valid
             }
             
             availableItems[name] = std::make_tuple(rarity, basePrice, stock);
@@ -39,9 +41,11 @@ Shop::Shop(const std::string& directory){
     }
 
     for (const auto& item : availableItems) {
-        std::string category = std::get<0>(item.second);
+        Item * itemObj = itemMap->getItembyName(item.first);
+        std::string category = itemObj->getItemType();
         categoryShop[category].push_back(std::make_pair(item.first, std::get<2>(item.second)));
     }
+    std::cout<<"SELESAI\n";
 }
 
 Shop::~Shop() {
@@ -66,12 +70,16 @@ void Shop::saveShop(const std::string& directory) {
     std::cout << "Shop successfully saved\n";
 }
 
-std::pair<int,int> Shop::buyItem(const std::string& itemName, int quantity) {
+std::pair<Item*, int> Shop::buyItem(const std::string& itemName, int quantity) {
     auto it = availableItems.find(itemName);
 
     if (it != availableItems.end()) {
         int price = std::get<1>(it->second);
         int stock = std::get<2>(it->second);
+        if(quantity > stock){
+            throw StockError();
+        }
+        Item *item = itemMap->getItembyName(itemName);
         price *= quantity; 
         switch (std::get<0>(it->second)[0]) {
         case 'S': 
@@ -95,20 +103,19 @@ std::pair<int,int> Shop::buyItem(const std::string& itemName, int quantity) {
         default:
             break;
         }
-        return std::make_pair(price, stock);
+        return std::make_pair(item,price);
     }else {
         throw ItemNotFound("Item " + itemName + " not found in shop");
     }
 }
 
-int Shop::sellItem(const std::string& itemName, int quantity, Inventory& inventory){
+std::pair<Item*,int> Shop::sellItem(const std::string& itemName, int quantity){
     int price;
     
     if (quantity >= 0) {
         try{
-            Item *item = itemMap->getItem(itemName);
-            inventory.reduceItem(item, quantity);
-            std::cout << "Item " << itemName << " sold successfully\n"; 
+            Item *item = itemMap->getItembyName(itemName);
+            
             price = 0.7*quantity;
             switch (item->getRarity()[0]) {
                 case 'S': 
@@ -132,7 +139,7 @@ int Shop::sellItem(const std::string& itemName, int quantity, Inventory& invento
                 default:
                     break;
                 }
-                return price;
+                return {item, price};
         } catch (const InputOutputException& e) {
             std::cout << "Error: " << e.what() << "\n";
             throw; // Rethrow the caught exception
@@ -144,10 +151,9 @@ int Shop::sellItem(const std::string& itemName, int quantity, Inventory& invento
 
 void Shop::restock() {
     for (auto& item : availableItems) {
-        auto shopItem = shopConfig.find(item.first);
-        if (shopItem != shopConfig.end()) {
-            std::get<2>(item.second) = shopItem->second; 
-        }
+        std::string name = item.first;
+        int stock = shopConfig[name];
+        setStock(name, stock);
     }
 }
 
@@ -155,17 +161,34 @@ void Shop::setStock(const std::string& itemName, int stock) {
     auto it = availableItems.find(itemName);
     if (it != availableItems.end()) {
         std::get<2>(it->second) = stock;
+        Item * item = itemMap->getItembyName(itemName);
+        auto category = item->getItemType();
+        for(auto& value : categoryShop[category]){
+            if(value.first == itemName){
+                value.second = stock;
+                break;
+            }
+        }
     } else {
         std::cout << "Item " << itemName << " not found in shop.\n";
     }
 }
 
-int Shop::getCurrentStock(const std::string& itemName) {
+int Shop::getCurrentStock(const std::string& itemName) const {
     auto it = availableItems.find(itemName);
     if (it != availableItems.end()) {
         return std::get<2>(it->second);
     } else {
         throw StockError("Item " + itemName + " not found in shop");
+    }
+}
+
+int Shop::getPrice(const std::string& itemName) const {
+    auto it = availableItems.find(itemName);
+    if (it != availableItems.end()) {
+        return std::get<1>(it->second);
+    } else {
+        throw ItemNotFound("Item " + itemName + " not found in shop");
     }
 }
 
@@ -176,7 +199,7 @@ void Shop::displayDetails(std::string itemName) const {
         std::cout << "Price: " << std::get<1>(it->second) << "\n";
         std::cout << "Stock: " << std::get<2>(it->second)<< "\n";
         std::cout << "Effects:\n";
-        Item * item = itemMap->getItem(itemName);
+        Item * item = itemMap->getItembyName(itemName);
         for (const auto& effect : item->getEffects()) {
             std::cout << "- " << effect->getName() << "\n";
         }
@@ -186,12 +209,22 @@ void Shop::displayDetails(std::string itemName) const {
 }
 
 void Shop::displayShop() const {
-    std::cout << "Shop Items:\n";
+    std::cout << "========== Shop Items ==========\n";
     for (const auto& category : categoryShop) {
         std::cout << "Category: " << category.first << "\n";
+        std::cout << std::left 
+                  << std::setw(20) << "Item Name" 
+                  << std::setw(10) << "Price" 
+                  << std::setw(10) << "Stock" << "\n";
+        std::cout << std::string(40, '-') << "\n";
+
         for (const auto& item : category.second) {
-            std::cout << "Item: " << item.first << ", Stock: " << item.second << "\n";
+            std::cout << std::left 
+                      << std::setw(20) << item.first 
+                      << std::setw(10) << getPrice(item.first) 
+                      << std::setw(10) << item.second << "\n";
         }
+
         std::cout << "\n";
     }
 }

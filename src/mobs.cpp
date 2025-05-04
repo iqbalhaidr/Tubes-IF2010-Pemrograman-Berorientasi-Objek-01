@@ -10,7 +10,7 @@ Mobs::Mobs(string name, int level, int strength, int agility, int intelligence, 
     string effectDescription = "menyemburkan cairan asam pekat ke target, menyebabkan damage over time (kerusakan berkelanjutan) selama 3 turn";
     EffectHealth* heal = new EffectHealth("Heal", effectDescription, 3, 3, 1, healthRegen * getStats().getIntelligence() * 2);
     effects.push_back(heal);
-    Skill *skill = new Skill("Heal", 3, 0, 5, 0, effects);
+    Skill *skill = new Skill("Heal", 3, 0, 5, attackDamage, effects);
     addSkill(skill);
 }
 

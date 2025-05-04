@@ -8,7 +8,7 @@ Fighter::Fighter(string name, int strength, int agility, int intelligence, int l
     for (int i = 0; i < skillTree.currentSkills.size(); i++) {
         addSkill(skillTree.currentSkills[i]->getSkill());
     }
-    cout << "kontol\n";
+    // cout << "kontol\n";
 }
 
 Fighter::~Fighter() {}

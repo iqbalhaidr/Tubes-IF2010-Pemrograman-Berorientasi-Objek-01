@@ -20,7 +20,7 @@ class InputOutputException : public std::exception {
 class InventoryEror : public std::exception {
     private:
         std::string errorMessage;
-    
+
     public:
         InventoryEror() : errorMessage("Terjadi kesalahan dalam penambahan atau pengurangan item"){}
         InventoryEror(const std::string& message) : errorMessage(message) {}
@@ -33,10 +33,12 @@ class InventoryEror : public std::exception {
 class InventoryFull : public std::exception {
     private:
         std::string errorMessage;
-    
+        int overflow;
     public:
         InventoryFull() : errorMessage("Inventory sudah penuh"){}
-        InventoryFull(const std::string& message) : errorMessage(message) {}
+        InventoryFull(const std::string& message, int total) : errorMessage(message), overflow(total){}
+
+        int getOverflow()const{return overflow;};
 
         const char* what() const noexcept override {
             return errorMessage.c_str();

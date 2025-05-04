@@ -71,6 +71,7 @@ Characters::Characters(const string& directory) {
 }
 
 Characters::~Characters() {
+    
     for (auto& character : characterMap) {
         delete character.second;
     }
