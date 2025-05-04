@@ -105,7 +105,7 @@ void Characters::displayAvailableCharacters() {
         cout << counter++ << ". ";
         cout << pair.first << " - "; // nama char
         cout << pair.second->getType() << " - "; // tipe char
-        cout << pair.second->getLevel() << endl; // level char
+        cout << "Level: " << pair.second->getLevel() << endl; // level char
     }
 
 }
