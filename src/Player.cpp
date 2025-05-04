@@ -138,8 +138,8 @@ void Player::buyFromShop(Shop& shop, const std::string& itemName, int quantity){
         throw StockError("INI NULL PTR");
     }
     if(playerChar->getGold()< price){
-        cout<<playerChar->getGold()<<"\n";
-        cout<<price<<"\n";
+        cout<<playerChar->getGold()<<" INI DIA GOLDNYA\n";
+        cout<<price<<" INI DIA PRICENYA \n";
         throw GoldNotEnough();
     }
     cout<<"BERHASIL MASUK2\n";
