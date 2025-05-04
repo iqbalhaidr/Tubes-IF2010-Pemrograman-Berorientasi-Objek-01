@@ -239,7 +239,7 @@ int main(){
                                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(),
                                                 '\n');
                                 std::cout << "Masukan tidak valid." << std::endl;
-                            } else if (optInvent >= 1 && optInvent <= 4) {
+                            } else if (optInvent >= 1 && optInvent <= 5) {
                                 isValid = true;
                             } else {
                                 std::cout << "Masukan tidak valid." << std::endl;
@@ -247,6 +247,7 @@ int main(){
                         }
                         if(optInvent==1){
                             std::string itemId;
+                            std::cout << "Pilih dan ketik ID Item yang ingin di-equip (contoh: BLD): ";
                             cin>>itemId;
                             std::string equipSlot;
                             
@@ -262,7 +263,9 @@ int main(){
                                     std::cout << "Input tidak valid." << std::endl;
                                 }
                             }
-                            p1->playerEquip(itemId, equipSlot);
+                            if(!(equipSlot=="KELUAR")){
+                                p1->playerEquip(itemId, equipSlot);
+                            }
                         }
                         else if(optInvent==2){
                             bool isInputTrue = false;
@@ -303,9 +306,11 @@ int main(){
                         }
                         else if(optInvent==3){
                             p1->showInventory(true);
+                            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_TIME));
                         }
                         else if(optInvent==4){
                             p1->showInventory(false);
+                            std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_TIME));
                         }
                         else if(optInvent==5){
                             break;
@@ -331,7 +336,7 @@ int main(){
                     cin>>skillName;
                     break;
                     while (true) {
-                        cout<<"Masukkan Pilihan Anda\n";
+                        cout<<"Masukkan Pilihan Anda: ";
                         cin>>skillName;
                         try {
                             p1->getChar()->upgradeSkill(skillName);
