@@ -47,7 +47,7 @@ void Player:: goToShop(Shop& shop) {
             else if (command == "5") {
                 std::string itemId;
                 int qty;
-                std::cout << "Enter item id to sell: ";
+                std::cout << "Enter item name to sell: ";
                 std::cin >> itemId;
                 std::cout << "Enter quantity: ";
                 std::cin >> qty;
@@ -178,6 +178,44 @@ void Player::buyFromShop(Shop& shop, const std::string& itemName, int quantity){
 
     // Delete Unused Pointer to Avoid Memorly Leak
     cout<<"BERHASIL Keluar\n";
+}
+
+void Player::playerEquip(const std::string& itemId, const std::string& slot ){
+    auto item = inv->getItemById(itemId);
+    if(item.first == nullptr){
+        cout<<"Maaf kamu mengakses item yang tidak ada di tas\n";
+        return;
+    }
+    if(item.first->isConsumable()){
+        cout<<"Maaf kamu tidak bisa equip consumable item\n";
+        return;
+    }
+    if((slot == "ARMOR_HEAD" ||  slot == "ARMOR_BODY" || slot == "ARMOR_FOOT") 
+    && item.first->getItemType()=="Armor"){
+        inv->handleNonConsumable((item.first), *playerChar, *playerChar);
+        
+    }
+    else if((slot == "WEAPON" ) && item.first->getItemType()=="Weapon"){
+        inv->handleNonConsumable((item.first), *playerChar, *playerChar);
+        
+    }
+    else if((slot == "PENDANT" ) && item.first->getItemType()=="Pendant"){
+        inv->handleNonConsumable((item.first), *playerChar, *playerChar);
+        
+    }
+
+    std::cout << playerChar->getName()<<" Berhasi equip item " << item.first->getName();
+    
+}
+
+void Player::playerUnequip(const std::string& slot){
+    Item* item = inv->getEquippedItem(slot);
+    if (item == nullptr){
+        cout << "Maaf kamu tidak bisa melakukan unequip terhadap slot yang kosong\n";
+        return;
+    } 
+    inv->unequipItem(*playerChar, slot , *playerChar);
+    std::cout << playerChar->getName() << " unequips " << slot << ".\n";
 }
 
 

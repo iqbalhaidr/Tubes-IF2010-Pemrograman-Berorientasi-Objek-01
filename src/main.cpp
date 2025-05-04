@@ -198,27 +198,133 @@ int main(){
 
         while (!isValid3) {
             std::cout << "Silahkan pilih tujuan Anda" <<std::endl;
-            std::cout << "1. Shop " <<std::endl;
-            std::cout << "2. Dungeon "<<std::endl;
-            std::cout << "3. Gunung Myoboku (upgrade skil) "<<std::endl;
-            std::cout << "4. Turu (save) "<<std::endl;
-            std::cout << "5. Keluar "<<std::endl;
+            std::cout << "1. Player Status " <<std::endl;
+            std::cout << "2. Inventory " <<std::endl;
+            std::cout << "3. Shop " <<std::endl;
+            std::cout << "4. Dungeon "<<std::endl;
+            std::cout << "5. Gunung Myoboku (upgrade skil) "<<std::endl;
+            std::cout << "6. Turu (save) "<<std::endl;
+            std::cout << "7. Keluar "<<std::endl;
             std::cout << "Silahkan Masukkan Angka (1-5):" ;
             std::cin >> opt;
             if (std::cin.fail()) {
                 std::cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 std::cout << "Masukan tidak valid." << std::endl;
-            } else if (opt >= 1 && opt <= 5) {
+            } else if (opt >= 1 && opt <= 7) {
                 if(opt==1){
-                    p1->goToShop(*shop);
+                    p1->getChar()->displayCharacter();
                     break;
                 }
                 else if(opt==2){
-                    p1->goToDungeon(*mobsLoot, *itemMap);
+                    std::cout << "\n\n";
+                    std::cout << "\e[1;1H\e[2J"; //Clear console
+                    std::cout << "Selamat datang di menu Inventory!\n";
+                    while (true) {
+                        std::cout << "\e[1;1H\e[2J"; //Clear console
+                        std::cout << "1. Equip item\n";
+                        std::cout << "2. Unequip item\n";
+                        std::cout << "3. Lihat tas\n";
+                        std::cout << "4. Lihat equipment\n";
+                        std::cout << "5. Keluar\n";
+                
+                        int optInvent;
+                        bool isValid = false;
+                        while (!isValid) {
+                            std::cout << "Pilih opsi: ";
+                            std::cin >> optInvent;
+                
+                            if (std::cin.fail()) {
+                                std::cin.clear();
+                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(),
+                                                '\n');
+                                std::cout << "Masukan tidak valid." << std::endl;
+                            } else if (optInvent >= 1 && optInvent <= 4) {
+                                isValid = true;
+                            } else {
+                                std::cout << "Masukan tidak valid." << std::endl;
+                            }
+                        }
+                        if(optInvent==1){
+                            std::string itemId;
+                            cin>>itemId;
+                            std::string equipSlot;
+                            
+                            while (true) {
+                                std::cout << "Pilih dan ketik slot yang ingin di-equip \n"
+                                <<"(WEAPON/ARMOR_HEAD/ARMOR_BODY/ARMOR_FOOT/PENDANT/KELUAR): ";
+                                cin>>equipSlot;
+
+                                if (equipSlot == "WEAPON" || equipSlot == "ARMOR_HEAD" || equipSlot == "ARMOR_BODY" ||
+                                    equipSlot == "ARMOR_FOOT" || equipSlot == "PENDANT" || equipSlot == "KELUAR") {
+                                    break;
+                                } else {
+                                    std::cout << "Input tidak valid." << std::endl;
+                                }
+                            }
+                            p1->playerEquip(itemId, equipSlot);
+                        }
+                        else if(optInvent==2){
+                            bool isInputTrue = false;
+                            std::string slot;
+                            while (!isInputTrue) {
+                                std::cout << "Pilih dan ketik slot yang ingin di-un-equip \n"
+                                <<"(WEAPON/ARMOR_HEAD/ARMOR_BODY/ARMOR_FOOT/PENDANT/KELUAR): ";
+                                std::cin >> slot;
+
+                                if (slot == "WEAPON" || slot == "ARMOR_HEAD" || slot == "ARMOR_BODY" ||
+                                    slot == "ARMOR_FOOT" || slot == "PENDANT" || slot == "KELUAR") {
+                                    isInputTrue = true;
+                                } else {
+                                    std::cout << "Input tidak valid." << std::endl;
+                                }
+                            }
+
+                            if (slot == "WEAPON") {
+                                p1->playerUnequip(slot);
+                                std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_TIME));
+                            } else if (slot == "ARMOR_HEAD") {
+                                p1->playerUnequip(slot);
+                                std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_TIME));
+                                // std::cout << "Berhasil meng-un-equip armor head" << std::endl;
+                            } else if (slot == "ARMOR_BODY") {
+                                p1->playerUnequip(slot);
+                                std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_TIME));
+                                // std::cout << "Berhasil meng-un-equip armor body" << std::endl;
+                            } else if (slot == "ARMOR_FOOT") {
+                                p1->playerUnequip(slot);
+                                std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_TIME));
+                                // std::cout << "Berhasil meng-un-equip armor foot" << std::endl;
+                            } else if (slot == "PENDANT") {
+                                p1->playerUnequip(slot);
+                                std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_TIME));
+                                // std::cout << "Berhasil meng-un-equip pendant" << std::endl;
+                            } else if (slot == "KELUAR") {}
+                        }
+                        else if(optInvent==3){
+                            p1->showInventory(true);
+                        }
+                        else if(optInvent==4){
+                            p1->showInventory(false);
+                        }
+                        else if(optInvent==5){
+                            break;
+                        }
+ 
+                    }
+
+                    std::cout << "\n\n";
                     break;
                 }
                 else if(opt==3){
+                    p1->goToShop(*shop);
+                    break;
+                }
+                else if(opt==4){
+                    p1->goToDungeon(*mobsLoot, *itemMap);
+                    break;
+                }
+                else if(opt==5){
                     std::string skillName;
                     p1->getChar()->displayAvailableSkillUpgrades();
                     cout<<"Masukkan Pilihan Anda: ";
@@ -236,7 +342,7 @@ int main(){
                         }
                     }
                 }
-                else if(opt==4){
+                else if(opt==6){
                     //input user
                     // std::string path;
                     // while (true) {
@@ -263,11 +369,10 @@ int main(){
                     p1->getInv()->saveInventory("../datadump/");
                     allChar->save("../datadump/");
                     itemMap->save("../datadump/");
-                    std::cout<<"hei tayo\n";
                     shop->saveShop("../datadump/");
                     break;
                 }
-                else{
+                else if (opt==7){
                     std::string penutup = 
                         "\nLangkahmu mungkin terhenti di sini…\n"
                         "Namun dunia ini tetap berputar dalam keheningan dan rahasia.\n"
