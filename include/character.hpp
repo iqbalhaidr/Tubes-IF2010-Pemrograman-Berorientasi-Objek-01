@@ -39,7 +39,7 @@ class Character : public Unit {
         void setMasteryCost(int masteryCost);
         void setType(string type);
         void displayAvailableSkillUpgrades();
-        void UpgradeSkill(string& name);
+        void upgradeSkill(string& name);
         void displayCharacter();
 
         // Fungsi
