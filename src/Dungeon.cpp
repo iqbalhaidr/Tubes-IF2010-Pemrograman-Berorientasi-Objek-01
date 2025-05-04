@@ -179,8 +179,8 @@ void Dungeon::start(Character &c, Inventory &inv, Items &items) {
         std::cout << "\e[1;1H\e[2J";  // Clear console
 
         bool result = chambers[ctr]->battle(c, inv, this->prize, items);
-        std::cout << "[DEBUG] attackDamage keluar chamber: " << c.getAttackDamage() << std::endl;
-        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+        // std::cout << "[DEBUG] attackDamage keluar chamber: " << c.getAttackDamage() << std::endl;
+        // std::this_thread::sleep_for(std::chrono::milliseconds(5000));
         neverLose = result;
         ctr++;
     }
