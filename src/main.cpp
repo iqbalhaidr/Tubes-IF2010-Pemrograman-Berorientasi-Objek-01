@@ -132,8 +132,21 @@ int main(){
                 }
             } 
             else{
-
-                p1 = new Player(folder_path, "Thorgar", itemMap, allChar, 0);
+                p1->getChar()->displayCharacter();
+                std::cout << "Silahkan pilih karakter Anda: ";
+                
+                std::string chosenName;
+                while (true) {
+                    std::cin >> chosenName;
+                
+                    if (allChar.searchCharacter(chosenName)) {
+                        std::cout << "Karakter '" << chosenName << "' berhasil dipilih!" << std::endl;
+                        break;
+                    } else {
+                        std::cout << "Karakter tidak ditemukan. Silakan masukkan nama karakter yang valid: ";
+                    }
+                }
+                p1 = new Player(folder_path, chosenName, itemMap, allChar, 0);
             }
             characterCreated = true;
             std::cout << "Selamat datang jiwa yang tersesat" <<std::endl;
