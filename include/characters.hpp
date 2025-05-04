@@ -25,6 +25,7 @@ public:
     bool searchCharacter(const string& name) const;
     Character* getCharacterbyName(const string& Name);
     map<string, Character*> getCharacterMap() const { return characterMap; }
+    void displayAvailableCharacters();
 
     void save(const string& directory) const;
 
