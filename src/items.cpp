@@ -69,7 +69,6 @@ Items Items :: createFromDirectory(const std::string& directory) {
             throw InventoryEror("Format baris salah di file item.txt");
         }
     }
-    std::cout<<"WOI INI KOK BERHASIL";
     Items listItem (itemMap);
     
     return listItem;

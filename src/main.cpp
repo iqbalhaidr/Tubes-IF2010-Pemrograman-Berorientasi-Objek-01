@@ -80,7 +80,7 @@ int main(){
                 delete inv;
                 throw; 
             }
-
+            break;
 
         } 
         catch (const std::exception& e) {

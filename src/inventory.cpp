@@ -55,8 +55,11 @@ Inventory Inventory ::loadInventory(const std::string& directory,
                 Item* cloned = itemMap.getItem(itemId);
                 // cout<<"INI NAMA DAN TYPENYA : " << cloned->getName() << " dan " << cloned->getItemType();
                 if((cloned->getItemType() == "Weapon" || cloned->getItemType() == "Armor") && total >1){
+                    cout<<cloned->getId()<<"\n";
+                    cout<<cloned->getName()<<"\n";
+                    cout<<total<<"\n";
                     throw InputOutputException(
-                        "Jumlah Weapon atau Armor dalam Config tidak boleh lebih dari 1");
+                        "Jumlah Weapon atau Armor dalam backpack tidak boleh lebih dari 1");
                 }
                 backp.set(row, col, {cloned, total});  // add
                 // std::cout << cloned->getId() << " INI NAMANYA\n";
