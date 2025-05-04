@@ -11,7 +11,7 @@ void typeEffect(const std::string &text, int delayMs) {
 
 int main(){
     std::vector<std::string> required_files = {
-        "character.txt",
+        "characters.txt",
         "item.txt",
         "shop.txt",
         "backpack.txt",
@@ -19,19 +19,30 @@ int main(){
     };
 
     std::string folder_path;
-    
+
     while (true) {
         std::cout << "Masukkan path folder: ";
         std::getline(std::cin, folder_path);
 
         try {
-            if (!fs::is_directory(folder_path)) {
-                throw InputOutputException("Path tidak ditemukan atau bukan direktori.");
+            fs::path folder = fs::path(folder_path).lexically_normal();
+            if (folder_path.back() != '/' && folder_path.back() != '\\') {
+                folder /= ""; 
+            }
+            std::cout << folder << "\n";
+
+            if (!fs::exists(folder)) {
+                throw InputOutputException("Path tidak ditemukan.");
+            }
+
+            if (!fs::is_directory(folder)) {
+                throw InputOutputException("Path bukan direktori.");
             }
 
             std::vector<std::string> missing_files;
             for (const auto& filename : required_files) {
-                if (!fs::exists(fs::path(folder_path) / filename)) {
+                fs::path fullpath = folder / filename;
+                if (!fs::exists(fullpath)) {
                     missing_files.push_back(filename);
                 }
             }
@@ -45,7 +56,7 @@ int main(){
             }
 
             std::cout << "Folder valid dan semua file ditemukan!" << std::endl;
-            break; 
+            break;
 
         } catch (const std::exception& e) {
             std::cerr << "Terjadi kesalahan: " << e.what() << std::endl;
