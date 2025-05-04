@@ -34,6 +34,7 @@ public:
     void showCurrency();
     void reduceItemInvetory(const std::string& addAbleItem, int target);
     Character* getChar(){return playerChar;};
+    Inventory* getInv(){return inv;};
 };
 
 

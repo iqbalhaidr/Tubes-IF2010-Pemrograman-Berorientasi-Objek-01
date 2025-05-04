@@ -10,7 +10,7 @@ Unit::Unit(string name, int strength, int agility, int intelligence, int level)
     this->currentHealth = maxHealth;
     this->currentMana = maxMana;
     this->level = level;
-    std::cout << "[DEBUG] Keluar constructor Unit" << std::endl;
+
 }
 
 Unit::~Unit() {

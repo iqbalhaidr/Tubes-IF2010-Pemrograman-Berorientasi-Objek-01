@@ -133,7 +133,7 @@ void Items::save(const std::string& directory) const {
                    << item.second->getRarity() << " "
                    << item.second->getBaseStat() << " ";
         for (const auto& effect : item.second->getEffects()) {
-            outputFile << effect << " ";
+            outputFile << effect->getName() << " ";
         }
         outputFile << "\n";
     }
