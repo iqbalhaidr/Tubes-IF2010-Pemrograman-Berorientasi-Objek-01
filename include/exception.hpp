@@ -20,7 +20,7 @@ class InputOutputException : public std::exception {
 class InventoryEror : public std::exception {
     private:
         std::string errorMessage;
-    
+
     public:
         InventoryEror() : errorMessage("Terjadi kesalahan dalam penambahan atau pengurangan item"){}
         InventoryEror(const std::string& message) : errorMessage(message) {}
@@ -33,10 +33,12 @@ class InventoryEror : public std::exception {
 class InventoryFull : public std::exception {
     private:
         std::string errorMessage;
-    
+        int overflow;
     public:
         InventoryFull() : errorMessage("Inventory sudah penuh"){}
-        InventoryFull(const std::string& message) : errorMessage(message) {}
+        InventoryFull(const std::string& message, int total) : errorMessage(message), overflow(total){}
+
+        int getOverflow()const{return overflow;};
 
         const char* what() const noexcept override {
             return errorMessage.c_str();
@@ -107,6 +109,32 @@ class GoldNotEnough : public std::exception {
         }
 };
 
+class ManaNotEnough : public std::exception {
+    private:
+        std::string errorMessage;
+    
+    public:
+        ManaNotEnough() : errorMessage("Jumlah mana tidak cukup"){}
+        ManaNotEnough(const std::string& message) : errorMessage(message) {}
+    
+        const char* what() const noexcept override {
+            return errorMessage.c_str();
+        }
+};
+
+class MasteryCostNotEnough : public std::exception {
+    private:
+        std::string errorMessage;
+    
+    public:
+        MasteryCostNotEnough() : errorMessage("Jumlah masteryCost tidak cukup"){}
+        MasteryCostNotEnough(const std::string& message) : errorMessage(message) {}
+    
+        const char* what() const noexcept override {
+            return errorMessage.c_str();
+        }
+};
+
 class InvalidValue : public std::exception {
     private:
         std::string errorMessage;
@@ -114,6 +142,19 @@ class InvalidValue : public std::exception {
     public:
         InvalidValue() : errorMessage("Nilai tidak valid"){}
         InvalidValue(const std::string& message) : errorMessage(message) {}
+    
+        const char* what() const noexcept override {
+            return errorMessage.c_str();
+        }
+};
+
+class InvalidSkill: public std::exception {
+    private:
+        std::string errorMessage;
+    
+    public:
+        InvalidSkill() : errorMessage("Skill tidak valid"){}
+        InvalidSkill(const std::string& message) : errorMessage(message) {}
     
         const char* what() const noexcept override {
             return errorMessage.c_str();

@@ -1,7 +1,7 @@
 #include "../include/lich.hpp"
 
 Lich::Lich(int level, int expReward, Mobloot& mobLoots)
- : BossMobs("Lich", level, 14 + (level -1) * 1.2, 12 + (level -1) * 1.5, 36 + (level -1) * 2, expReward, mobLoots) {
+ : BossMobs("Lich", level, 14 + (level -1) * 1.2, 12 + (level -1) * 1.7, 36 + (level -1) * 2, expReward, mobLoots) {
     updateBasicAttributes();
     vector<Effect*> effects;
     string poisonEffectDescription = "berpeluang 0.15 untuk memberikan damage dan mengurangi mana target selama 4 turn";
@@ -16,5 +16,5 @@ Lich::Lich(int level, int expReward, Mobloot& mobLoots)
 Lich::~Lich() {}
 
 void Lich::updateBasicAttributes() {
-    setAttackDamage(4 * getStats().getIntelligence());
+    setAttackDamage(5 * getStats().getIntelligence() + 2 * getStats().getAgility());
 }

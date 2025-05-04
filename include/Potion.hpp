@@ -14,7 +14,7 @@ public:
     Potion(const Potion& other);
     ~Potion();
     bool isConsumable() const;
-    bool isStackAble() const;
+    bool isStackable() const;
     Item* cloneItem();
 };
 #endif

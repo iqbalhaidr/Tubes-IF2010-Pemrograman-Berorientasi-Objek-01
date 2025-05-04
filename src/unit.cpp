@@ -5,12 +5,12 @@
 using namespace std;
 
 Unit::Unit(string name, int strength, int agility, int intelligence, int level)
-    : stats(strength, agility, intelligence) {
-    this->name = name;
+    : stats(strength, agility, intelligence), name(name) {
     updateBasicAttributes();
     this->currentHealth = maxHealth;
     this->currentMana = maxMana;
     this->level = level;
+
 }
 
 Unit::~Unit() {
@@ -81,16 +81,18 @@ int Unit::calculateDamage(Unit& target, int baseDamage, Inventory& inventory) {
     if (totalDamage < 0) totalDamage = 0;
     totalDamage += baseDamage;  // total damage = base damage + critical damage
     // cout << "totalDamage sblm wepen: " << totalDamage << endl;
-    Item* weapon = inventory.getEquippedItem("WEAPON");
-    if (weapon != nullptr) {
-        totalDamage += weapon->getFinalStat();  // total damage + weapon damage
-        // cout << "Weapon name: " << weapon->getName() << std::endl;
-        // std::cout << "Weapon damage: " << weapon->getFinalStat() << std::endl;
-    }
+    if (this->isChar = true) {
+        Item* weapon = inventory.getEquippedItem("WEAPON");
+        if (weapon != nullptr) {
+            totalDamage += weapon->getFinalStat();  // total damage + weapon damage
+            cout << "Weapon name: " << weapon->getName() << std::endl;
+            std::cout << "Weapon damage: " << weapon->getFinalStat() << std::endl;
+        }
 
-    Item* pendant = inventory.getEquippedItem("PENDANT");
-    if (pendant != nullptr) {
-        totalDamage += pendant->getFinalStat();  // total damage + weapon damage
+        Item* pendant = inventory.getEquippedItem("PENDANT");
+        if (pendant != nullptr) {
+            totalDamage += pendant->getFinalStat();  // total damage + weapon damage
+        }
     }
     // cout << "totalDamage sblm lvl: " << totalDamage << endl;
     // cout << "baseDamage: " << baseDamage << endl;
@@ -107,19 +109,21 @@ void Unit::attack(Unit& target, Inventory& inventory) {
 void Unit::takeDamage(int damage, Inventory& inventory) {
     // std::cout << "damage from takeDamage(): " << damage << std::endl;
     int defence = 0;  // damage reduction
-    Item* armorHead = inventory.getEquippedItem("ARMOR_HEAD");
-    if (armorHead != nullptr) {
-        defence += armorHead->getFinalStat();
-    }
+    if (this->isChar = true) {
+        Item* armorHead = inventory.getEquippedItem("ARMOR_HEAD");
+        if (armorHead != nullptr) {
+            defence += armorHead->getFinalStat();
+        }
 
-    Item* armorBody = inventory.getEquippedItem("ARMOR_BODY");
-    if (armorBody != nullptr) {
-        defence += armorBody->getFinalStat();
-    }
+        Item* armorBody = inventory.getEquippedItem("ARMOR_BODY");
+        if (armorBody != nullptr) {
+            defence += armorBody->getFinalStat();
+        }
 
-    Item* armorFoot = inventory.getEquippedItem("ARMOR_FOOT");
-    if (armorFoot != nullptr) {
-        defence += armorFoot->getFinalStat();
+        Item* armorFoot = inventory.getEquippedItem("ARMOR_FOOT");
+        if (armorFoot != nullptr) {
+            defence += armorFoot->getFinalStat();
+        }
     }
 
     for (const auto& activeEffect : getCombinedEffect(activeEffects)) {
@@ -160,21 +164,24 @@ void Unit::restoreMana(int amount) {
 }
 
 void Unit::useSkill(Skill* skill, Unit& target, Inventory& inventory) {
-    // cout << "Using skill: " << skill->getName() << endl;
-    // cout << "Skill effect: " << skill->getEffects()[0]->getName() << endl;
-    // cout << "Skill damage:" << skill->getDamage() << endl;
+    cout << "Using skill: " << skill->getName() << endl;
+    cout << "Skill effect: " << skill->getEffects()[0]->getName() << endl;
+    cout << "Skill damage:" << skill->getDamage() << endl;
+
+    // cek skill ada di vector skill atau tidak
+    bool isSkillValid = std::find(skills.begin(), skills.end(), skill) != skills.end();
+    if (!isSkillValid) {
+        throw InvalidSkill("Skill tidak terdapat pada daftar skill yang dimiliki character");
+    }
+
     if (currentMana < skill->getManaCost()) {
-        cout << "Not enough mana to use " << skill->getName() << endl;
+        throw ManaNotEnough("Not enough mana to use skill: " + skill->getName());
+    }
+    if ((rand() % 100 + 1) > skill->getskillChance()) {
+        std::cout << "Skill tidak mengenai target" << std::endl;
         return;
     }
-    // if ((rand() % 100 + 1) > skill->getskillChance()) {
-    //     return;
-    // }
-    // if ((rand() % 100 + 1) > skill->getskillChance()) {
-    //     std::cout << "Skill tidak mengenai target" << std::endl;
-    //     return;
-    // }
-    std::cout << name << "'s " << skill->getName() << " mengenai " << target.getName() << "dmg skill pure/mana | " << skill->getDamage() << "/" << skill->getManaCost() << std::endl;
+    std::cout << "Skill mengenai target" << std::endl;
     currentMana -= skill->getManaCost();
     int totalDamage = skill->getDamage();
     // cout << "TOTAL DAMAGE: " << skill->getDamage() << endl;
@@ -246,9 +253,6 @@ void Unit::applyActiveEffect() { //awal
                 restoreMana(activeEffect->apply(this));
             }
         } else if (activeEffect->isPoison()) {
-            EffectPoison* poisonEffect =
-                dynamic_cast<EffectPoison*>(activeEffect);
-            // cout << poisonEffect->getDamage() << endl;
             currentHealth -= activeEffect->apply(this);
         } else if (activeEffect->isManaReduc()) {
             currentMana -= activeEffect->apply(this);
@@ -261,9 +265,9 @@ void Unit::applyActiveEffect() { //awal
 
 void Unit::updateBasicAttributes() {
     setMaxHealth(100 + 22 * getStats().getStrength());
-    setHealthRegen(10 * getStats().getStrength());
+    setHealthRegen(1.6 * getStats().getStrength());
     setMaxMana(60 + 12 * getStats().getIntelligence());
-    setManaRegen(5 * getStats().getIntelligence());
+    setManaRegen(1.3 * getStats().getIntelligence());
 }
 
 vector<Effect*> Unit::getCombinedEffect(

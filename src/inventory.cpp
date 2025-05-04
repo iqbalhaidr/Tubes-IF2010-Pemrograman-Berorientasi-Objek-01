@@ -110,7 +110,13 @@ void Inventory::saveInventory(const std::string& directory) {
     }
 
     for (const auto& equipment : equipped) {
-        outputEquipment << equipment.first << " " << equipment.second << "\n";
+        outputEquipment << equipment.first << " " ;
+        if(equipment.second == nullptr){
+            outputEquipment << " " << "\n";
+        }
+        else{
+            outputEquipment << equipment.second->getId() << "\n";
+        }
     }
 
     outputBackpack.close();
@@ -122,21 +128,22 @@ void Inventory::addItem(std::pair<Item*, int>& value) {
     Item* item = value.first;
     int& quantity = value.second;
     bool isStackable = item->isStackable();
-
+    
+    cout<< isStackable<<" INI STATE STACKABLE ATAU NGGA\n";
     if (isStackable) {
         auto existingItem = getIdxItembyId(item->getId());
         if (existingItem.first != -1) {
+            cout<<existingItem.first<<","<< existingItem.second<<" INI EXIST DIMANA\n" ;
             for (int i = 0; i < 8 && quantity > 0; ++i) {
                 for (int j = 0; j < 4 && quantity > 0; ++j) {
                     std::pair<Item*, int> current = backpack.get(i, j);
-
-                    if (current.first == item && current.second < MAX_ITEM) {
+                    
+                    if (current.first!=nullptr &&*current.first == *item && current.second < MAX_ITEM) {
                         int spaceAvailable = MAX_ITEM - current.second;
                         int amountToAdd = std::min(spaceAvailable, quantity);
-
-                        backpack.set(
-                            i, j,
-                            {current.first, current.second + amountToAdd});
+                        // cout<<current.first->getName() << " KIRI NAME CURRENT KANAN NAME ITEM"<< item->getName()<<"\n";
+                        cout<<i<<","<<j<<" INI DIA I J NYA SAAT EXIST\n";
+                        backpack.set(i, j, {current.first, current.second + amountToAdd});
                         quantity -= amountToAdd;
                     }
                 }
@@ -162,8 +169,7 @@ void Inventory::addItem(std::pair<Item*, int>& value) {
 
     // Jika masih ada sisa yang tidak bisa dimasukkan, lempar exception
     if (quantity > 0) {
-        throw InputOutputException(
-            "Backpack penuh, tidak bisa menambahkan sisa item");
+        throw InventoryFull("Backpack penuh, tidak bisa menambahkan sisa item", quantity);
     }
 }
 
@@ -172,17 +178,29 @@ void Inventory::reduceItem(const Item* item, int target) {
     for (int i = 7; i >= 0; --i) {
         for (int j = 3; j >= 0; --j) {
             std::pair<Item*, int> current = backpack.get(i, j);
-            if (current.first == item && current.second > 0 && isStackAble) {
+            if (current.first!=nullptr && *current.first == *item && current.second > 0 && isStackAble) {
                 int toRemove = std::min(current.second, target);
                 current.second -= toRemove;
                 target -= toRemove;
-                backpack.set(i, j, current);
+                if(current.second == 0){
+                    cout<<i<<","<<j<<" INI DIA I J NYA SAAT SET\n";
+                    backpack.set(i, j, std::pair<Item*, int>());
+                }
+                else{
+                    backpack.set(i, j, current);
+                }
 
                 if (target == 0) return;
-            } else if (current.first == item && current.second > 0) {
-                target -= 1;
-                current.second -= 1;
-                backpack.set(i, j, current);
+            }
+            else if(current.first!=nullptr && *current.first == *item && current.second > 0){
+                target-=1;
+                current.second-=1;
+                if(current.second == 0){
+                    backpack.set(i, j, std::pair<Item*, int>());
+                }
+                else{
+                    backpack.set(i, j, current);
+                }
 
                 if (target == 0) return;
             }
@@ -196,115 +214,92 @@ void Inventory::reduceItem(const Item* item, int target) {
     }
 }
 
-void Inventory::useItem(const std::string itemID, Character& orang,
-                        const Items& itemMap, Unit& target) {
-    auto idxItem = getIdxItembyId(itemID);
-    if (idxItem.first == -1 && idxItem.second == -1) {
-        return;  // bisa throw atau error handling lainnya
+void Inventory::equipItem(std::string slot, Character& orang, Item* item, Unit& target){
+    for (Effect* effect : item->getEffects()) {
+        orang.addActiveEffect(effect);
     }
 
-    auto itemInInventory = backpack.get(idxItem.first, idxItem.second);
-    if (!(itemInInventory.first->isConsumable())) {
-        std::string type = itemInInventory.first->getItemType();
+    setEquipped(slot, item);
+    reduceItem(item, 1);
+}
+
+void Inventory::unequipItem(Character& orang, const std::string& slot, Unit& target){
+    Item* item = equipped[slot];
+    if (item == nullptr){
+        return;
+    } 
+
+    equipped[slot] = nullptr;
+    std:: pair<Item*,int> p = {item,1};
+    addItem(p);
+    
+
+    for (Effect* effect : item->getEffects()) {
+        orang.removeActiveEffect(effect);
+    }
+}
+
+
+void Inventory:: useItem(const std::string itemID, Character& orang, const Items& itemMap, Unit& target){
+    auto [item, count] = this->getItemById(itemID);
+    if (item == nullptr) return;
+
+    if (!item->isConsumable()) {
+        std::string type = item->getItemType();
 
         if (type == "Weapon") {
-            // unequip Current Weapon
-            unequipItem(orang, "WEAPON", target);
-            generalEquip("WEAPON", orang, itemInInventory.first, target);
-            orang.setAttackDamage(orang.getAttackDamage() +
-                                  itemInInventory.first->getFinalStat());
+            unequipItem(orang,"WEAPON", target);
+            equipItem("WEAPON", orang, item, target);
         }
-
+        else if (type == "Pendant") {
+            unequipItem(orang,"PENDANT", target);
+            equipItem("PENDANT", orang, item, target);
+        }
         else if (type == "Armor") {
-            std::vector<std::string> armorSlots = {"ARMOR_BODY", "ARMOR_FOOT",
-                                                   "ARMOR_HEAD"};
-
-            // Find Empty Slot
-            for (const std::string& slot : armorSlots) {
-                if (equipped[slot] == nullptr) {
-                    equipped[slot] = itemInInventory.first;
-                    reduceItem(itemInInventory.first, 1);
+            std::vector<std::string> armorSlots = {"ARMOR_BODY", "ARMOR_FOOT", "ARMOR_HEAD"};
+            for (const auto& slot : armorSlots) {
+                if (this->getEquippedItem(slot) == nullptr) {
+                    equipItem(slot, orang, item, target);
                     return;
                 }
             }
 
-            // No empty slot
             std::string minSlot = "";
             int minStat = INT_MAX;
             for (const auto& slot : armorSlots) {
-                if (equipped[slot] != nullptr) {
-                    int stat = equipped[slot]->getFinalStat();
-                    if (stat < minStat) {
-                        minStat = stat;
-                        minSlot = slot;
-                    }
+                Item* equipped = this->getEquippedItem(slot);
+                if (equipped && equipped->getFinalStat() < minStat) {
+                    minStat = equipped->getFinalStat();
+                    minSlot = slot;
                 }
             }
 
-            if (minSlot != "") {
-                generalUnequip(minSlot, orang, target);
-                generalEquip(minSlot, orang, itemInInventory.first, target);
+            if (!minSlot.empty()) {
+                unequipItem(orang,minSlot, target);
+                equipItem(minSlot, orang, item, target);
             }
         }
-
-        else if (type == "Pendant") {
-            if (!(equipped["PENDANT"] == nullptr)) {
-                generalUnequip("PENDANT", orang, target);
+    }
+    else {
+        for (Effect* effect : item->getEffects()) {
+            if(effect->isThrowable()){
+                target.addActiveEffect(effect);
             }
-            generalEquip("PENDANT", orang, itemInInventory.first, target);
-        }
-    } else {
-        reduceItem(itemInInventory.first, 1);
-        std::vector<Effect*> effectItem = itemInInventory.first->getEffects();
-        for (Effect* e : effectItem) {
-            orang.addActiveEffect(e);
+            else{
+                orang.addActiveEffect(effect);
+            }
+            
         }
     }
 }
 
-void Inventory ::generalEquip(std::string slot, Character& orang, Item* item,
-                              Unit& target) {
-    reduceItem(item, 1);
-    std::vector<Effect*> effectItem = item->getEffects();
-    for (Effect* e : effectItem) {
-        if (!(e->isThrowable())) {
-            orang.addActiveEffect(e);
+std:: pair<int,int>  Inventory::getIdxItembyId(const std::string& itemID) const{
+    auto lambda = [itemID] (const std::pair<Item*, int>& a){
+        if(a.first != nullptr && itemID == a.first->getId()){
+            cout <<"Ini tu stackable atau ngga "<<a.first->isStackable() <<"\n";
+            cout<<itemID << "INI ITEM ID DAN KANANNYA ITEM DALAM BACKPACK NAMA: "<<a.first->getName() <<"\n";
         }
-    }
-    equipped[slot] = item;
-}
-
-void Inventory ::unequipItem(Character& orang, const std::string& slot,
-                             Unit& target) {
-    if (slot == "WEAPON") {
-        if (!(equipped["WEAPON"] == nullptr)) {
-            orang.setAttackDamage(orang.getAttackDamage() -
-                                  equipped["WEAPON"]->getFinalStat());
-            generalUnequip("WEAPON", orang, target);
-        }
-    } else {
-        generalUnequip(slot, orang, target);
-    }
-    std::cout << "Unequipped attackDamage: " << orang.getAttackDamage()
-              << std::endl;
-}
-
-void Inventory ::generalUnequip(std::string slot, Character& orang,
-                                Unit& target) {
-    std::pair<Item*, int> item = {equipped[slot], 1};
-    addItem(item);
-    std::vector<Effect*> effectItem = equipped[slot]->getEffects();
-    for (Effect* e : effectItem) {
-        if (!(e->isThrowable())) {
-            orang.removeActiveEffect(e);
-        }
-    }
-    equipped[slot] = nullptr;
-}
-
-std::pair<int, int> Inventory::getIdxItembyId(const std::string& itemID) const {
-    auto lambda = [itemID](const std::pair<Item*, int>& a) {
-        return a.first != nullptr && itemID == a.first->getId();
+         return a.first != nullptr && itemID == a.first->getId();
     };
     auto idxItemInBackpack = backpack.isInMatrix(lambda);
     return idxItemInBackpack;
@@ -318,30 +313,90 @@ std::string Inventory::getEquippedItemId(const std::string& slot) const {
     return "";
 }
 
-void Inventory ::displayBackpack() {
-    auto txtGenerator = [](std::pair<Item*, int> p) {
-        return p.first->getId() + " (" + std::to_string(p.second) + ") ";
-    };
+
+
+void Inventory :: displayBackpack(){
+    auto txtGenerator = [](std::pair<Item*, int> p){return p.first->getId() +" ("+ std::to_string(p.second) +") " + p.first->getItemType() ;};
     std::string item = "";
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 4; j++) {
             if (backpack.isEmptyCell(i, j)) {
                 item = "";
-            } else {
+            } 
+            else {
                 item = txtGenerator(backpack.get(i, j));
             }
-            std::cout << "|" << Inventory::centerText(item, 10) << "|";
-        }
-        cout << "\n";
+            std::cout<<"|"<<Inventory::centerText(item, 20)<<"|";
+        }   
+        cout<<"\n";
     }
 }
 
-void Inventory::displayEquipment() {
+std::pair<Item *, int>  Inventory :: getItemById(const std::string& itemId){
+    auto idx = getIdxItembyId(itemId);
+    if(idx.first ==-1 && idx.second==-1) return {nullptr, -1};
+    return backpack.get(idx.first, idx.second);
+}
+
+void Inventory::setEquipped(const std::string& slot, Item* item){
+    equipped[slot] = item;
+}
+
+void Inventory::displayEquipment(){
     for (const auto& [key, value] : equipped) {
-        if (!(value == nullptr)) {
+        if(!(value == nullptr)){
             std::cout << key << " => " << value->getName() << std::endl;
-        } else {
+        }
+        else{
             std::cout << key << " => " << "KOSONG" << std::endl;
         }
+       
     }
+}
+
+std::pair<Item *, int> Inventory::getItemBackpackByName(const std::string& itemName){
+    cout<< backpack.get(0,5).second << " WOI INI BERAPA COUNTNYA\n";
+    auto lambda = [itemName] (const std::pair<Item*, int>& a){
+        return a.first != nullptr && itemName == a.first->getName();
+    };
+    auto idxItem = backpack.isInMatrix(lambda);
+    if(idxItem.first ==-1 && idxItem.second==-1) return {nullptr, -1};
+    return backpack.get(idxItem.first, idxItem.second);
+}
+
+int Inventory::getItemQtyInInvent(const std::string& itemName){
+    int qty = 0;
+    cout<< backpack.get(0,5).second << "WOI INI BERAPA COUNTNYA\n";
+    for(int i=0; i<8; i++){
+        for(int j = 0; j<4; j++){
+            auto curr = backpack.get(i,j);
+            if(curr.first!= nullptr && curr.first->getName() == itemName){
+                qty+=curr.second;
+            }
+        }
+    }
+
+    return qty;
+}
+
+void Inventory:: displayBackpackDetails() {
+    std::vector<std::string> txt;
+    std::cout<<std::endl;
+
+    for(int i=0; i< 8; i++){
+        for(int j = 0; j<4; j++){
+            auto back = backpack.get(i, j);
+            Item* item = back.first;
+            if (item != nullptr) {
+                std::string generator = item->getId() + ": " + item->getName();
+                if (std::find(txt.begin(), txt.end(), generator) == txt.end()) {
+                    txt.push_back(generator);
+                }
+            }
+        }
+    }
+    for (const auto& line : txt) {
+        std::cout << line << std::endl;
+    }
+    std::cout<<std::endl;
 }

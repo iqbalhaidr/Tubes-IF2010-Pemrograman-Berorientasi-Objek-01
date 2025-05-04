@@ -1,0 +1,1 @@
+Kaelen 15 13 7 1 0 100 15 Fighter "Stone Skin" "Fighter Fist" "Battle Instinct"

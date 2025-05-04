@@ -10,7 +10,7 @@ bool Pendant::isConsumable() const{
     return false;
 }
 
-bool Pendant ::isStackAble() const{
+bool Pendant ::isStackable() const{
     return true;
 }
 

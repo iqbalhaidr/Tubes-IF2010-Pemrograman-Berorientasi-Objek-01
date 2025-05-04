@@ -11,7 +11,7 @@ bool Weapon::isConsumable() const{
     return false;
 }
 
-bool Weapon ::isStackAble() const{
+bool Weapon ::isStackable() const{
     return false;
 }
 
