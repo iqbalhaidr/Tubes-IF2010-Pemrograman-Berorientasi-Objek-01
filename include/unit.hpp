@@ -14,6 +14,7 @@
 #include "EffectHealth.hpp" 
 #include "EffectManaReduc.hpp"
 #include "EffectTurnBased.hpp"
+#include "exception.hpp"
 
 #include "inventory.hpp"
 #include <string>

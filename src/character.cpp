@@ -95,7 +95,7 @@ void Character::UpgradeSkill(string& skillNameToLearn) {
         Skill* skillToLearn = availableSkillNodes[idx]->getSkill();
         SkillNode* parentNode = skillTree.getParent(*(availableSkillNodes[idx]->getSkill()));
         if (masteryCost < availableSkillNodes[idx]->getSkill()->getMasterCost()) {
-            cout << "masteryCost tidak cukup untuk mempelajari skill" << skillToLearn->getName() << endl;
+            throw MasteryCostNotEnough("masteryCost tidak cukup untuk mempelajari skill" + skillToLearn->getName());
             return;
         }
         masteryCost -= skillToLearn->getMasterCost();
@@ -115,7 +115,7 @@ void Character::UpgradeSkill(string& skillNameToLearn) {
             
         }
     } else {
-        cout << "skill tidak available untuk di-upgrade\n";
+        throw InvalidSkill("skill tidak available untuk di-upgrade");
     }
 
 }
