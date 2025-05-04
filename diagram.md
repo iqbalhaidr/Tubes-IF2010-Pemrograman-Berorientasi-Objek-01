@@ -474,7 +474,7 @@ classDiagram
 
         
 
-    }
+    
 
     class Armor {
         -durability : double
