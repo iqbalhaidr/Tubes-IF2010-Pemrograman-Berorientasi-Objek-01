@@ -83,7 +83,6 @@ void Character::upgradeSkill(string& skillNameToLearn) {
     availableSkillNodes = skillTree.getAvailableUpgrade();
     int idx = 0;
     for (int i = 0; i < availableSkillNodes.size(); i++) {
-        cout << skillNameToLearn << " , " << availableSkillNodes[i]->getSkill()->getName() << endl;
         if (availableSkillNodes[i]->getSkill()->getName() == skillNameToLearn) {
             found = true;
             idx = i;
@@ -91,6 +90,7 @@ void Character::upgradeSkill(string& skillNameToLearn) {
     }
     
     if (found) {
+        cout << "Skill" << skillNameToLearn << "valid untuk di-upgrade" << endl;
         Skill* skillToLearn = availableSkillNodes[idx]->getSkill();
         SkillNode* parentNode = skillTree.getParent(availableSkillNodes[idx]->getSkill());
         if (masteryCost < availableSkillNodes[idx]->getSkill()->getMasterCost()) {

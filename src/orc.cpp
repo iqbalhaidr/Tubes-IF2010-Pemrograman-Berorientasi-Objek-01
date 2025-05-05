@@ -10,7 +10,6 @@ Orc::Orc(int level, int expReward, Mobloot& mobLoots)
     EffectTurn* stunEffect = new EffectTurn("Brutal Strike (Stun)",
                                             stunEffectDescription, 1, 1, 50, true);
     effects.push_back(stunEffect);
-    cout << "attackDamek: " << getAttackDamage() << endl;
     Skill* skill =
         new Skill("Brutal Strike", 14, 0, 15, attackDamage * 1.5, effects);
     addSkill(skill);
