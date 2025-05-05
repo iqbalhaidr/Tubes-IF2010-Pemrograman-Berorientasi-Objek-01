@@ -6,12 +6,12 @@
 using namespace std;
 
 class Orc : public BasicMobs {
+    private:
+        void updateBasicAttributes() override;
     public:
         // ctor dtor
         Orc(int level, int expReward, Mobloot& mobLoots);
         ~Orc();
-        void updateBasicAttributes() override ;
-
 
 
 };
