@@ -47,10 +47,14 @@ void Assassin::levelUp() {
     setMasteryCost(getMasteryCost() + 5);
     setExp(0);
     stats.setStrength(stats.getStrength() + 1);
-    stats.setAgility(stats.getAgility() * + 3);
+    stats.setAgility(stats.getAgility() + 3);
     stats.setIntelligence(stats.getIntelligence() + 2);
     Unit::updateBasicAttributes(); 
     updateBasicAttributes();
+    for (Skill* skill : skills) {
+        skill->setDamage(skill->getDamage() + 20);
+        skill->setManaCost(skill->getManaCost() + 10);
+    }
     Character::reset();
 }
 

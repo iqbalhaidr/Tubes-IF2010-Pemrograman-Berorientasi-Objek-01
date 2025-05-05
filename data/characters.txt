@@ -1,4 +1,4 @@
-Kaelen 15 13 7 1 0 100 15 Fighter "Stone Skin" "Divine Shield" "Fighter Fist" "Battle Instinct"
+Kaelen 15 13 7 10000 10000 10000000 1500000 Fighter "Stone Skin" "Divine Shield" "Fighter Fist" "Battle Instinct"
 Alucard 32 26 22 3 50 2000 120 Assassin "Crimson Fang" "Sanguine Requiem" "Silent Ambush" "Blood Pact"
 Eudora 52 70 78 5 200 1000 600 Mage "Fire Arrow" "Indra's Wrath" "Chains Ruin" "Mana Prison" "Mana Spring"
 Grock 112 100 96 8 60 1500 400 Berserker "Bloodthirst Awakening" "Crippling Rampage" "Indomitable Fury" "Blood Renewal"

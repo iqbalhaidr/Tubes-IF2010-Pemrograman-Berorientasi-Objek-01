@@ -71,10 +71,8 @@ void Character::setGold(int gold) { this->gold = gold;}
 void Character::setMasteryCost(int masteryCost) { this->masteryCost = masteryCost;}
 void Character::setType(string type) { this->type = type;}
 void Character::displayAvailableSkillUpgrades() {
-    vector<SkillNode*> availableSkillNodes;
-    skillTree.getAvailableUpgrade(availableSkillNodes);
     int counter = 1;
-    for (SkillNode* skillNode : availableSkillNodes) {
+    for (SkillNode* skillNode : skillTree.getAvailableUpgrade()) {
         cout << to_string(counter) << ". " << skillNode->getSkill()->getName() << endl;
         counter++;
     }
@@ -82,9 +80,10 @@ void Character::displayAvailableSkillUpgrades() {
 void Character::upgradeSkill(string& skillNameToLearn) {
     bool found = false;
     vector<SkillNode*> availableSkillNodes;
+    availableSkillNodes = skillTree.getAvailableUpgrade();
     int idx = 0;
-    skillTree.getAvailableUpgrade(availableSkillNodes);
     for (int i = 0; i < availableSkillNodes.size(); i++) {
+        cout << skillNameToLearn << " , " << availableSkillNodes[i]->getSkill()->getName() << endl;
         if (availableSkillNodes[i]->getSkill()->getName() == skillNameToLearn) {
             found = true;
             idx = i;
@@ -93,7 +92,7 @@ void Character::upgradeSkill(string& skillNameToLearn) {
     
     if (found) {
         Skill* skillToLearn = availableSkillNodes[idx]->getSkill();
-        SkillNode* parentNode = skillTree.getParent(*(availableSkillNodes[idx]->getSkill()));
+        SkillNode* parentNode = skillTree.getParent(availableSkillNodes[idx]->getSkill());
         if (masteryCost < availableSkillNodes[idx]->getSkill()->getMasterCost()) {
             throw MasteryCostNotEnough("masteryCost tidak cukup untuk mempelajari skill" + skillToLearn->getName());
             return;
@@ -111,8 +110,8 @@ void Character::upgradeSkill(string& skillNameToLearn) {
                 } else {
                     ++it;
                 }
-            }
-            
+                
+            }     
         }
     } else {
         throw InvalidSkill("skill tidak available untuk di-upgrade");
