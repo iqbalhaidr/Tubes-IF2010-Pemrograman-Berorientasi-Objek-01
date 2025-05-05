@@ -26,6 +26,8 @@ public:
     void saveInventory(const std::string& directory);
     void addItem(std::pair<Item*, int>& value);
     void reduceItem(const Item* item, int amount);
+    void handleNonConsumable (Item* item, Character& orang, Unit& target);
+    void handleConsumable(Item* item, Character& orang, Unit& target);
     void useItem(const std::string itemID, Character& orang, const Items& itemMap, Unit& target);
     void unequipItem(Character& orang, const std::string& slot, Unit& target);
     void equipItem(std::string slot, Character& orang, Item* item, Unit& target);

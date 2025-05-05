@@ -34,6 +34,9 @@ public:
     void showInventory(bool isBackpack);
     void showCurrency();
     void reduceItemInvetory(const std::string& addAbleItem, int target);
+    void setGold(int setTo);
+    void playerEquip(const std::string& id, const std::string& slot);
+    void playerUnequip(const std::string& id);
     Character* getChar(){return playerChar;};
     Inventory* getInv(){return inv;};
 };
