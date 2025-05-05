@@ -335,13 +335,11 @@ int main(){
                 else if(opt==5){
                     std::string skillName;
                     p1->getChar()->displayAvailableSkillUpgrades();
-                    cout<<"Masukkan Pilihan Anda: ";
-                    cin>>skillName;
-                    break;
                     while (true) {
                         cout<<"Masukkan Pilihan Anda: ";
                         cin>>skillName;
                         try {
+                            cout <<"tes10000\n";
                             p1->getChar()->upgradeSkill(skillName);
                         } catch(const InvalidSkill& e) {
                             std::cerr << "Error: " << e.what() << std::endl;
