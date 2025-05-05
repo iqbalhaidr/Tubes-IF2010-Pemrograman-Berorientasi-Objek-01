@@ -334,6 +334,7 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
                     std::cout << "\e[1;1H\e[2J"; //Clear console
                     std::cout << enemies[i]->getName() << " launches an attack to " << c.getName() << "!\n";
                     if (!cheatGod) {
+                        if(enemies[i]== nullptr){cout<<"WOI INI\n";};
                         enemies[i]->attack(c, inv);
                     } else {
                         std::cout << "Kebal dari serangan (godMode)\n";

@@ -78,23 +78,25 @@ int Unit::calculateDamage(Unit& target, int baseDamage, Inventory& inventory) {
     if (totalDamage < 0) totalDamage = 0;
     totalDamage += baseDamage;  // total damage = base damage + critical damage
     
-    if (this->isChar = true) {
+    if (this->isChar == true) {
         Item* weapon = inventory.getEquippedItem("WEAPON");
-        setupActiveEffect(weapon->getEffects(), target);
         if (weapon != nullptr) {
             totalDamage += weapon->getFinalStat();  // total damage + weapon damage
+            setupActiveEffect(weapon->getEffects(), target);
         }
+        
 
         Item* pendant = inventory.getEquippedItem("PENDANT");
-        setupActiveEffect(pendant->getEffects(), target);
         if (pendant != nullptr) {
             totalDamage += pendant->getFinalStat();  // total damage + weapon damage
+            setupActiveEffect(pendant->getEffects(), target);
         }
     }
     totalDamage *= getLevelFactor(target);  // total damage * level factor
     return totalDamage;
 }
 void Unit::attack(Unit& target, Inventory& inventory) {
+    std::cout<<"MASUK ATTCK\n";
     std::cout << name << " attacks " << target.getName() << " sebesar " << calculateDamage(target, attackDamage, inventory) << std::endl;
     target.takeDamage(calculateDamage(target, attackDamage, inventory), inventory);
 }

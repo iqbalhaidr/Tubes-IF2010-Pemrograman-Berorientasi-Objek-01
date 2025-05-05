@@ -183,7 +183,6 @@ void Player::buyFromShop(Shop& shop, const std::string& itemName, int quantity){
     // VALIDASI CURRENCY
     Item* item = itemPriceAndStock.first;  // ambil Item*
     int price  = itemPriceAndStock.second;  // ambil harga (int)
-    cout<<item->getName()<<"INI NAMA DALAM BUY FROM SHOP HASIL RETURN BUY ITEM\n";
 
     if(item==nullptr){
         throw StockError("INI NULL PTR");
@@ -192,11 +191,9 @@ void Player::buyFromShop(Shop& shop, const std::string& itemName, int quantity){
         throw StockError("INI NULL PTR");
     }
     if(playerChar->getGold()< price){
-        cout<<playerChar->getGold()<<" INI DIA GOLDNYA\n";
-        cout<<price<<" INI DIA PRICENYA \n";
+
         throw GoldNotEnough();
     }
-    cout<<"BERHASIL MASUK2\n";
     std::pair<Item*, int> addedItem = std::make_pair(item,quantity);
     
     inv->addItem(addedItem);
@@ -209,7 +206,7 @@ void Player::buyFromShop(Shop& shop, const std::string& itemName, int quantity){
     cout<<"Berhasil update shop stock\n";
 
     // Delete Unused Pointer to Avoid Memorly Leak
-    cout<<"BERHASIL Keluar\n";
+
 }
 
 void Player::playerEquip(const std::string& itemId, const std::string& slot ){
@@ -258,28 +255,23 @@ void Player::sellToShop(Shop& shop, const std::string& itemName, int quantity){
         cout<<"EROR ini\n";
         throw ItemNotFound("Item Tidak ada dalam backpack");
     }
-    cout<<"Cek1.5\n";
+    
     if(inv->getItemQtyInInvent(itemName) < quantity){
         cout<<"EROR2 ini\n";
         throw StockError("Jumlah item yang ingin dijual lebih besar dari banyak item di inventory");
     }
 
-    cout<<"Cek2\n";
     auto itemShop = shop.sellItem(itemName, quantity); // Dapat throw eror
     auto price = itemShop.second;
 
-    //update shop stock
-    cout<<"Cek3\n";
     auto currStock =shop.getCurrentStock(itemName);
     shop.setStock(itemName,currStock+quantity);
     
-
-    cout<<"Cek4\n";
     inv->reduceItem(itemInventory.first, quantity);
     playerChar->setGold(playerChar->getGold()+price);
 
     // Delete Unused Pointer to Avoid Memorly Leak
-    cout<<"Cek5\n";
+
     delete itemShop.first;
 }
 

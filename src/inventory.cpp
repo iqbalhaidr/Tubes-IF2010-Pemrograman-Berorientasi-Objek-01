@@ -137,11 +137,9 @@ void Inventory::addItem(std::pair<Item*, int>& value) {
     int& quantity = value.second;
     bool isStackable = item->isStackable();
     
-    cout<< isStackable<<" INI STATE STACKABLE ATAU NGGA\n";
     if (isStackable) {
         auto existingItem = getIdxItembyId(item->getId());
         if (existingItem.first != -1) {
-            cout<<existingItem.first<<","<< existingItem.second<<" INI EXIST DIMANA\n" ;
             for (int i = 0; i < 8 && quantity > 0; ++i) {
                 for (int j = 0; j < 4 && quantity > 0; ++j) {
                     std::pair<Item*, int> current = backpack.get(i, j);
@@ -150,7 +148,6 @@ void Inventory::addItem(std::pair<Item*, int>& value) {
                         int spaceAvailable = MAX_ITEM - current.second;
                         int amountToAdd = std::min(spaceAvailable, quantity);
                         // cout<<current.first->getName() << " KIRI NAME CURRENT KANAN NAME ITEM"<< item->getName()<<"\n";
-                        cout<<i<<","<<j<<" INI DIA I J NYA SAAT EXIST\n";
                         backpack.set(i, j, {current.first, current.second + amountToAdd});
                         quantity -= amountToAdd;
                     }
@@ -158,16 +155,17 @@ void Inventory::addItem(std::pair<Item*, int>& value) {
             }
         }
     }
+    
 
     // tambahkan sisa
     for (int i = 0; i < 8 && quantity > 0; ++i) {
         for (int j = 0; j < 4 && quantity > 0; ++j) {
-            if (backpack.isEmptyCell(i, j)) {
+            if ( i >= 0 && i < backpack.getRows() && j >= 0 && j < backpack.getCols() &&backpack.isEmptyCell(i, j)) {
                 if (isStackable && quantity > 0) {
                     int amountToAdd = std::min(MAX_ITEM, quantity);
                     backpack.set(i, j, {item, amountToAdd});
                     quantity -= amountToAdd;
-                } else if (quantity > 0) {
+                } else if ( quantity > 0 ) {
                     backpack.set(i, j, {item, 1});
                     quantity -= 1;
                 }
