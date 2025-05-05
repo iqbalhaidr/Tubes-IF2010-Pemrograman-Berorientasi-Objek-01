@@ -10,6 +10,8 @@
 
 void Player:: goToShop(Shop& shop) {
     std::string command;
+    Animation animation;
+    animation.animateWalkingToShop(animation.shop());
 
     while (true) {
         std::cout << "Current Currency ";
@@ -21,7 +23,8 @@ void Player:: goToShop(Shop& shop) {
         std::cout << "3. Display Equipment\n";
         std::cout << "4. Buy Item\n";
         std::cout << "5. Sell Item\n";
-        std::cout << "6. Exit\n";
+        std::cout << "6. Cheat Gold\n";
+        std::cout << "7. Exit\n";
         std::cout << "Enter command number: ";
         std::cin >> command;
         int addableQty = 0;
@@ -37,24 +40,53 @@ void Player:: goToShop(Shop& shop) {
                 this->showInventory(false);
             }
             else if (command == "4") {
-                std::string itemName;
-                std::cout << "Enter item name to buy: ";
+                std::string addAbleItem;
+                int addableQty;
+            
+                std::cout << "Masukkan nama item untuk dibeli: ";
                 std::cin >> addAbleItem;
-                std::cout << "Enter quantity: ";
+                if (addAbleItem.empty()) {
+                    throw InvalidValue("Nama item tidak boleh kosong.");
+                }
+            
+                std::cout << "Masukkan Jumlah: ";
                 std::cin >> addableQty;
+                if (std::cin.fail() || addableQty <= 0) {
+                    std::cin.clear(); // clear error flag
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // discard invalid input
+                    throw InvalidValue("Tolong masukkan jumlah item yang positif.");
+
+                }
+            
                 this->buyFromShop(shop, addAbleItem, addableQty);
             }
             else if (command == "5") {
                 std::string itemId;
                 int qty;
-                std::cout << "Enter item id to sell: ";
+            
+                std::cout << "Masukkan nama item untuk dijual:  ";
                 std::cin >> itemId;
-                std::cout << "Enter quantity: ";
+                if (itemId.empty()) {
+                    throw InvalidValue("Nama item tidak boleh kosong.");
+                }
+            
+                std::cout << "Masukkan Jumlah: ";
                 std::cin >> qty;
+                if (std::cin.fail() || qty <= 0) {
+                    std::cin.clear(); // clear error flag
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // discard invalid input
+                    throw InvalidValue("Tolong masukkan jumlah item yang positif.");
+                }
+            
                 this->sellToShop(shop, itemId, qty);
             }
             else if (command == "6") {
-                std::cout << "Exiting menu.\n";
+                int qty;
+                std::cout << "Silahkan masukkan banyak gold:  ";
+                std::cin >> qty;
+                this->setGold(qty);
+            }
+            else if (command == "7") {
                 break;
             }
             else {
@@ -96,6 +128,30 @@ Player::Player(const std::string& dir, const std::string& charName, Items& itemM
     }
     this->itemMap = &itemMap;
     this->inv = new Inventory(Inventory::loadInventory(dir, itemMap));
+    // this->playerChar = new Fighter("Kelra",  26, 17, 13, 1, 0,99999999, 0);
+}
+
+Player::Player(const std::string& dir, const std::string& charName, Items& itemMap, Characters& allChar, int type, Inventory* inv){
+    if(type == 0){ // load
+        this->playerChar = allChar.getCharacterbyName(charName);
+    }
+    else if(type == 1){
+        this->playerChar = new Berserker(charName);
+    }
+    else if (type == 2){
+        this->playerChar = new Fighter(charName);
+    }
+    else if(type == 3){
+        this->playerChar = new Mage(charName);
+    }
+    else if (type == 4){
+        this->playerChar = new Necromancer(charName);
+    }
+    else if(type == 5){
+        this->playerChar = new Assassin(charName);
+    }
+    this->itemMap = &itemMap;
+    this->inv = inv;
     // this->playerChar = new Fighter("Kelra",  26, 17, 13, 1, 0,99999999, 0);
 }
 
@@ -156,10 +212,47 @@ void Player::buyFromShop(Shop& shop, const std::string& itemName, int quantity){
     cout<<"BERHASIL Keluar\n";
 }
 
+void Player::playerEquip(const std::string& itemId, const std::string& slot ){
+    auto item = inv->getItemById(itemId);
+    if(item.first == nullptr){
+        cout<<"Maaf kamu mengakses item yang tidak ada di tas\n";
+        return;
+    }
+    if(item.first->isConsumable()){
+        cout<<"Maaf kamu tidak bisa equip consumable item\n";
+        return;
+    }
+    if((slot == "ARMOR_HEAD" ||  slot == "ARMOR_BODY" || slot == "ARMOR_FOOT") 
+    && item.first->getItemType()=="Armor"){
+        inv->handleNonConsumable((item.first), *playerChar, *playerChar);
+        
+    }
+    else if((slot == "WEAPON" ) && item.first->getItemType()=="Weapon"){
+        inv->handleNonConsumable((item.first), *playerChar, *playerChar);
+        
+    }
+    else if((slot == "PENDANT" ) && item.first->getItemType()=="Pendant"){
+        inv->handleNonConsumable((item.first), *playerChar, *playerChar);
+        
+    }
+
+    std::cout << playerChar->getName()<<" Berhasi equip item " << item.first->getName();
+    
+}
+
+void Player::playerUnequip(const std::string& slot){
+    Item* item = inv->getEquippedItem(slot);
+    if (item == nullptr){
+        cout << "Maaf kamu tidak bisa melakukan unequip terhadap slot yang kosong\n";
+        return;
+    } 
+    inv->unequipItem(*playerChar, slot , *playerChar);
+    std::cout << playerChar->getName() << " unequips " << slot << ".\n";
+}
+
 
 void Player::sellToShop(Shop& shop, const std::string& itemName, int quantity){
     auto itemInventory = inv->getItemBackpackByName(itemName);
-    cout<<"BERHASIL MASUK KE SSELL SHOP\n";
 
     if(itemInventory.first==nullptr){
         cout<<"EROR ini\n";
@@ -190,6 +283,12 @@ void Player::sellToShop(Shop& shop, const std::string& itemName, int quantity){
     delete itemShop.first;
 }
 
+void Player::setGold(int setGold){
+    if(setGold<0){
+        throw InvalidValue("Gold dari character tidak boleh < 0");
+    }
+    playerChar->setGold(setGold);
+}
 
 void Player::reduceItemInvetory(const std::string& addAbleItem, int target){
     Item* item = itemMap->getItembyName(addAbleItem);

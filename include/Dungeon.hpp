@@ -12,6 +12,7 @@
 #include "Reward.hpp"
 #include "character.hpp"
 #include "items.hpp"
+#include "animation.hpp"
 
 class Dungeon {
    private:

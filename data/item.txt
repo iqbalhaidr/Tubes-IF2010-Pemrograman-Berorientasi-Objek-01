@@ -4,11 +4,11 @@ MNP Mana_Potion Potion C 0 Critical -
 PHP Phoenix_Pendant Pendant B 0 Critical -
 PSN Poison_Potion Potion B 10 Racun -
 HLT Health_Potion Potion C 0 Obat -
-BLD Bleed_Sword Weapon E 10 Bleed -
+BLD Bleed_Sword Weapon E 10 Critical -
 BRN Burn_Sword Weapon D 10 Burn -
 KKM Regen_Kukubima Potion C 0 Kukubima -
 ABB Armor_Burn Armor C 10 Burn -
-ABS Armor_Bleed Armor C 10 Bleed -
+ABS Armor_Bleed Armor C 10 Armor -
 PDF Def_Pendant Pendant A 100 Armor -
 PAT Attack_Pendant Pendant A 10 Critical -
 PRH RegenHealth_Pendant Pendant A 100 Obat -

@@ -14,6 +14,7 @@
 #include "shop.hpp"
 #include "Dungeon.hpp"
 #include "mobloot.hpp"
+#include "animation.hpp"
 
 
 class Player
@@ -23,6 +24,7 @@ private:
     Inventory* inv;
     Character* playerChar;
 public:
+    Player(const std::string& dir, const std::string& charType, Items& itemMap, Characters& allChar, int type, Inventory* inv);
     Player(const std::string& dir, const std::string& charType, Items& itemMap, Characters& allChar, int type);
     ~Player();
 
@@ -33,6 +35,9 @@ public:
     void showInventory(bool isBackpack);
     void showCurrency();
     void reduceItemInvetory(const std::string& addAbleItem, int target);
+    void setGold(int setTo);
+    void playerEquip(const std::string& id, const std::string& slot);
+    void playerUnequip(const std::string& id);
     Character* getChar(){return playerChar;};
     Inventory* getInv(){return inv;};
 };

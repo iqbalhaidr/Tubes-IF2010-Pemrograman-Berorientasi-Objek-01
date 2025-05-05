@@ -6,6 +6,7 @@
 #include "character.hpp"
 #include "inventory.hpp"
 #include "item.hpp"
+#include "exception.hpp"
 
 class Reward {
    private:
