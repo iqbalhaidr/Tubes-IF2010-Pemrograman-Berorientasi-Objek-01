@@ -1,19 +1,29 @@
-EXC Excalibur Weapon A 100 Critical -
-DRA Dragon_Armor Armor A 200 Armor -
+EXC Excalibur Weapon S 100 Critical Burn Stun -
+DRA Dragon_Armor Armor A 200 Armor Kukubima - 
 MNP Mana_Potion Potion C 0 Critical -
-PHP Phoenix_Pendant Pendant B 0 Critical -
-PSN Poison_Potion Potion B 10 Racun -
+PHP Phoenix_Pendant Pendant B 0 Critical Obat -
+PSN Poison_Potion Potion B 0 Racun -
 HLT Health_Potion Potion C 0 Obat -
-BLD Bleed_Sword Weapon E 10 Bleed -
+BLD Bleed_Sword Weapon E 10 -
 BRN Burn_Sword Weapon D 10 Burn -
 KKM Regen_Kukubima Potion C 0 Kukubima -
-ABB Armor_Burn Armor C 10 Burn -
-ABS Armor_Bleed Armor C 10 Bleed -
-PDF Def_Pendant Pendant A 100 Armor -
-PAT Attack_Pendant Pendant A 10 Critical -
-PRH RegenHealth_Pendant Pendant A 100 Obat -
-PRM RegenMana_Pendant Pendant A 100 Kukubima -
-PCR Potion_Critical Potion A 20 Critical -
+ABB Armor_Burn Armor D 15 Burn -
+ABS Armor_Bleed Armor C 20 Bleed -
+PDF Def_Pendant Pendant A 0 Armor Armor -
+PAT Attack_Pendant Pendant B 0 Critical -
+PRH RegenHealth_Pendant Pendant A 0 Obat -
+PRM RegenMana_Pendant Pendant A 0 Kukubima -
+PCR Potion_Critical Potion B 0 Critical -
 PAR Potion_Armor Potion A 0 Armor - 
-PST Potion_Stun Potion A 0 Stun -
-PDB Potion_Disable Potion A 0 Disable - 
+PST Potion_Stun Potion S 0 Stun Kukubima Obat -
+PDB Potion_Disable Potion A 0 Disable Kukubima- 
+RFB Rustfang_Blade Weapon E 15 -
+CIV Cracked_Iron_Vest Armor E 20 -
+FAB Fangblade Weapon D 35 -
+SPT Spirit_Pendant Pendant C Kukubima -
+SSC Steelclaw_Saber Weapon C Bleed -
+SFB Storm_Fang Weapon B Stun -
+DCR Dreadhowl_Cleaver Weapon A Bleed Critical -
+SOE Eternity_Shell Armor S Stun Disable Armor -
+PAM Phantom_Mail Armor B Armor -
+CSP Celestial_Serpent Pendant S Disable Critical Kukubima -

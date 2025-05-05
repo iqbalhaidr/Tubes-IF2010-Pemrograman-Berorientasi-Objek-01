@@ -5,9 +5,8 @@
 class EffectPoison : public EffectTurnBasedBased {
     private:
         double damage;
-        double chance;
     public:
-        EffectPoison(const std::string& name, const std::string& description, double duration, double remainingDuration, double chance, double damage);
+        EffectPoison(const std::string& name, const std::string& description, double duration, double remainingDuration, int chance, double damage, bool isThrowable);
         ~EffectPoison();
         EffectPoison(const EffectPoison& other);
         EffectPoison& operator=(EffectPoison& other);
@@ -22,7 +21,6 @@ class EffectPoison : public EffectTurnBasedBased {
         double apply(Unit* unit) override;
         Effect* clone() const override;
         void remove(Unit* unit) override;
-        bool isThrowable() override;
         bool isPoison() override;
 };
 

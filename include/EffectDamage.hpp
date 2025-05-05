@@ -4,11 +4,10 @@
 
 class EffectDamage : public Effect {
     private:
-        int chance;
         double damage;
 
     public:
-        EffectDamage(const std::string& name, const std::string& description, double duration, double remainingDuration, int chance, double damage);
+        EffectDamage(const std::string& name, const std::string& description, double duration, double remainingDuration, int chance, double damage, bool isThrowable);
         ~EffectDamage();
         EffectDamage(const EffectDamage& other);
         EffectDamage& operator=(EffectDamage& other);

@@ -1,8 +1,8 @@
 #include "../include/slime.hpp"
 
 Slime::Slime(int level, int expReward, Mobloot& mobLoots)
-    : BasicMobs("Slime", level, 6 + (level - 1) * 1.2, 6 + (level - 1) * 1.5,
-                16 + (level - 1) * 2, expReward, mobLoots) {
+    : BasicMobs("Slime", level, 6 + (level - 1) * 0.6 , 11 + (level - 1) * 1.2,
+                13 + (level - 1) * 1.5, expReward, mobLoots) {
     updateBasicAttributes();
     vector<Effect*> effects;
     string effectDescription =
@@ -10,7 +10,7 @@ Slime::Slime(int level, int expReward, Mobloot& mobLoots)
         "time (kerusakan berkelanjutan) selama 3 turn";
     EffectPoison* DamageOverTime =
         new EffectPoison("Acidic Corrosion (Poison)", effectDescription, 3, 3,
-                         1, attackDamage * getStats().getIntelligence() / 50);
+                         100, attackDamage * getStats().getIntelligence() / 50, true);
     effects.push_back(DamageOverTime);
     Skill* skill =
         new Skill("Acidic Corrosion", 16, 0, 20, attackDamage, effects);
@@ -20,5 +20,5 @@ Slime::Slime(int level, int expReward, Mobloot& mobLoots)
 Slime::~Slime() {}
 
 void Slime::updateBasicAttributes() {
-    setAttackDamage(2 * getStats().getIntelligence());
+    setAttackDamage(3 * getStats().getIntelligence() + getStats().getAgility());
 }

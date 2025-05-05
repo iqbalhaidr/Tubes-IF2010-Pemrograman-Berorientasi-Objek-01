@@ -34,24 +34,33 @@ void Reward::addItem(Item *item, int count) {
     items[item] += count;
 }
 
+// TODO: Catch inventory full when addItem()
 void Reward::giveTo(Character* c, Inventory *inv) {
     addExpToCharacter(c, exp);
     addGoldToCharacter(c, gold);
-    for (auto it = items.cbegin(); it != items.cend(); ++it) {
-        std::pair<Item*, int> eachItem (it->first, it->second);
-        inv->addItem(eachItem);
+    try {
+        for (auto it = items.cbegin(); it != items.cend(); ++it) {
+            std::pair<Item*, int> eachItem (it->first, it->second);
+            inv->addItem(eachItem);
+        }
+    } catch (InventoryFull& e) {
+        std::cout << e.what() << std::endl;
     }
 }
 
 void Reward::giveTo(Inventory *inv) {
-    for (auto it = items.cbegin(); it != items.cend(); ++it) {
-        std::pair<Item*, int> eachItem (it->first, it->second);
-        inv->addItem(eachItem);
-    } 
+    try {
+        for (auto it = items.cbegin(); it != items.cend(); ++it) {
+            std::pair<Item*, int> eachItem (it->first, it->second);
+            inv->addItem(eachItem);
+        } 
+    } catch (InventoryFull& e) {
+        std::cout << e.what() << std::endl;
+    }
 }
 
 void Reward::displayInfo() {
-    std::cout << "Current Reward" << std::endl;
+    // std::cout << "Potential Reward" << std::endl;
     std::cout << "Exp: " << exp << std::endl;
     std::cout << "Gold: " << gold << std::endl;
     std::cout << "Items: " << std::endl;
@@ -87,8 +96,12 @@ void Reward::addExpToCharacter(Character* c, int exp) {
         c->setLevel(c->getLevel() + 1);
         c->setExp(expRemaining);
         addGoldToCharacter(c, bonusGoldLevelUp);
+        c->setMasteryCost(c->getMasteryCost() + 5);
         std::cout << c->getName() << " naik level ke " << c->getLevel()  << "!\n";
         std::cout << "Bonus Gold Level Up: " << bonusGoldLevelUp << std::endl;
+        std::cout << "Bonus Mastery Cost Level Up: +5\n";
+        std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_TIME_REWARD));
+        std::cout << "\e[1;1H\e[2J"; //Clear console
 
         if (expRemaining >= c->getLevel() * 100) {
             addExpToCharacter(c, 0);

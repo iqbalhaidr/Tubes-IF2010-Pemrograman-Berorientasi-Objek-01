@@ -1,12 +1,12 @@
 #include "../include/EffectDefensive.hpp"
 
-EffectDefensive::EffectDefensive(const std::string& name, const std::string& description, double duration, double remainingDuration, int chance, int armorAmount, int magicResistAmount)
-    : Effect(name, description, duration, remainingDuration), chance(chance), defense(defense) {}
+EffectDefensive::EffectDefensive(const std::string& name, const std::string& description, double duration, double remainingDuration, int chance, int armorAmount, int magicResistAmount, bool isThrowable)
+    : Effect(name, description, duration, remainingDuration, chance, isThrowable), defense(armorAmount) {}
 
 EffectDefensive::~EffectDefensive() {}
 
 EffectDefensive::EffectDefensive(const EffectDefensive& other) 
-    : Effect(other), chance(other.chance), defense(other.defense) {}
+    : Effect(other), defense(other.defense) {}
 
 EffectDefensive& EffectDefensive::operator=(EffectDefensive& other) {
     Effect::operator=(other);

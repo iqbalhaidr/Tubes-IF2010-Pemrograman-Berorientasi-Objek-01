@@ -28,17 +28,21 @@ void Berserker::useSkill(Skill* skill, Unit& target, Inventory& inventory) {
 
 void Berserker::updateBasicAttributes() {
     setAttackDamage(20 + 8 * getStats().getStrength());
-    setRageMultiplier(getStats().getStrength() / 3);
+    setRageMultiplier(getStats().getStrength() / 4);
 }
 
 void Berserker::levelUp() {
     setMasteryCost(getMasteryCost() + 5);
     setExp(0);
-    stats.setStrength(stats.getStrength() * 2.5);
-    stats.setAgility(stats.getAgility() * 1.2);
-    stats.setIntelligence(stats.getIntelligence() * 1.2);
+    stats.setStrength(stats.getStrength() + 4);
+    stats.setAgility(stats.getAgility() * + 1);
+    stats.setIntelligence(stats.getIntelligence() + 1);
     Unit::updateBasicAttributes(); 
     updateBasicAttributes();
+    for (Skill* skill : skills) {
+        skill->setDamage(skill->getDamage() + 20);
+        skill->setManaCost(skill->getManaCost() + 10);
+    }
     Character::reset();
 }
 

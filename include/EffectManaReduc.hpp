@@ -8,7 +8,7 @@ class EffectManaReduc : public EffectTurnBasedBased{
         double manaAmount;
 
     public:
-        EffectManaReduc(const std::string& name, const std::string& description, double duration, double remainingDuration, double manaAmount);
+        EffectManaReduc(const std::string& name, const std::string& description, double duration, double remainingDuration, double manaAmount, int chance, bool isThrowable);
         ~EffectManaReduc();
         EffectManaReduc(const EffectManaReduc& other);
         EffectManaReduc& operator=(EffectManaReduc& other) ;

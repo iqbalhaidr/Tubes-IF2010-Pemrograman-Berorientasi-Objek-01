@@ -53,6 +53,14 @@ Inventory Inventory ::loadInventory(const std::string& directory,
             if (backp.isEmptyCell(row, col)) {  // jika kosong
 
                 Item* cloned = itemMap.getItem(itemId);
+                // cout<<"INI NAMA DAN TYPENYA : " << cloned->getName() << " dan " << cloned->getItemType();
+                if((cloned->getItemType() == "Weapon" || cloned->getItemType() == "Armor") && total >1){
+                    cout<<cloned->getId()<<"\n";
+                    cout<<cloned->getName()<<"\n";
+                    cout<<total<<"\n";
+                    throw InputOutputException(
+                        "Jumlah Weapon atau Armor dalam backpack tidak boleh lebih dari 1");
+                }
                 backp.set(row, col, {cloned, total});  // add
                 // std::cout << cloned->getId() << " INI NAMANYA\n";
             } else {
@@ -110,7 +118,13 @@ void Inventory::saveInventory(const std::string& directory) {
     }
 
     for (const auto& equipment : equipped) {
-        outputEquipment << equipment.first << " " << equipment.second << "\n";
+        outputEquipment << equipment.first << " " ;
+        if(equipment.second == nullptr){
+            outputEquipment << " " << "\n";
+        }
+        else{
+            outputEquipment << equipment.second->getId() << "\n";
+        }
     }
 
     outputBackpack.close();
@@ -234,56 +248,64 @@ void Inventory::unequipItem(Character& orang, const std::string& slot, Unit& tar
 }
 
 
-void Inventory:: useItem(const std::string itemID, Character& orang, const Items& itemMap, Unit& target){
+void Inventory::handleNonConsumable(Item* item, Character& orang, Unit& target) {
+    std::string type = item->getItemType();
+
+    if (type == "Weapon") {
+        unequipItem(orang, "WEAPON", target);
+        equipItem("WEAPON", orang, item, target);
+    }
+    else if (type == "Pendant") {
+        unequipItem(orang, "PENDANT", target);
+        equipItem("PENDANT", orang, item, target);
+    }
+    else if (type == "Armor") {
+        std::vector<std::string> armorSlots = {"ARMOR_BODY", "ARMOR_FOOT", "ARMOR_HEAD"};
+        
+        // Cari slot kosong terlebih dahulu
+        for (const auto& slot : armorSlots) {
+            if (this->getEquippedItem(slot) == nullptr) {
+                equipItem(slot, orang, item, target);
+                return;
+            }
+        }
+
+        // Jika tidak ada slot kosong, cari armor dengan stat terendah
+        std::string minSlot = "";
+        int minStat = INT_MAX;
+        for (const auto& slot : armorSlots) {
+            Item* equipped = this->getEquippedItem(slot);
+            if (equipped && equipped->getFinalStat() < minStat) {
+                minStat = equipped->getFinalStat();
+                minSlot = slot;
+            }
+        }
+
+        if (!minSlot.empty()) {
+            unequipItem(orang, minSlot, target);
+            equipItem(minSlot, orang, item, target);
+        }
+    }
+}
+
+void Inventory::handleConsumable(Item* item, Character& orang, Unit& target) {
+    for (Effect* effect : item->getEffects()) {
+        if (effect->isThrowable()) {
+            target.addActiveEffect(effect);
+        } else {
+            orang.addActiveEffect(effect);
+        }
+    }
+}
+
+void Inventory::useItem(const std::string itemID, Character& orang, const Items& itemMap, Unit& target) {
     auto [item, count] = this->getItemById(itemID);
     if (item == nullptr) return;
 
     if (!item->isConsumable()) {
-        std::string type = item->getItemType();
-
-        if (type == "Weapon") {
-            unequipItem(orang,"WEAPON", target);
-            equipItem("WEAPON", orang, item, target);
-        }
-        else if (type == "Pendant") {
-            unequipItem(orang,"PENDANT", target);
-            equipItem("PENDANT", orang, item, target);
-        }
-        else if (type == "Armor") {
-            std::vector<std::string> armorSlots = {"ARMOR_BODY", "ARMOR_FOOT", "ARMOR_HEAD"};
-            for (const auto& slot : armorSlots) {
-                if (this->getEquippedItem(slot) == nullptr) {
-                    equipItem(slot, orang, item, target);
-                    return;
-                }
-            }
-
-            std::string minSlot = "";
-            int minStat = INT_MAX;
-            for (const auto& slot : armorSlots) {
-                Item* equipped = this->getEquippedItem(slot);
-                if (equipped && equipped->getFinalStat() < minStat) {
-                    minStat = equipped->getFinalStat();
-                    minSlot = slot;
-                }
-            }
-
-            if (!minSlot.empty()) {
-                unequipItem(orang,minSlot, target);
-                equipItem(minSlot, orang, item, target);
-            }
-        }
-    }
-    else {
-        for (Effect* effect : item->getEffects()) {
-            if(effect->isThrowable()){
-                target.addActiveEffect(effect);
-            }
-            else{
-                orang.addActiveEffect(effect);
-            }
-            
-        }
+        handleNonConsumable(item, orang, target);
+    } else {
+        handleConsumable(item, orang, target);
     }
 }
 
@@ -389,8 +411,16 @@ void Inventory:: displayBackpackDetails() {
             }
         }
     }
-    for (const auto& line : txt) {
-        std::cout << line << std::endl;
+    const int col_count = 3;
+    const int items_per_col = (txt.size() + col_count - 1) / col_count;
+    for (int i = 0; i < items_per_col; i++) {
+        for (int col = 0; col < col_count; col++) {
+            int index = i + col * items_per_col;
+            if (index < txt.size()) {
+                std::cout << std::left << std::setw(30) << txt[index];
+            }
+        }
+        std::cout << std::endl;
     }
-    std::cout<<std::endl;
+    std::cout << "\n";
 }

@@ -2,10 +2,15 @@
 #define REWARD_H
 
 #include <map>
+#include <thread>
+#include <chrono>
 
 #include "character.hpp"
 #include "inventory.hpp"
 #include "item.hpp"
+#include "exception.hpp"
+
+#define DISPLAY_TIME_REWARD 100
 
 class Reward {
    private:

@@ -1,12 +1,12 @@
 #include "../include/EffectDamage.hpp"
 
-EffectDamage::EffectDamage(const std::string& name, const std::string& description, double duration, double remainingDuration, int chance, double damage)
-    : Effect(name, description, duration, remainingDuration), chance(chance), damage(damage) {}
+EffectDamage::EffectDamage(const std::string& name, const std::string& description, double duration, double remainingDuration, int chance, double damage, bool isThrowable)
+    : Effect(name, description, duration, remainingDuration, chance, isThrowable), damage(damage) {}
 
 EffectDamage::~EffectDamage() {}
 
 EffectDamage::EffectDamage(const EffectDamage& other) 
-    : Effect(other), chance(other.chance), damage(other.damage) {}
+    : Effect(other), damage(other.damage) {}
 
 EffectDamage& EffectDamage::operator=(EffectDamage& other) {
     Effect::operator=(other);

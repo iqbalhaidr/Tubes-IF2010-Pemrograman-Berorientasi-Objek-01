@@ -39,7 +39,7 @@ void Dungeon::helperSet(Items &items, Character &c) {
         rewardGold = 2000;
         penaltyExp = 1300;
         penaltyGold = 500;
-        bonusItem = items.getItem("DRA");
+        bonusItem = items.getItem("CSP");
     } else if (rank == "A") {
         minLevel = 35;
         entryCost = 500;
@@ -47,7 +47,7 @@ void Dungeon::helperSet(Items &items, Character &c) {
         rewardGold = 1300;
         penaltyExp = 850;
         penaltyGold = 300;
-        bonusItem = items.getItem("PRM");
+        bonusItem = items.getItem("DRA");
     } else if (rank == "B") {
         minLevel = 25;
         entryCost = 300;
@@ -55,7 +55,7 @@ void Dungeon::helperSet(Items &items, Character &c) {
         rewardGold = 900;
         penaltyExp = 650;
         penaltyGold = 200;
-        bonusItem = items.getItem("PDF");
+        bonusItem = items.getItem("PCR");
     } else if (rank == "C") {
         minLevel = 20;
         entryCost = 150;
@@ -63,7 +63,7 @@ void Dungeon::helperSet(Items &items, Character &c) {
         rewardGold = 650;
         penaltyExp = 400;
         penaltyGold = 125;
-        bonusItem = items.getItem("PAT");
+        bonusItem = items.getItem("SSC");
     } else if (rank == "D") {
         minLevel = 10;
         entryCost = 0;
@@ -71,7 +71,7 @@ void Dungeon::helperSet(Items &items, Character &c) {
         rewardGold = 350;
         penaltyExp = 250;
         penaltyGold = 80;
-        bonusItem = items.getItem("PSN");
+        bonusItem = items.getItem("BRN");
     } else if (rank == "E") {
         minLevel = 0;
         entryCost = 0;
@@ -79,7 +79,7 @@ void Dungeon::helperSet(Items &items, Character &c) {
         rewardGold = 200;
         penaltyExp = 100;
         penaltyGold = 50;
-        bonusItem = items.getItem("HLT");
+        bonusItem = items.getItem("CIV");
     } else if (rank == "SPECIAL") {
         minLevel = 0;
         entryCost = 0;
@@ -168,12 +168,19 @@ void Dungeon::start(Character &c, Inventory &inv, Items &items) {
     }
     c.setGold(c.getGold() - entryCost);
 
-    // welcomeMessage();
+    welcomeMessage();
     bool neverLose = true;
     int ctr = 0;
 
     while (neverLose && ctr < totalChambers) {
+        std::cout << "\e[1;1H\e[2J";  // Clear console
+        std::cout << "Entering chamber " << ctr + 1 << " of " << totalChambers << std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+        std::cout << "\e[1;1H\e[2J";  // Clear console
+
         bool result = chambers[ctr]->battle(c, inv, this->prize, items);
+        // std::cout << "[DEBUG] attackDamage keluar chamber: " << c.getAttackDamage() << std::endl;
+        // std::this_thread::sleep_for(std::chrono::milliseconds(5000));
         neverLose = result;
         ctr++;
     }
@@ -183,18 +190,26 @@ void Dungeon::start(Character &c, Inventory &inv, Items &items) {
         prize.addGold(rewardGold);
         prize.addItem(bonusItem, 1);
         prize.giveTo(&c, &inv);
-        // winningMessage();
+        winningMessage();
 
+        std::cout << "Final Reward\n";
         prize.displayInfo();
+        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+        std::cout << "\e[1;1H\e[2J";  // Clear console
     } else {
         substractExp(&c, penaltyExp);
         substractGold(&c, penaltyGold);
         if (isDD) {
             prize.giveTo(&inv);
         }
-        // losingMessage();
+        Animation anime;
+        anime.animate(anime.getAnimationFrames(), 100,1);
+        losingMessage();
 
+        std::cout << "Final Reward\n";
         prize.displayInfo();
+        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+        std::cout << "\e[1;1H\e[2J";  // Clear console
     }
 
     c.reset();

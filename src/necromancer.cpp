@@ -18,6 +18,7 @@ void Necromancer::setSummonChance(double summonChance) { this->summonChance = su
 
 void Necromancer::attack(Unit& target, Inventory& inventory) {
     if (!summons && (rand() % 100 + 1) < summonChance) {
+        cout << "Anak buah berhasil di-summon!" << endl;
         summons = true;
         summonTurns = 4;
         Unit::attack(target, inventory); 
@@ -30,6 +31,8 @@ void Necromancer::attack(Unit& target, Inventory& inventory) {
         int totalDamage = calculateDamage(target, attackDamage, inventory); 
         totalDamage += stats.getIntelligence() * 0.25; 
         target.takeDamage(totalDamage, inventory); // damage dari minion
+    } else {
+        Unit::attack(target, inventory); 
     }
 }
 
@@ -43,19 +46,23 @@ void Necromancer::useSkill(Skill* skill, Unit& target, Inventory& inventory) {
 }
 
 void Necromancer::updateBasicAttributes() {
-    setAttackDamage(12 + 7*getStats().getIntelligence() + 2*getStats().getStrength());
-    setSummonChance(getStats().getIntelligence() * 4 / 7);
+    setAttackDamage(12 + 9*getStats().getIntelligence() + 1*getStats().getStrength());
+    setSummonChance(getStats().getIntelligence() / 1.8);
 }
 
 // Mekanisme ketika char level up
 void Necromancer::levelUp() {
     setMasteryCost(getMasteryCost() + 5);
     setExp(0);
-    stats.setStrength(stats.getStrength() * 1.2);
-    stats.setAgility(stats.getAgility() * 1.5);
-    stats.setIntelligence(stats.getIntelligence() * 2);
+    stats.setStrength(stats.getStrength() + 1);
+    stats.setAgility(stats.getAgility() + 1);
+    stats.setIntelligence(stats.getIntelligence() + 4);
     Unit::updateBasicAttributes(); 
     updateBasicAttributes();
+    for (Skill* skill : skills) {
+        skill->setDamage(skill->getDamage() + 20);
+        skill->setManaCost(skill->getManaCost() + 10);
+    }
     Character::reset();
 
 }
