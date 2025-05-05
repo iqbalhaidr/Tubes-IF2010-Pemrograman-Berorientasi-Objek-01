@@ -6,11 +6,12 @@
 using namespace std;
 
 class Lich : public BossMobs {
+    private:
+        void updateBasicAttributes() override;
     public:
         // ctor dtor
         Lich(int level, int expReward, Mobloot& mobLoots);
         ~Lich();
-        void updateBasicAttributes() override ;
 
 
 

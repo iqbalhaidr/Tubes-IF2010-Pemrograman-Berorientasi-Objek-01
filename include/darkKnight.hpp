@@ -6,11 +6,12 @@
 using namespace std;
 
 class DarkKnight : public BossMobs {
+    private:
+        void updateBasicAttributes() override;
     public:
         // ctor dtor
         DarkKnight(int level, int expReward, Mobloot& mobLoots);
         ~DarkKnight();
-        void updateBasicAttributes() override ;
 
 
 
