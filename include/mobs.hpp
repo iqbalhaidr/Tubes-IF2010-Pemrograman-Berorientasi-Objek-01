@@ -12,14 +12,14 @@ class Mobs : public Unit {
         vector<pair<Item*, double>> LootDrop;
 
     public:
-        bool isBoss;
         // ctor dtor
-        Mobs(string name, int level, int strength, int agility, int intelligence, int expReward, bool isBoss, Mobloot& mobLoots);
+        Mobs(string name, int level, int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots);
         virtual~Mobs();
 
         int getExpReward() const;
         void setExpReward(int expReward);
         vector<Item*> dropLoot(); 
+        virtual bool isBoss();
         void reset();
 };
 

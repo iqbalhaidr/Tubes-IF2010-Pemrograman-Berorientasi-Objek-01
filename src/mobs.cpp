@@ -1,9 +1,8 @@
 #include "../include/mobs.hpp"
 
-Mobs::Mobs(string name, int level, int strength, int agility, int intelligence, int expReward, bool isBoss, Mobloot& mobLoots)
+Mobs::Mobs(string name, int level, int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots)
  : Unit(name, strength, agility, intelligence, level) {
     this->isChar = false;
-    this->isBoss = isBoss;
     this->expReward = expReward; 
     this->LootDrop = mobLoots.getLootforMob(name); 
 
@@ -36,7 +35,9 @@ vector<Item*> Mobs::dropLoot() {
     return droppedItem; 
 }
 
-
+bool Mobs::isBoss() {
+    return false;
+}
 
 void Mobs::reset() {
     currentHealth = maxHealth;
