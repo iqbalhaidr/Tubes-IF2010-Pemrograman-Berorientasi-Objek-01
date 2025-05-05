@@ -208,7 +208,6 @@ direction TB
 	    #gold : int
 	    #masteryCost : int
 	    #type : string
-	    #skillTree : SkillTree
 	    #loadCharacterSkills(vector skillNames) void
 	    +Character(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, string type)
 	    +virtual ~Character()
@@ -391,6 +390,29 @@ direction TB
 	    +attack(Unit& target, Inventory& inventory) void
 	    +useSkill(Skill* skill, Unit& target, Inventory& inventory) void
 	    +levelUp() void
+        -extraMana : int
+        -updateBasicAttributes() void
+        +Mage(string name, int strength = 16, int agility = 20, int intelligence = 25, int level = BASE_LEVEL, int exp = BASE_EXP, int gold = BASE_GOLD, int masteryCost = BASE_MASTERY_COST, vector<string> skillNames)
+        + ~Mage()
+        +getExtraMana() int
+        +setExtraMana(int extraMana) void
+        +attack(Unit& target, Inventory& inventory) void
+        +useSkill(Skill* skill, Unit& target, Inventory& inventory) void
+        +levelUp() void
+    }
+
+    class Necromancer {
+        -summons : boolean
+        -summonChance : double
+        -summonTurns : int
+        -updateBasicAttributes() void
+        +Necromancer(string name, int strength = 13, int agility = 16, int intelligence = 28, int level = BASE_LEVEL, int exp = BASE_EXP, int gold = BASE_GOLD, int masteryCost = BASE_MASTERY_COST, vector<string> skillNames)
+        + ~Necromancer()
+        +getSummonChance() double
+        +setSummonChance(double criticalChance) void
+        +attack(Unit& target, Inventory& inventory) void
+        +useSkill(Skill* skill, Unit& target, Inventory& inventory) void
+        +levelUp() void
     }
 
     class Characters {
@@ -691,6 +713,108 @@ direction TB
 	    +displayEnemyStatus(Mobs*) void
     }
 
+
+
+    class BasicMobs{
+        +BasicMobs(string name, int level, int strength, int agility, int intelligence, int expReward, Moobloot& mobLoots)
+    }
+
+    class Character {
+        <<abstract>>
+    }
+
+
+class Chamber {
+    -rewardExp : int
+    -rewardGold : int
+    -enemyCount : int
+    -enemies : vector<Mobs*>
+    -isLastChamber : bool
+    -minMobLevel : int
+    -maxMobLevel : int
+    -mobLoots : Mobloot*
+
+    +Chamber(bool isLast, int minMobLevel, int maxMobLevel, Mobloot& mobLoots)
+    +Chamber(const Chamber&)
+    +~Chamber()
+    +operator=(const Chamber&)
+
+    +getRewardExp() int
+    +getRewardGold() int
+    +getEnemyCount() int
+    +isLast() int
+    +getMinMobLevel() int
+    +getMaxMobLevel() int
+    +getEnemies() vector<Mobs*>
+
+    +generateRewardGold() int
+    +generateRewardExp() int
+    +generateEnemyCount() int
+    +generateBasicMobs(int level) BasicMobs*
+    +generateBossMobs(int level) BossMobs*
+    +generateEnemies() void
+    +battle(Character&, Inventory&, Reward&, Items&) bool
+    +displayInfo() void
+    +inputOption() int
+    +removeExpiredEffects(Unit*) void
+    +inputSkillOption(Unit*) int
+    +useItemOption(Character&, Inventory&, Items&, Unit&) void
+    +useItemMenu(Character&, Inventory&, Items&, Unit&) bool
+    +unequipMenu(Character&, Unit&, Inventory&) void
+    +displayPlayerStatus(Character&) void
+    +displayEnemyStatus(Mobs*) void
+}
+
+class Characters {
+    -characterMap : map<string, Character*>
+
+    +Characters(const string& directory)
+    +~Characters()
+    +addCharacters(Character* Character) void
+    +searchCharacter(const string& name) const bool
+    +getCharacterbyName(const string& Name) Character*
+    +getCharacterMap() const map<string, Character*>
+    +displayAvailableCharacters() void
+    +save(const string& directory) const void
+}
+
+
+
+class DarkKnight {
+    +DarkKnight(int level, int expReward, Mobloot& mobLoots)
+    +~DarkKnight()
+    +updateBasicAttributes() void
+}
+
+class Dungeon {
+    -totalChambers : int
+    -chambers : vector<Chamber*>
+    -rewardExp : int
+    -rewardGold : int
+    -bonusItem : Item*
+    -isDD : bool
+    -prize : Reward
+    -penaltyExp : int
+    -penaltyGold : int
+    -rank : string
+    -minLevel : int
+    -entryCost : int
+
+    +Dungeon(string rank, Mobloot &mobLoots, Items &items, Character &c)
+    +~Dungeon()
+    +start(Character&, Inventory&, Items&) void
+    +randomizeDoubleDungeon() void
+    +helperSet(Items&, Character&) void
+    +generateChambers(Mobloot&) void
+    +displayInfo() void
+    +substractExp(Character*, int) void
+    +substractGold(Character*, int) void
+    +typeEffect(const string&, int delayMs = 50) void
+    +welcomeMessage() void
+    +winningMessage() void
+    +losingMessage() void
+}
+
     class Effect {
 	    #name: string
 	    #description: string
@@ -978,6 +1102,37 @@ direction TB
     SkillNode *-- Skill
     SkillTree *-- SkillNode
     Skill --|> Unit
+Inventory --|> Characterccc
+
+
+    class Inventory {
+        -backpack : Matrix<pair<Item*, int>>
+        -equipped : map<string, Item*>
+        
+        +Inventory(Matrix<pair<Item*, int>> backp, map<string, Item*> equippedItem)
+        +centerText(string text, int width) string static
+        +loadInventory(string directory, Items itemMap) Inventory static
+        +saveInventory(string directory) void
+        +addItem(pair<Item*, int> value) void
+        +reduceItem(Item* item, int amount) void
+        +handleNonConsumable(Item* item, Character& orang, Unit& target) void
+        +handleConsumable(Item* item, Character& orang, Unit& target) void
+        +useItem(string itemID, Character& orang, Items itemMap, Unit& target) void
+        +unequipItem(Character& orang, string slot, Unit& target) void
+        +equipItem(string slot, Character& orang, Item* item, Unit& target) void
+        +getIdxItembyId(string itemId) pair<int, int> const
+        +getBackpack() Matrix<pair<Item*, int>>
+        +getEquippedItem(string slot) Item*
+        +getItemById(string itemId) pair<Item*, int>
+        +getItemBackpackByName(string itemName) pair<Item*, int>
+        +getEquippedItemId(string slot) string const
+        +setEquipped(string slot, Item* item) void
+        +displayBackpack() void
+        +displayEquipment() void
+        +getItemQtyInInvent(string itemName) int
+        +displayBackpackDetails() void
+    }
+
     Inventory --|> Character
     Inventory --|> Item
     Inventory --|> Unit
@@ -994,6 +1149,26 @@ direction TB
     MasteryCostNotEnough --|> exception
     InvalidValue --|> exception
     InvalidSkill --|> exception
+
+
+    InputOutputException --|>  exception
+    InventoryEror --|>  exception
+    InventoryFull --|>  exception
+    CharactersError --|>  exception
+    ItemNotFound --|>  exception
+    InvalidCommand --|>  exception
+    StockError --|>  exception
+    GoldNotEnough --|>  exception
+    ManaNotEnough --|>  exception
+    MasteryCostNotEnough --|>  exception
+    InvalidValue --|>  exception
+    InvalidSkill --|>  exception
+
+    Player --> Items
+    Player --> Inventory
+    Player --> Characters
+    Player --> Shop
+    Player --> Mobloot
     Player *-- Items
     Player *-- Inventory
     Player *-- Character
@@ -1028,5 +1203,28 @@ direction TB
     Mobs <|-- BasicMobs
     Mobs <|-- BossMobs
     Mobs o-- Mobloot
+
+    BasicMobs <|-- Slime
+    BasicMobs <|-- Goblin
+    BasicMobs <|-- Skeleton
+    BasicMobs <|-- Orc
+    BossMobs <|-- Ogre
+    BossMobs <|-- Lich
+    BossMobs <|-- DemonLord
+    BossMobs <|-- DarkKnight
+
+    Character <|-- Assassin
+    Character <|-- Berserker
+    Character <|-- Fighter
+    Character <|-- Mage
+    Character <|-- Necromancer
+    Characters o-- Character 
+
+    Item <|-- Armor
+    Mobs <|-- BasicMobs
+    Character <|-- Berserker
+    Unit <-- Character
+    Character *-- SkillTree
+    Characters *-- Character
 
 

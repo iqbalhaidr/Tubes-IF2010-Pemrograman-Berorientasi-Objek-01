@@ -96,8 +96,12 @@ void Reward::addExpToCharacter(Character* c, int exp) {
         c->setLevel(c->getLevel() + 1);
         c->setExp(expRemaining);
         addGoldToCharacter(c, bonusGoldLevelUp);
+        c->setMasteryCost(c->getMasteryCost() + 5);
         std::cout << c->getName() << " naik level ke " << c->getLevel()  << "!\n";
         std::cout << "Bonus Gold Level Up: " << bonusGoldLevelUp << std::endl;
+        std::cout << "Bonus Mastery Cost Level Up: +5\n";
+        std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_TIME_REWARD));
+        std::cout << "\e[1;1H\e[2J"; //Clear console
 
         if (expRemaining >= c->getLevel() * 100) {
             addExpToCharacter(c, 0);

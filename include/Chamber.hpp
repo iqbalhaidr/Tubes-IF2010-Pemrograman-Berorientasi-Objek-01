@@ -44,6 +44,7 @@ class Chamber {
     bool autoMenang;
     bool cheatEnemyStun;
     bool cheatDamage;
+    bool cheatGod;
 
     /*
      * Rasionalisasi minMobLevel, maxMobLevel:
@@ -184,7 +185,7 @@ class Chamber {
 
     void displayStatus(Character &, Mobs *);
 
-    void cheatMode(Character &);
+    void cheatMode(Character &, Reward &);
 
 };
 

@@ -5,10 +5,9 @@
 class EffectHealth : public Effect {
     private:
         int  healAmount;
-        double chance;
         int baseHealAmount;
     public:
-        EffectHealth(const std::string& name, const std::string& description, double duration, double remainingDuration, double chance, int healAmount);
+        EffectHealth(const std::string& name, const std::string& description, double duration, double remainingDuration, int chance, int healAmount, bool isThrowable);
         ~EffectHealth();
         EffectHealth(const EffectHealth& other);
         EffectHealth& operator=(EffectHealth& other);

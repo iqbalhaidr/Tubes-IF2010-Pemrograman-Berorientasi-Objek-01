@@ -19,6 +19,7 @@ class Mobs : public Unit {
         int getExpReward() const;
         void setExpReward(int expReward);
         vector<Item*> dropLoot(); 
+        virtual bool isBoss();
         void reset();
 };
 

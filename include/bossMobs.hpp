@@ -14,6 +14,7 @@ class BossMobs : public Mobs {
         virtual ~BossMobs();
         bool isRageUsed() const;
         void rage();
+        bool isBoss() override;
         void reset();
 
 

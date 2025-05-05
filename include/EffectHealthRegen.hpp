@@ -6,7 +6,7 @@ class EffectHealthRegen : public EffectTurnBasedBased {
     private:
         int healAmount;
     public:
-        EffectHealthRegen(const std::string& name, const std::string& description, double duration, double remainingDuration, int healAmount);
+        EffectHealthRegen(const std::string& name, const std::string& description, double duration, double remainingDuration, int healAmount, int chance, bool isThrowable);
         ~EffectHealthRegen();
         EffectHealthRegen(const EffectHealthRegen& other);
         EffectHealthRegen& operator=(EffectHealthRegen& other) ;
