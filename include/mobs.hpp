@@ -12,8 +12,9 @@ class Mobs : public Unit {
         vector<pair<Item*, double>> LootDrop;
 
     public:
+        bool isBoss;
         // ctor dtor
-        Mobs(string name, int level, int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots);
+        Mobs(string name, int level, int strength, int agility, int intelligence, int expReward, bool isBoss, Mobloot& mobLoots);
         virtual~Mobs();
 
         int getExpReward() const;

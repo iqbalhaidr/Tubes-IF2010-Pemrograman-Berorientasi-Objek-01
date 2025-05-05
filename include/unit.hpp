@@ -40,7 +40,7 @@ class Unit {
         vector<Skill*> skills;
         vector<Effect*> activeEffects;
         int getLevelFactor(Unit& target) const;
-        int calculateDamage(Unit& target, int baseDamage, Inventory& inventory); // TEMPORARY
+        int calculateDamage(Unit& target, int baseDamage, Inventory& inventory); 
         virtual void updateBasicAttributes();
     public:
         // ctor dtor
@@ -75,15 +75,15 @@ class Unit {
         void setStats(int strength, int agility, int intelligence);
 
         // Fungsi
-        virtual void attack(Unit& target, Inventory& inventory); // TEMPORARY
+        virtual void attack(Unit& target, Inventory& inventory); 
         virtual void takeDamage(int damage, Inventory& inventory);
         virtual void heal(int amount);
         virtual void restoreMana(int amount);
-        virtual void useSkill(Skill* skill, Unit& target, Inventory& inventory); // TEMPORARY
-        virtual void addSkill(Skill* skill); // TEMPORARY
-        virtual void removeSkill(Skill* skill); // TEMPORARY
-        void addActiveEffect(Effect* effect); // TEMPORARY
-        void removeActiveEffect(Effect* effect); // TEMPORARY
+        virtual void useSkill(Skill* skill, Unit& target, Inventory& inventory); 
+        virtual void addSkill(Skill* skill); 
+        virtual void removeSkill(Skill* skill); 
+        void addActiveEffect(Effect* effect); 
+        void removeActiveEffect(Effect* effect); 
         void applyActiveEffect();
         virtual void reset() = 0;
 

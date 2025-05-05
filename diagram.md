@@ -208,7 +208,6 @@ direction TB
 	    #gold : int
 	    #masteryCost : int
 	    #type : string
-	    #skillTree : SkillTree
 	    #loadCharacterSkills(vector skillNames) void
 	    +Character(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, string type)
 	    +virtual ~Character()
@@ -978,8 +977,7 @@ direction TB
     SkillNode *-- Skill
     SkillTree *-- SkillNode
     Skill --|> Unit
-    Inventory --|> Character
-    Inventory --|> Item
+Inventory --|> Characterccc
     Inventory --|> Unit
     Inventory *-- Item
     InputOutputException --|> exception

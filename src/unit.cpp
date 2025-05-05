@@ -43,10 +43,10 @@ bool Unit::getTurnEffectStatus(string turnEffectName) const {
 }
 
 Stats Unit::getStats() const { return stats; }
-vector<Skill*> Unit::getSkills() const { return skills; }  // TEMPORARY
+vector<Skill*> Unit::getSkills() const { return skills; }  
 vector<Effect*> Unit::getActiveEffects() const {
     return activeEffects;
-}  // TEMPORARY
+} 
 
 void Unit::setName(string name) { this->name = name; }
 void Unit::setCurrentHealth(int currentHealth) {
