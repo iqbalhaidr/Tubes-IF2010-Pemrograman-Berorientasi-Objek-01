@@ -10,7 +10,7 @@ Slime::Slime(int level, int expReward, Mobloot& mobLoots)
         "time (kerusakan berkelanjutan) selama 3 turn";
     EffectPoison* DamageOverTime =
         new EffectPoison("Acidic Corrosion (Poison)", effectDescription, 3, 3,
-                         1, attackDamage * getStats().getIntelligence() / 50);
+                         100, attackDamage * getStats().getIntelligence() / 50, true);
     effects.push_back(DamageOverTime);
     Skill* skill =
         new Skill("Acidic Corrosion", 16, 0, 20, attackDamage, effects);

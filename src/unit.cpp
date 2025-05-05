@@ -73,11 +73,7 @@ int Unit::calculateDamage(Unit& target, int baseDamage, Inventory& inventory) {
     // std::cout << "baseDamage: " << baseDamage << std::endl;
     for (const auto& ActiveEffect : getCombinedEffect(activeEffects)) {
         if (ActiveEffect->isDamage()) {
-            if (ActiveEffect->getName() == "Infernal Curse") {
-                totalDamage -= ActiveEffect->apply(this);
-            } else {
-                totalDamage += ActiveEffect->apply(this);
-            }
+            totalDamage += ActiveEffect->apply(this);
         }
     }
     if (totalDamage < 0) totalDamage = 0;
@@ -130,11 +126,7 @@ void Unit::takeDamage(int damage, Inventory& inventory) {
 
     for (const auto& activeEffect : getCombinedEffect(activeEffects)) {
         if (activeEffect->isDefensive()) {
-            if (activeEffect->getName() == "Infernal Curse") {
-                defence -= activeEffect->apply(this);
-            } else {
                 defence += activeEffect->apply(this);
-            }
         }
     }
     if (defence < 0) defence = 0;
@@ -190,20 +182,15 @@ void Unit::useSkill(Skill* skill, Unit& target, Inventory& inventory) {
     // cout << "MANA: " << currentMana << endl;
 
     for (Effect* effect : skill->effects) {
-        if ((effect->isTurn() || effect->isTurnBased()) ||
-            (effect->isDamage() && effect->getName() == "Infernal Curse") ||
-            (effect->isDefensive() &&
-             effect->getName() ==
-                 "Infernal Curse")) {  // kasus crit masukin efek crit dari
-                                       // skill ke vector dulu
-            // std::cout << "masuk if pertama unit.cpp: " << effect->getName()
-                      //<< std::endl;
-            target.addActiveEffect(effect);
-        } else if (effect->isDefensive() || effect->isDamage()) {
-            this->addActiveEffect(effect);
-        } else if (effect->isHealth()) {
+        if (effect->isHealth()) {
             heal(effect->apply(this));
-        }
+        } else {
+            if (effect->isThrowable()) {
+                target.addActiveEffect(effect);
+            } else {
+                this->addActiveEffect(effect);
+            }
+        }          
     }
 
     for (Effect* ActiveEffect : getCombinedEffect(activeEffects)) {
@@ -242,7 +229,7 @@ void Unit::removeActiveEffect(Effect* activeEffect) { //akhir
     }
 }
 
-void Unit::applyActiveEffect() { //awal
+void Unit::applyActiveEffect() { 
     for (auto& activeEffect : activeEffects) {
         if (activeEffect->isHealthRegen() || activeEffect->isManaRegen()) {
             if (activeEffect->isHealthRegen()) {
@@ -259,9 +246,6 @@ void Unit::applyActiveEffect() { //awal
         } else if (activeEffect->isManaReduc()) {
             currentMana -= activeEffect->apply(this);
         } 
-        // else if (activeEffect->isTurn()) {
-            // int stunReturn = activeEffect->apply(this);
-        // }
         activeEffect->decreaseRemainingDuration();
     }
 }
