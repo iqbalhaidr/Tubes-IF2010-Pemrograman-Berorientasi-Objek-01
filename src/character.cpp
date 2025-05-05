@@ -127,15 +127,15 @@ void Character::displayCharacter() {
     cout << "Type           : " << this->type << endl;
     cout << "Level          : " << this->level << endl;
     cout << "-> STATS, HEALTH, MANA \n";
-    cout << "Strength : " << this->getStats().getStrength() << " , ";
-    cout << "Agility : " << this->getStats().getStrength() << " , ";
+    cout << "Strength : " << this->getStats().getStrength() << " ,";
+    cout << "Agility : " << this->getStats().getStrength() << " ,";
     cout << "Intelligence : " << this->getStats().getStrength() << endl;
-    cout << "Current Health :" << this->currentHealth << endl;
-    cout << "Current Mana :" << this->currentMana << endl;
+    cout << "Current Health : " << this->currentHealth << endl;
+    cout << "Current Mana   : " << this->currentMana << endl;
     cout << "<-\n";
-    cout << "Exp : " << this->exp << endl;
-    cout << "Gold : " << this->gold << endl;
-    cout << "Mastery Cost : " << this->masteryCost << endl;
+    cout << "Exp            : " << this->exp << endl;
+    cout << "Gold           : " << this->gold << endl;
+    cout << "Mastery Cost   : " << this->masteryCost << endl;
     cout << "Skills : [";
     for (int i = 0; i < skills.size(); i++) {
         cout << skills[i]->getName();

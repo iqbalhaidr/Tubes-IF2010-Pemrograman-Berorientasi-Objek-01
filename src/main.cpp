@@ -336,7 +336,7 @@ int main(){
                     std::string skillName;
                     p1->getChar()->displayAvailableSkillUpgrades();
                     while (true) {
-                        cout<<"Masukkan Pilihan Anda: ";
+                        cout<<"\nMasukkan Pilihan Anda: ";
                         std::getline(std::cin >> std::ws, skillName);
                         try {
                             p1->getChar()->upgradeSkill(skillName);
