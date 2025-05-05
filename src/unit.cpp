@@ -164,9 +164,6 @@ void Unit::useSkill(Skill* skill, Unit& target, Inventory& inventory) {
 
     // cek skill ada di vector skill atau tidak
     bool isSkillValid = std::find(skills.begin(), skills.end(), skill) != skills.end();
-    if (!isSkillValid) {
-        throw InvalidSkill("Skill tidak terdapat pada daftar skill yang dimiliki character");
-    }
 
     if (currentMana < skill->getManaCost()) {
         throw ManaNotEnough("Not enough mana to use skill: " + skill->getName());
