@@ -11,9 +11,11 @@ class Effect{
         std::string description;
         double duration;
         double remainingDuration;
+        int chance;
+        bool lempar;
 
     public:
-        Effect(const std::string& name, const std::string& description, double duration, double remainingDuration);
+        Effect(const std::string& name, const std::string& description, double duration, double remainingDuration, int chance = 100, bool isThrowable = false);
         ~Effect();
         Effect(const Effect& other);
         Effect& operator=(Effect& other);
@@ -42,7 +44,7 @@ class Effect{
         virtual bool isTurn();
         virtual bool isHealthRegen();
         virtual bool isManaRegen();
-        virtual bool isThrowable();
+        bool isThrowable();
         virtual bool isPoison();
         virtual bool isHealth();
         virtual bool isManaReduc();

@@ -3,13 +3,13 @@
 
 
 
-EffectHealth::EffectHealth(const std::string& name, const std::string& description, double duration, double remainingDuration, double chance, int healAmount)
-    : Effect(name, description, duration, remainingDuration), healAmount(healAmount), chance(chance) {}
+EffectHealth::EffectHealth(const std::string& name, const std::string& description, double duration, double remainingDuration, int chance, int healAmount, bool isThrowable)
+    : Effect(name, description, duration, remainingDuration, chance, isThrowable), healAmount(healAmount){}
 
 EffectHealth::~EffectHealth() {}
 
 EffectHealth::EffectHealth(const EffectHealth& other) 
-    : Effect(other), healAmount(other.healAmount), chance(other.chance) {}
+    : Effect(other), healAmount(other.healAmount) {}
 
 EffectHealth& EffectHealth::operator=(EffectHealth& other) {
     Effect::operator=(other);
