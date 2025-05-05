@@ -1,7 +1,7 @@
 #include "../include/EffectDefensive.hpp"
 
 EffectDefensive::EffectDefensive(const std::string& name, const std::string& description, double duration, double remainingDuration, int chance, int armorAmount, int magicResistAmount, bool isThrowable)
-    : Effect(name, description, duration, remainingDuration, chance, isThrowable), defense(defense) {}
+    : Effect(name, description, duration, remainingDuration, chance, isThrowable), defense(armorAmount) {}
 
 EffectDefensive::~EffectDefensive() {}
 
