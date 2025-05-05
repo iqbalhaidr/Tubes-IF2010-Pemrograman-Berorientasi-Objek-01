@@ -77,14 +77,16 @@ int Unit::calculateDamage(Unit& target, int baseDamage, Inventory& inventory) {
     }
     if (totalDamage < 0) totalDamage = 0;
     totalDamage += baseDamage;  // total damage = base damage + critical damage
-
+    
     if (this->isChar = true) {
         Item* weapon = inventory.getEquippedItem("WEAPON");
+        setupActiveEffect(weapon->getEffects(), target);
         if (weapon != nullptr) {
             totalDamage += weapon->getFinalStat();  // total damage + weapon damage
         }
 
         Item* pendant = inventory.getEquippedItem("PENDANT");
+        setupActiveEffect(pendant->getEffects(), target);
         if (pendant != nullptr) {
             totalDamage += pendant->getFinalStat();  // total damage + weapon damage
         }
@@ -165,17 +167,7 @@ void Unit::useSkill(Skill* skill, Unit& target, Inventory& inventory) {
     currentMana -= skill->getManaCost();
     int totalDamage = skill->getDamage();
 
-    for (Effect* effect : skill->effects) {
-        if (effect->isHealth()) {
-            heal(effect->apply(this));
-        } else {
-            if (effect->isThrowable()) {
-                target.addActiveEffect(effect);
-            } else {
-                this->addActiveEffect(effect);
-            }
-        }          
-    }
+    setupActiveEffect(skill->effects, target);
 
     for (Effect* ActiveEffect : getCombinedEffect(activeEffects)) {
         if (EffectDamage* damageEffect =
@@ -232,6 +224,20 @@ void Unit::applyActiveEffect() {
             currentMana -= activeEffect->apply(this);
         } 
         activeEffect->decreaseRemainingDuration();
+    }
+}
+
+void Unit::setupActiveEffect(vector<Effect*> effects, Unit& target) {
+    for (Effect* effect : effects) {
+        if (effect->isHealth()) {
+            heal(effect->apply(this));
+        } else {
+            if (effect->isThrowable()) {
+                target.addActiveEffect(effect);
+            } else {
+                this->addActiveEffect(effect);
+            }
+        }          
     }
 }
 

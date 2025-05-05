@@ -85,6 +85,7 @@ class Unit {
         void addActiveEffect(Effect* effect); 
         void removeActiveEffect(Effect* effect); 
         void applyActiveEffect();
+        void setupActiveEffect(vector<Effect*> effects, Unit& target);
         virtual void reset() = 0;
 
 
