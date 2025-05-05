@@ -39,6 +39,10 @@ void Berserker::levelUp() {
     stats.setIntelligence(stats.getIntelligence() + 1);
     Unit::updateBasicAttributes(); 
     updateBasicAttributes();
+    for (Skill* skill : skills) {
+        skill->setDamage(skill->getDamage() + 20);
+        skill->setManaCost(skill->getManaCost() + 10);
+    }
     Character::reset();
 }
 
