@@ -230,7 +230,14 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
 
                     std::cout << "\e[1;1H\e[2J"; //Clear console
                     int skillOpt = inputSkillOption(&c);
-                    c.useSkill(c.getSkills()[skillOpt - 1], *enemies[i], inv);
+                    try {
+                        c.useSkill(c.getSkills()[skillOpt - 1], *enemies[i], inv);
+                    } catch (ManaNotEnough &e) {
+                        // std::cout << "\e[1;1H\e[2J"; //Clear console
+                        std::cout << e.what() << std::endl;
+                        std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_TIME));
+                        continue;
+                    }
 
                     std::cout << "\e[1;1H\e[2J"; //Clear console
                     std::cout << c.getName() << " activates " << c.getSkills()[skillOpt - 1]->getName() << "!\n";
@@ -683,8 +690,14 @@ void Chamber::unequipMenu(Character& c, Unit& t, Inventory& inv) {
 
 void Chamber::displayPlayerStatus(Character& c) {
     std::cout << c.getName() << "'s Status\n";
-    std::cout << "Health: " << c.getCurrentHealth() << "/" << c.getMaxHealth() << " | +" << c.getHealthRegen() << "/turn\n";
-    std::cout << "Mana: " << c.getCurrentMana() << "/" << c.getMaxMana() << " | +" << c.getManaRegen() << "/turn\n";
+    std::cout << "Health: ";
+    printBar(c.getCurrentHealth(), c.getMaxHealth(), "\033[41m");
+    std::cout << c.getHealthRegen() << "\n";
+    std::cout << "Mana: ";
+    printBar(c.getCurrentMana(), c.getMaxMana(), "\033[44m");
+    std::cout << c.getManaRegen() << "\n";
+    // std::cout << "Health: " << c.getCurrentHealth() << "/" << c.getMaxHealth() << " | +" << c.getHealthRegen() << "/turn\n";
+    // std::cout << "Mana: " << c.getCurrentMana() << "/" << c.getMaxMana() << " | +" << c.getManaRegen() << "/turn\n";
     std::cout << "Active Effects: \n";
     for (auto* effect : c.getActiveEffects()) {
         std::cout << "    " << effect->getName() << " -> " << effect->getRemainingDuration() << "turn left\n";
@@ -693,8 +706,15 @@ void Chamber::displayPlayerStatus(Character& c) {
 
 void Chamber::displayEnemyStatus(Mobs* enemy) {
     std::cout << enemy->getName() << "'s Status (" << enemy->getLevel() << ")\n";
-    std::cout << "Health: " << enemy->getCurrentHealth() << "/" << enemy->getMaxHealth() << " | +" << enemy->getHealthRegen() << "/turn\n";
-    std::cout << "Mana: " << enemy->getCurrentMana() << "/" << enemy->getMaxMana() << " | +" << enemy->getManaRegen() << "/turn\n";
+    std::cout << "Health: ";
+    printBar(enemy->getCurrentHealth(), enemy->getMaxHealth(), "\033[41m");
+    std::cout << enemy->getHealthRegen() << "\n";
+    // std::cout << "\n";
+    std::cout << "Mana: ";
+    printBar(enemy->getCurrentMana(), enemy->getMaxMana(), "\033[44m");
+    std::cout << enemy->getManaRegen() << "\n";
+    // std::cout << "Health: " << enemy->getCurrentHealth() << "/" << enemy->getMaxHealth() << " | +" << enemy->getHealthRegen() << "/turn\n";
+    // std::cout << "Mana: " << enemy->getCurrentMana() << "/" << enemy->getMaxMana() << " | +" << enemy->getManaRegen() << "/turn\n";
     std::cout << "Active Effects: \n";
     for (auto* effect : enemy->getActiveEffects()) {
         std::cout << "    " << effect->getName() << " -> " << effect->getRemainingDuration() << " turn left\n";
@@ -758,4 +778,22 @@ void Chamber::cheatMode(Character &c, Reward &prize) {
             c.removeActiveEffect(effect);
         }
     }
+}
+
+void Chamber::printBar(int value, int maxValue, const string& bgColor) {
+    int width = 30;
+    int filled = (value * width) / maxValue;
+
+    // Tampilkan bagian bar yang terisi (warna latar)
+    std::cout << "[";
+    cout << bgColor;
+    for (int i = 0; i < filled; ++i)
+        cout << " ";
+    
+    // Reset warna dan tampilkan bagian yang belum terisi (background gelap)
+    cout << "\033[0m";
+    for (int i = filled; i < width; ++i)
+        cout << " ";
+
+    cout << "\033[0m" << "]  (" << value << "/" << maxValue << " | +";
 }
