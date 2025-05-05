@@ -18,6 +18,7 @@ void Necromancer::setSummonChance(double summonChance) { this->summonChance = su
 
 void Necromancer::attack(Unit& target, Inventory& inventory) {
     if (!summons && (rand() % 100 + 1) < summonChance) {
+        cout << "Anak buah berhasil di-summon!" << endl;
         summons = true;
         summonTurns = 4;
         Unit::attack(target, inventory); 
@@ -30,6 +31,8 @@ void Necromancer::attack(Unit& target, Inventory& inventory) {
         int totalDamage = calculateDamage(target, attackDamage, inventory); 
         totalDamage += stats.getIntelligence() * 0.25; 
         target.takeDamage(totalDamage, inventory); // damage dari minion
+    } else {
+        Unit::attack(target, inventory); 
     }
 }
 

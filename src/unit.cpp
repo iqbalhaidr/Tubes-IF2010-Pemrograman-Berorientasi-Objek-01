@@ -70,7 +70,6 @@ void Unit::setStats(int strength, int agility, int intelligence) {
 }
 int Unit::calculateDamage(Unit& target, int baseDamage, Inventory& inventory) {
     int totalDamage = 0;
-    // std::cout << "baseDamage: " << baseDamage << std::endl;
     for (const auto& ActiveEffect : getCombinedEffect(activeEffects)) {
         if (ActiveEffect->isDamage()) {
             totalDamage += ActiveEffect->apply(this);
@@ -78,13 +77,11 @@ int Unit::calculateDamage(Unit& target, int baseDamage, Inventory& inventory) {
     }
     if (totalDamage < 0) totalDamage = 0;
     totalDamage += baseDamage;  // total damage = base damage + critical damage
-    // cout << "totalDamage sblm wepen: " << totalDamage << endl;
+
     if (this->isChar = true) {
         Item* weapon = inventory.getEquippedItem("WEAPON");
         if (weapon != nullptr) {
             totalDamage += weapon->getFinalStat();  // total damage + weapon damage
-            cout << "Weapon name: " << weapon->getName() << std::endl;
-            std::cout << "Weapon damage: " << weapon->getFinalStat() << std::endl;
         }
 
         Item* pendant = inventory.getEquippedItem("PENDANT");
@@ -92,20 +89,16 @@ int Unit::calculateDamage(Unit& target, int baseDamage, Inventory& inventory) {
             totalDamage += pendant->getFinalStat();  // total damage + weapon damage
         }
     }
-    // cout << "totalDamage sblm lvl: " << totalDamage << endl;
-    // cout << "baseDamage: " << baseDamage << endl;
     totalDamage *= getLevelFactor(target);  // total damage * level factor
-
     return totalDamage;
 }
 void Unit::attack(Unit& target, Inventory& inventory) {
-    // std::cout << "attack: " << attackDamage << std::endl;
     std::cout << name << " attacks " << target.getName() << " sebesar " << calculateDamage(target, attackDamage, inventory) << std::endl;
     target.takeDamage(calculateDamage(target, attackDamage, inventory), inventory);
 }
 
 void Unit::takeDamage(int damage, Inventory& inventory) {
-    // std::cout << "damage from takeDamage(): " << damage << std::endl;
+    std::cout << "damage from takeDamage(): " << damage << std::endl;
     int defence = 0;  // damage reduction
     if (this->isChar = true) {
         Item* armorHead = inventory.getEquippedItem("ARMOR_HEAD");
@@ -130,7 +123,6 @@ void Unit::takeDamage(int damage, Inventory& inventory) {
         }
     }
     if (defence < 0) defence = 0;
-    std::cout << name << " Defence: " << defence << std::endl;
     damage -= defence;
     if (damage < 0) damage = 0;
     std::cout << name << " takes " << damage << " damage!\n";
@@ -162,11 +154,8 @@ void Unit::useSkill(Skill* skill, Unit& target, Inventory& inventory) {
     cout << "Skill effect: " << skill->getEffects()[0]->getName() << endl;
     cout << "Skill damage:" << skill->getDamage() << endl;
 
-    // cek skill ada di vector skill atau tidak
-    bool isSkillValid = std::find(skills.begin(), skills.end(), skill) != skills.end();
-
     if (currentMana < skill->getManaCost()) {
-        throw ManaNotEnough("Not enough mana to use skill: " + skill->getName());
+        throw ManaNotEnough("TIdak cukup mana untuk menggunakan skill: " + skill->getName());
     }
     if ((rand() % 100 + 1) > skill->getskillChance()) {
         std::cout << "Skill tidak mengenai target" << std::endl;
@@ -175,8 +164,6 @@ void Unit::useSkill(Skill* skill, Unit& target, Inventory& inventory) {
     std::cout << "Skill mengenai target" << std::endl;
     currentMana -= skill->getManaCost();
     int totalDamage = skill->getDamage();
-    // cout << "TOTAL DAMAGE: " << skill->getDamage() << endl;
-    // cout << "MANA: " << currentMana << endl;
 
     for (Effect* effect : skill->effects) {
         if (effect->isHealth()) {
@@ -202,12 +189,11 @@ void Unit::useSkill(Skill* skill, Unit& target, Inventory& inventory) {
         }
     }
 
-    // std::cout << "Skill damage: " << totalDamage << std::endl;
+    std::cout << "Skill damage dari Use skill: " << totalDamage << std::endl;
     target.takeDamage(totalDamage, inventory);
 }
 
 void Unit::addSkill(Skill* skill) { 
-    cout << "masuk\n";
     skills.push_back(skill); }
 void Unit::removeSkill(Skill* skill) {
     auto it = find(skills.begin(), skills.end(), skill);
