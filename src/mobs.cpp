@@ -35,7 +35,9 @@ vector<Item*> Mobs::dropLoot() {
     return droppedItem; 
 }
 
-
+bool Mobs::isBoss() {
+    return false;
+}
 
 void Mobs::reset() {
     currentHealth = maxHealth;

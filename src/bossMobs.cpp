@@ -18,6 +18,9 @@ void BossMobs::rage() {
     }
 }
 
+bool BossMobs::isBoss() {
+    return true;
+}
 void BossMobs::reset() {
     Mobs::reset();
     setStats(getStats().getStrength() / 1.5, getStats().getAgility() / 1.5, getStats().getIntelligence() / 1.5);

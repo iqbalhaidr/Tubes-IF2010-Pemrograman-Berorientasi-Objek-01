@@ -41,11 +41,11 @@ void Character::loadCharacterSkills(vector<string> skillNames) {
         }
 
         if (hasRoot && (hasLeft || hasRight)) {
-            if (hasLeft) skillTree.currentSkills.push_back(root->getLeftNode());
-            else if (hasRight) skillTree.currentSkills.push_back(root->getRightNode());
+            if (hasLeft) skillTree.upgradeSkill(root, root->getLeftNode());
+            else if (hasRight) skillTree.upgradeSkill(root, root->getRightNode());
         } else if (!hasRoot && hasLeft && hasRight) {
-            skillTree.currentSkills.push_back(root->getLeftNode());
-            skillTree.currentSkills.push_back(root->getRightNode());
+            skillTree.upgradeSkill(root, root->getLeftNode());
+            skillTree.upgradeSkill(root, root->getRightNode());
 
             auto it = find(skillTree.currentSkills.begin(), skillTree.currentSkills.end(), root);
             if (it != skillTree.currentSkills.end()) {
@@ -142,7 +142,7 @@ void Character::displayCharacter() {
             cout << ",";
         }
     }
-    cout << "]\n";
+    cout << "]\n\n";
 }
 void Character::reset() {
     currentHealth = maxHealth;
