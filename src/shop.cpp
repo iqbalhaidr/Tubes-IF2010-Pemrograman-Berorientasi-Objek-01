@@ -45,7 +45,6 @@ Shop::Shop(const std::string& directory){
         std::string category = itemObj->getItemType();
         categoryShop[category].push_back(std::make_pair(item.first, std::get<2>(item.second)));
     }
-    std::cout<<"SELESAI\n";
 }
 
 Shop::~Shop() {
