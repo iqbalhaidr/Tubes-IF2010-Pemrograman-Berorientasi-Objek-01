@@ -29,7 +29,11 @@ void EffectPoison::setChance(int chance) {
 
 double EffectPoison::apply(Unit* unit) {
     // remainingDuration -= 1;
-    return damage; 
+    int randomValue = rand() % 100 + 1;
+    if (randomValue > chance) {
+        return damage;   
+    }
+    return 0;
 }
 
 

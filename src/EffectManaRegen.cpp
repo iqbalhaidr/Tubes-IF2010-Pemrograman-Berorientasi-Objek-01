@@ -21,7 +21,12 @@ void EffectManaRegen::setManaAmount(int manaAmount) {
 
 double EffectManaRegen::apply(Unit* unit) {
     // remainingDuration = remainingDuration - 1;
-    return manaAmount;
+    int randomValue = rand() % 100 + 1;
+    if (randomValue > chance) {
+        return manaAmount;
+    }
+
+    return 0;
 }
 
 

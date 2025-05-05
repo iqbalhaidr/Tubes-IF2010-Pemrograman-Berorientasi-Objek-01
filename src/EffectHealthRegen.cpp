@@ -20,7 +20,15 @@ void EffectHealthRegen::setHealAmount(int healAmount) {
 }
 double EffectHealthRegen::apply(Unit* unit) {
     // remainingDuration = remainingDuration - 1;
-    return healAmount; 
+    int random = rand() % 100 + 1;
+    // remainingDuration -= 1;
+    if (random <= chance){
+        return healAmount; 
+    }
+
+    else{
+        return 0;    
+    }
 }
 
 Effect* EffectHealthRegen::clone() const{

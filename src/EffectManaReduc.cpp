@@ -25,7 +25,12 @@ void EffectManaReduc::setManaAmount(int manaAmount) {
 
 double EffectManaReduc::apply(Unit* unit) {
     // remainingDuration = remainingDuration - 1;
-    return manaAmount; 
+    int randomValue = rand() % 100 + 1;
+    int currentRegen = unit->getHealthRegen();
+    if (randomValue > chance) {
+        return manaAmount; 
+    }
+    return 0;
 }
 
 void EffectManaReduc::remove(Unit* unit) {

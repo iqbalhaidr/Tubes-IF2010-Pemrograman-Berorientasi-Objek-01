@@ -20,6 +20,10 @@ bool EffectTurn::isTurn() {
 double EffectTurn::apply(Unit* unit) {
     // Default implementation does nothing
     // remainingDuration -= 1;
+    int randomValue = rand() % 100 + 1;
+    if (randomValue > chance) {
+        return 1; 
+    }
     return 0;
 }
 
