@@ -13,6 +13,7 @@ Chamber::Chamber(bool isLast, int minMobLevel, int maxMobLevel, Mobloot& mobLoot
     autoMenang = false;
     cheatEnemyStun = false;
     cheatDamage = false;
+    cheatGod = false;
     generateEnemies();
 }
 
@@ -244,7 +245,7 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
                 } else if (opt == 4) {  // KABUR
                     return false;
                 } else if (opt == 5) {  // CHEAT AUTOWIN
-                    cheatMode(c);
+                    cheatMode(c, prize);
                 }
                 // removeExpiredEffects(&c);
 
@@ -310,10 +311,14 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
                 int opt = Randomizer::random(1, 3);
                 // int opt = 2;
                 if (opt == 1 || opt == 3) {
-                    enemies[i]->attack(c, inv);
-
+                    
                     std::cout << "\e[1;1H\e[2J"; //Clear console
                     std::cout << enemies[i]->getName() << " launches an attack to " << c.getName() << "!\n";
+                    if (!cheatGod) {
+                        enemies[i]->attack(c, inv);
+                    } else {
+                        std::cout << "Kebal dari serangan (godMode)\n";
+                    }
                     std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_TIME));
                     displayStatus(c, enemies[i]);
                     std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_TIME));
@@ -334,10 +339,14 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
                     // int skillOpt = 1;
                     // std::cout << "Skill enemy tidak mungkin heal untuk keperluan debugging\n";
                     // enemies[i]->useSkill(enemies[i]->getSkills()[skillOpt], c, inv);
-                    enemies[i]->useSkill(enemies[i]->getSkills()[skillOpt], c, inv);
-
+                    
                     std::cout << "\e[1;1H\e[2J"; //Clear console
                     std::cout << enemies[i]->getName() << " activates " << enemies[i]->getSkills()[skillOpt]->getName() << "!\n";
+                    if (!cheatGod) {
+                        enemies[i]->useSkill(enemies[i]->getSkills()[skillOpt], c, inv);
+                    } else {
+                        std::cout << "Kebal dari serangan (godMode)\n";
+                    }
                     std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_TIME));
                     displayStatus(c, enemies[i]);
                     std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_TIME));
@@ -688,13 +697,17 @@ void Chamber::displayStatus(Character& c, Mobs *enemy) {
     std::cout << "\n";
 }
 
-void Chamber::cheatMode(Character &c) {
+void Chamber::cheatMode(Character &c, Reward &prize) {
     std::cout << "\e[1;1H\e[2J"; //Clear console
     std::cout << "DISCLAIMER: HANYA BERLAKU PADA CHAMBER SAAT INI!\n";
     std::cout << "Silahkan pilih wahai cheater:\n";
     std::cout << "1. Langsung menang bos\n";
     std::cout << "2. Musuh ke stun mulu\n";
     std::cout << "3. Damage ga ngotak (+9999)\n";
+    std::cout << "4. Level up setinggi langit (+100.000.000 exp)\n";
+    std::cout << "5. HP/Mana penuh lagi bos\n";
+    std::cout << "6. Mode tuhan (gabisa kena serangan musuh)\n";
+    std::cout << "7. Hapus semua efek aktif\n";
     std::cout << "Pilihan: ";
 
     int opt;
@@ -707,7 +720,7 @@ void Chamber::cheatMode(Character &c) {
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cout << "Masukan tidak valid." << std::endl;
-        } else if (opt >= 1 && opt <= 3) {
+        } else if (opt >= 1 && opt <= 7) {
             isValids = true;
         } else {
             std::cout << "Masukan tidak valid." << std::endl;
@@ -721,5 +734,16 @@ void Chamber::cheatMode(Character &c) {
     } else if (opt == 3) {
         c.setAttackDamage(c.getAttackDamage() + BIG_DAMAGE);
         cheatDamage = true;
+    } else if (opt == 4) {
+        prize.addExp(100000000);
+    } else if (opt == 5) {
+        c.setCurrentHealth(c.getMaxHealth());
+        c.setCurrentMana(c.getMaxMana());
+    } else if (opt == 6) {
+        cheatGod = true;
+    } else if (opt == 7) {
+        for (auto* effect : c.getActiveEffects()) {
+            c.removeActiveEffect(effect);
+        }
     }
 }
