@@ -32,11 +32,13 @@ int Unit::getLevel() const { return level; }
 int Unit::getLevelFactor(Unit& target) const {
     return 1 + (abs(this->level - target.level)) * 0.05;
 }
-bool Unit::getTurnEffectStatus(string turnEffectName) const {
+bool Unit::getTurnEffectStatus(string turnEffectName) {
     for (const auto& effect : activeEffects) {
         if (effect->getName().find(turnEffectName) !=
             std::string::npos) {  // contains name
-            return true;
+            if (effect->apply(this) == 1) {
+                return true;
+            }
         }
     }
     return false;
@@ -256,9 +258,10 @@ void Unit::applyActiveEffect() { //awal
             currentHealth -= activeEffect->apply(this);
         } else if (activeEffect->isManaReduc()) {
             currentMana -= activeEffect->apply(this);
-        } else if (activeEffect->isTurn()) {
-            int stunReturn = activeEffect->apply(this);
-        }
+        } 
+        // else if (activeEffect->isTurn()) {
+            // int stunReturn = activeEffect->apply(this);
+        // }
         activeEffect->decreaseRemainingDuration();
     }
 }

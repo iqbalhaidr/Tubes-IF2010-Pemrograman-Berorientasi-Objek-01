@@ -57,7 +57,7 @@ class Unit {
         int getManaRegen() const;
         int getAttackDamage() const;
         int getLevel() const;
-        bool getTurnEffectStatus(string turnEffectName) const;
+        bool getTurnEffectStatus(string turnEffectName);
         vector<Skill*> getSkills() const; 
         vector<Effect*> getActiveEffects() const; 
         vector<Effect*> getCombinedEffect(const vector<Effect*>& activeEffects) const;
