@@ -42,6 +42,13 @@ double Effect::getRemainingDuration() const {
     return remainingDuration;
 }
 
+int Effect::getChance(){
+    return chance;
+}
+
+void Effect::setChance(int chance){
+    this->chance = chance;
+}
 void Effect::setName(const std::string& name) {
     this->name = name;
 }

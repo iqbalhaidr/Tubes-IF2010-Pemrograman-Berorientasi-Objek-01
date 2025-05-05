@@ -693,7 +693,7 @@ void Chamber::displayPlayerStatus(Character& c) {
     std::cout << "Health: ";
     printBar(c.getCurrentHealth(), c.getMaxHealth(), "\033[41m");
     std::cout << c.getHealthRegen() << "\n";
-    std::cout << "Mana: ";
+    std::cout << "Mana:   ";
     printBar(c.getCurrentMana(), c.getMaxMana(), "\033[44m");
     std::cout << c.getManaRegen() << "\n";
     // std::cout << "Health: " << c.getCurrentHealth() << "/" << c.getMaxHealth() << " | +" << c.getHealthRegen() << "/turn\n";
@@ -710,7 +710,7 @@ void Chamber::displayEnemyStatus(Mobs* enemy) {
     printBar(enemy->getCurrentHealth(), enemy->getMaxHealth(), "\033[41m");
     std::cout << enemy->getHealthRegen() << "\n";
     // std::cout << "\n";
-    std::cout << "Mana: ";
+    std::cout << "Mana:   ";
     printBar(enemy->getCurrentMana(), enemy->getMaxMana(), "\033[44m");
     std::cout << enemy->getManaRegen() << "\n";
     // std::cout << "Health: " << enemy->getCurrentHealth() << "/" << enemy->getMaxHealth() << " | +" << enemy->getHealthRegen() << "/turn\n";
