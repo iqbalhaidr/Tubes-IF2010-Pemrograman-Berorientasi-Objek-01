@@ -45,10 +45,15 @@ Items Items :: createFromDirectory(const std::string& directory) {
             Effect* effect;
             while (ss >> temp) {
                 if (temp == "-") break;  
-                effects.push_back(Effect::createEffect(temp));
+                Effect* eff = Effect::createEffect(temp);
+                if(eff->isThrowable() && (type=="Weapon" || type =="Armor")){
+                    throw InputOutputException("Silahkan cek config item Anda, item armot atau weapon tidak boleh memiliki efek throwable");
+                }
+                effects.push_back(eff);
+                
             }
 
-            // TODO: VALIDASI EFEK
+
             Item * newItem;
             if(type == "Weapon"){
                 newItem = new Weapon(id, name, type, rarity, baseStat, effects);  
@@ -66,7 +71,7 @@ Items Items :: createFromDirectory(const std::string& directory) {
       
             itemMap.insert(std::make_pair(id, newItem));
         } else {
-            throw InventoryEror("Format baris salah di file item.txt");
+            throw InputOutputException("Format baris salah di file item.txt");
         }
     }
     Items listItem (itemMap);
