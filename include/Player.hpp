@@ -14,6 +14,7 @@
 #include "shop.hpp"
 #include "Dungeon.hpp"
 #include "mobloot.hpp"
+#include "animation.hpp"
 
 
 class Player

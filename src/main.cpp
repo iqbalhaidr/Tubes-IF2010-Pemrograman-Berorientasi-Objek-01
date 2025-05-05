@@ -123,6 +123,7 @@ int main(){
 
             int optPlay;
             if(opt == 1){
+                std::cout << std::endl << std::endl;
                 std::cout << "Silahkan pilih tipe karakter Anda" << std::endl;
                 std::cout << "1. Berserker " <<std::endl;
                 std::cout << "2. Fighter " <<std::endl;
@@ -138,7 +139,7 @@ int main(){
                         std::cin.clear();
                         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                         std::cout << "Masukan tidak valid." << std::endl;
-                        std::cout << "Silahkan masukkan tipe yang anda inginkan (1-5): " << std::endl;
+                        std::cout << "Silahkan masukkan tipe yang anda inginkan (1-5): " ;
                     } else if (optPlay >= 1 && optPlay <= 5) {
                         isValid2 = true;
                         std::cout << std::endl << std::endl;
@@ -171,6 +172,7 @@ int main(){
                 }
             } 
             else{
+                cout<<"\n\n";
                 allChar->displayAvailableCharacters();
                 std::cout << "Silahkan pilih karakter Anda: ";
                 

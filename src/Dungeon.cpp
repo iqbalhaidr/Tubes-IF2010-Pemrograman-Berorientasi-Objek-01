@@ -202,6 +202,8 @@ void Dungeon::start(Character &c, Inventory &inv, Items &items) {
         if (isDD) {
             prize.giveTo(&inv);
         }
+        Animation anime;
+        anime.animate(anime.getAnimationFrames(), 100,1);
         losingMessage();
 
         std::cout << "Final Reward\n";
