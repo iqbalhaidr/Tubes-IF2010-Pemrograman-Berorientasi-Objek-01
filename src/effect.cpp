@@ -130,6 +130,7 @@ Effect* Effect::createEffect(const std::string& nama) {
     double amount;
     int chance;
     bool lempar;
+    std::string lempar_str;
 
     if (!EffectFile.is_open()) {
         std::cerr << "Error opening file" << std::endl;
@@ -178,9 +179,14 @@ Effect* Effect::createEffect(const std::string& nama) {
         //Chance
         iss >> chance;
 
-        iss >> lempar;
+        iss >> lempar_str;
         // std::cout << "chance: " << chance << std::endl;
-
+        if (lempar_str == "true"){
+            lempar = true;
+        }
+        else{
+            lempar = false;
+        }
     }
 
    if (type == "EffectDamage"){
