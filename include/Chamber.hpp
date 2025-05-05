@@ -187,6 +187,8 @@ class Chamber {
 
     void cheatMode(Character &, Reward &);
 
+    void printBar(int , int , const string&);
+
 };
 
 #endif
