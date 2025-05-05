@@ -230,7 +230,14 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
 
                     std::cout << "\e[1;1H\e[2J"; //Clear console
                     int skillOpt = inputSkillOption(&c);
-                    c.useSkill(c.getSkills()[skillOpt - 1], *enemies[i], inv);
+                    try {
+                        c.useSkill(c.getSkills()[skillOpt - 1], *enemies[i], inv);
+                    } catch (ManaNotEnough &e) {
+                        // std::cout << "\e[1;1H\e[2J"; //Clear console
+                        std::cout << e.what() << std::endl;
+                        std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_TIME));
+                        continue;
+                    }
 
                     std::cout << "\e[1;1H\e[2J"; //Clear console
                     std::cout << c.getName() << " activates " << c.getSkills()[skillOpt - 1]->getName() << "!\n";
