@@ -109,6 +109,7 @@ int main(){
             bool isValid = false;
             int opt;
             while (!isValid) {
+                std::cout << "Masukkan pilihan anda (1-1): ";
                 std::cin >> opt;
                 if (std::cin.fail()) {
                     std::cin.clear();
