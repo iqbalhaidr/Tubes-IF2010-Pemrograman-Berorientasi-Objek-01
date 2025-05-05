@@ -5,8 +5,8 @@ Lich::Lich(int level, int expReward, Mobloot& mobLoots)
     updateBasicAttributes();
     vector<Effect*> effects;
     string poisonEffectDescription = "berpeluang 0.15 untuk memberikan damage dan mengurangi mana target selama 4 turn";
-    EffectPoison* poisonEffect = new EffectPoison("Withering Touch (Poison)", poisonEffectDescription, 4, 4, 1, 2*getStats().getIntelligence());
-    EffectManaReduc* manaReducEffect = new EffectManaReduc("Withering Touch (ManaReduc)", poisonEffectDescription, 4, 4, 10);
+    EffectPoison* poisonEffect = new EffectPoison("Withering Touch (Poison)", poisonEffectDescription, 4, 4, 1, 2*getStats().getIntelligence(), true);
+    EffectManaReduc* manaReducEffect = new EffectManaReduc("Withering Touch (ManaReduc)", poisonEffectDescription, 4, 4, 10, 100, true);
     effects.push_back(poisonEffect);
     effects.push_back(manaReducEffect);
     Skill *skill = new Skill("Withering Touch", 9, 0, 15, 2*getStats().getIntelligence(), effects);

@@ -62,7 +62,7 @@ vector<pair<Item*, double>> Mobloot::getLootforMob(const string& name) {
         return it->second;
     }
     return vector<pair<Item*, double>>(); 
-}
+
 
 
 
