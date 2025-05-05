@@ -26,11 +26,13 @@ class Effect{
         std::string getDescription() const;
         double getDuration() const;
         double getRemainingDuration() const;
+        int getChance();
 
         void setName(const std::string& name);
         void setDescription(const std::string& description);
         void setDuration(double duration);
         void setRemainingDuration(double remainingDuration);
+        void setChance(int chance);
 
 
         virtual double apply(Unit* unit) = 0;
