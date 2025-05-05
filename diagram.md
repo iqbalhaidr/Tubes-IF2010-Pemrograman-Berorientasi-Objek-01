@@ -222,7 +222,7 @@ classDiagram
         +levelUp() void
     }
 
-    class Mage {
+    class Necromancer {
         -summons : boolean
         -summonChance : double
         -summonTurns : int
@@ -496,18 +496,7 @@ classDiagram
         <<abstract>>
     }
 
-    class Berserker {
-        -rageMultiplier : int
-        -updateBasicAttributes() void
-        +Berserker(string name, int strength = 28, int agility = 17, int intelligence = 14, int level = BASE_LEVEL, int exp = BASE_EXP, int gold = BASE_GOLD, int masteryCost = BASE_MASTERY_COST, vector<string> skillNames)
-        +~Berserker()
-        +getRageMultiplier() int
-        +setRageMultiplier(int rageMultiplier) void
-        +attack(Unit& target, Inventory& inventory) void
-        +useSkill(Skill* skill, Unit& target, Inventory& inventory) void
-        +levelUp() void
-    }
-    
+
 class Chamber {
     -rewardExp : int
     -rewardGold : int
@@ -883,7 +872,6 @@ class Player {
     }
 
 
-classDiagram
     class Inventory {
         -backpack : Matrix<pair<Item*, int>>
         -equipped : map<string, Item*>
@@ -918,18 +906,18 @@ classDiagram
     Inventory *-- Item
 
 
-    InputOutputException --|> std::exception
-    InventoryEror --|> std::exception
-    InventoryFull --|> std::exception
-    CharactersError --|> std::exception
-    ItemNotFound --|> std::exception
-    InvalidCommand --|> std::exception
-    StockError --|> std::exception
-    GoldNotEnough --|> std::exception
-    ManaNotEnough --|> std::exception
-    MasteryCostNotEnough --|> std::exception
-    InvalidValue --|> std::exception
-    InvalidSkill --|> std::exception
+    InputOutputException --|>  exception
+    InventoryEror --|>  exception
+    InventoryFull --|>  exception
+    CharactersError --|>  exception
+    ItemNotFound --|>  exception
+    InvalidCommand --|>  exception
+    StockError --|>  exception
+    GoldNotEnough --|>  exception
+    ManaNotEnough --|>  exception
+    MasteryCostNotEnough --|>  exception
+    InvalidValue --|>  exception
+    InvalidSkill --|>  exception
 
     Player --> Items
     Player --> Inventory
@@ -1004,7 +992,7 @@ classDiagram
 
     Item <|-- Armor
     Mobs <|-- BasicMobs
-    Character <|-- Berseker
+    Character <|-- Berserker
     Unit <-- Character
     Character *-- SkillTree
     Characters *-- Character
