@@ -209,7 +209,9 @@ void Unit::useSkill(Skill* skill, Unit& target, Inventory& inventory) {
     target.takeDamage(totalDamage, inventory);
 }
 
-void Unit::addSkill(Skill* skill) { skills.push_back(skill); }
+void Unit::addSkill(Skill* skill) { 
+    cout << "masuk\n";
+    skills.push_back(skill); }
 void Unit::removeSkill(Skill* skill) {
     auto it = find(skills.begin(), skills.end(), skill);
     if (it != skills.end()) {
