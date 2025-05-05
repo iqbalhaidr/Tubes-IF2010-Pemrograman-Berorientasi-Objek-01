@@ -278,12 +278,12 @@ void SkillTree::upgradeSkill(SkillNode* skill_awal, SkillNode* skill_baru){
 }
 
 
-SkillNode* SkillTree::getParent(Skill child) {
+SkillNode* SkillTree::getParent(Skill* child) {
     for (int i = 0; i < currentSkills.size(); i++){
-        if (currentSkills[i]->getLeftSkill()->getName() == child.getName()){
+        if (currentSkills[i]->getLeftSkill()->getName() == child->getName()){
             return currentSkills[i];
         }
-        if (currentSkills[i]->getRightSkill()->getName() == child.getName()){
+        if (currentSkills[i]->getRightSkill()->getName() == child->getName()){
             return currentSkills[i];
         }
     }

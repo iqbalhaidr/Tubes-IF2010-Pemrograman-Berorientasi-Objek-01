@@ -43,6 +43,10 @@ void Mage::levelUp() {
     stats.setIntelligence(stats.getIntelligence() + 3);
     Unit::updateBasicAttributes(); 
     updateBasicAttributes();
+    for (Skill* skill : skills) {
+        skill->setDamage(skill->getDamage() + 20);
+        skill->setManaCost(skill->getManaCost() + 10);
+    }
     Character::reset();
 }
 
