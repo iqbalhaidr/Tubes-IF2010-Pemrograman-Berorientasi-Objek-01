@@ -3,6 +3,7 @@
 // #include <map>
 // #include <vector>
 
+#include "../include/skillTree.hpp"
 // #include "../include/Randomizer.hpp"
 // #include "../include/items.hpp"
 // #include "../include/inventory.hpp"
@@ -163,24 +164,34 @@
 //     // rew.displayInfo();
 // }
 
-// int main() {
-//     // int i = 5;
-//     // for (; i < 10; i++) {
-//     //     cout << i << endl;
-//     // }
-//     // for (int i = 0; i < 5; i++) {
-//     //     switchTest(Randomizer::random(1, 3));
-//     //     cout << "================\n";
-//     // }
-//     // chanceTest();
-//     // randomTest();
-//     // mapTest();
-//     // cout << mapReturnTest()["a"] << endl;
-//     // cout << inputOption() << endl;
-//     // itemsParserTest();
-//     // itemInventoryParserTest();
-//     // itemsParserTest();
-//     // dungeonTest();
-//     dungeonTest();
-//     // shopTest();
-// }
+int main() {
+    SkillTree st("Fighter");
+    vector<SkillNode*> vec;
+    vector<SkillNode*> vec2;
+    vec2 = st.getAvailableUpgrade(vec);
+    for (auto skill : vec) {
+        cout<<"================\n";
+        cout << skill->getSkill()->getName() << endl;
+    }
+
+
+    // // int i = 5;
+    // // for (; i < 10; i++) {
+    // //     cout << i << endl;
+    // // }
+    // // for (int i = 0; i < 5; i++) {
+    // //     switchTest(Randomizer::random(1, 3));
+    // //     cout << "================\n";
+    // // }
+    // // chanceTest();
+    // // randomTest();
+    // // mapTest();
+    // // cout << mapReturnTest()["a"] << endl;
+    // // cout << inputOption() << endl;
+    // // itemsParserTest();
+    // // itemInventoryParserTest();
+    // // itemsParserTest();
+    // // dungeonTest();
+    // dungeonTest();
+    // // shopTest();
+}
