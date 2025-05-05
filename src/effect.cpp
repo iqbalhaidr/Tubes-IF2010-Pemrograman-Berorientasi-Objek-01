@@ -10,8 +10,8 @@
 #include "../include/EffectPoison.hpp"
 #include "../include/EffectTurn.hpp"
 
-Effect::Effect(const std::string& name, const std::string& description, double duration, double remainingDuration)
-    : name(name), description(description), duration(duration), remainingDuration(remainingDuration) {}
+Effect::Effect(const std::string& name, const std::string& description, double duration, double remainingDuration, int chance, bool isThrowable)
+    : name(name), description(description), duration(duration), remainingDuration(remainingDuration), chance(chance) {}
 
 Effect::~Effect() {}
 
@@ -85,7 +85,7 @@ bool Effect::isManaRegen() {
     return false;
 }
 bool Effect::isThrowable() {
-    return false;
+    return lempar;
 }
 
 bool Effect::isPoison() {
@@ -122,7 +122,7 @@ Effect* Effect::createEffect(const std::string& nama) {
     double duration;
     double amount;
     int chance;
-    
+    bool lempar;
 
     if (!EffectFile.is_open()) {
         std::cerr << "Error opening file" << std::endl;
@@ -170,32 +170,34 @@ Effect* Effect::createEffect(const std::string& nama) {
         
         //Chance
         iss >> chance;
+
+        iss >> lempar;
         // std::cout << "chance: " << chance << std::endl;
 
     }
 
    if (type == "EffectDamage"){
-        return new EffectDamage(name, description, duration, duration, chance, amount);
+        return new EffectDamage(name, description, duration, duration, chance, amount, lempar);
     }
     //    TO DO: FIX EFFECT DEFENSIVE PARAMETER
     else if (type == "EffectDefensive"){
-        return new EffectDefensive(name, description, duration, duration, chance, amount, amount);
+        return new EffectDefensive(name, description, duration, duration, chance, amount, amount, lempar);
    }
    else if (type == "EffectHealthRegen"){
         int temp = (int)amount;
-        return new EffectHealthRegen(name, description, duration, duration, temp);
+        return new EffectHealthRegen(name, description, duration, duration, temp, chance, lempar);
    }
    else if (type == "EffectManaRegen"){
-        return new EffectManaRegen(name, description, duration, duration, amount);
+        return new EffectManaRegen(name, description, duration, duration, amount, chance, lempar);
    }
    else if (type == "EffectHealth"){
-        return new EffectHealth(name, description, duration, duration, chance, amount);
+        return new EffectHealth(name, description, duration, duration, chance, amount, lempar);
    }
    else if (type == "EffectPoison"){
-        return new EffectPoison(name, description, duration, duration, chance, amount);
+        return new EffectPoison(name, description, duration, duration, chance, amount, lempar);
    }
    else if (type == "EffectTurn"){
-        return new EffectTurn(name, description, duration, duration, chance);
+        return new EffectTurn(name, description, duration, duration, chance, lempar);
     }
 
     else{

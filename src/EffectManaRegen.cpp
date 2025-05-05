@@ -2,8 +2,8 @@
 #include "../include/unit.hpp"
 
 
-EffectManaRegen::EffectManaRegen(const std::string& name, const std::string& description, double duration, double remainingDuration, int manaAmount)
-    : EffectTurnBasedBased(name, description, duration, remainingDuration), manaAmount(manaAmount) {}
+EffectManaRegen::EffectManaRegen(const std::string& name, const std::string& description, double duration, double remainingDuration, int manaAmount, int chance, bool isThrowable)
+    : EffectTurnBasedBased(name, description, duration, remainingDuration, chance, isThrowable), manaAmount(manaAmount) {}
 EffectManaRegen::~EffectManaRegen() {}
 EffectManaRegen::EffectManaRegen(const EffectManaRegen& other) 
     : EffectTurnBasedBased(other), manaAmount(other.manaAmount) {}

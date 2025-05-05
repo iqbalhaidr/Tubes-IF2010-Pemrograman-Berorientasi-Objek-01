@@ -1,7 +1,7 @@
 #include "../include/EffectTurnBased.hpp"
 
-EffectTurnBasedBased::EffectTurnBasedBased(const std::string& name, const std::string& description, double duration, double remainingDuration)
-    : Effect(name, description, duration, remainingDuration) {}
+EffectTurnBasedBased::EffectTurnBasedBased(const std::string& name, const std::string& description, double duration, double remainingDuration, int chance, bool isThrowable)
+    : Effect(name, description, duration, remainingDuration, chance, isThrowable) {}
 
 EffectTurnBasedBased::~EffectTurnBasedBased() {}
 

@@ -1,7 +1,7 @@
 #include "../include/EffectTurn.hpp"
 
-EffectTurn::EffectTurn(const std::string& name, const std::string& description, double duration, double remainingDuration, int chance)
-    : Effect(name, description, duration, remainingDuration), chance(chance) {}
+EffectTurn::EffectTurn(const std::string& name, const std::string& description, double duration, double remainingDuration, int chance, bool isThrowable)
+    : Effect(name, description, duration, remainingDuration, chance, isThrowable) {}
 
 EffectTurn::~EffectTurn() {}
 

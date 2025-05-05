@@ -1,10 +1,10 @@
 #include "../include/EffectPoison.hpp"
 
-EffectPoison::EffectPoison(const std::string& name, const std::string& description, double duration, double remainingDuration, double chance, double damage)
-    : EffectTurnBasedBased(name, description, duration, remainingDuration), damage(damage), chance(chance) {}
+EffectPoison::EffectPoison(const std::string& name, const std::string& description, double duration, double remainingDuration, int chance, double damage, bool isThrowable)
+    : EffectTurnBasedBased(name, description, duration, remainingDuration, chance, isThrowable), damage(damage) {}
 EffectPoison::~EffectPoison() {}
 EffectPoison::EffectPoison(const EffectPoison& other) 
-    : EffectTurnBasedBased(other), damage(other.damage), chance(other.chance) {}
+    : EffectTurnBasedBased(other), damage(other.damage) {}
 EffectPoison& EffectPoison::operator=(EffectPoison& other) {
     EffectTurnBasedBased::operator=(other);
     damage = other.damage;
@@ -39,9 +39,6 @@ Effect* EffectPoison::clone() const{
 
 void EffectPoison::remove(Unit* unit) {}
 
-bool EffectPoison::isThrowable() {
-    return true;
-}
 
 bool EffectPoison::isPoison() {
     return true;

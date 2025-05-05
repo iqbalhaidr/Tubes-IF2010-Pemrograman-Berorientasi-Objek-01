@@ -6,7 +6,7 @@ class EffectManaRegen : public EffectTurnBasedBased {
     private:
         int manaAmount;
     public:
-        EffectManaRegen(const std::string& name, const std::string& description, double duration, double remainingDuration, int manaAmount);
+        EffectManaRegen(const std::string& name, const std::string& description, double duration, double remainingDuration, int manaAmount, int chance, bool isThrowable);
         ~EffectManaRegen();
         EffectManaRegen(const EffectManaRegen& other);
         EffectManaRegen& operator=(EffectManaRegen& other) ;

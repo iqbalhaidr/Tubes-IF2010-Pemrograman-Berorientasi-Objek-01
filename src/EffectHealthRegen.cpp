@@ -1,8 +1,8 @@
 #include "../include/EffectHealthRegen.hpp"
 #include "../include/unit.hpp"
 
-EffectHealthRegen::EffectHealthRegen(const std::string& name, const std::string& description, double duration, double remainingDuration, int healAmount)
-    : EffectTurnBasedBased(name, description, duration, remainingDuration), healAmount(healAmount) {}
+EffectHealthRegen::EffectHealthRegen(const std::string& name, const std::string& description, double duration, double remainingDuration, int healAmount, int chance, bool isThrowable)
+    : EffectTurnBasedBased(name, description, duration, remainingDuration, chance, isThrowable), healAmount(healAmount) {}
 EffectHealthRegen::~EffectHealthRegen() {}
 EffectHealthRegen::EffectHealthRegen(const EffectHealthRegen& other) 
     : EffectTurnBasedBased(other), healAmount(other.healAmount) {}
