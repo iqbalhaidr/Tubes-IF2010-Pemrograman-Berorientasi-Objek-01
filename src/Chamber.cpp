@@ -256,6 +256,18 @@ bool Chamber::battle(Character& c, Inventory& inv, Reward& prize, Items& items) 
 
                 turnCtr++;
             } else {
+                if (enemies[i]->isBoss()) {
+                    int percentHealth = int(enemies[i]->getCurrentHealth() * 100 / enemies[i]->getMaxHealth());
+                    BossMobs* b = dynamic_cast<BossMobs*>(enemies[i]);
+                    if (percentHealth <= 20 && !b->isRageUsed()) {
+                        b->rage();
+                        std::cout << "\e[1;1H\e[2J"; //Clear console
+                        std::cout << "Tersudut dan terluka, " << b->getName() <<  " masuk ke dalam keadaan mengamuk. Aura kekuatannya melonjak tajam!\n";
+                        std::this_thread::sleep_for(std::chrono::milliseconds(DISPLAY_TIME));
+                        std::cout << "\e[1;1H\e[2J"; //Clear console
+                    }
+                }
+                
                 // std::cout << "Enemy Turn! Chamber.cpp\n";
                 // std::cout << "Enemy level: " << enemies[i]->getLevel() << std::endl;
                 if (enemies[i]->getTurnEffectStatus("Stun") || cheatEnemyStun) {
