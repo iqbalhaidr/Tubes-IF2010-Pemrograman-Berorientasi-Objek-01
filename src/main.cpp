@@ -146,7 +146,7 @@ int main(){
                         std::cout << "Masukan tidak valid." << std::endl;
                     }
                 }
-
+                cout<<"\n\n";
                 allChar->displayAvailableCharacters();
                 while (true) {
                     std::cout << "Silahkan Masukkan nama character Anda: ";

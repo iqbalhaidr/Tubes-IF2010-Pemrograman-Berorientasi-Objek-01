@@ -46,43 +46,43 @@ Items Items :: createFromDirectory(const std::string& directory) {
             while (ss >> temp) {
                 if (temp == "-") break;  
                 Effect* eff = Effect::createEffect(temp);
-                if(eff->isThrowable() && (type=="Weapon" || type =="Armor")){
-                    throw InputOutputException("Silahkan cek config item Anda, item armot atau weapon tidak boleh memiliki efek throwable");
-                }
+                // if(eff->isThrowable() && (type=="Weapon" || type =="Armor")){
+                //     throw InputOutputException("Silahkan cek config item Anda, item armot atau weapon tidak boleh memiliki efek throwable");
+                // }
                 effects.push_back(eff);
                 
             }
 
-            if (type == "E") {  // Common
-                if (effects.size() > 0) {
-                    throw InputOutputException("Item Common (E) dalam config tidak boleh memiliki efek apapun");
-                }
-            }
-            else if (type == "D") {  // Uncommon
-                if (effects.size() > 1) {
-                    throw InputOutputException("Item Uncommon (D) dalam config maksimal memiliki 1 efek");
-                }
-            }
-            else if (type == "C") {  // Rare
-                if (effects.size() != 1) {
-                    throw InputOutputException("Item Rare (C) dalam config harus memiliki tepat 1 efek");
-                }
-            }
-            else if (type == "B") {  // Epic
-                if (effects.size() < 1 || effects.size() > 2) {
-                    throw InputOutputException("Item Epic (B) dalam config harus memiliki 1-2 efek");
-                }
-            }
-            else if (type == "A") {  // Legendary
-                if (effects.size() != 2) {
-                    throw InputOutputException("Item Legendary (A) dalam config harus memiliki tepat 2 efek");
-                }
-            }
-            else if (type == "S") {  // Mythic
-                if (effects.size() != 3) {
-                    throw InputOutputException("Item Mythic (S) dalam config harus memiliki tepat 3 efek");
-                }
-            }
+            // if (type == "E") {  // Common
+            //     if (effects.size() > 0) {
+            //         throw InputOutputException("Item Common (E) dalam config tidak boleh memiliki efek apapun");
+            //     }
+            // }
+            // else if (type == "D") {  // Uncommon
+            //     if (effects.size() > 1) {
+            //         throw InputOutputException("Item Uncommon (D) dalam config maksimal memiliki 1 efek");
+            //     }
+            // }
+            // else if (type == "C") {  // Rare
+            //     if (effects.size() != 1) {
+            //         throw InputOutputException("Item Rare (C) dalam config harus memiliki tepat 1 efek");
+            //     }
+            // }
+            // else if (type == "B") {  // Epic
+            //     if (effects.size() < 1 || effects.size() > 2) {
+            //         throw InputOutputException("Item Epic (B) dalam config harus memiliki 1-2 efek");
+            //     }
+            // }
+            // else if (type == "A") {  // Legendary
+            //     if (effects.size() != 2) {
+            //         throw InputOutputException("Item Legendary (A) dalam config harus memiliki tepat 2 efek");
+            //     }
+            // }
+            // else if (type == "S") {  // Mythic
+            //     if (effects.size() != 3) {
+            //         throw InputOutputException("Item Mythic (S) dalam config harus memiliki tepat 3 efek");
+            //     }
+            // }
             Item * newItem;
             if(type == "Weapon"){
                 newItem = new Weapon(id, name, type, rarity, baseStat, effects);  
