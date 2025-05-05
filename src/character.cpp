@@ -111,8 +111,10 @@ void Character::upgradeSkill(string& skillNameToLearn) {
                     ++it;
                 }
                 
-            }     
+            }  
+            cout << "Skill " << skillNameToLearn << " Berhasil untuk dipelajari." << endl;   
         }
+
     } else {
         throw InvalidSkill("skill tidak available untuk di-upgrade");
     }
