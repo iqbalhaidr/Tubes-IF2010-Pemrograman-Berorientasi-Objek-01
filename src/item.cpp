@@ -9,6 +9,7 @@ Item::Item(std::string ItemId, std::string Name, std::string type, std::string r
     for(size_t i =0; i< Effects.size(); i++){
         effects.push_back(Effects[i]->clone());
     }
+    scaleItemEffect();
 }
 
 Item::Item(const Item& other){

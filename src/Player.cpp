@@ -10,6 +10,8 @@
 
 void Player:: goToShop(Shop& shop) {
     std::string command;
+    Animation animation;
+    animation.animateWalkingToShop(animation.shop());
 
     while (true) {
         std::cout << "Current Currency ";
