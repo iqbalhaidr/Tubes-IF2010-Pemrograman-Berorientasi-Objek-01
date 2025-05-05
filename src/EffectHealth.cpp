@@ -42,7 +42,7 @@ double EffectHealth::apply(Unit* unit) {
     if (randomValue > chance) {
         return currentRegen; 
     }
-    return currentRegen + healAmount * currentRegen / 100;;
+    return currentRegen + healAmount * currentRegen / 100;
     // unit->setHealthRegen(currentRegen + healAmount);
     // return 0;
 }

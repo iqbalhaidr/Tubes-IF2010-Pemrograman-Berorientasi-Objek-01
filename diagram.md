@@ -6,44 +6,13 @@ direction TB
 	    -itemMap : Items*
 	    -inv : Inventory*
 	    -playerChar : Character*
-	    +Player(string dir, string charType, Items& itemMap, Characters& allChar, int type)
-	    +~Player()
-	    +goToDungeon(Mobloot& moobLoot, Items& itemMap) void
-	    +goToShop(Shop& shop) void
-	    +buyFromShop(Shop& shop, string itemId, int quantity) void
-	    +sellToShop(Shop& shop, string itemId, int quantity) void
-	    +showInventory(bool isBackpack) void
-	    +showCurrency() void
-	    +reduceItemInvetory(string addAbleItem, int target) void
-	    +getChar() Character*
-	    +getInv() Inventory*
+
     }
 
     class Inventory {
 	    -backpack : Matrix~
 	    -equipped : map
-	    +Inventory(Matrix&gt; backp, map equippedItem)
-	    +centerText(string text, int width) string static
-	    +loadInventory(string directory, Items itemMap) Inventory static
-	    +saveInventory(string directory) void
-	    +addItem(pair value) void
-	    +reduceItem(Item* item, int amount) void
-	    +handleNonConsumable(Item* item, Character& orang, Unit& target) void
-	    +handleConsumable(Item* item, Character& orang, Unit& target) void
-	    +useItem(string itemID, Character& orang, Items itemMap, Unit& target) void
-	    +unequipItem(Character& orang, string slot, Unit& target) void
-	    +equipItem(string slot, Character& orang, Item* item, Unit& target) void
-	    +getIdxItembyId(string itemId) pair const
-	    +getBackpack() Matrix&gt;
-	    +getEquippedItem(string slot) Item*
-	    +getItemById(string itemId) pair
-	    +getItemBackpackByName(string itemName) pair
-	    +getEquippedItemId(string slot) string const
-	    +setEquipped(string slot, Item* item) void
-	    +displayBackpack() void
-	    +displayEquipment() void
-	    +getItemQtyInInvent(string itemName) int
-	    +displayBackpackDetails() void
+
     }
 
     class Unit {
@@ -73,30 +42,7 @@ direction TB
 	    #stats : Stats
 	    #skills : vector~Skill*~
 	    #activeEffects : vector~Effect*~
-	    +Unit(string name, int strength, int agility, int intelligence, int level)
-	    +virtual ~Unit()
-	    +getName() string
-	    +getCurrentHealth() int
-	    +getMaxHealth() int
-	    +getHealthRegen() int
-	    +getCurrentMana() int
-	    +getMaxMana() int
-	    +getManaRegen() int
-	    +getAttackDamage() int
-	    +getLevel() int
-	    +getTurnEffectStatus(string turnEffectName) bool
-	    +getSkills() vector~Skill*~
-	    +getActiveEffects() vector~Effect*~
-	    +getCombinedEffect(const vector~Effect*~& activeEffects) vector~Effect*~
-	    +getStats() Stats
-	    +setName(string name) void
-	    +setCurrentHealth(int currentHealth) void
-	    +setMaxHealth(int maxHealth) void
-	    +setHealthRegen(int healthRegen) void
-	    +setCurrentMana(int currentMana) void
-	    +setMaxMana(int maxMana) void
-	    +setManaRegen(int manaRegen) void
-	    +setAttackDamage(int attackDamage) void
+	   
 	    +setLevel(int level) void
 	    +setStats(int strength, int agility, int intelligence) void
 	    +attack(Unit& target, Inventory& inventory) void
@@ -104,46 +50,6 @@ direction TB
 	    +heal(int amount) void
 	    +restoreMana(int amount) void
 	    +useSkill(Skill* skill, Unit& target) void
-	    +addSkill(Skill* skill) void
-	    +removeSkill(Skill* skill) void
-	    +addActiveEffect(Effect* effect) void
-	    +removeActiveEffect(Effect* effect) void
-	    +applyActiveEffect() void
-	    +reset() void
-	    #getLevelFactor(Unit& target) int
-	    #calculateDamage(Unit& target, int baseDamage, Inventory& inventory) int
-	    #updateBasicAttributes() void
-	    +Unit(string name, int strength, int agility, int intelligence, int level)
-	    +virtual ~Unit()
-	    +getName() string const
-	    +getCurrentHealth() int const
-	    +getMaxHealth() int const
-	    +getHealthRegen() int const
-	    +getCurrentMana() int
-	    +getMaxMana() int
-	    +getManaRegen() int
-	    +getAttackDamage() int
-	    +getLevel() int
-	    +getTurnEffectStatus(string turnEffectName) bool
-	    +getSkills() vector~Skill*~
-	    +getActiveEffects() vector~Effect*~
-	    +getCombinedEffect(const vector~Effect*~& activeEffects) vector~Effect*~
-	    +getStats() Stats
-	    +setName(string name) void
-	    +setCurrentHealth(int currentHealth) void
-	    +setMaxHealth(int maxHealth) void
-	    +setHealthRegen(int healthRegen) void
-	    +setCurrentMana(int currentMana) void
-	    +setMaxMana(int maxMana) void
-	    +setManaRegen(int manaRegen) void
-	    +setAttackDamage(int attackDamage) void
-	    +setLevel(int level) void
-	    +setStats(int strength, int agility, int intelligence) void
-	    +attack(Unit& target, Inventory& inventory) void
-	    +takeDamage(int damage, Inventory& inventory) void
-	    +heal(int amount) void
-	    +restoreMana(int amount) void
-	    +useSkill(Skill* skill, Unit& target, Inventory& inventory) void
 	    +addSkill(Skill* skill) void
 	    +removeSkill(Skill* skill) void
 	    +addActiveEffect(Effect* effect) void
@@ -162,22 +68,6 @@ direction TB
 	    #strength : int
 	    #agility : int
 	    #intelligence : int
-	    +Stats(int strength, int agility, int intelligence)
-	    +~Stats()
-	    +getStrength() int
-	    +getAgility() int
-	    +getIntelligence() int
-	    +setStrength(int strength) void
-	    +setAgility(int agility) void
-	    +setIntelligence(int intelligence) void
-	    +Stats(int strength, int agility, int intelligence)
-	    +~Stats()
-	    +getStrength() int
-	    +getAgility() int
-	    +getIntelligence() int
-	    +setStrength(int strength) void
-	    +setAgility(int agility) void
-	    +setIntelligence(int intelligence) void
     }
 
     
@@ -187,16 +77,7 @@ direction TB
 	    #LootDrop : vector~
 	    #expReward : int
 	    #LootDrop : vector~
-	    +Mobs(string name, int level, int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots)
-	    +virtual~Mobs()
-	    +getExpReward() int
-	    +setExpReward(int expReward) void
-	    +reset() void
-	    +Mobs(string name, int level, int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots)
-	    +virtual~Mobs()
-	    +getExpReward() int
-	    +setExpReward(int expReward) void
-	    +reset() void
+	   
     }
 
     class Character {
@@ -210,39 +91,6 @@ direction TB
 	    #masteryCost : int
 	    #type : string
 	    #loadCharacterSkills(vector skillNames) void
-	    +Character(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, string type)
-	    +virtual ~Character()
-	    +getExp() int
-	    +getGold() int
-	    +getMasteryCost() int
-	    +getSkillTree() SkillTree
-	    +getType() string
-	    +setLevel(int level) void
-	    +setExp(int exp) void
-	    +setGold(int gold) void
-	    +setMasteryCost(int masteryCost) void
-	    +setType(string type) void
-	    +displayAvailableSkillUpgrades() void
-	    +UpgradeSkill(string& name) void
-	    +displayCharacter() void
-	    +virtual void levelUp() void [=0]
-	    #loadCharacterSkills(vector skillNames) void
-	    +Character(string name, int strength, int agility, int intelligence, int level, int exp, int gold, int masteryCost, string type)
-	    +virtual ~Character()
-	    +getExp() int
-	    +getGold() int
-	    +getMasteryCost() int
-	    +getSkillTree() SkillTree
-	    +getType() string
-	    +setLevel(int level) void
-	    +setExp(int exp) void
-	    +setGold(int gold) void
-	    +setMasteryCost(int masteryCost) void
-	    +setType(string type) void
-	    +displayAvailableSkillUpgrades() void
-	    +UpgradeSkill(string& name) void
-	    +displayCharacter() void
-	    +virtual void levelUp() void [=0]
     }
 
     class Assassin {
@@ -251,45 +99,21 @@ direction TB
 	    -criticalChance : float
 	    -criticalMultiplier : int
 	    -updateBasicAttributes() void
-	    +Assassin(string name,  int strength = 16, int agility = 24, int intelligence = 19, int level = BASE_LEVEL, int exp = BASE_EXP, int gold = BASE_GOLD, int masteryCost = BASE_MASTERY_COST, vector skillNames)
-	    +~Assassin()
-	    +getCriticalChance() float
-	    +getCriticalMultiplier() int
-	    +setCriticalChance(float criticalChance) void
-	    +setCriticalMultiplier(int criticalMultiplier) void
-	    +attack(Unit& target, Inventory& inventory) void
-	    +takeDamage(int damage, Inventory& inventory) void
-	    +levelUp() void
-	    -updateBasicAttributes() void
-	    +Assassin(string name,  int strength = 16, int agility = 24, int intelligence = 19, int level = BASE_LEVEL, int exp = BASE_EXP, int gold = BASE_GOLD, int masteryCost = BASE_MASTERY_COST, vector skillNames)
-	    + ~Assassin()
-	    +getCriticalChance() float
-	    +getCriticalMultiplier() int
-	    +setCriticalChance(float criticalChance) void
-	    +setCriticalMultiplier(int criticalMultiplier) void
-	    +attack(Unit& target, Inventory& inventory) void
-	    +takeDamage(int damage, Inventory& inventory) void
-	    +levelUp() void
+	    
     }
 
     class BasicMobs {
-	    +BasicMobs(string name, int level, int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots)
-	    +virtual ~BasicMobs()
-	    +BasicMobs(string name, int level, int strength, int agility, int intelligence, int expReward, Moobloot& mobLoots)
+	   
     }
 
     class BossMobs {
 	    -rageUsed : boolean
-	    +BossMobs(string name, int level, int strength, int agility, int intelligence, int expReward, Mobloot& mobLoots)
-	    -virtual ~BossMobs()
-	    +rage() void
-	    +reset() void
+	    
     }
 
     class Slime {
 	    -updateBasicAttributes() void
-	    +Slime(int level, int expReward, Mobloot& mobLoots)
-	    + ~Slime()
+	   
     }
 
     class Skeleton {
