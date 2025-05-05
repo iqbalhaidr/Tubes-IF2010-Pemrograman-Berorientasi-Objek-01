@@ -256,7 +256,8 @@ void SkillTree::destroy(SkillNode* node) {
     delete node;
 }
 
-std::vector<SkillNode*> SkillTree::getAvailableUpgrade(vector<SkillNode*>& result) const{
+std::vector<SkillNode*> SkillTree::getAvailableUpgrade() const{\
+    vector<SkillNode*> result;
     for (int i = 0; i < currentSkills.size(); i++){
 
             if (currentSkills[i]->getLeftNode() != nullptr){
