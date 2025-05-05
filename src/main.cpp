@@ -341,11 +341,11 @@ int main(){
                     std::string skillName;
                     p1->getChar()->displayAvailableSkillUpgrades();
                     while (true) {
-                        cout<<"Masukkan Pilihan Anda: ";
-                        cin>>skillName;
+                        cout<<"\nMasukkan Pilihan Anda: ";
+                        std::getline(std::cin >> std::ws, skillName);
                         try {
-                            cout <<"tes10000\n";
                             p1->getChar()->upgradeSkill(skillName);
+                            break;
                         } catch(const InvalidSkill& e) {
                             std::cerr << "Error: " << e.what() << std::endl;
                         } catch(const MasteryCostNotEnough& e) {
