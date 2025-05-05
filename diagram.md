@@ -1,29 +1,48 @@
 ```mermaid
 classDiagram
 direction TB
-    class Stats {
-	    #strength : integer
-	    #agility : int
-	    #intelligence : int
-	    #strength : int
-	    #agility : int
-	    #intelligence : int
-	    +Stats(int strength, int agility, int intelligence)
-	    +~Stats()
-	    +getStrength() int
-	    +getAgility() int
-	    +getIntelligence() int
-	    +setStrength(int strength) void
-	    +setAgility(int agility) void
-	    +setIntelligence(int intelligence) void
-	    +Stats(int strength, int agility, int intelligence)
-	    +~Stats()
-	    +getStrength() int
-	    +getAgility() int
-	    +getIntelligence() int
-	    +setStrength(int strength) void
-	    +setAgility(int agility) void
-	    +setIntelligence(int intelligence) void
+    class Player {
+	    -itemMap : Items*
+	    -inv : Inventory*
+	    -playerChar : Character*
+	    +Player(string dir, string charType, Items& itemMap, Characters& allChar, int type)
+	    +~Player()
+	    +goToDungeon(Mobloot& moobLoot, Items& itemMap) void
+	    +goToShop(Shop& shop) void
+	    +buyFromShop(Shop& shop, string itemId, int quantity) void
+	    +sellToShop(Shop& shop, string itemId, int quantity) void
+	    +showInventory(bool isBackpack) void
+	    +showCurrency() void
+	    +reduceItemInvetory(string addAbleItem, int target) void
+	    +getChar() Character*
+	    +getInv() Inventory*
+    }
+
+    class Inventory {
+	    -backpack : Matrix~
+	    -equipped : map
+	    +Inventory(Matrix&gt; backp, map equippedItem)
+	    +centerText(string text, int width) string static
+	    +loadInventory(string directory, Items itemMap) Inventory static
+	    +saveInventory(string directory) void
+	    +addItem(pair value) void
+	    +reduceItem(Item* item, int amount) void
+	    +handleNonConsumable(Item* item, Character& orang, Unit& target) void
+	    +handleConsumable(Item* item, Character& orang, Unit& target) void
+	    +useItem(string itemID, Character& orang, Items itemMap, Unit& target) void
+	    +unequipItem(Character& orang, string slot, Unit& target) void
+	    +equipItem(string slot, Character& orang, Item* item, Unit& target) void
+	    +getIdxItembyId(string itemId) pair const
+	    +getBackpack() Matrix&gt;
+	    +getEquippedItem(string slot) Item*
+	    +getItemById(string itemId) pair
+	    +getItemBackpackByName(string itemName) pair
+	    +getEquippedItemId(string slot) string const
+	    +setEquipped(string slot, Item* item) void
+	    +displayBackpack() void
+	    +displayEquipment() void
+	    +getItemQtyInInvent(string itemName) int
+	    +displayBackpackDetails() void
     }
 
     class Unit {
@@ -134,6 +153,33 @@ direction TB
 	    #calculateDamage(Unit& target, int baseDamage, Inventory& inventory) int
 	    #updateBasicAttributes() void
     }
+
+    class Stats {
+	    #strength : integer
+	    #agility : int
+	    #intelligence : int
+	    #strength : int
+	    #agility : int
+	    #intelligence : int
+	    +Stats(int strength, int agility, int intelligence)
+	    +~Stats()
+	    +getStrength() int
+	    +getAgility() int
+	    +getIntelligence() int
+	    +setStrength(int strength) void
+	    +setAgility(int agility) void
+	    +setIntelligence(int intelligence) void
+	    +Stats(int strength, int agility, int intelligence)
+	    +~Stats()
+	    +getStrength() int
+	    +getAgility() int
+	    +getIntelligence() int
+	    +setStrength(int strength) void
+	    +setAgility(int agility) void
+	    +setIntelligence(int intelligence) void
+    }
+
+    
 
     class Mobs {
 	    #expReward : int
@@ -533,32 +579,7 @@ direction TB
 	    +getCols() int
     }
 
-    class Inventory {
-	    -backpack : Matrix~
-	    -equipped : map
-	    +Inventory(Matrix&gt; backp, map equippedItem)
-	    +centerText(string text, int width) string static
-	    +loadInventory(string directory, Items itemMap) Inventory static
-	    +saveInventory(string directory) void
-	    +addItem(pair value) void
-	    +reduceItem(Item* item, int amount) void
-	    +handleNonConsumable(Item* item, Character& orang, Unit& target) void
-	    +handleConsumable(Item* item, Character& orang, Unit& target) void
-	    +useItem(string itemID, Character& orang, Items itemMap, Unit& target) void
-	    +unequipItem(Character& orang, string slot, Unit& target) void
-	    +equipItem(string slot, Character& orang, Item* item, Unit& target) void
-	    +getIdxItembyId(string itemId) pair const
-	    +getBackpack() Matrix&gt;
-	    +getEquippedItem(string slot) Item*
-	    +getItemById(string itemId) pair
-	    +getItemBackpackByName(string itemName) pair
-	    +getEquippedItemId(string slot) string const
-	    +setEquipped(string slot, Item* item) void
-	    +displayBackpack() void
-	    +displayEquipment() void
-	    +getItemQtyInInvent(string itemName) int
-	    +displayBackpackDetails() void
-    }
+    
 
     class Skill {
 	    -name : string
@@ -841,22 +862,7 @@ direction TB
 	    +remove(Unit* unit) void
     }
 
-    class Player {
-	    -itemMap : Items*
-	    -inv : Inventory*
-	    -playerChar : Character*
-	    +Player(string dir, string charType, Items& itemMap, Characters& allChar, int type)
-	    +~Player()
-	    +goToDungeon(Mobloot& moobLoot, Items& itemMap) void
-	    +goToShop(Shop& shop) void
-	    +buyFromShop(Shop& shop, string itemId, int quantity) void
-	    +sellToShop(Shop& shop, string itemId, int quantity) void
-	    +showInventory(bool isBackpack) void
-	    +showCurrency() void
-	    +reduceItemInvetory(string addAbleItem, int target) void
-	    +getChar() Character*
-	    +getInv() Inventory*
-    }
+   
 
     class InputOutputException {
 	    -errorMessage string
@@ -881,17 +887,18 @@ direction TB
 	    +what() char const*
     }
 
-    class CharactersError {
-	    -errorMessage string
-	    +CharactersError()
-	    +CharactersError(string message)
-	    +what() char const*
-    }
 
     class ItemNotFound {
 	    -errorMessage string
 	    +ItemNotFound()
 	    +ItemNotFound(string message)
+	    +what() char const*
+    }
+
+    class CharactersError {
+	    -errorMessage string
+	    +CharactersError()
+	    +CharactersError(string message)
 	    +what() char const*
     }
 
@@ -947,18 +954,30 @@ direction TB
     <<abstract>> Unit
     <<abstract>> BossMobs
     <<abstract>> BasicMobs
-
-    Unit *-- Stats
-    Unit <|-- Mobs
-    Unit <|-- Character
+    
+    BasicMobs <|-- Goblin
+    BasicMobs <|-- Skeleton
+    BasicMobs <|-- Slime
+    BasicMobs <|-- Orc
+    BossMobs <|-- DarkKnight
+    BossMobs <|-- DemonLord
+    BossMobs <|-- Lich
+    BossMobs <|-- Ogre
     Character <|-- Assassin
-    Dungeon <|-- Reward
+    Character <|-- Berserker
+    Character <|-- Fighter
+    Character <|-- Mage
+    Character <|-- Necromancer
+    Characters o-- Character
+    Character *-- SkillTree
+    Item <|-- Armor
     Item <|-- Potion
     Item <|-- Pendant
     Item <|-- Weapon
     Inventory *-- Matrix
     SkillNode *-- Skill
     SkillTree *-- SkillNode
+    Skill --|> Unit
     Inventory --|> Character
     Inventory --|> Item
     Inventory --|> Unit
@@ -975,14 +994,11 @@ direction TB
     MasteryCostNotEnough --|> exception
     InvalidValue --|> exception
     InvalidSkill --|> exception
-    Player --> Items
-    Player --> Inventory
-    Player --> Characters
-    Player --> Shop
-    Player --> Mobloot
     Player *-- Items
     Player *-- Inventory
     Player *-- Character
+    Player --> Shop
+    Player --> Mobloot
     EffectTurnBasedBased --> Unit
     Effect <|-- EffectTurn
     EffectTurn --> Unit
@@ -1004,33 +1020,13 @@ direction TB
     Dungeon *-- Chamber
     Dungeon *-- Item
     Dungeon *-- Reward
-    BossMobs <|-- DarkKnight
     Chamber *-- Mobloot
     Chamber *-- Mobs
-    Unit *-- Stats
-    Unit <|-- Mobs
     Unit <|-- Character
+    Unit <|-- Mobs
+    Unit *-- Stats
     Mobs <|-- BasicMobs
     Mobs <|-- BossMobs
     Mobs o-- Mobloot
-    BasicMobs <|-- Slime
-    BasicMobs <|-- Goblin
-    BasicMobs <|-- Skeleton
-    BasicMobs <|-- Orc
-    BossMobs <|-- Ogre
-    BossMobs <|-- Lich
-    BossMobs <|-- DemonLord
-    BossMobs <|-- DarkKnight
-    Character <|-- Assassin
-    Character <|-- Berserker
-    Character <|-- Fighter
-    Character <|-- Mage
-    Character <|-- Necromancer
-    Characters o-- Character
-    Item <|-- Armor
-    Mobs <|-- BasicMobs
-    Character <|-- Berseker
-    Unit <-- Character
-    Character *-- SkillTree
-    Characters *-- Character
+
 
