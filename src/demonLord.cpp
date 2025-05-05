@@ -2,7 +2,6 @@
 
 DemonLord::DemonLord(int level, int expReward, Mobloot& mobLoots)
  : BossMobs("Demon Lord", level, 16 + (level -1) * 1.2, 32 + (level -1) * 2.1, 16 + (level -1) * 1.7, expReward, mobLoots) {
-    //
     updateBasicAttributes();
     vector<Effect*> effects;
     string debuffEffectDescription = "berpeluang 0.15 untuk memberikan kutukan yang mengurangi attack power dan defense power selama 5 turn";
