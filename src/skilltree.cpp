@@ -16,9 +16,9 @@ SkillTree::SkillTree(string char_type){
         healthRegenPlus->setHealAmount(healthRegenPlus->getHealAmount() * 1.5);
 
         // Skill1
-        Skill* f1_1 = new Skill("Stone Skin", 80, 10,  80, 270, {damageReduction});
-        Skill* f1_2 = new Skill("Divine Shield", 85, 10,  80, 290, {damageReductionPlusPlus});
-        Skill* f1_3 = new Skill("Guardian's Oath", 90, 10,  80, 300, {damageReductionPlus, healthRegenPlus});
+        Skill* f1_1 = new Skill("Stone Skin", 10, 10,  80, 300, {damageReduction});
+        Skill* f1_2 = new Skill("Divine Shield", 10, 10,  80, 50, {damageReductionPlusPlus});
+        Skill* f1_3 = new Skill("Guardian's Oath", 10, 10,  80, 50, {damageReductionPlus, healthRegenPlus});
 
         // Poison effects (Bleed, Burn)
         EffectPoison* Bleed = dynamic_cast<EffectPoison*>(Effect::createEffect("Bleed"));
@@ -31,9 +31,9 @@ SkillTree::SkillTree(string char_type){
         BurnPlus->setDamage(BurnPlus->getDamage() * 1.5);
 
         // Skill2
-        Skill* f2_1 = new Skill("Fighter Fist", 90, 10,  80, 280, {Bleed});
-        Skill* f2_2 = new Skill("Bloodfire Strike", 95, 10,  80, 300, {BleedPlus, BurnPlus});
-        Skill* f2_3 = new Skill("Crimson Onslaught", 100, 10,  80, 310, {BleedPlusPlus});
+        Skill* f2_1 = new Skill("Fighter Fist", 10, 10,  80, 50, {Bleed});
+        Skill* f2_2 = new Skill("Bloodfire Strike", 10, 10,  80, 50, {BleedPlus, BurnPlus});
+        Skill* f2_3 = new Skill("Crimson Onslaught", 10, 10,  80, 50, {BleedPlusPlus});
 
         // Damage and support effects
         EffectDamage* CriticalChance = dynamic_cast<EffectDamage*>(Effect::createEffect("Critical"));
@@ -48,9 +48,9 @@ SkillTree::SkillTree(string char_type){
         StunChancePlus->setChance(StunChancePlus->getChance() * 1.5);
 
         // Skill3
-        Skill* f3_1 = new Skill("Battle Instinct", 115, 10,  80, 320, {CriticalChance});
-        Skill* f3_2 = new Skill("Spirit Rampage", 120, 10,  80, 330, {CriticalChancePlus, manaRegenPlus});
-        Skill* f3_3 = new Skill("Stormbreaker", 125, 10,  80, 350, {CriticalChancePlus, StunChancePlus});
+        Skill* f3_1 = new Skill("Battle Instinct", 10, 10,  80, 50, {CriticalChance});
+        Skill* f3_2 = new Skill("Spirit Rampage", 10, 10,  80, 50, {CriticalChancePlus, manaRegenPlus});
+        Skill* f3_3 = new Skill("Stormbreaker", 10, 10,  80, 50, {CriticalChancePlus, StunChancePlus});
 
         root1 = new SkillNode(f1_1);
         root1->setLeftNode(new SkillNode(f1_2));
@@ -76,9 +76,9 @@ SkillTree::SkillTree(string char_type){
         EffectTurn* StunPlus = dynamic_cast<EffectTurn*>(Effect::createEffect("Stun"));
         StunPlus->setChance(StunPlus->getChance() * 1.5);
 
-        Skill* m1_1 = new Skill("Fire Arrow", 65, 10,  80, 300, {Burn});
-        Skill* m1_2 = new Skill("Meteor Strike", 70, 10,  80, 310, {BurnPlus, CriticalPlus});
-        Skill* m1_3 = new Skill("Indra's Wrath", 75, 10,  80, 320, {StunPlus, BurnPlus});
+        Skill* m1_1 = new Skill("Fire Arrow", 10, 10,  80, 50, {Burn});
+        Skill* m1_2 = new Skill("Meteor Strike", 10, 10,  80, 50, {BurnPlus, CriticalPlus});
+        Skill* m1_3 = new Skill("Indra's Wrath", 10, 10,  80, 50, {StunPlus, BurnPlus});
 
         // Mage skill2
         EffectTurn* Disable = dynamic_cast<EffectTurn*>(Effect::createEffect("Disable"));
@@ -89,15 +89,15 @@ SkillTree::SkillTree(string char_type){
         EffectHealthRegen* healthRegenPlus = dynamic_cast<EffectHealthRegen*>(Effect::createEffect("Obat"));
         healthRegenPlus->setHealAmount(healthRegenPlus->getHealAmount() * 1.5);
 
-        Skill* m2_1 = new Skill("Chains Ruin", 70, 10,  80, 280, {Disable});
-        Skill* m2_2 = new Skill("Mana Prison", 75, 10,  80, 290, {DisablePlus, manaRegenPlus});
-        Skill* m2_3 = new Skill("Vampiric Chains", 80, 10,  80, 300 , {DisablePlus, healthRegenPlus});
+        Skill* m2_1 = new Skill("Chains of Ruin", 10, 10,  80, 50, {Disable});
+        Skill* m2_2 = new Skill("Mana Prison", 10, 10,  80, 50, {DisablePlus, manaRegenPlus});
+        Skill* m2_3 = new Skill("Vampiric Chains", 10, 10,  80, 50, {DisablePlus, healthRegenPlus});
 
         // Mage skill3
         EffectManaRegen* manaRegenPlusPlus = dynamic_cast<EffectManaRegen*>(Effect::createEffect("Kukubima"));
         manaRegenPlusPlus->setManaAmount(manaRegenPlusPlus->getManaAmount() * 2);
 
-        Skill* m3_1 = new Skill("Mana Spring", 180, 10,  80, 450, {manaRegenPlusPlus});
+        Skill* m3_1 = new Skill("Mana Spring", 10, 10,  80, 50, {manaRegenPlusPlus});
         
         root1 = new SkillNode(m1_1);
         root1->setLeftNode(new SkillNode(m1_2));
@@ -184,6 +184,7 @@ SkillTree::SkillTree(string char_type){
 
     else if (char_type == "Berserker") {
         // Berserk skill1
+        cout<<"MASUK CTOR SI SKILL\n";
         EffectDamage* Critical = dynamic_cast<EffectDamage*>(Effect::createEffect("Critical"));
         EffectDamage* CriticalPlusPlus = dynamic_cast<EffectDamage*>(Effect::createEffect("Critical"));
         CriticalPlusPlus->setDamage(CriticalPlusPlus->getDamage() * 2);
@@ -255,7 +256,8 @@ void SkillTree::destroy(SkillNode* node) {
     delete node;
 }
 
-std::vector<SkillNode*> SkillTree::getAvailableUpgrade(vector<SkillNode*>& result) const{
+std::vector<SkillNode*> SkillTree::getAvailableUpgrade() const{
+    vector<SkillNode*> result;
     for (int i = 0; i < currentSkills.size(); i++){
 
             if (currentSkills[i]->getLeftNode() != nullptr){
