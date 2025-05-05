@@ -22,7 +22,6 @@ int main(){
 
     std::vector<std::string> required_files = {
         "characters.txt",
-        "item.txt",
         "shop.txt",
         "backpack.txt",
         "equipment.txt"
@@ -66,11 +65,11 @@ int main(){
             }
             try {
 
-                allChar = new Characters(folder_path);
                 itemMap = new Items(Items::createFromDirectory(folder_path)); 
                 shop = new Shop(folder_path);
                 mobsLoot = new Mobloot(folder_path, *itemMap);
                 inv = new Inventory(Inventory::loadInventory(folder_path, *itemMap));
+                allChar = new Characters(folder_path);
                 
             } catch (const std::exception& e) {
                 // Cleanup jika ada exception
@@ -113,7 +112,7 @@ int main(){
             bool isValid = false;
             int opt;
             while (!isValid) {
-                std::cout << "Masukkan pilihan anda (1-1): ";
+                std::cout << "Masukkan pilihan anda (1-2): ";
                 std::cin >> opt;
                 if (std::cin.fail()) {
                     std::cin.clear();
@@ -354,33 +353,31 @@ int main(){
                     }
                 }
                 else if(opt==6){
-                    //input user
-                    // std::string path;
-                    // while (true) {
-                    //     std::cout << "Silahkan masukkan path menuju data yang akan disimpan: ";
-                    //     std::cin >> path;
+                    std::string path;
+                    while (true) {
+                        std::cout << "Silahkan masukkan path menuju data yang akan disimpan: ";
+                        std::cin >> path;
                     
-                    //     try {
-                    //         if (!std::filesystem::exists(path)) {
-                    //             throw InputOutputException("Path tidak ditemukan.");
-                    //         }
+                        try {
+                            if (!std::filesystem::exists(path)) {
+                                throw InputOutputException("Path tidak ditemukan.");
+                            }
                     
-                    //         if (!std::filesystem::is_directory(path)) {
-                    //             throw InputOutputException("Path yang dimasukkan bukan folder.");
-                    //         }
-                    //         break;
+                            if (!std::filesystem::is_directory(path)) {
+                                throw InputOutputException("Path yang dimasukkan bukan folder.");
+                            }
+                            break;
                     
-                    //     } catch (const std::exception& e) {
-                    //         std::cerr << "Terjadi kesalahan: " << e.what() << std::endl;
-                    //         std::cerr << "Silakan coba lagi.\n";
-                    //     }
-                    // }
+                        } catch (const std::exception& e) {
+                            std::cerr << "Terjadi kesalahan: " << e.what() << std::endl;
+                            std::cerr << "Silakan coba lagi.\n";
+                        }
+                    }
 
                     //sementara
-                    p1->getInv()->saveInventory("../datadump/");
-                    allChar->save("../datadump/");
-                    itemMap->save("../datadump/");
-                    shop->saveShop("../datadump/");
+                    p1->getInv()->saveInventory(path);
+                    allChar->save(path);
+                    shop->saveShop(path);
                     break;
                 }
                 else if (opt==7){

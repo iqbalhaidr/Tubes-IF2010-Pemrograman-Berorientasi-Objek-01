@@ -101,7 +101,7 @@ void Inventory::saveInventory(const std::string& directory) {
     std::string filePathEquipment = directory + "equipment.txt";
 
     if (!fs::exists(directory) || !fs::is_directory(directory)) {
-        throw InputOutputException("Directory tidak ditemukan");
+        throw InputOutputException("Directory tidak ditemukan invent");
     }
 
     std::ofstream outputBackpack(filePathBackpack);

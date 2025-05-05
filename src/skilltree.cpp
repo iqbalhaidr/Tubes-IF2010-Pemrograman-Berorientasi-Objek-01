@@ -184,7 +184,6 @@ SkillTree::SkillTree(string char_type){
 
     else if (char_type == "Berserker") {
         // Berserk skill1
-        cout<<"MASUK CTOR SI SKILL\n";
         EffectDamage* Critical = dynamic_cast<EffectDamage*>(Effect::createEffect("Critical"));
         EffectDamage* CriticalPlusPlus = dynamic_cast<EffectDamage*>(Effect::createEffect("Critical"));
         CriticalPlusPlus->setDamage(CriticalPlusPlus->getDamage() * 2);

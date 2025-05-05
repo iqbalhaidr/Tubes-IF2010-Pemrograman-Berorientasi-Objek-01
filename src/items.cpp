@@ -14,9 +14,9 @@ namespace fs = std::filesystem;
 
 Items Items :: createFromDirectory(const std::string& directory) {
     std::map<std::string, Item*> itemMap;
-    std::string filename = directory + "item.txt";
+    std::string filename = directory+ "item.txt";
     if (!fs::exists(directory) || !fs::is_directory(directory)) {
-        throw InputOutputException("Directory tidak ditemukan");
+        throw InputOutputException("Directory tidak ditemukan items");
     }
 
     std::ifstream file(filename);

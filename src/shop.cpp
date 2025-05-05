@@ -9,7 +9,7 @@ Shop::Shop(const std::string& directory){
         std::string name = item.second->getName();
     }
     if (!fs::exists(directory) || !fs::is_directory(directory)) {
-        throw InputOutputException("Directory tidak ditemukan");
+        throw InputOutputException("Directory tidak ditemukan shop");
     }
 
     std::ifstream file(filename);

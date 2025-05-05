@@ -12,7 +12,7 @@ namespace fs = filesystem;
 Characters::Characters(const string& directory) {
     string filename = directory + "characters.txt";
     if (!fs::exists(directory) || !fs::is_directory(directory)) {
-        throw InputOutputException("Directory tidak ditemukan");
+        throw InputOutputException("Directory tidak ditemukan characters");
     }
 
     ifstream file(filename);
