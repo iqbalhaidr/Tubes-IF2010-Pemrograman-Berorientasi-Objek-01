@@ -6,7 +6,7 @@
 #define MIN_ENEMIES_CHAMBER 2
 #define MAX_ENEMIES_CHAMBER 4
 #define CHANCE_BOSS_NOT_ON_LAST_CHAMBER 0.10f
-#define DISPLAY_TIME 3000
+#define DISPLAY_TIME 2000
 #define BIG_DAMAGE 9999
 
 #include <string>

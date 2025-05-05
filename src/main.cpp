@@ -1,4 +1,5 @@
 #include "../include/Player.hpp"
+#include "../include/Image.hpp"
 
 void typeEffect(const std::string &text, int delayMs) {
     for (char c : text) {
@@ -93,6 +94,9 @@ int main(){
     bool end = false;
     bool characterCreated = false;
 
+    Image::display("../data/pacatur.txt");
+    std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+    std::cout << "\e[1;1H\e[2J"; //Clear console
     while(!end){
         //pilih char    
         if(!characterCreated){

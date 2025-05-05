@@ -10,7 +10,7 @@
 #include "item.hpp"
 #include "exception.hpp"
 
-#define DISPLAY_TIME_REWARD 1000
+#define DISPLAY_TIME_REWARD 100
 
 class Reward {
    private:
