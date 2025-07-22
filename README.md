@@ -1,7 +1,5 @@
-# IF2010 - Pemrograman Berorientasi Objek 2025
-
-> **Tugas Besar 1 - IF2010 Pemrograman Berorientasi Objek 2025**
-## Deskripsi Singkat
+# Tugas Besar 1 IF2010 Pemrograman Berorientasi Objek 2024/2025
+### Deskripsi Singkat
 
 Tugas Besar ini adalah sebuah program simulasi berbasis CLI (Command-Line Interface) yang dikembangkan menggunakan bahasa C++ dan menerapkan prinsip Pemrograman Berorientasi Objek (OOP) dan materi mengenai bahasa C++ yang telah dipelajari pada mata kuliah Pemrograman Berbasis Objek IF2010.
 
